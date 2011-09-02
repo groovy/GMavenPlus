@@ -17,6 +17,7 @@
 package gmavenplus.util;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -122,4 +123,61 @@ public class ReflectionUtils {
         return method.invoke(args);
     }
 
+    /**
+     * Attempt to find a {@link Field field} on the supplied {@link Class} with the
+     * supplied <code>name</code> and/or {@link Class type}. Searches all superclasses
+     * up to {@link Object}.
+     * @param clazz the class to introspect
+     * @param name the name of the field (may be <code>null</code> if type is specified)
+     * @param type the type of the field (may be <code>null</code> if name is specified)
+     * @return the corresponding Field object
+     */
+    public static Field findField(Class<?> clazz, String name, Class<?> type) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class must not be null");
+        }
+        if (name == null && type == null) {
+            throw new IllegalArgumentException("Either name or type of the field must be specified");
+        }
+        Class<?> searchType = clazz;
+        while (!Object.class.equals(searchType) && searchType != null) {
+            Field[] fields = searchType.getDeclaredFields();
+            for (Field field : fields) {
+                if ((name == null || name.equals(field.getName())) && (type == null || type.equals(field.getType()))) {
+                    return field;
+                }
+            }
+            searchType = searchType.getSuperclass();
+        }
+        throw new IllegalArgumentException("Unable to find " + type.getName() + " " + name);
+    }
+
+    /**
+     * Get the field represented by the supplied {@link Field field object} on the
+     * specified {@link Object target object}. In accordance with {@link Field#get(Object)}
+     * semantics, the returned value is automatically wrapped if the underlying field
+     * has a primitive type.
+     * @param field the field to get
+     * @param target the target object from which to get the field
+     * @return the field's current value
+     */
+    public static Object getField(Field field, Object target) throws IllegalAccessException {
+        boolean accessible = field.isAccessible();
+        field.setAccessible(true);
+        Object value = field.get(target);
+        field.setAccessible(accessible);
+        return value;
+    }
+
+    /**
+     * Get the field represented by the supplied {@link Field field object} on the
+     * specified {@link Object target object}. In accordance with {@link Field#get(Object)}
+     * semantics, the returned value is automatically wrapped if the underlying field
+     * has a primitive type.
+     * @param field the field to get
+     * @return the field's current value
+     */
+    public static Object getField(Field field) throws IllegalAccessException {
+        return getField(field, null);
+    }
 }

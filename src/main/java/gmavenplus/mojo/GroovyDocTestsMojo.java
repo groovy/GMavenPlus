@@ -25,16 +25,16 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Keegan Witt
  *
- * @goal groovydoc
+ * @goal testGroovydoc
  */
-public class GroovyDocMojo extends AbstractGroovyDocMojo {
+public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("groovydoc");
+        logGroovyVersion("testGroovydoc");
 
         try {
-            generateGroovyDoc(sourceDirectory, outputDirectory);
+            generateGroovyDoc(testSourceDirectory, testOutputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
