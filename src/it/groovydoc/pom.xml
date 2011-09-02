@@ -39,6 +39,7 @@
         <version>@project.version@</version>
         <executions>
           <execution>
+            <phase>generate-test-sources</phase>
             <goals>
               <goal>groovydoc</goal>
             </goals>

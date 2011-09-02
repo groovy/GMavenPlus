@@ -19,7 +19,6 @@ package gmavenplus.mojo;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
 import gmavenplus.model.Version;
 import gmavenplus.util.ReflectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
@@ -31,6 +30,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
  * @author Keegan Witt
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
+    // TODO: implement org.apache.maven.reporting.MavenReport?
 
     /**
      * Location of the Groovy source files
@@ -99,10 +99,11 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      * @throws InstantiationException
      */
     protected void generateGroovyDoc(File sourceDirectory, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        // TODO: get working
         // get classes we need with reflection
         Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
+        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
         Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
+        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
         Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
         Class groovyDocTemplateInfoClass = Class.forName("org.codehaus.groovy.tools.groovydoc.gstringTemplates.GroovyDocTemplateInfo");
 
@@ -111,7 +112,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
         Properties properties = new Properties();
         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
-        Object groovyDocTool = ReflectionUtils.findConstructor(classpathResourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
+        Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
                 classpathResourceManager,
                 new String[] {sourceDirectory.getAbsolutePath()},
                 ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_DOC_TEMPLATES", String[].class)),
@@ -123,7 +124,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
 
         // generate GroovyDoc
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", fileOutputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
     }
 
     /**

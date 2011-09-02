@@ -6,8 +6,8 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
 * gmavenplus:testCompile
 * gmavenplus:generateStubs
 * gmavenplus:testGenerateStubs
-* gmavenplus:groovydoc (note only supported on Groovy >= 1.5.0) &lt;work in progress&gt;
-* gmavenplus:testGroovydoc (note only supported on Groovy >= 1.5.0) &lt;work in progress&gt;
+* gmavenplus:groovydoc (note only supported on Groovy >= 1.5.0)
+* gmavenplus:testGroovydoc (note only supported on Groovy >= 1.5.0)
 * gmavenplus:execute &lt;work in progress&gt;
 
 ##Basic Usage##
@@ -24,7 +24,6 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
                 <goals>
                   <goal>compile</goal>
                   <goal>testCompile</goal>
-                  <goal>groovydoc</goal>
                 </goals>
               </execution>
             </executions>
