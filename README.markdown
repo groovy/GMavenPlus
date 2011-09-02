@@ -10,7 +10,7 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
 * gmavenplus:testGroovydoc (work in progress)
 * gmavenplus:execute (work in progress)
 
-##Usage Example##
+##Basic Usage##
     <project>
       ...
       <build>
@@ -36,6 +36,7 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-all</artifactId>
+          <!-- any version of Groovy should work here -->
           <version>1.8.1</version>
         </dependency>
         ....
