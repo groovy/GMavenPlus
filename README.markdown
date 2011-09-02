@@ -6,7 +6,7 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
 * gmavenplus:testCompile
 * gmavenplus:generateStubs
 * gmavenplus:testGenerateStubs
-* gmavenplus:groovydoc
+* gmavenplus:groovydoc (work in progress)
 * gmavenplus:testGroovydoc (work in progress)
 * gmavenplus:execute (work in progress)
 
