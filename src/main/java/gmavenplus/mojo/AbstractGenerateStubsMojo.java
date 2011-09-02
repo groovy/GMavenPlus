@@ -129,8 +129,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            sources.add(new File(sourceDirectory, files[i]));
+        for (String file : files) {
+            sources.add(new File(sourceDirectory, file));
         }
 
         return sources;
@@ -147,8 +147,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            sources.add(new File(testSourceDirectory, files[i]));
+        for (String file : files) {
+            sources.add(new File(testSourceDirectory, file));
         }
 
         return sources;
@@ -165,8 +165,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            stubs.add(new File(outputDirectory, files[i]));
+        for (String file : files) {
+            stubs.add(new File(outputDirectory, file));
         }
 
         return stubs;
@@ -183,8 +183,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            stubs.add(new File(testOutputDirectory, files[i]));
+        for (String file : files) {
+            stubs.add(new File(testOutputDirectory, file));
         }
 
         return stubs;
@@ -210,13 +210,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
         getLog().debug("Compiling " + sources.size() + " sources");
-        for (Iterator<File> iter = sources.iterator(); iter.hasNext();) {
+        for (File source : sources) {
             URL url = null;
-            File next = iter.next();
             try {
-                url = next.toURI().toURL();
+                url = source.toURI().toURL();
             } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + next.getAbsolutePath() + " for stub generation", e);
+                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for stub generation", e);
             }
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", URL.class), javaStubCompilationUnit, url);
         }
@@ -243,8 +242,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @param stubs the files on which to reset the modified date
      */
     protected void resetStubModifiedDates(Set<File> stubs ) {
-        for (Iterator i = stubs.iterator(); i.hasNext();) {
-            File file = (File) i.next();
+        for (File file : stubs) {
             file.setLastModified(0L);
         }
     }

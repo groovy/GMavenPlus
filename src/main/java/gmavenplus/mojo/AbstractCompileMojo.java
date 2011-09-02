@@ -136,8 +136,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            sources.add(new File(sourceDirectory, files[i]));
+        for (String file : files) {
+            sources.add(new File(sourceDirectory, file));
         }
 
         return sources;
@@ -154,8 +154,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         ds.scan();
 
         String[] files = ds.getIncludedFiles();
-        for (int i = 0; i < files.length; i++) {
-            sources.add(new File(testSourceDirectory, files[i]));
+        for (String file : files) {
+            sources.add(new File(testSourceDirectory, file));
         }
 
         return sources;
@@ -184,13 +184,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         Object transformLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class).newInstance(getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Compiling " + sources.size() + " sources");
-        for (Iterator<File> iter = sources.iterator(); iter.hasNext();) {
+        for (File source : sources) {
             URL url = null;
-            File next = iter.next();
             try {
-                url = next.toURI().toURL();
+                url = source.toURI().toURL();
             } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + next.getAbsolutePath() + " for compiling", e);
+                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for compiling", e);
             }
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", URL.class), compilationUnit, url);
         }
@@ -202,8 +201,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
         if (getLog().isDebugEnabled()) {
             getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes: ");
-            for (Iterator iter = classes.iterator(); iter.hasNext();) {
-                getLog().debug("    " + ((Class) iter.next()).getName());
+            for (Object aClass : classes) {
+                getLog().debug("    " + ((Class) aClass).getName());
             }
         }
     }
