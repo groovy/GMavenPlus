@@ -45,6 +45,10 @@ public abstract class AbstractGroovyMojo  extends AbstractMojo {
         String groovyVersion = null;
 
         try {
+            /* This method is considered to be for internal-only use by the Groovy folks, but the preferred method
+             * <code>groovy.lang.GroovySystem.getVersion()</code> was not added until 1.6.6.  So to reliably get the
+             * information we need, we're going to use this method anyway.
+             */
             Class InvokerHelperClass = Class.forName("org.codehaus.groovy.runtime.InvokerHelper");
             groovyVersion = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(InvokerHelperClass, "getVersion"));
         } catch (ClassNotFoundException e) {
