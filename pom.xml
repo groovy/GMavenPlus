@@ -7,7 +7,7 @@
   <groupId>GMavenPlus</groupId>
   <artifactId>GMavenPlus-Plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-alpha1-SNAPSHOT</version>
   <name>GMavenPlus Plugin</name>
 
   <properties>
