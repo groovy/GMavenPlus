@@ -118,6 +118,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      */
     protected int tolerance;
 
+    /**
+     * @return
+     */
     protected Set<File> getSources() {
         Set<File> sources = new HashSet<File>();
 
@@ -136,6 +139,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         return sources;
     }
 
+    /**
+     * @return
+     */
     protected Set<File> getTestSources() {
         Set<File> sources = new HashSet<File>();
 
@@ -154,6 +160,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         return sources;
     }
 
+    /**
+     * @return
+     */
     protected Set<File> getStubs() {
         Set<File> stubs = new HashSet<File>();
 
@@ -172,6 +181,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         return stubs;
     }
 
+    /**
+     * @return
+     */
     protected Set<File> getTestStubs() {
         Set<File> stubs = new HashSet<File>();
 
@@ -190,6 +202,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         return stubs;
     }
 
+    /**
+     * @param sources
+     * @param outputDirectory
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     protected void doStubGeneration(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");

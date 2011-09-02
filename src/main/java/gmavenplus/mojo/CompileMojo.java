@@ -29,6 +29,10 @@ import org.apache.maven.plugin.MojoFailureException;
  */
 public class CompileMojo extends AbstractCompileMojo {
 
+    /**
+     * @throws MojoExecutionException
+     * @throws MojoFailureException
+     */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("compile");

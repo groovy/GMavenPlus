@@ -125,6 +125,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      */
     protected int tolerance;
 
+    /**
+     * @return
+     */
     protected Set<File> getSources() {
         Set<File> sources = new HashSet<File>();
 
@@ -143,6 +146,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         return sources;
     }
 
+    /**
+     * @return
+     */
     protected Set<File> getTestSources() {
         Set<File> sources = new HashSet<File>();
 
@@ -161,6 +167,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         return sources;
     }
 
+    /**
+     * @param sources
+     * @param outputDirectory
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
     protected void doCompile(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
         // get classes we need with reflection
         Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");

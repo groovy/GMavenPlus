@@ -29,12 +29,18 @@ import org.apache.maven.plugin.AbstractMojo;
  */
 public abstract class AbstractGroovyMojo  extends AbstractMojo {
 
+    /**
+     * @param goal
+     */
     protected void logGroovyVersion(String goal) {
         if (getLog().isInfoEnabled()) {
             getLog().info("Using Groovy " + getGroovyVersion() + " from project compile classpath to perform " + goal);
         }
     }
 
+    /**
+     * @return
+     */
     protected String getGroovyVersion() {
         String groovyVersion = null;
 

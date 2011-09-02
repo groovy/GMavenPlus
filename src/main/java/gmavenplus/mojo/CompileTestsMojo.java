@@ -36,6 +36,10 @@ public class CompileTestsMojo extends AbstractCompileMojo {
      */
     protected boolean skip;
 
+    /**
+     * @throws MojoExecutionException
+     * @throws MojoFailureException
+     */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
