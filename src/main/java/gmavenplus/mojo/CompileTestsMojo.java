@@ -7,7 +7,6 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * @author Keegan Witt
- * @version $Rev$ $Date$
  *
  * @phase test-compile
  * @goal testCompile

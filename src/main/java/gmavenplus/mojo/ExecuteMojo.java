@@ -6,7 +6,6 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * @author Keegan Witt
- * @version $Rev$ $Date$
  *
  * @goal execute
  */

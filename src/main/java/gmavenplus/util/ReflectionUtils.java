@@ -10,7 +10,6 @@ import java.util.Arrays;
  * Inspired from https://src.springframework.org/svn/spring-framework/trunk/org.springframework.core/src/main/java/org/springframework/util/ReflectionUtils.java
  *
  * @author wittk
- * @version $Rev$ $Date$
  */
 public class ReflectionUtils {
 

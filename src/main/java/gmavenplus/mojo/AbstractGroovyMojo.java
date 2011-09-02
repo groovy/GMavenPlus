@@ -7,7 +7,6 @@ import org.apache.maven.plugin.AbstractMojo;
 
 /**
  * @author Keegan Witt
- * @version $Rev$ $Date$
  *
  * @requiresDependencyResolution compile
  * @configurator include-project-dependencies

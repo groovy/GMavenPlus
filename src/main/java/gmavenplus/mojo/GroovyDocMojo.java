@@ -10,7 +10,6 @@ import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
  * @author Keegan Witt
- * @version $Rev$ $Date$
  *
  * @goal groovydoc
  */

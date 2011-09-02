@@ -16,7 +16,6 @@ import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
  * @author Keegan Witt
- * @version $Rev$ $Date$
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
