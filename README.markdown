@@ -1,6 +1,11 @@
 #GMavenPlus#
-Welcome to the home of GMavenPlus.  The basic information is below.  For more information, check out the [wiki](http://github.com/keeganwitt/GMavenPlus/wiki).
-Do note that this project is currently in the alpha stage, but you can expect a more rigorous version soon.
+
+##Introduction##
+Welcome to the home of GMavenPlus.  Do note that this project is currently in the alpha stage, but you can expect a more rigorous version soon.
+The basic information about this project is below.  For more information, check out the [wiki](http://github.com/keeganwitt/GMavenPlus/wiki).
+
+##License##
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ##Available Goals##
 * gmavenplus:compile
