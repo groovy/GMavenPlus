@@ -1,0 +1,44 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building GMavenPlus Plugin Generate Stubs Test
+[INFO]    task-segment: [clean, test]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] [GMavenPlus-Plugin:generateStubs {execution: default}]
+[INFO] Using Groovy 1.8.1 from project compile classpath to perform generateStubs
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory J:\working\projects\GMavenPlus\GMavenPlus-Plugin\target\it\generateStubs\src\main\resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [GMavenPlus-Plugin:compile {execution: default}]
+[INFO] Using Groovy 1.8.1 from project compile classpath to perform compile
+[INFO] [GMavenPlus-Plugin:testGenerateStubs {execution: default}]
+[INFO] Using Groovy 1.8.1 from project compile classpath to perform generateTestStubs
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory J:\working\projects\GMavenPlus\GMavenPlus-Plugin\target\it\generateStubs\src\test\resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 1 source file to J:\working\projects\GMavenPlus\GMavenPlus-Plugin\target\it\generateStubs\target\test-classes
+[INFO] [GMavenPlus-Plugin:testCompile {execution: default}]
+[INFO] Using Groovy 1.8.1 from project compile classpath to perform compileTests
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Surefire report directory: J:\working\projects\GMavenPlus\GMavenPlus-Plugin\target\it\generateStubs\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running gmavenplus.SomeClassTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.546 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 5 seconds
+[INFO] Finished at: Thu Sep 01 19:54:18 EDT 2011
+[INFO] Final Memory: 23M/55M
+[INFO] ------------------------------------------------------------------------

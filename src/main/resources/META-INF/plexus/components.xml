@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component-set>
+
+  <components>
+
+    <!-- Defines the 'groovy-jar' packaging and artifact handling. -->
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>groovy-jar</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>groovy-jar</type>
+        <extension>jar</extension>
+        <language>java</language>
+        <addedToClasspath>true</addedToClasspath>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>groovy-jar</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <lifecycles>
+          <lifecycle>
+            <id>default</id>
+            <phases>
+              <process-resources>
+                org.apache.maven.plugins:maven-resources-plugin:resources
+              </process-resources>
+              <compile>
+                gmavenplus:GMavenPlus-plugin:generateStubs,
+                org.apache.maven.plugins:maven-compiler-plugin:compile,
+                gmavenplus:GMavenPlus-plugin:compile
+              </compile>
+              <process-test-resources>
+                org.apache.maven.plugins:maven-resources-plugin:testResources
+              </process-test-resources>
+              <test-compile>
+                gmavenplus:GMavenPlus-plugin:generateTestStubs,
+                org.apache.maven.plugins:maven-compiler-plugin:testCompile,
+                gmavenplus:GMavenPlus-plugin:testCompile
+              </test-compile>
+              <test>
+                org.apache.maven.plugins:maven-surefire-plugin:test
+              </test>
+              <package>
+                org.apache.maven.plugins:maven-jar-plugin:jar
+              </package>
+              <install>
+                org.apache.maven.plugins:maven-install-plugin:install
+              </install>
+              <deploy>
+                org.apache.maven.plugins:maven-deploy-plugin:deploy
+              </deploy>
+            </phases>
+          </lifecycle>
+        </lifecycles>
+      </configuration>
+    </component>
+
+    <!-- Defines the 'GMavenPlus-plugin' packaging and artifact handling. -->
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>GMavenPlus-plugin</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>GMavenPlus-plugin</type>
+        <extension>jar</extension>
+        <language>java</language>
+        <addedToClasspath>true</addedToClasspath>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>GMavenPlus-plugin</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <lifecycles>
+          <lifecycle>
+            <id>default</id>
+            <phases>
+              <process-resources>
+                org.apache.maven.plugins:maven-resources-plugin:resources
+              </process-resources>
+              <compile>
+                gmavenplus:GMavenPlus-plugin:generateStubs,
+                org.apache.maven.plugins:maven-compiler-plugin:compile,
+                gmavenplus:GMavenPlus-plugin:compile
+              </compile>
+              <process-classes>
+                org.apache.maven.plugins:maven-plugin-plugin:descriptor
+              </process-classes>
+              <process-test-resources>
+                org.apache.maven.plugins:maven-resources-plugin:testResources
+              </process-test-resources>
+              <test-compile>
+                gmavenplus:GMavenPlus-plugin:generateTestStubs,
+                org.apache.maven.plugins:maven-compiler-plugin:testCompile,
+                gmavenplus:GMavenPlus-plugin:testCompile
+              </test-compile>
+              <test>
+                org.apache.maven.plugins:maven-surefire-plugin:test
+              </test>
+              <package>
+                org.apache.maven.plugins:maven-jar-plugin:jar,
+                org.apache.maven.plugins:maven-plugin-plugin:addPluginArtifactMetadata
+              </package>
+              <install>
+                org.apache.maven.plugins:maven-install-plugin:install,
+                org.apache.maven.plugins:maven-plugin-plugin:updateRegistry
+              </install>
+              <deploy>
+                org.apache.maven.plugins:maven-deploy-plugin:deploy
+              </deploy>
+            </phases>
+          </lifecycle>
+        </lifecycles>
+      </configuration>
+    </component>
+
+  </components>
+
+</component-set>
