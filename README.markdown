@@ -1,5 +1,5 @@
 #GMavenPlus#
-Welcome to the home of GMavenPlus.  The basic information is below.  For more information, check out our [wiki](http://github.com/keeganwitt/GMavenPlus/wiki).
+Welcome to the home of GMavenPlus.  The basic information is below.  For more information, check out the [wiki](http://github.com/keeganwitt/GMavenPlus/wiki).
 
 ##Available Goals##
 * gmavenplus:compile
