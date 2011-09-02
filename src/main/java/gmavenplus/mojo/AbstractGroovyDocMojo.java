@@ -20,11 +20,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import gmavenplus.model.Version;
 import gmavenplus.util.ReflectionUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 
 /**
+ * Note that this mojo cannot be run on versions of Groovy before 1.5.0
+ *
  * @author Keegan Witt
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
@@ -65,6 +68,10 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      */
     protected File testOutputDirectory;
 
+    /**
+     * @param sourceDirectory
+     * @return
+     */
     protected List<String> getSources(File sourceDirectory) {
         List<String> sources = new ArrayList<String>();
 
@@ -83,6 +90,14 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
         return sources;
     }
 
+    /**
+     * @param sourceDirectory
+     * @param outputDirectory
+     * @throws ClassNotFoundException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     protected void generateGroovyDoc(File sourceDirectory, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // TODO: get working
         // get classes we need with reflection
@@ -106,7 +121,20 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
                 properties
         );
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
+
+        // generate GroovyDoc
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", fileOutputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+    }
+
+    /**
+     * Determines whether this mojo can be run with the version of Groovy supplied.
+     * Must be >= 1.5.0 because not all the classes needed were available in
+     * previous versions.
+     *
+     * @return
+     */
+    protected boolean groovyVersionSupportsAction() {
+        return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0;
     }
 
 }

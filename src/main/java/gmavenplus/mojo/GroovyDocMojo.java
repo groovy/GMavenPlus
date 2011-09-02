@@ -23,26 +23,36 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
+ * Note that this mojo cannot be run on versions of Groovy before 1.5.0
+ *
  * @author Keegan Witt
  *
  * @goal groovydoc
  */
 public class GroovyDocMojo extends AbstractGroovyDocMojo {
 
+    /**
+     * @throws MojoExecutionException
+     * @throws MojoFailureException
+     */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("groovydoc");
+        if (groovyVersionSupportsAction()) {
+            logGroovyVersion("groovydoc");
 
-        try {
-            generateGroovyDoc(sourceDirectory, outputDirectory);
-        } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
-        } catch (InvocationTargetException e) {
-            throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
-        } catch (InstantiationException e) {
-            throw new MojoExecutionException("Unable to instantiate a Groovy class from classpath.", e);
-        } catch (IllegalAccessException e) {
-            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            try {
+                generateGroovyDoc(sourceDirectory, outputDirectory);
+            } catch (ClassNotFoundException e) {
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+            } catch (InvocationTargetException e) {
+                throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
+            } catch (InstantiationException e) {
+                throw new MojoExecutionException("Unable to instantiate a Groovy class from classpath.", e);
+            } catch (IllegalAccessException e) {
+                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            }
+        } else {
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support GroovyDoc. Skipping GroovyDoc generation");
         }
     }
 

@@ -6,9 +6,9 @@ Welcome to the home of GMavenPlus.  The basic information is below.  For more in
 * gmavenplus:testCompile
 * gmavenplus:generateStubs
 * gmavenplus:testGenerateStubs
-* gmavenplus:groovydoc (work in progress)
-* gmavenplus:testGroovydoc (work in progress)
-* gmavenplus:execute (work in progress)
+* gmavenplus:groovydoc (note only supported on Groovy >= 1.5.0) &lt;work in progress&gt;
+* gmavenplus:testGroovydoc (note only supported on Groovy >= 1.5.0) &lt;work in progress&gt;
+* gmavenplus:execute <work in progress>
 
 ##Basic Usage##
     <project>
