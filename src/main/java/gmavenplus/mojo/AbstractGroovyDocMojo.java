@@ -44,7 +44,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location for the generated API docs
      *
-     * @parameter expression="${project.build.directory}/site/gapidocs"
+     * @parameter expression="${project.build.directory}/gapidocs"
      * @readonly
      * @required
      */
@@ -62,7 +62,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location for the generated test API docs
      *
-     * @parameter expression="${project.build.directory}/site/testgapidocs"
+     * @parameter expression="${project.build.directory}/testgapidocs"
      * @readonly
      * @required
      */

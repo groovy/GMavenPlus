@@ -25,7 +25,7 @@ public class SomeClassTest {
 
     @Test
     public void testSomeMethod() {
-        File generatedGroovydoc = new File("target/site/gapidocs/index.html");
+        File generatedGroovydoc = new File("target/gapidocs/DefaultPackage/SomeClass.html");
         Assert.assertTrue(generatedGroovydoc.exists());
     }
 
