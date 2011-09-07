@@ -27,7 +27,7 @@ import org.apache.maven.plugin.AbstractMojo;
  * @requiresDependencyResolution compile
  * @configurator include-project-dependencies
  */
-public abstract class AbstractGroovyMojo  extends AbstractMojo {
+public abstract class AbstractGroovyMojo extends AbstractMojo {
 
     /**
      * @param goal
