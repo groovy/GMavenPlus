@@ -23,7 +23,8 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * Note that this mojo cannot be run on versions of Groovy before 1.5.0
+ * Generates GroovyDoc for the main sources
+ * (note that this mojo cannot be run on versions of Groovy before 1.5.0)
  *
  * @author Keegan Witt
  *

@@ -22,6 +22,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
+ * Compiles the test sources
+ *
  * @author Keegan Witt
  *
  * @phase test-compile

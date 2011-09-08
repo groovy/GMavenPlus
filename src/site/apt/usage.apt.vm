@@ -1,0 +1,93 @@
+Usage
+
+ The following examples describe the basic usage of the GMavenPlus Plugin.
+
+* Basic Usage
+
+ To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          ...
+        </configuration>
+      </plugin>
+    </plugins>
+    ...
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
+      <version>1.8.1</version>
+    </dependency>
+    ....
+  </dependencies>
+  ...
+</project>
+
++-----+
+ When you execute <<<mvn compile>>>, both the main and test Groovy sources will be compiled.
+
+
+* Generate Stubs
+
+ To generate stubs as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>testGenerateStubs</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          ...
+        </configuration>
+      </plugin>
+    </plugins>
+    ...
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
+      <version>1.8.1</version>
+    </dependency>
+    ....
+  </dependencies>
+  ...
+</project>
++-----+
+
+ When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
+
+
+ []

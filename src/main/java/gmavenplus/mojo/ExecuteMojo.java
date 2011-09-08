@@ -21,6 +21,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
+ * Executes Groovy scripts (in the pom or external)
+ *
  * @author Keegan Witt
  *
  * @goal execute

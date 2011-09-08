@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd"
+  name="GMavenPlus Plugin">
+
+  <bannerLeft>
+    <name>GMavenPlus</name>
+    <src>/images/logos/GMavenPlusLogo_sm.png</src>
+    <href>http://keeganwitt.github.com/GMavenPlus/index.html</href>
+  </bannerLeft>
+
+  <body>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html" />
+      <item name="Goals" href="plugin-info.html" />
+      <item name="Usage" href="usage.html" />
+    </menu>
+    <menu ref="reports" />
+  </body>
+
+</project>

@@ -22,6 +22,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
+ * Generates stubs for the test sources
+ *
  * @author Keegan Witt
  *
  * @goal testGenerateStubs
