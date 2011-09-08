@@ -25,6 +25,7 @@ import java.security.CodeSource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 
@@ -164,21 +165,23 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
     /**
      * @param sources
+     * @param classpath
      * @param outputDirectory
      * @throws ClassNotFoundException
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
+     * @throws java.net.MalformedURLException
      */
-    protected void doCompile(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected void doCompile(Set<File> sources, List classpath, File outputDirectory)
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
         Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit");
         Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
 
         // set up compile options
-        Object compilerConfiguration = ReflectionUtils.findConstructor(
-                compilerConfigurationClass).newInstance();
+        Object compilerConfiguration = ReflectionUtils.findConstructor(compilerConfigurationClass).newInstance();
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
@@ -190,6 +193,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
+        // append project classpath to groovyClassLoader
+        if (classpath != null) {
+            getLog().debug("Classpath: ");
+            for (Object classpathElement : classpath) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
+                getLog().debug("    " + classpathElement);
+            }
+        }
         Object transformLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class).newInstance(getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Compiling " + sources.size() + " sources");
@@ -215,5 +226,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
             }
         }
     }
+
+    protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
 
 }

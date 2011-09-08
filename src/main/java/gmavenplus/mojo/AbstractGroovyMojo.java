@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
+import org.apache.maven.project.MavenProject;
 
 
 /**
@@ -31,6 +32,15 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
     private Log log;
+
+    /**
+     * The Maven project this plugin is being used on
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    protected MavenProject project;
 
     @Override
     public Log getLog() {
