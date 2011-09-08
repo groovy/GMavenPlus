@@ -1,5 +1,5 @@
 /*
- * Shamelessly lifted from http://stackoverflow.com/questions/2659048/add-maven-build-classpath-to-plugin-execution-classpath
+ * Shamelessly lifted (with minor modifications) from http://stackoverflow.com/questions/2659048/add-maven-build-classpath-to-plugin-execution-classpath
  */
 
 package gmavenplus.plexus;
@@ -40,13 +40,9 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     public void configureComponent(Object component, PlexusConfiguration configuration,
                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
                                    ConfigurationListener listener) throws ComponentConfigurationException {
-
         addProjectDependenciesToClassRealm(expressionEvaluator, containerRealm);
-
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
-
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-
         converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
@@ -56,7 +52,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         try {
             compileClasspathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
         } catch (ExpressionEvaluationException e) {
-            throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}", e);
+            throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}.", e);
         }
 
         // Add the project dependencies to the ClassRealm
@@ -76,7 +72,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
 //                    LOGGER.debug("Added to project class loader: " + url);
 //                }
             } catch (MalformedURLException e) {
-                throw new ComponentConfigurationException("Unable to access project dependency: " + element, e);
+                throw new ComponentConfigurationException("Unable to access project dependency: " + element + ".", e);
             }
         }
 
