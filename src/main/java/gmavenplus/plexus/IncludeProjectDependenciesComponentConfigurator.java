@@ -15,7 +15,6 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,8 +38,8 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
 //    private static final Logger LOGGER = LoggerFactory.getLogger(IncludeProjectDependenciesComponentConfigurator.class);
 
     public void configureComponent(Object component, PlexusConfiguration configuration,
-                                    ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
-                                    ConfigurationListener listener) throws ComponentConfigurationException {
+                                   ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
+                                   ConfigurationListener listener) throws ComponentConfigurationException {
 
         addProjectDependenciesToClassRealm(expressionEvaluator, containerRealm);
 
@@ -48,8 +47,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
 
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
 
-        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration,
-                                        expressionEvaluator, listener);
+        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
     private void addProjectDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
