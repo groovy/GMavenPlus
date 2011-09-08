@@ -35,6 +35,7 @@ import java.util.List;
  *                     role-hint="default"
  */
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
+    // TODO: add logging?
 //    private static final Logger LOGGER = LoggerFactory.getLogger(IncludeProjectDependenciesComponentConfigurator.class);
 
     public void configureComponent(Object component, PlexusConfiguration configuration,
