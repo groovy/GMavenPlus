@@ -225,5 +225,10 @@
     <system>GitHub Issues</system>
     <url>http://github.com/keeganwitt/GMavenPlus/issues</url>
   </issueManagement>
+  <scm>
+    <connection>scm:git:git://github.com/keeganwitt/GMavenPlus.git</connection>
+    <developerConnection>scm:git:git@github.com:keeganwitt/GMavenPlus.git</developerConnection>
+    <url>http://github.com/keeganwitt/GMavenPlus</url>
+  </scm>
 
 </project>
