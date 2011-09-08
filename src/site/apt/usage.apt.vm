@@ -2,6 +2,7 @@ Usage
 
  The following examples describe the basic usage of the GMavenPlus Plugin.
 
+
 * Basic Usage
 
  To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
@@ -41,8 +42,8 @@ Usage
   </dependencies>
   ...
 </project>
-
 +-----+
+
  When you execute <<<mvn compile>>>, both the main and test Groovy sources will be compiled.
 
 
@@ -88,6 +89,11 @@ Usage
 +-----+
 
  When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
+
+
+* Execute
+
+This goal is not yet implemented.
 
 
  []
