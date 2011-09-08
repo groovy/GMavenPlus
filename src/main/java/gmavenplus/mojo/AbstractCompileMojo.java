@@ -38,8 +38,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy source files
      *
-     * @parameter expression="${project.basedir}/src/main/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/main/groovy"
      * @required
      */
     protected File sourceDirectory;
@@ -47,8 +46,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Location for the compiled classes
      *
-     * @parameter expression="${project.build.outputDirectory}"
-     * @readonly
+     * @parameter default-value="${project.build.outputDirectory}"
      * @required
      */
     protected File outputDirectory;
@@ -56,8 +54,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy test source files
      *
-     * @parameter expression="${project.basedir}/src/test/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/test/groovy"
      * @required
      */
     protected File testSourceDirectory;
@@ -65,8 +62,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Location for the compiled test classes
      *
-     * @parameter expression="${project.build.testOutputDirectory}"
-     * @readonly
+     * @parameter default-value="${project.build.testOutputDirectory}"
      * @required
      */
     protected File testOutputDirectory;

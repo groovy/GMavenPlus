@@ -35,8 +35,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy source files
      *
-     * @parameter expression="${project.basedir}/src/main/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/main/groovy"
      * @required
      */
     protected File sourceDirectory;
@@ -44,8 +43,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location for the generated API docs
      *
-     * @parameter expression="${project.build.directory}/gapidocs"
-     * @readonly
+     * @parameter default-value="${project.build.directory}/gapidocs"
      * @required
      */
     protected File outputDirectory;
@@ -53,8 +51,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy test source files
      *
-     * @parameter expression="${project.basedir}/src/test/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/test/groovy"
      * @required
      */
     protected File testSourceDirectory;
@@ -62,8 +59,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     /**
      * Location for the generated test API docs
      *
-     * @parameter expression="${project.build.directory}/testgapidocs"
-     * @readonly
+     * @parameter default-value="${project.build.directory}/testgapidocs"
      * @required
      */
     protected File testOutputDirectory;

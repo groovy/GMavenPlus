@@ -37,8 +37,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy source files
      *
-     * @parameter expression="${project.basedir}/src/main/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/main/groovy"
      * @required
      */
     protected File sourceDirectory;
@@ -46,8 +45,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Location for the compiled classes
      *
-     * @parameter expression="${project.build.directory}/generated-sources/groovy-stubs/main"
-     * @readonly
+     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
      * @required
      */
     protected File outputDirectory;
@@ -55,8 +53,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Location of the Groovy test source files
      *
-     * @parameter expression="${project.basedir}/src/test/groovy"
-     * @readonly
+     * @parameter default-value="${project.basedir}/src/test/groovy"
      * @required
      */
     protected File testSourceDirectory;
@@ -64,8 +61,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Location for the compiled test classes
      *
-     * @parameter expression="${project.build.directory}/generated-sources/groovy-stubs/test"
-     * @readonly
+     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
      * @required
      */
     protected File testOutputDirectory;

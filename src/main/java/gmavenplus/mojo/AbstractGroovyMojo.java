@@ -19,6 +19,8 @@ package gmavenplus.mojo;
 import gmavenplus.util.ReflectionUtils;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 
 
 /**
@@ -28,6 +30,16 @@ import org.apache.maven.plugin.AbstractMojo;
  * @configurator include-project-dependencies
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
+    private Log log;
+
+    @Override
+    public Log getLog() {
+        if (log == null) {
+            log = new SystemStreamLog();
+        }
+
+        return log;
+    }
 
     /**
      * @param goal
