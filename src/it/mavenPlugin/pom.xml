@@ -7,8 +7,10 @@
   <groupId>GMavenPlus-Examples</groupId>
   <artifactId>GMavenPlus-Groovy-Maven-Plugin</artifactId>
   <version>1.0</version>
+  <name>GMavenPlus Plugin Maven Plugin Test</name>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <mavenVersion>2.2.1</mavenVersion>
     <groovyVersion>1.8.1</groovyVersion>
     <junitVersion>4.8.2</junitVersion>
