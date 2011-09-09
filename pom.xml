@@ -17,6 +17,7 @@
     <plexusContainerVersion>1.5.5</plexusContainerVersion>
     <classworldsVersion>2.4</classworldsVersion>
     <junitVersion>4.8.2</junitVersion>
+    <groovyVersion>1.8.2</groovyVersion>  <!-- this is only used for the site documentation, not for any dependency version -->
     <deployRepoUrl>dav:https://public-repo.googlecode.com/svn/maven2/repository</deployRepoUrl>
     <deploySnapshotUrl>dav:https://public-repo.googlecode.com/svn/maven2/snapshots</deploySnapshotUrl>
   </properties>
