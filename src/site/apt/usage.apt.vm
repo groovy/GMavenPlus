@@ -72,6 +72,7 @@ Usage
           ...
         </configuration>
       </plugin>
+      ...
     </plugins>
     ...
   </build>
@@ -91,9 +92,94 @@ Usage
  When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
 
 
+* Generate GroovyDoc
+
+ Note that this mojo is not yet set up to be used in the \<reporting\> section.  In the mean time, to add it to your site
+ you wil have to change the \<outputDirectory\> in the \<configuration\> to be inside target/site.  Here is the basic
+ usage to get GroovyDoc in your target directory:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          ...
+        </executions>
+        <configuration>
+          ...
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
+      <version>1.8.1</version>
+    </dependency>
+    ....
+  </dependencies>
+  ...
+</project>
++-----+
+
+ When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, GroovyDoc will be generated for the main sources.
+
+
 * Execute
 
-This goal is not yet implemented.
+ Note that you can't yet execute script files (either remote or local) and you can't use project dependencies in your scripts.
+ To execute a Groovy script in your pom, add something similar to the following:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <script><![CDATA[
+          new File('target').mkdir()
+          new File('target/helloWorld.txt').append('Hello world!')]]></script>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
+      <version>1.8.1</version>
+    </dependency>
+    ....
+  </dependencies>
+  ...
+</project>
++-----+
+
+ In this case, when you execute <<<mvn generate-sources>>>, your script will be executed.
 
 
- []
+[]
