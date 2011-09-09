@@ -32,11 +32,10 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     // TODO: implement org.apache.maven.reporting.MavenReport?
-    protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
 
     /**
      * Groovy source files.
-     * Default: "${project.basedir}/src/main/groovy/**\\/*.groovy"
+     * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
      *
      * @parameter
      */
@@ -51,7 +50,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
 
     /**
      * Groovy test source files.
-     * Default: "${project.basedir}/src/test/groovy/**\\/*.groovy"
+     * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
      *
      * @parameter
      */

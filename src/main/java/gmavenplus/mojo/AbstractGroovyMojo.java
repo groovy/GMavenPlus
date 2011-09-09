@@ -32,6 +32,8 @@ import org.apache.maven.project.MavenProject;
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
     private Log log;
+    protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
+    protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
 
     /**
      * The Maven project this plugin is being used on
