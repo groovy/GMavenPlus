@@ -18,8 +18,11 @@ package gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.shared.model.fileset.FileSet;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 
 /**
@@ -43,7 +46,8 @@ public class GroovyDocMojo extends AbstractGroovyDocMojo {
             logGroovyVersion("groovydoc");
 
             try {
-                generateGroovyDoc(sourceDirectory, outputDirectory);
+                setDefaultSourceDirectories(sources);
+                generateGroovyDoc(sources, outputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {

@@ -16,53 +16,52 @@
 
 package gmavenplus.mojo;
 
+import gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import gmavenplus.util.ReflectionUtils;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
  * @author Keegan Witt
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
-
-    // TODO: use org.apache.maven.shared.model.fileset.FileSet to have includes and excludes instead of directory & filename conventions?
+    protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
+    protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
 
     /**
-     * Location of the Groovy source files
+     * Groovy source files.
+     * Default: "${project.basedir}/src/main/groovy/**\\/*.groovy"
      *
-     * @parameter default-value="${project.basedir}/src/main/groovy"
-     * @required
+     * @parameter
      */
-    protected File sourceDirectory;
+    protected FileSet[] sources;
 
     /**
      * Location for the compiled classes
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
-     * @required
      */
     protected File outputDirectory;
 
     /**
-     * Location of the Groovy test source files
+     * Groovy test source files.
+     * Default: "${project.basedir}/src/test/groovy/**\\/*.groovy"
      *
-     * @parameter default-value="${project.basedir}/src/test/groovy"
-     * @required
+     * @parameter
      */
-    protected File testSourceDirectory;
+    protected FileSet[] testSources;
 
     /**
      * Location for the compiled test classes
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
-     * @required
      */
     protected File testOutputDirectory;
 
@@ -70,7 +69,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Encoding of source files
      *
      * @parameter default-value="${project.build.sourceEncoding}"
-     * @required
      */
     protected String sourceEncoding;
 
@@ -78,7 +76,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Whether Groovy compiler should be set to debug or not
      *
      * @parameter default-value="false"
-     * @required
      */
     protected boolean debug;
 
@@ -86,7 +83,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Whether Groovy compiler should be set to verbose or not
      *
      * @parameter default-value="false"
-     * @required
      */
     protected boolean verbose;
 
@@ -99,7 +95,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * * PARANOIA 3
      *
      * @parameter default-value="0"
-     * @required
      */
     protected int warningLevel;
 
@@ -107,92 +102,101 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
      *
      * @parameter default-value="0"
-     * @required
      */
     protected int tolerance;
 
     /**
+     * Gets the set of files for the main sources
+     *
      * @return
      */
     protected Set<File> getSources() {
-        Set<File> sources = new HashSet<File>();
+        Set<File> files = new HashSet<File>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        DirectoryScanner ds = new DirectoryScanner();
-        String[] includes = {"**/*.groovy"};
-        ds.setIncludes(includes);
-        ds.setBasedir(sourceDirectory);
-        ds.setCaseSensitive(true);
-        ds.scan();
-
-        String[] files = ds.getIncludedFiles();
-        for (String file : files) {
-            sources.add(new File(sourceDirectory, file));
+        if (sources != null) {
+            for (FileSet fileSet : sources) {
+                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
+                    files.add(new File(include));
+                }
+            }
+        } else {
+            FileSet fileSet = new FileSet();
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
+            fileSet.setDirectory(directory);
+            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
+            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
+                files.add(new File(directory, file));
+            }
         }
 
-        return sources;
+        return files;
     }
 
     /**
+     * Gets the set of files for the test sources
+     *
      * @return
      */
     protected Set<File> getTestSources() {
-        Set<File> sources = new HashSet<File>();
+        Set<File> files = new HashSet<File>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        DirectoryScanner ds = new DirectoryScanner();
-        String[] includes = {"**/*.groovy"};
-        ds.setIncludes(includes);
-        ds.setBasedir(testSourceDirectory);
-        ds.setCaseSensitive(true);
-        ds.scan();
-
-        String[] files = ds.getIncludedFiles();
-        for (String file : files) {
-            sources.add(new File(testSourceDirectory, file));
+        if (testSources != null) {
+            for (FileSet fileSet : testSources) {
+                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
+                    files.add(new File(include));
+                }
+            }
+        } else {
+            FileSet fileSet = new FileSet();
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
+            fileSet.setDirectory(directory);
+            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
+            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
+                files.add(new File(directory, file));
+            }
         }
 
-        return sources;
+        return files;
     }
 
     /**
+     * Gets the set of files for the main stubs
+     *
      * @return
      */
     protected Set<File> getStubs() {
-        Set<File> stubs = new HashSet<File>();
+        Set<File> files = new HashSet<File>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        DirectoryScanner ds = new DirectoryScanner();
-        String[] includes = {"**/*.groovy"};
-        ds.setIncludes(includes);
-        ds.setBasedir(outputDirectory);
-        ds.setCaseSensitive(true);
-        ds.scan();
-
-        String[] files = ds.getIncludedFiles();
-        for (String file : files) {
-            stubs.add(new File(outputDirectory, file));
+        FileSet fileSet = new FileSet();
+        fileSet.setDirectory(outputDirectory.getAbsolutePath());
+        fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
+        for (String file : fileSetManager.getIncludedFiles(fileSet)) {
+            files.add(new File(outputDirectory, file));
         }
 
-        return stubs;
+        return files;
     }
 
     /**
+     * Gets the set of files for the test stubs
+     *
      * @return
      */
     protected Set<File> getTestStubs() {
-        Set<File> stubs = new HashSet<File>();
+        Set<File> files = new HashSet<File>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        DirectoryScanner ds = new DirectoryScanner();
-        String[] includes = {"**/*.groovy"};
-        ds.setIncludes(includes);
-        ds.setBasedir(testOutputDirectory);
-        ds.setCaseSensitive(true);
-        ds.scan();
-
-        String[] files = ds.getIncludedFiles();
-        for (String file : files) {
-            stubs.add(new File(testOutputDirectory, file));
+        FileSet fileSet = new FileSet();
+        fileSet.setDirectory(outputDirectory.getAbsolutePath());
+        fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
+        for (String file : fileSetManager.getIncludedFiles(fileSet)) {
+            files.add(new File(outputDirectory, file));
         }
 
-        return stubs;
+        return files;
     }
 
     /**

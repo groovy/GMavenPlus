@@ -21,7 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import gmavenplus.model.Version;
 import gmavenplus.util.ReflectionUtils;
-import org.codehaus.plexus.util.DirectoryScanner;
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
@@ -31,70 +32,73 @@ import org.codehaus.plexus.util.DirectoryScanner;
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
     // TODO: implement org.apache.maven.reporting.MavenReport?
+    protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
 
     /**
-     * Location of the Groovy source files
+     * Groovy source files.
+     * Default: "${project.basedir}/src/main/groovy/**\\/*.groovy"
      *
-     * @parameter default-value="${project.basedir}/src/main/groovy"
-     * @required
+     * @parameter
      */
-    protected File sourceDirectory;
+    protected FileSet[] sources;
 
     /**
      * Location for the generated API docs
      *
      * @parameter default-value="${project.build.directory}/gapidocs"
-     * @required
      */
     protected File outputDirectory;
 
     /**
-     * Location of the Groovy test source files
+     * Groovy test source files.
+     * Default: "${project.basedir}/src/test/groovy/**\\/*.groovy"
      *
-     * @parameter default-value="${project.basedir}/src/test/groovy"
-     * @required
+     * @parameter
      */
-    protected File testSourceDirectory;
+    protected FileSet[] testSources;
 
     /**
      * Location for the generated test API docs
      *
      * @parameter default-value="${project.build.directory}/testgapidocs"
-     * @required
      */
     protected File testOutputDirectory;
 
     /**
-     * @param sourceDirectory
+     * @param fileSet
      * @return
      */
-    protected List<String> getSources(File sourceDirectory) {
-        List<String> sources = new ArrayList<String>();
+    protected List<String> getSources(FileSet fileSet) {
+        List<String> files = new ArrayList<String>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        DirectoryScanner ds = new DirectoryScanner();
-        String[] includes = {"**/*.groovy"};
-        ds.setIncludes(includes);
-        ds.setBasedir(sourceDirectory);
-        ds.setCaseSensitive(true);
-        ds.scan();
-
-        String[] files = ds.getIncludedFiles();
-        for (String file : files) {
-            sources.add(new File(sourceDirectory, file).getAbsolutePath());
+        if (fileSet != null) {
+            for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
+                files.add(include);
+            }
+        } else {
+            FileSet fs = new FileSet();
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
+            fs.setDirectory(directory);
+            fs.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
+            String[] includes = fileSetManager.getIncludedFiles(fs);
+            for (String file : includes) {
+                files.add(directory + File.separator + file);
+            }
         }
 
-        return sources;
+        return files;
     }
 
     /**
-     * @param sourceDirectory
+     * @param sourceDirectories
      * @param outputDirectory
      * @throws ClassNotFoundException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    protected void generateGroovyDoc(File sourceDirectory, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected void generateGroovyDoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
         Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
@@ -108,19 +112,21 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
         Properties properties = new Properties();
         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
-        Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
-                classpathResourceManager,
-                new String[] {sourceDirectory.getAbsolutePath()},
-                ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_DOC_TEMPLATES", String[].class)),
-                ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_PACKAGE_TEMPLATES", String[].class)),
-                ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_CLASS_TEMPLATES", String[].class)),
-                links,
-                properties
-        );
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
 
         // generate GroovyDoc
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+        for (FileSet sourceDirectory : sourceDirectories) {
+            Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
+                    classpathResourceManager,
+                    new String[] {sourceDirectory.getDirectory()},
+                    ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_DOC_TEMPLATES", String[].class)),
+                    ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_PACKAGE_TEMPLATES", String[].class)),
+                    ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_CLASS_TEMPLATES", String[].class)),
+                    links,
+                    properties
+            );
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+        }
     }
 
     /**
@@ -132,6 +138,16 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0;
+    }
+
+    protected void setDefaultSourceDirectories(FileSet[] sources) {
+        if (sources == null) {
+            FileSet fileSet = new FileSet();
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
+            fileSet.setDirectory(directory);
+            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
+            this.sources = new FileSet[]{fileSet};
+        }
     }
 
 }
