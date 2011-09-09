@@ -137,7 +137,7 @@ Usage
 
 * Execute
 
- Note that you can't yet execute script files (either remote or local) and you can't use project dependencies in your scripts.
+ Note that you can't yet use project dependencies in your scripts.
  To execute a Groovy script in your pom, add something similar to the following:
 
 +-----+
@@ -160,9 +160,10 @@ Usage
         <configuration>
           <scripts>
             <script><![CDATA[
-            new File('target').mkdir()
-            new File('target/helloWorld.txt').append('Hello world!')
+              new File('target').mkdir()
+              new File('target/helloWorld.txt').append('Hello world!')
             ]]></script>
+            <script>file:///${project.basedir}/src/main/groovy/HelloWorld2.groovy</script>
           </scripts>
         </configuration>
       </plugin>

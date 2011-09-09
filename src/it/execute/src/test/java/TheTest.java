@@ -24,8 +24,14 @@ import org.junit.Test;
 public class TheTest {
 
     @Test
-    public void testSomeMethod() {
+    public void test1() {
         File fileFromScript = new File("target/helloWorld.txt");
+        Assert.assertTrue(fileFromScript.exists());
+    }
+
+    @Test
+    public void test2() {
+        File fileFromScript = new File("target/helloWorld2.txt");
         Assert.assertTrue(fileFromScript.exists());
     }
 

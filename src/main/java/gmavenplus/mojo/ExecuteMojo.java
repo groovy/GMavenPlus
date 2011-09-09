@@ -17,12 +17,14 @@
 package gmavenplus.mojo;
 
 import gmavenplus.util.ReflectionUtils;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -35,12 +37,20 @@ import java.net.MalformedURLException;
 public class ExecuteMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy scripts to run (in order)
+     * Groovy scripts to run (in order). Can be an actual Groovy script or a URL
+     * to a Groovy script (local or remote).
      *
      * @parameter
      * @required
      */
     protected String[] scripts;
+
+    /**
+     * Whether to continue executing remaining scripts when a script fails
+     *
+     * @parameter default-value="false"
+     */
+    protected boolean continueExecuting;
 
     /**
      * @throws MojoExecutionException
@@ -58,11 +68,34 @@ public class ExecuteMojo extends AbstractGroovyMojo {
             Object shell = ReflectionUtils.findConstructor(groovyShellClass).newInstance();
 
             // TODO: load runtime project dependencies onto classpath before executing so they can be used in scripts
-            // TODO: add ability to execute script files (local or remote)
 
             // run the scripts
+            int scriptNum = 1;
             for (String script : scripts) {
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                try {
+                    URL url = new URL(script);
+                    // it's a URL to a script
+                    getLog().debug("Getting Groovy script from " + script + "...");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    StringBuilder scriptSource = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        scriptSource.append(line).append("\n");
+                    }
+                    if (!scriptSource.toString().isEmpty()) {
+                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, scriptSource.toString());
+                    }
+                } catch (MalformedURLException e) {
+                    // it's not a URL to a script, treat as a script body
+                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                } catch (IOException e) {
+                    if (continueExecuting) {
+                        getLog().error("An Exception occurred while executing script " + scriptNum + ". Continuing to execute remaining scripts...", e);
+                    } else {
+                        throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", e);
+                    }
+                }
+                scriptNum++;
             }
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
