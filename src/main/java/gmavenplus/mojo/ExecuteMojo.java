@@ -35,12 +35,12 @@ import java.net.MalformedURLException;
 public class ExecuteMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy script to run
+     * Groovy scripts to run (in order)
      *
      * @parameter
      * @required
      */
-    protected String script;
+    protected String[] scripts;
 
     /**
      * @throws MojoExecutionException
@@ -54,14 +54,16 @@ public class ExecuteMojo extends AbstractGroovyMojo {
             // get classes we need with reflection
             Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
 
-            // create a GroovyShell to run script in
+            // create a GroovyShell to run scripts in
             Object shell = ReflectionUtils.findConstructor(groovyShellClass).newInstance();
 
             // TODO: load runtime project dependencies onto classpath before executing so they can be used in scripts
             // TODO: add ability to execute script files (local or remote)
 
-            // run the script
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+            // run the scripts
+            for (String script : scripts) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+            }
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
