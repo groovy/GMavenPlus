@@ -16,8 +16,13 @@
 
 package gmavenplus.mojo;
 
+import gmavenplus.util.ReflectionUtils;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 
 
 /**
@@ -30,13 +35,42 @@ import org.apache.maven.plugin.MojoFailureException;
 public class ExecuteMojo extends AbstractGroovyMojo {
 
     /**
+     * Groovy script to run
+     *
+     * @parameter
+     * @required
+     */
+    protected String script;
+
+    /**
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("execute");
-        // TODO: implement
+
+        try {
+            // get classes we need with reflection
+            Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+
+            // create a GroovyShell to run script in
+            Object shell = ReflectionUtils.findConstructor(groovyShellClass).newInstance();
+
+            // TODO: load runtime project dependencies onto classpath before executing so they can be used in scripts
+            // TODO: add ability to execute script files (local or remote)
+
+            // run the script
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+        } catch (InvocationTargetException e) {
+            throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException("Unable to instantiate a Groovy class from classpath.", e);
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+        }
     }
 
 }
