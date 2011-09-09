@@ -148,7 +148,7 @@ Usage
       <plugin>
         <groupId>GMavenPlus</groupId>
         <artifactId>GMavenPlus-Plugin</artifactId>
-        <version>@project.version@</version>
+        <version>${project.version}</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
