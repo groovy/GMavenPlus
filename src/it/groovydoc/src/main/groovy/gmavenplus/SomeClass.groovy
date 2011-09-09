@@ -23,7 +23,7 @@ package gmavenplus
 * @author Keegan Witt
 * @version super awesome
 */
-class Example {
+class SomeClass {
 
    /**
     * This method does absolutely nothing

@@ -25,7 +25,7 @@ public class SomeClassTest {
 
     @Test
     public void testSomeMethod() {
-        File generatedGroovydoc = new File("target/gapidocs/DefaultPackage/SomeClass.html");
+        File generatedGroovydoc = new File("target/gapidocs/gmavenplus/SomeClass.html");
         Assert.assertTrue(generatedGroovydoc.exists());
     }
 
