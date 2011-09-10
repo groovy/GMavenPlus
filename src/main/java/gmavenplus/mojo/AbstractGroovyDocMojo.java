@@ -31,7 +31,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  * @author Keegan Witt
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
-    // TODO: implement org.apache.maven.reporting.MavenReport?
 
     /**
      * Groovy source files.
@@ -46,7 +45,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      *
      * @parameter default-value="${project.build.directory}/gapidocs"
      */
-    protected File outputDirectory;
+    protected File groovydocOutputDirectory;
 
     /**
      * Groovy test source files.
@@ -61,7 +60,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      *
      * @parameter default-value="${project.build.directory}/testgapidocs"
      */
-    protected File testOutputDirectory;
+    protected File testGroovydocOutputDirectory;
 
     /**
      * @param fileSet
