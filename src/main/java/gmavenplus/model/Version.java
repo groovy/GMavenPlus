@@ -165,6 +165,9 @@ public class Version implements Comparable<Version> {
     }
 
     /**
+     * Compares versions.  Note that if the major, minor, and revision are all
+     * the same tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}
+     *
      * @param version
      * @return
      */
@@ -173,8 +176,11 @@ public class Version implements Comparable<Version> {
         int mine = (100 * major) + (10 * minor) + revision;
         int theirs = (100 * version.major) + (10 * version.minor) + version.revision;
 
-        return mine - theirs;
-        // TODO: how to compare tags?
+        if (mine == theirs) {
+            return tag.compareTo(version.tag);
+        } else {
+            return mine - theirs;
+        }
     }
 
 }
