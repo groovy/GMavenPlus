@@ -37,8 +37,8 @@ import java.net.URL;
 public class ExecuteMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy scripts to run (in order). Can be an actual Groovy script or a URL
-     * to a Groovy script (local or remote).
+     * Groovy scripts to run (in order). Can be an actual Groovy script or a
+     * {@link java.net.URL URL} to a Groovy script (local or remote).
      *
      * @parameter
      * @required
