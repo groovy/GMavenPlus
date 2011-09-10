@@ -11,6 +11,8 @@ Usage
 
  * {{Generate GroovyDoc}}
 
+ * {Add GroovyDoc to Site}
+
  * {{Execute Scripts}}
 
  []
@@ -108,9 +110,7 @@ Usage
 
 * {Generate GroovyDoc}
 
- Note that this mojo is not yet set up to be used in the \<reporting\> section.  In the mean time, to add it to your site
- you wil have to change the \<outputDirectory\> in the \<configuration\> to be inside target/site.  Here is the basic
- usage to get GroovyDoc in your target directory:
+ Here is the basic usage to get GroovyDoc in your target directory:
 
 +-----+
 <project>
@@ -148,13 +148,60 @@ Usage
  When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, GroovyDoc will be generated for the main sources.
 
 
+* {Add GroovyDoc to Site}
+
+ Note that this mojo is not set up to be used in the \<reporting\> section.
+ So you will need to set the \<outputDirectory\> and \<executions\>
+ to mimic this functionality:
+
++-----+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <phase>site</phase>
+            <goals>
+              <goal>groovydoc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <groovydocOutputDirectory>\${project.reporting.outputDirectory}/gapidocs</groovydocOutputDirectory>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
+      <version>${groovyVersion}</version>
+    </dependency>
+    ....
+  </dependencies>
+  ...
+</project>
++-----+
+
+ When you execute <<<mvn site>>>, GroovyDoc will be generated for the main sources.
+
+
 * {Execute Scripts}
 
- Note that you can't yet use project dependencies in your scripts.  If you want to
- use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}} annotations in your
- scripts, you will need a compile dependency on Ivy since GMavenPlus has no
- dependency on Ivy.  Also note that you need to escape any dollar signs in your
- script so Maven doesn't try to filter the value.
+ Note that you can't yet use project dependencies in your scripts.  You can
+ use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}} annotations, but you
+ will need a compile dependency on Ivy since GMavenPlus doesn't depend on Ivy.
+ Also note that you need to escape any dollar signs in your script so Maven
+ doesn't try to filter the values.
  To execute Groovy scripts in your pom, add something similar to the following:
 
 +-----+
