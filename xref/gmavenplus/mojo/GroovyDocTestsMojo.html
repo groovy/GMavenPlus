@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>GroovyDocTestsMojo xref</title>
+<title>GroovydocTestsMojo xref</title>
 <link type="text/css" rel="stylesheet" href="../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../apidocs/gmavenplus/mojo/GroovyDocTestsMojo.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../apidocs/gmavenplus/mojo/GroovydocTestsMojo.html">View Javadoc</a></div><pre>
 
 <a class="jxr_linenumber" name="1" href="#1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="2" href="#2">2</a>   <em class="jxr_comment"> * Copyright (C) 2011 the original author or authors.</em>
@@ -33,7 +33,7 @@
 <a class="jxr_linenumber" name="23" href="#23">23</a>  
 <a class="jxr_linenumber" name="24" href="#24">24</a>  
 <a class="jxr_linenumber" name="25" href="#25">25</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_javadoccomment"> * Generates GroovyDoc for the test sources</em>
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <em class="jxr_javadoccomment"> * Generates Groovydoc for the test sources</em>
 <a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_javadoccomment"> * (note that this mojo cannot be run on versions of Groovy before 1.5.0)</em>
 <a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment"> * @goal testGroovydoc</em>
 <a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment"> * @execute phase="generate-test-sources"</em>
 <a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../gmavenplus/mojo/GroovyDocTestsMojo.html">GroovyDocTestsMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../gmavenplus/mojo/AbstractGroovyDocMojo.html">AbstractGroovyDocMojo</a> {
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../gmavenplus/mojo/GroovydocTestsMojo.html">GroovydocTestsMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../gmavenplus/mojo/AbstractGroovydocMojo.html">AbstractGroovydocMojo</a> {
 <a class="jxr_linenumber" name="35" href="#35">35</a>  
 <a class="jxr_linenumber" name="36" href="#36">36</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment">     * @throws MojoExecutionException</em>
@@ -54,7 +54,7 @@
 <a class="jxr_linenumber" name="44" href="#44">44</a>  
 <a class="jxr_linenumber" name="45" href="#45">45</a>              <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="46" href="#46">46</a>                  setDefaultSourceDirectories(testSources);
-<a class="jxr_linenumber" name="47" href="#47">47</a>                  generateGroovyDoc(testSources, testGroovydocOutputDirectory);
+<a class="jxr_linenumber" name="47" href="#47">47</a>                  generateGroovydoc(testSources, testGroovydocOutputDirectory);
 <a class="jxr_linenumber" name="48" href="#48">48</a>              } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
 <a class="jxr_linenumber" name="49" href="#49">49</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?"</span>, e);
 <a class="jxr_linenumber" name="50" href="#50">50</a>              } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="55" href="#55">55</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
 <a class="jxr_linenumber" name="56" href="#56">56</a>              }
 <a class="jxr_linenumber" name="57" href="#57">57</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="58" href="#58">58</a>              getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + getGroovyVersion() + <span class="jxr_string">") doesn't support GroovyDoc. Skipping test GroovyDoc generation"</span>);
+<a class="jxr_linenumber" name="58" href="#58">58</a>              getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + getGroovyVersion() + <span class="jxr_string">") doesn't support Groovydoc. Skipping test Groovydoc generation"</span>);
 <a class="jxr_linenumber" name="59" href="#59">59</a>          }
 <a class="jxr_linenumber" name="60" href="#60">60</a>      }
 <a class="jxr_linenumber" name="61" href="#61">61</a>  

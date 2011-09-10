@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>AbstractGroovyDocMojo xref</title>
+<title>AbstractGroovydocMojo xref</title>
 <link type="text/css" rel="stylesheet" href="../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../apidocs/gmavenplus/mojo/AbstractGroovyDocMojo.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../apidocs/gmavenplus/mojo/AbstractGroovydocMojo.html">View Javadoc</a></div><pre>
 
 <a class="jxr_linenumber" name="1" href="#1">1</a>   <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="2" href="#2">2</a>   <em class="jxr_comment"> * Copyright (C) 2011 the original author or authors.</em>
@@ -40,7 +40,7 @@
 <a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../gmavenplus/mojo/AbstractGroovyDocMojo.html">AbstractGroovyDocMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../gmavenplus/mojo/AbstractGroovyMojo.html">AbstractGroovyMojo</a> {
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../gmavenplus/mojo/AbstractGroovydocMojo.html">AbstractGroovydocMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../gmavenplus/mojo/AbstractGroovyMojo.html">AbstractGroovyMojo</a> {
 <a class="jxr_linenumber" name="34" href="#34">34</a>  
 <a class="jxr_linenumber" name="35" href="#35">35</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="36" href="#36">36</a>  <em class="jxr_javadoccomment">     * Groovy source files.</em>
@@ -106,7 +106,7 @@
 <a class="jxr_linenumber" name="96" href="#96">96</a>  <em class="jxr_javadoccomment">     * @throws IllegalAccessException</em>
 <a class="jxr_linenumber" name="97" href="#97">97</a>  <em class="jxr_javadoccomment">     * @throws InstantiationException</em>
 <a class="jxr_linenumber" name="98" href="#98">98</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="99" href="#99">99</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> generateGroovyDoc(FileSet[] sourceDirectories, File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+<a class="jxr_linenumber" name="99" href="#99">99</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> generateGroovydoc(FileSet[] sourceDirectories, File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
 <a class="jxr_linenumber" name="100" href="#100">100</a>         <em class="jxr_comment">// get classes we need with reflection</em>
 <a class="jxr_linenumber" name="101" href="#101">101</a>         Class groovyDocToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.GroovyDocTool"</span>);
 <a class="jxr_linenumber" name="102" href="#102">102</a>         Class outputToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.OutputTool"</span>);
@@ -115,13 +115,13 @@
 <a class="jxr_linenumber" name="105" href="#105">105</a>         Class classpathResourceManagerClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager"</span>);
 <a class="jxr_linenumber" name="106" href="#106">106</a>         Class groovyDocTemplateInfoClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.gstringTemplates.GroovyDocTemplateInfo"</span>);
 <a class="jxr_linenumber" name="107" href="#107">107</a> 
-<a class="jxr_linenumber" name="108" href="#108">108</a>         <em class="jxr_comment">// set up GroovyDoc options</em>
+<a class="jxr_linenumber" name="108" href="#108">108</a>         <em class="jxr_comment">// set up Groovydoc options</em>
 <a class="jxr_linenumber" name="109" href="#109">109</a>         List links = <strong class="jxr_keyword">new</strong> ArrayList();
 <a class="jxr_linenumber" name="110" href="#110">110</a>         Properties properties = <strong class="jxr_keyword">new</strong> Properties();
 <a class="jxr_linenumber" name="111" href="#111">111</a>         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
 <a class="jxr_linenumber" name="112" href="#112">112</a>         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
 <a class="jxr_linenumber" name="113" href="#113">113</a> 
-<a class="jxr_linenumber" name="114" href="#114">114</a>         <em class="jxr_comment">// generate GroovyDoc</em>
+<a class="jxr_linenumber" name="114" href="#114">114</a>         <em class="jxr_comment">// generate Groovydoc</em>
 <a class="jxr_linenumber" name="115" href="#115">115</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
 <a class="jxr_linenumber" name="116" href="#116">116</a>             Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, List.<strong class="jxr_keyword">class</strong>, Properties.<strong class="jxr_keyword">class</strong>).newInstance(
 <a class="jxr_linenumber" name="117" href="#117">117</a>                     classpathResourceManager,

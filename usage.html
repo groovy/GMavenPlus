@@ -58,7 +58,7 @@
                                                                                                                                                                                                                                                                           <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
                   </li>
-                                                                                                                                                              <li class="collapsed">
+                                                                                                                                                                                                  <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
           </ul>
@@ -71,7 +71,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>Usage<a name="Usage"></a></h2><p>The following examples describe the basic usage of the GMavenPlus Plugin.</p><div class="section"><h3>Contents<a name="Contents"></a></h3><ul><li><a href="#Basic_Usage">Basic Usage</a></li><li><a href="#Generate_Stubs">Generate Stubs</a></li><li><a href="#Generate_GroovyDoc">Generate GroovyDoc</a></li><li><a name="Add_GroovyDoc_to_Site">Add GroovyDoc to Site</a></li><li><a href="#Execute_Scripts">Execute Scripts</a></li></ul></div><div class="section"><h3><a name="Basic_Usage">Basic Usage</a></h3><p>To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
+        <div class="section"><h2>Usage<a name="Usage"></a></h2><p>The following examples describe the basic usage of the GMavenPlus Plugin.</p><div class="section"><h3>Contents<a name="Contents"></a></h3><ul><li><a href="#Basic_Usage">Basic Usage</a></li><li><a href="#Generate_Stubs">Generate Stubs</a></li><li><a href="#Generate_Groovydoc">Generate Groovydoc</a></li><li><a name="Add_Groovydoc_to_Site">Add Groovydoc to Site</a></li><li><a href="#Execute_Scripts">Execute Scripts</a></li></ul></div><div class="section"><h3><a name="Basic_Usage">Basic Usage</a></h3><p>To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -141,7 +141,7 @@
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn generate-test-sources</tt>, the stubs will be generated for both the main and test Groovy sources.</p></div><div class="section"><h3><a name="Generate_GroovyDoc">Generate GroovyDoc</a></h3><p>Here is the basic usage to get GroovyDoc in your target directory:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn generate-test-sources</tt>, the stubs will be generated for both the main and test Groovy sources.</p></div><div class="section"><h3><a name="Generate_Groovydoc">Generate Groovydoc</a></h3><p>Here is the basic usage to get Groovydoc in your target directory:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -171,7 +171,7 @@
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn GMavenPlus-Plugin:groovydoc</tt>, GroovyDoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Add_GroovyDoc_to_Site">Add GroovyDoc to Site</a></h3><p>Note that this mojo is not set up to be used in the &lt;reporting&gt; section. So you will need to set the &lt;outputDirectory&gt; and &lt;executions&gt; to mimic this functionality:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn GMavenPlus-Plugin:groovydoc</tt>, Groovydoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Add_Groovydoc_to_Site">Add Groovydoc to Site</a></h3><p>Note that this mojo is not set up to be used in the &lt;reporting&gt; section. So you will need to set the &lt;outputDirectory&gt; and &lt;executions&gt; to mimic this functionality:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -206,7 +206,7 @@
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn site</tt>, GroovyDoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Execute_Scripts">Execute Scripts</a></h3><p>Note that you can't yet use project dependencies in your scripts. You can use Groovy's <a class="externalLink" href="http://groovy.codehaus.org/Grape">@Grab</a> annotations, but you will need a compile dependency on Ivy since GMavenPlus doesn't depend on Ivy. Also note that you need to escape any dollar signs in your script so Maven doesn't try to filter the values. To execute Groovy scripts in your pom, add something similar to the following:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn site</tt>, Groovydoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Execute_Scripts">Execute Scripts</a></h3><p>Note that you can't yet use project dependencies in your scripts. You can use Groovy's <a class="externalLink" href="http://groovy.codehaus.org/Grape">@Grab</a> annotations, but you will need a compile dependency on Ivy since GMavenPlus doesn't depend on Ivy. Also note that you need to escape any dollar signs in your script so Maven doesn't try to filter the values. To execute Groovy scripts in your pom, add something similar to the following:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;

@@ -1,0 +1,24 @@
+-classpath
+'C:/Users/Keegan/Desktop/GMavenPlus/target/classes;C:/Users/Keegan/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-profile/2.2.1/maven-profile-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/codehaus/plexus/plexus-container-default/1.5.5/plexus-container-default-1.5.5.jar;C:/Users/Keegan/.m2/repository/com/google/collections/google-collections/1.0/google-collections-1.0.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-repository-metadata/2.2.1/maven-repository-metadata-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/codehaus/plexus/plexus-classworlds/2.4/plexus-classworlds-2.4.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-artifact-manager/2.2.1/maven-artifact-manager-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-plugin-registry/2.2.1/maven-plugin-registry-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.11/plexus-interpolation-1.11.jar;C:/Users/Keegan/.m2/repository/backport-util-concurrent/backport-util-concurrent/3.1/backport-util-concurrent-3.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-project/2.2.1/maven-project-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/shared/maven-shared-io/1.1/maven-shared-io-1.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-settings/2.2.1/maven-settings-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-plugin-api/2.2.1/maven-plugin-api-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-artifact/2.2.1/maven-artifact-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-6/wagon-provider-api-1.0-beta-6.jar;C:/Users/Keegan/.m2/repository/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar;C:/Users/Keegan/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.15/plexus-utils-1.5.15.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/maven-model/2.2.1/maven-model-2.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/maven/shared/file-management/1.2.1/file-management-1.2.1.jar;C:/Users/Keegan/.m2/repository/org/apache/xbean/xbean-reflect/3.4/xbean-reflect-3.4.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/Keegan/Desktop/GMavenPlus/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2011. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Keegan/Desktop/GMavenPlus/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'GMavenPlus Plugin 1.0-alpha1-SNAPSHOT API'
+-linkoffline
+'http://download.oracle.com/javase/6/docs/api' 'C:/Users/Keegan/Desktop/GMavenPlus/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'GMavenPlus Plugin 1.0-alpha1-SNAPSHOT API'
