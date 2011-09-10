@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <groovyVersion>1.8.2</groovyVersion>
+    <ivyVersion>2.2.0</ivyVersion>
     <junitVersion>4.8.2</junitVersion>
   </properties>
 
@@ -20,7 +21,15 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy should work here -->
       <version>${groovyVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.ivy</groupId>
+      <artifactId>ivy</artifactId>
+      <!-- any version of Ivy should work here -->
+      <version>${ivyVersion}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -51,6 +60,13 @@
             new File('target').mkdir()
             new File('target/helloWorld.txt').append('Hello world!')
             ]]></script>
+            <script><![CDATA[
+              @Grapes([
+                @Grab(group='commons-lang', module='commons-lang', version='2.6')
+              ])
+              import org.apache.commons.lang.SystemUtils
+              println "Using Java $${SystemUtils.JAVA_VERSION}"
+            ]]></script>
             <script>file:///${project.basedir}/src/main/groovy/HelloWorld2.groovy</script>
           </scripts>
         </configuration>
@@ -71,17 +87,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <!--<reporting>-->
-    <!--<plugins>-->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-        <!--<version>2.8</version>-->
-        <!--<configuration>-->
-        <!--</configuration>-->
-      <!--</plugin>-->
-    <!--</plugins>-->
-  <!--</reporting>-->
 
 </project>
