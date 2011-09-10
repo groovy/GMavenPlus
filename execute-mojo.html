@@ -93,18 +93,42 @@
             <th>Description</th>
           </tr>
           <tr class="b">
-            <td><b><a href="#script">script</a></b></td>
-            <td><tt>String</tt></td>
+            <td><b><a href="#scripts">scripts</a></b></td>
+            <td><tt>String[]</tt></td>
             <td><tt>-</tt></td>
-            <td>Groovy script to run<br /></td>
+            <td>Groovy scripts to run (in order). Can be an actual Groovy script or
+a URL to a Groovy script (local or remote).<br /></td>
+          </tr>
+        </table>
+      </div>
+      <div class="section"><h3>Optional Parameters<a name="Optional_Parameters"></a></h3>
+        <table class="bodyTable" border="0">
+          <tr class="a">
+            <th>Name</th>
+            <th>Type</th>
+            <th>Since</th>
+            <th>Description</th>
+          </tr>
+          <tr class="b">
+            <td><b><a href="#continueExecuting">continueExecuting</a></b></td>
+            <td><tt>boolean</tt></td>
+            <td><tt>-</tt></td>
+            <td>Whether to continue executing remaining scripts when a script fails<br /><b>Default value is</b>: <tt>false</tt>.</td>
           </tr>
         </table>
       </div>
       <div class="section"><h3>Parameter Details<a name="Parameter_Details"></a></h3>
-        <p><b><a name="script">script</a>:</b></p>
-        <div>Groovy script to run</div>
+        <p><b><a name="continueExecuting">continueExecuting</a>:</b></p>
+        <div>Whether to continue executing remaining scripts when a script fails</div>
         <ul>
-          <li><b>Type</b>: <tt>java.lang.String</tt></li>
+          <li><b>Type</b>: <tt>boolean</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Default</b>: <tt>false</tt></li>
+        </ul><hr /><p><b><a name="scripts">scripts</a>:</b></p>
+        <div>Groovy scripts to run (in order). Can be an actual Groovy script or
+a URL to a Groovy script (local or remote).</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.lang.String[]</tt></li>
           <li><b>Required</b>: <tt>Yes</tt></li>
         </ul>
       </div>

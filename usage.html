@@ -71,7 +71,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>Usage<a name="Usage"></a></h2><p>The following examples describe the basic usage of the GMavenPlus Plugin.</p><div class="section"><h3>Basic Usage<a name="Basic_Usage"></a></h3><p>To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
+        <div class="section"><h2>Usage<a name="Usage"></a></h2><p>The following examples describe the basic usage of the GMavenPlus Plugin.</p><div class="section"><h3>Contents<a name="Contents"></a></h3><ul><li><a href="#Basic_Usage">Basic Usage</a></li><li><a href="#Generate_Stubs">Generate Stubs</a></li><li><a href="#Generate_GroovyDoc">Generate GroovyDoc</a></li><li><a name="Add_GroovyDoc_to_Site">Add GroovyDoc to Site</a></li><li><a href="#Execute_Scripts">Execute Scripts</a></li></ul></div><div class="section"><h3><a name="Basic_Usage">Basic Usage</a></h3><p>To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -91,6 +91,7 @@
           ...
         &lt;/configuration&gt;
       &lt;/plugin&gt;
+      ...
     &lt;/plugins&gt;
     ...
   &lt;/build&gt;
@@ -99,13 +100,13 @@
       &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
       &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
       &lt;!-- any version of Groovy should work here --&gt;
-      &lt;version&gt;1.8.1&lt;/version&gt;
+      &lt;version&gt;1.8.2&lt;/version&gt;
     &lt;/dependency&gt;
     ....
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn compile</tt>, both the main and test Groovy sources will be compiled.</p></div><div class="section"><h3>Generate Stubs<a name="Generate_Stubs"></a></h3><p>To generate stubs as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn compile</tt>, both the main and test Groovy sources will be compiled.</p></div><div class="section"><h3><a name="Generate_Stubs">Generate Stubs</a></h3><p>To generate stubs as part of the project compilation, you should add the GMavenPlus Plugin in the &lt;build&gt; section of your pom:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -134,13 +135,13 @@
       &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
       &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
       &lt;!-- any version of Groovy should work here --&gt;
-      &lt;version&gt;1.8.1&lt;/version&gt;
+      &lt;version&gt;1.8.2&lt;/version&gt;
     &lt;/dependency&gt;
     ....
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn generate-test-sources</tt>, the stubs will be generated for both the main and test Groovy sources.</p></div><div class="section"><h3>Generate GroovyDoc<a name="Generate_GroovyDoc"></a></h3><p>Note that this mojo is not yet set up to be used in the &lt;reporting&gt; section. In the mean time, to add it to your site you wil have to change the &lt;outputDirectory&gt; in the &lt;configuration&gt; to be inside target/site. Here is the basic usage to get GroovyDoc in your target directory:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn generate-test-sources</tt>, the stubs will be generated for both the main and test Groovy sources.</p></div><div class="section"><h3><a name="Generate_GroovyDoc">Generate GroovyDoc</a></h3><p>Here is the basic usage to get GroovyDoc in your target directory:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
@@ -164,32 +165,30 @@
       &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
       &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
       &lt;!-- any version of Groovy should work here --&gt;
-      &lt;version&gt;1.8.1&lt;/version&gt;
+      &lt;version&gt;1.8.2&lt;/version&gt;
     &lt;/dependency&gt;
     ....
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>When you execute <tt>mvn GMavenPlus-Plugin:groovydoc</tt>, GroovyDoc will be generated for the main sources.</p></div><div class="section"><h3>Execute<a name="Execute"></a></h3><p>Note that you can't yet execute script files (either remote or local) and you can't use project dependencies in your scripts. To execute a Groovy script in your pom, add something similar to the following:</p><div class="source"><pre>&lt;project&gt;
+</pre></div><p>When you execute <tt>mvn GMavenPlus-Plugin:groovydoc</tt>, GroovyDoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Add_GroovyDoc_to_Site">Add GroovyDoc to Site</a></h3><p>Note that this mojo is not set up to be used in the &lt;reporting&gt; section. So you will need to set the &lt;outputDirectory&gt; and &lt;executions&gt; to mimic this functionality:</p><div class="source"><pre>&lt;project&gt;
   ...
   &lt;build&gt;
     &lt;plugins&gt;
       &lt;plugin&gt;
         &lt;groupId&gt;GMavenPlus&lt;/groupId&gt;
         &lt;artifactId&gt;GMavenPlus-Plugin&lt;/artifactId&gt;
-        &lt;version&gt;@project.version@&lt;/version&gt;
+        &lt;version&gt;1.0-alpha1-SNAPSHOT&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
-            &lt;phase&gt;generate-sources&lt;/phase&gt;
+            &lt;phase&gt;site&lt;/phase&gt;
             &lt;goals&gt;
-              &lt;goal&gt;execute&lt;/goal&gt;
+              &lt;goal&gt;groovydoc&lt;/goal&gt;
             &lt;/goals&gt;
           &lt;/execution&gt;
         &lt;/executions&gt;
         &lt;configuration&gt;
-          &lt;script&gt;&lt;![CDATA[
-          new File('target').mkdir()
-          new File('target/helloWorld.txt').append('Hello world!')]]&gt;&lt;/script&gt;
+          &lt;groovydocOutputDirectory&gt;${project.reporting.outputDirectory}/gapidocs&lt;/groovydocOutputDirectory&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
       ...
@@ -201,13 +200,62 @@
       &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
       &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
       &lt;!-- any version of Groovy should work here --&gt;
-      &lt;version&gt;1.8.1&lt;/version&gt;
+      &lt;version&gt;1.8.2&lt;/version&gt;
     &lt;/dependency&gt;
     ....
   &lt;/dependencies&gt;
   ...
 &lt;/project&gt;
-</pre></div><p>In this case, when you execute <tt>mvn generate-sources</tt>, your script will be executed.</p></div></div>
+</pre></div><p>When you execute <tt>mvn site</tt>, GroovyDoc will be generated for the main sources.</p></div><div class="section"><h3><a name="Execute_Scripts">Execute Scripts</a></h3><p>Note that you can't yet use project dependencies in your scripts. You can use Groovy's <a class="externalLink" href="http://groovy.codehaus.org/Grape">@Grab</a> annotations, but you will need a compile dependency on Ivy since GMavenPlus doesn't depend on Ivy. Also note that you need to escape any dollar signs in your script so Maven doesn't try to filter the values. To execute Groovy scripts in your pom, add something similar to the following:</p><div class="source"><pre>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;GMavenPlus&lt;/groupId&gt;
+        &lt;artifactId&gt;GMavenPlus-Plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.0-alpha1-SNAPSHOT&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;execute&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+        &lt;configuration&gt;
+          &lt;scripts&gt;
+            &lt;script&gt;&lt;![CDATA[
+              @Grapes([
+                @Grab(group='commons-lang', module='commons-lang', version='2.6')
+              ])
+              import org.apache.commons.lang.SystemUtils
+              println &quot;Using Java $${SystemUtils.JAVA_VERSION}&quot;
+            ]]&gt;&lt;/script&gt;
+            &lt;script&gt;file:///${project.basedir}/src/main/groovy/HelloWorld2.groovy&lt;/script&gt;
+          &lt;/scripts&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+    ...
+  &lt;/build&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+      &lt;artifactId&gt;groovy-all&lt;/artifactId&gt;
+      &lt;!-- any version of Groovy should work here --&gt;
+      &lt;version&gt;1.8.2&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.ivy&lt;/groupId&gt;
+      &lt;artifactId&gt;ivy&lt;/artifactId&gt;
+      &lt;!-- any version of Ivy should work here --&gt;
+      &lt;version&gt;2.2.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    ....
+  &lt;/dependencies&gt;
+  ...
+&lt;/project&gt;
+</pre></div><p>When you execute <tt>mvn GMavenPlus-Plugin:execute</tt>, your scripts will be executed.</p></div></div>
       </div>
     </div>
     <div class="clear">

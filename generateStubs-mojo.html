@@ -100,36 +100,36 @@
             <td>Whether Groovy compiler should be set to debug or not<br /><b>Default value is</b>: <tt>false</tt>.</td>
           </tr>
           <tr class="a">
-            <td><b><a href="#outputDirectory">outputDirectory</a></b></td>
-            <td><tt>File</tt></td>
-            <td><tt>-</tt></td>
-            <td>Location for the compiled classes<br /><b>Default value is</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/main</tt>.</td>
-          </tr>
-          <tr class="b">
             <td><b><a href="#sourceEncoding">sourceEncoding</a></b></td>
             <td><tt>String</tt></td>
             <td><tt>-</tt></td>
             <td>Encoding of source files<br /><b>Default value is</b>: <tt>${project.build.sourceEncoding}</tt>.</td>
           </tr>
-          <tr class="a">
+          <tr class="b">
             <td><b><a href="#sources">sources</a></b></td>
             <td><tt>FileSet[]</tt></td>
             <td><tt>-</tt></td>
             <td>Groovy source files. Default:
-&quot;${project.basedir}/src/main/groovy/**\\/*.groovy&quot;<br /></td>
-          </tr>
-          <tr class="b">
-            <td><b><a href="#testOutputDirectory">testOutputDirectory</a></b></td>
-            <td><tt>File</tt></td>
-            <td><tt>-</tt></td>
-            <td>Location for the compiled test classes<br /><b>Default value is</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/test</tt>.</td>
+&quot;${project.basedir}/src/main/groovy/**/*.groovy&quot;<br /></td>
           </tr>
           <tr class="a">
+            <td><b><a href="#stubsOutputDirectory">stubsOutputDirectory</a></b></td>
+            <td><tt>File</tt></td>
+            <td><tt>-</tt></td>
+            <td>Location for the compiled classes<br /><b>Default value is</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/main</tt>.</td>
+          </tr>
+          <tr class="b">
             <td><b><a href="#testSources">testSources</a></b></td>
             <td><tt>FileSet[]</tt></td>
             <td><tt>-</tt></td>
             <td>Groovy test source files. Default:
-&quot;${project.basedir}/src/test/groovy/**\\/*.groovy&quot;<br /></td>
+&quot;${project.basedir}/src/test/groovy/**/*.groovy&quot;<br /></td>
+          </tr>
+          <tr class="a">
+            <td><b><a href="#testStubsOutputDirectory">testStubsOutputDirectory</a></b></td>
+            <td><tt>File</tt></td>
+            <td><tt>-</tt></td>
+            <td>Location for the compiled test classes<br /><b>Default value is</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/test</tt>.</td>
           </tr>
           <tr class="b">
             <td><b><a href="#tolerance">tolerance</a></b></td>
@@ -160,12 +160,6 @@
           <li><b>Type</b>: <tt>boolean</tt></li>
           <li><b>Required</b>: <tt>No</tt></li>
           <li><b>Default</b>: <tt>false</tt></li>
-        </ul><hr /><p><b><a name="outputDirectory">outputDirectory</a>:</b></p>
-        <div>Location for the compiled classes</div>
-        <ul>
-          <li><b>Type</b>: <tt>java.io.File</tt></li>
-          <li><b>Required</b>: <tt>No</tt></li>
-          <li><b>Default</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/main</tt></li>
         </ul><hr /><p><b><a name="sourceEncoding">sourceEncoding</a>:</b></p>
         <div>Encoding of source files</div>
         <ul>
@@ -174,22 +168,28 @@
           <li><b>Default</b>: <tt>${project.build.sourceEncoding}</tt></li>
         </ul><hr /><p><b><a name="sources">sources</a>:</b></p>
         <div>Groovy source files. Default:
-&quot;${project.basedir}/src/main/groovy/**\\/*.groovy&quot;</div>
+&quot;${project.basedir}/src/main/groovy/**/*.groovy&quot;</div>
         <ul>
           <li><b>Type</b>: <tt>org.apache.maven.shared.model.fileset.FileSet[]</tt></li>
           <li><b>Required</b>: <tt>No</tt></li>
-        </ul><hr /><p><b><a name="testOutputDirectory">testOutputDirectory</a>:</b></p>
+        </ul><hr /><p><b><a name="stubsOutputDirectory">stubsOutputDirectory</a>:</b></p>
+        <div>Location for the compiled classes</div>
+        <ul>
+          <li><b>Type</b>: <tt>java.io.File</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+          <li><b>Default</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/main</tt></li>
+        </ul><hr /><p><b><a name="testSources">testSources</a>:</b></p>
+        <div>Groovy test source files. Default:
+&quot;${project.basedir}/src/test/groovy/**/*.groovy&quot;</div>
+        <ul>
+          <li><b>Type</b>: <tt>org.apache.maven.shared.model.fileset.FileSet[]</tt></li>
+          <li><b>Required</b>: <tt>No</tt></li>
+        </ul><hr /><p><b><a name="testStubsOutputDirectory">testStubsOutputDirectory</a>:</b></p>
         <div>Location for the compiled test classes</div>
         <ul>
           <li><b>Type</b>: <tt>java.io.File</tt></li>
           <li><b>Required</b>: <tt>No</tt></li>
           <li><b>Default</b>: <tt>${project.build.directory}/generated-sources/groovy-stubs/test</tt></li>
-        </ul><hr /><p><b><a name="testSources">testSources</a>:</b></p>
-        <div>Groovy test source files. Default:
-&quot;${project.basedir}/src/test/groovy/**\\/*.groovy&quot;</div>
-        <ul>
-          <li><b>Type</b>: <tt>org.apache.maven.shared.model.fileset.FileSet[]</tt></li>
-          <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr /><p><b><a name="tolerance">tolerance</a>:</b></p>
         <div>Groovy compiler error tolerance (the number of non-fatal errors
 (per unit) that should be tolerated before compilation is aborted)</div>
