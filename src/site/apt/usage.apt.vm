@@ -3,7 +3,20 @@ Usage
  The following examples describe the basic usage of the GMavenPlus Plugin.
 
 
-* Basic Usage
+* Contents
+
+ * {{Basic Usage}}
+
+ * {{Generate Stubs}}
+
+ * {{Generate GroovyDoc}}
+
+ * {{Execute Scripts}}
+
+ []
+
+
+* {Basic Usage}
 
  To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
 
@@ -48,7 +61,7 @@ Usage
  When you execute <<<mvn compile>>>, both the main and test Groovy sources will be compiled.
 
 
-* Generate Stubs
+* {Generate Stubs}
 
  To generate stubs as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
 
@@ -93,7 +106,7 @@ Usage
  When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
 
 
-* Generate GroovyDoc
+* {Generate GroovyDoc}
 
  Note that this mojo is not yet set up to be used in the \<reporting\> section.  In the mean time, to add it to your site
  you wil have to change the \<outputDirectory\> in the \<configuration\> to be inside target/site.  Here is the basic
@@ -135,10 +148,14 @@ Usage
  When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, GroovyDoc will be generated for the main sources.
 
 
-* Execute
+* {Execute Scripts}
 
- Note that you can't yet use project dependencies in your scripts.
- To execute a Groovy script in your pom, add something similar to the following:
+ Note that you can't yet use project dependencies in your scripts.  If you want to
+ use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}} annotations in your
+ scripts, you will need a compile dependency on Ivy since GMavenPlus has no
+ dependency on Ivy.  Also note that you need to escape any dollar signs in your
+ script so Maven doesn't try to filter the value.
+ To execute Groovy scripts in your pom, add something similar to the following:
 
 +-----+
 <project>
@@ -151,7 +168,6 @@ Usage
         <version>${project.version}</version>
         <executions>
           <execution>
-            <phase>generate-sources</phase>
             <goals>
               <goal>execute</goal>
             </goals>
@@ -160,8 +176,11 @@ Usage
         <configuration>
           <scripts>
             <script><![CDATA[
-              new File('target').mkdir()
-              new File('target/helloWorld.txt').append('Hello world!')
+              @Grapes([
+                @Grab(group='commons-lang', module='commons-lang', version='2.6')
+              ])
+              import org.apache.commons.lang.SystemUtils
+              println "Using Java $${SystemUtils.JAVA_VERSION}"
             ]]></script>
             <script>file:///\${project.basedir}/src/main/groovy/HelloWorld2.groovy</script>
           </scripts>
@@ -178,13 +197,16 @@ Usage
       <!-- any version of Groovy should work here -->
       <version>${groovyVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.ivy</groupId>
+      <artifactId>ivy</artifactId>
+      <!-- any version of Ivy should work here -->
+      <version>2.2.0</version>
+    </dependency>
     ....
   </dependencies>
   ...
 </project>
 +-----+
 
- In this case, when you execute <<<mvn generate-sources>>>, your script will be executed.
-
-
-[]
+ When you execute <<<mvn GMavenPlus-Plugin:execute>>>, your scripts will be executed.
