@@ -1,6 +1,5 @@
 package gmavenplus.model;
 
-import gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Test;
 
