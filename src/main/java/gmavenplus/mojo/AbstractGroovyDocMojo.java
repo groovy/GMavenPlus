@@ -30,7 +30,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
+public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     /**
      * Groovy source files.
@@ -96,7 +96,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    protected void generateGroovyDoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected void generateGroovydoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
         Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
@@ -105,13 +105,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovyMojo {
         Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
         Class groovyDocTemplateInfoClass = Class.forName("org.codehaus.groovy.tools.groovydoc.gstringTemplates.GroovyDocTemplateInfo");
 
-        // set up GroovyDoc options
+        // set up Groovydoc options
         List links = new ArrayList();
         Properties properties = new Properties();
         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
 
-        // generate GroovyDoc
+        // generate Groovydoc
         for (FileSet sourceDirectory : sourceDirectories) {
             Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
                     classpathResourceManager,

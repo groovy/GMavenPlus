@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * Generates GroovyDoc for the test sources
+ * Generates Groovydoc for the test sources
  * (note that this mojo cannot be run on versions of Groovy before 1.5.0)
  *
  * @author Keegan Witt
@@ -31,7 +31,7 @@ import java.lang.reflect.InvocationTargetException;
  * @goal testGroovydoc
  * @execute phase="generate-test-sources"
  */
-public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
+public class GroovydocTestsMojo extends AbstractGroovydocMojo {
 
     /**
      * @throws MojoExecutionException
@@ -44,7 +44,7 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
 
             try {
                 setDefaultSourceDirectories(testSources);
-                generateGroovyDoc(testSources, testGroovydocOutputDirectory);
+                generateGroovydoc(testSources, testGroovydocOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
@@ -55,7 +55,7 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support GroovyDoc. Skipping test GroovyDoc generation");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc. Skipping test Groovydoc generation");
         }
     }
 

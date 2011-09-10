@@ -8,7 +8,7 @@
   <artifactId>GMavenPlus-Plugin-it-groovydoc</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Generate GroovyDoc Test</name>
+  <name>GMavenPlus Plugin Generate Groovydoc Test</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -9,9 +9,9 @@ Usage
 
  * {{Generate Stubs}}
 
- * {{Generate GroovyDoc}}
+ * {{Generate Groovydoc}}
 
- * {Add GroovyDoc to Site}
+ * {Add Groovydoc to Site}
 
  * {{Execute Scripts}}
 
@@ -108,9 +108,9 @@ Usage
  When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
 
 
-* {Generate GroovyDoc}
+* {Generate Groovydoc}
 
- Here is the basic usage to get GroovyDoc in your target directory:
+ Here is the basic usage to get Groovydoc in your target directory:
 
 +-----+
 <project>
@@ -145,10 +145,10 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, GroovyDoc will be generated for the main sources.
+ When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, Groovydoc will be generated for the main sources.
 
 
-* {Add GroovyDoc to Site}
+* {Add Groovydoc to Site}
 
  Note that this mojo is not set up to be used in the \<reporting\> section.
  So you will need to set the \<outputDirectory\> and \<executions\>
@@ -192,7 +192,7 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn site>>>, GroovyDoc will be generated for the main sources.
+ When you execute <<<mvn site>>>, Groovydoc will be generated for the main sources.
 
 
 * {Execute Scripts}
