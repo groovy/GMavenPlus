@@ -47,7 +47,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
         if (!skip) {
             logGroovyVersion("generateTestStubs");
             try {
-                doStubGeneration(getTestSources(), testOutputDirectory);
+                doStubGeneration(getTestSources(), testStubsOutputDirectory);
                 resetStubModifiedDates(getTestStubs());
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);

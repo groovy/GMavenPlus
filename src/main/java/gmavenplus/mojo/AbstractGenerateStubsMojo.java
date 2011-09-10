@@ -46,7 +46,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
      */
-    protected File outputDirectory;
+    protected File stubsOutputDirectory;
 
     /**
      * Groovy test source files.
@@ -61,7 +61,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
      */
-    protected File testOutputDirectory;
+    protected File testStubsOutputDirectory;
 
     /**
      * Encoding of source files
@@ -169,10 +169,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         FileSet fileSet = new FileSet();
-        fileSet.setDirectory(outputDirectory.getAbsolutePath());
+        fileSet.setDirectory(stubsOutputDirectory.getAbsolutePath());
         fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
         for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(outputDirectory, file));
+            files.add(new File(stubsOutputDirectory, file));
         }
 
         return files;
@@ -188,10 +188,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         FileSet fileSet = new FileSet();
-        fileSet.setDirectory(outputDirectory.getAbsolutePath());
+        fileSet.setDirectory(testStubsOutputDirectory.getAbsolutePath());
         fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
         for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(outputDirectory, file));
+            files.add(new File(testStubsOutputDirectory, file));
         }
 
         return files;
