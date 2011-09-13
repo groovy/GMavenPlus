@@ -16,11 +16,12 @@
 
 package gmavenplus.mojo;
 
+import gmavenplus.model.Scopes;
+import gmavenplus.model.Version;
+import gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import gmavenplus.model.Version;
-import gmavenplus.util.ReflectionUtils;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
@@ -61,6 +62,56 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * @parameter default-value="${project.build.directory}/testgapidocs"
      */
     protected File testGroovydocOutputDirectory;
+
+    /**
+     * Window title
+     *
+     * @parameter default-value="Groovy Documentation1"
+     */
+    protected String windowTitle;
+
+    /**
+     * Page title
+     *
+     * @parameter default-value="Groovy Documentation2"
+     */
+    protected String docTitle;
+
+    /**
+     * Page footer
+     *
+     * @parameter default-value="Groovy Documentation3"
+     */
+    protected String footer;
+
+    /**
+     * Page header
+     *
+     * @parameter default-value="Groovy Documentation"
+     */
+    protected String header;
+
+    /**
+     * Whether or not to display the author in the generated Groovydoc
+     *
+     * @parameter default-value="true"
+     */
+    protected boolean displayAuthor;
+
+    /**
+     * HTML file to be used for overview documentation
+     *
+     * @parameter
+     */
+    protected File overviewFile;
+
+    /**
+     * Scope to generate Groovydoc for, should be
+     * "public", "protected", "package", or "private"
+     *
+     * @parameter default-value="private"
+     */
+    protected String scope;
 
     /**
      * @param fileSet
@@ -108,6 +159,31 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         // set up Groovydoc options
         List links = new ArrayList();
         Properties properties = new Properties();
+        properties.setProperty("windowTitle", windowTitle);
+        properties.setProperty("docTitle", docTitle);
+        properties.setProperty("footer", footer);
+        properties.setProperty("header", header);
+        properties.setProperty("author", Boolean.toString(displayAuthor));
+        properties.setProperty("overviewFile", overviewFile != null ? overviewFile.getAbsolutePath() : "");
+        try {
+            Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());
+            switch (scopeVal) {
+                case PUBLIC:
+                    properties.setProperty("publicScope", "true");
+                    break;
+                case PROTECTED:
+                    properties.setProperty("protectedScope", "true");
+                    break;
+                case PACKAGE:
+                    properties.setProperty("packageScope", "true");
+                    break;
+                case PRIVATE:
+                    properties.setProperty("privateScope", "true");
+                    break;
+            }
+        } catch (IllegalArgumentException e) {
+            getLog().warn("Scope (" + scope + ") was not recognized.  Skipping argument...");
+        }
         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
 
