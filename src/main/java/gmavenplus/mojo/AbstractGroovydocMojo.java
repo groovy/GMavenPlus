@@ -113,6 +113,13 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected File stylesheetFile;
 
     /**
+     * Encoding of stylesheetFile
+     *
+     * @parameter default-value="UTF-8"
+     */
+    protected String stylesheetEncoding;
+
+    /**
      * Scope to generate Groovydoc for, should be
      * "public", "protected", "package", or "private"
      *
@@ -213,7 +220,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         if (stylesheetFile != null) {
             getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
             try {
-                BufferedReader in = new BufferedReader(new FileReader(stylesheetFile));
+                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
                 StringBuilder css = new StringBuilder();
                 String line;
                 while ((line = in.readLine()) != null) {
@@ -221,7 +228,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
                 }
                 in.close();
                 File outfile = new File(outputDirectory, "stylesheet.css");
-                BufferedWriter out = new BufferedWriter(new FileWriter(outfile));
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
                 out.write(css.toString());
                 out.flush();
                 out.close();
