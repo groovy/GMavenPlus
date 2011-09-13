@@ -44,7 +44,7 @@
 <a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../gmavenplus/mojo/AbstractGenerateStubsMojo.html">AbstractGenerateStubsMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../gmavenplus/mojo/AbstractGroovyMojo.html">AbstractGroovyMojo</a> {
 <a class="jxr_linenumber" name="35" href="#35">35</a>  
 <a class="jxr_linenumber" name="36" href="#36">36</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment">     * Groovy source files.</em>
+<a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment">     * Groovy source files (relative paths).</em>
 <a class="jxr_linenumber" name="38" href="#38">38</a>  <em class="jxr_javadoccomment">     * Default: "${project.basedir}/src/main/groovy/**&amp;#47;*.groovy"</em>
 <a class="jxr_linenumber" name="39" href="#39">39</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment">     * @parameter</em>
@@ -59,7 +59,7 @@
 <a class="jxr_linenumber" name="49" href="#49">49</a>      <strong class="jxr_keyword">protected</strong> File stubsOutputDirectory;
 <a class="jxr_linenumber" name="50" href="#50">50</a>  
 <a class="jxr_linenumber" name="51" href="#51">51</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     * Groovy test source files.</em>
+<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     * Groovy test source files (relative paths).</em>
 <a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment">     * Default: "${project.basedir}/src/test/groovy/**&amp;#47;*.groovy"</em>
 <a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment">     * @parameter</em>
@@ -125,7 +125,7 @@
 <a class="jxr_linenumber" name="115" href="#115">115</a>         <strong class="jxr_keyword">if</strong> (sources != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="116" href="#116">116</a>             <strong class="jxr_keyword">for</strong> (FileSet fileSet : sources) {
 <a class="jxr_linenumber" name="117" href="#117">117</a>                 <strong class="jxr_keyword">for</strong> (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-<a class="jxr_linenumber" name="118" href="#118">118</a>                     files.add(<strong class="jxr_keyword">new</strong> File(include));
+<a class="jxr_linenumber" name="118" href="#118">118</a>                     files.add(<strong class="jxr_keyword">new</strong> File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
 <a class="jxr_linenumber" name="119" href="#119">119</a>                 }
 <a class="jxr_linenumber" name="120" href="#120">120</a>             }
 <a class="jxr_linenumber" name="121" href="#121">121</a>         } <strong class="jxr_keyword">else</strong> {
@@ -153,7 +153,7 @@
 <a class="jxr_linenumber" name="143" href="#143">143</a>         <strong class="jxr_keyword">if</strong> (testSources != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="144" href="#144">144</a>             <strong class="jxr_keyword">for</strong> (FileSet fileSet : testSources) {
 <a class="jxr_linenumber" name="145" href="#145">145</a>                 <strong class="jxr_keyword">for</strong> (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-<a class="jxr_linenumber" name="146" href="#146">146</a>                     files.add(<strong class="jxr_keyword">new</strong> File(include));
+<a class="jxr_linenumber" name="146" href="#146">146</a>                     files.add(<strong class="jxr_keyword">new</strong> File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
 <a class="jxr_linenumber" name="147" href="#147">147</a>                 }
 <a class="jxr_linenumber" name="148" href="#148">148</a>             }
 <a class="jxr_linenumber" name="149" href="#149">149</a>         } <strong class="jxr_keyword">else</strong> {
@@ -234,13 +234,13 @@
 <a class="jxr_linenumber" name="224" href="#224">224</a>         ClassLoader parent = ClassLoader.getSystemClassLoader();
 <a class="jxr_linenumber" name="225" href="#225">225</a>         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.<strong class="jxr_keyword">class</strong>, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
 <a class="jxr_linenumber" name="226" href="#226">226</a>         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.<strong class="jxr_keyword">class</strong>).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
-<a class="jxr_linenumber" name="227" href="#227">227</a>         getLog().debug(<span class="jxr_string">"Compiling "</span> + sources.size() + <span class="jxr_string">" sources"</span>);
+<a class="jxr_linenumber" name="227" href="#227">227</a>         getLog().debug(<span class="jxr_string">"Compiling "</span> + sources.size() + <span class="jxr_string">" sources."</span>);
 <a class="jxr_linenumber" name="228" href="#228">228</a>         <strong class="jxr_keyword">for</strong> (File source : sources) {
 <a class="jxr_linenumber" name="229" href="#229">229</a>             URL url = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="230" href="#230">230</a>             <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="231" href="#231">231</a>                 url = source.toURI().toURL();
 <a class="jxr_linenumber" name="232" href="#232">232</a>             } <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
-<a class="jxr_linenumber" name="233" href="#233">233</a>                 getLog().error(<span class="jxr_string">"Unable to add source file "</span> + source.getAbsolutePath() + <span class="jxr_string">" for stub generation"</span>, e);
+<a class="jxr_linenumber" name="233" href="#233">233</a>                 getLog().error(<span class="jxr_string">"Unable to add source file "</span> + source.getAbsolutePath() + <span class="jxr_string">" for stub generation."</span>, e);
 <a class="jxr_linenumber" name="234" href="#234">234</a>             }
 <a class="jxr_linenumber" name="235" href="#235">235</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, <span class="jxr_string">"addSource"</span>, URL.<strong class="jxr_keyword">class</strong>), javaStubCompilationUnit, url);
 <a class="jxr_linenumber" name="236" href="#236">236</a>         }

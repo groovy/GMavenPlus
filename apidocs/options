@@ -4,7 +4,7 @@
 'UTF-8'
 -protected
 -sourcepath
-'C:/Users/Keegan/Desktop/GMavenPlus/src/main/java'
+'C:/Users/Keegan/Desktop/GMavenPlus/src/main/java;C:/Users/Keegan/Desktop/GMavenPlus/target/generated-sources/plugin'
 -author
 -bottom
 'Copyright &#169; 2011. All Rights Reserved.'

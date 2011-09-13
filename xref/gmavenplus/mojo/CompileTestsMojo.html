@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="54" href="#54">54</a>              <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="55" href="#55">55</a>                  doCompile(getTestSources(), getProjectClasspathElements(), testOutputDirectory);
 <a class="jxr_linenumber" name="56" href="#56">56</a>              } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
-<a class="jxr_linenumber" name="57" href="#57">57</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?"</span>, e);
+<a class="jxr_linenumber" name="57" href="#57">57</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?"</span>, e);
 <a class="jxr_linenumber" name="58" href="#58">58</a>              } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
 <a class="jxr_linenumber" name="59" href="#59">59</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to call a method on a Groovy class from classpath."</span>, e);
 <a class="jxr_linenumber" name="60" href="#60">60</a>              } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
@@ -77,7 +77,7 @@
 <a class="jxr_linenumber" name="67" href="#67">67</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to add project dependencies to classpath."</span>, e);
 <a class="jxr_linenumber" name="68" href="#68">68</a>              }
 <a class="jxr_linenumber" name="69" href="#69">69</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="70" href="#70">70</a>              getLog().info(<span class="jxr_string">"Skipping compilation of tests because ${maven.test.skip} was set to true"</span>);
+<a class="jxr_linenumber" name="70" href="#70">70</a>              getLog().info(<span class="jxr_string">"Skipping compilation of tests because ${maven.test.skip} was set to true."</span>);
 <a class="jxr_linenumber" name="71" href="#71">71</a>          }
 <a class="jxr_linenumber" name="72" href="#72">72</a>      }
 <a class="jxr_linenumber" name="73" href="#73">73</a>  
