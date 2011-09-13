@@ -19,7 +19,7 @@ package gmavenplus.mojo;
 import gmavenplus.model.Scopes;
 import gmavenplus.model.Version;
 import gmavenplus.util.ReflectionUtils;
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import org.apache.maven.shared.model.fileset.FileSet;
@@ -104,6 +104,13 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * @parameter
      */
     protected File overviewFile;
+
+    /**
+     * Stylesheet file to copy to output directory (will overwrite default stylesheet.css)
+     *
+     * @parameter
+     */
+    protected File stylesheetFile;
 
     /**
      * Scope to generate Groovydoc for, should be
@@ -200,6 +207,27 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
             );
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+        }
+
+        // overwrite stylesheet.css with provided stylesheet (if configured)
+        if (stylesheetFile != null) {
+            getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + "...");
+            try {
+                BufferedReader in = new BufferedReader(new FileReader(stylesheetFile));
+                StringBuilder css = new StringBuilder();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    css.append(line).append("\n");
+                }
+                in.close();
+                File outfile = new File(outputDirectory, "stylesheet.css");
+                BufferedWriter out = new BufferedWriter(new FileWriter(outfile));
+                out.write(css.toString());
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").", e);
+            }
         }
     }
 
