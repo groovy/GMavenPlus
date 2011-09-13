@@ -58,7 +58,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected void logGroovyVersion(String goal) {
         if (getLog().isInfoEnabled()) {
-            getLog().info("Using Groovy " + getGroovyVersion() + " from project compile classpath to perform " + goal + "...");
+            getLog().info("Using Groovy " + getGroovyVersion() + " from project compile classpath to perform " + goal);
         }
     }
 
@@ -76,11 +76,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             Class InvokerHelperClass = Class.forName("org.codehaus.groovy.runtime.InvokerHelper");
             groovyVersion = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(InvokerHelperClass, "getVersion"));
         } catch (ClassNotFoundException e) {
-            getLog().warn("Unable to log Groovy Version", e);
+            getLog().warn("Unable to log Groovy Version.", e);
         } catch (IllegalAccessException e) {
-            getLog().warn("Unable to log Groovy Version", e);
+            getLog().warn("Unable to log Groovy Version.", e);
         } catch (InvocationTargetException e) {
-            getLog().warn("Unable to log Groovy Version", e);
+            getLog().warn("Unable to log Groovy Version.", e);
         }
 
         return groovyVersion;

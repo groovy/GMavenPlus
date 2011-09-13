@@ -45,6 +45,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <stylesheetFile>src/main/resources/stylesheet.css</stylesheetFile>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

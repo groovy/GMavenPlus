@@ -34,7 +34,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy source files.
+     * Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -49,7 +49,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected File outputDirectory;
 
     /**
-     * Groovy test source files.
+     * Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -121,7 +121,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         if (sources != null) {
             for (FileSet fileSet : sources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(include));
+                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
                 }
             }
         } else {
@@ -149,7 +149,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         if (testSources != null) {
             for (FileSet fileSet : testSources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(include));
+                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
                 }
             }
         } else {
@@ -205,13 +205,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         }
         Object transformLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class).newInstance(getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
-        getLog().debug("Compiling " + sources.size() + " sources");
+        getLog().debug("Compiling " + sources.size() + " sources.");
         for (File source : sources) {
             URL url = null;
             try {
                 url = source.toURI().toURL();
             } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for compiling", e);
+                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for compiling.", e);
             }
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", URL.class), compilationUnit, url);
         }
@@ -222,13 +222,17 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         // log compiled classes
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
         if (getLog().isDebugEnabled()) {
-            getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes: ");
+            getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes:");
             for (Object aClass : classes) {
                 getLog().debug("    " + ((Class) aClass).getName());
             }
         }
     }
 
+    /**
+     * @return
+     * @throws DependencyResolutionRequiredException
+     */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
 
 }

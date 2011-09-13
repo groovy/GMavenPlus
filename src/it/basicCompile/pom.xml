@@ -45,6 +45,18 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sources>
+            <source>
+              <directory>src/main/groovy</directory>
+              <includes>
+                <include>**/*.groovy</include>
+                <include>**/*.gvy</include>
+              </includes>
+            </source>
+          </sources>
+          <targetBytecode>1.5</targetBytecode>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

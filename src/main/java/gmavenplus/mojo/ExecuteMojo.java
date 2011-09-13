@@ -37,7 +37,7 @@ import java.net.URL;
 public class ExecuteMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy scripts to run (in order). Can be an actual Groovy script or a
+     * Groovy scripts to run (in order).  Can be an actual Groovy script or a
      * {@link java.net.URL URL} to a Groovy script (local or remote).
      *
      * @parameter
@@ -75,7 +75,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                 try {
                     URL url = new URL(script);
                     // it's a URL to a script
-                    getLog().debug("Fetching Groovy script from " + url.toString() + "...");
+                    getLog().debug("Fetching Groovy script from " + url.toString() + ".");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
                     StringBuilder scriptSource = new StringBuilder();
                     String line;
@@ -90,7 +90,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
                 } catch (IOException e) {
                     if (continueExecuting) {
-                        getLog().error("An Exception occurred while executing script " + scriptNum + ". Continuing to execute remaining scripts...", e);
+                        getLog().error("An Exception occurred while executing script " + scriptNum + ".  Continuing to execute remaining scripts.", e);
                     } else {
                         throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", e);
                     }
@@ -98,7 +98,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                 scriptNum++;
             }
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
             throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
         } catch (InstantiationException e) {

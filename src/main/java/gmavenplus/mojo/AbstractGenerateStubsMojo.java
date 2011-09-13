@@ -34,7 +34,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy source files.
+     * Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -49,7 +49,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected File stubsOutputDirectory;
 
     /**
-     * Groovy test source files.
+     * Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -115,7 +115,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         if (sources != null) {
             for (FileSet fileSet : sources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(include));
+                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
                 }
             }
         } else {
@@ -143,7 +143,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         if (testSources != null) {
             for (FileSet fileSet : testSources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(include));
+                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
                 }
             }
         } else {
@@ -224,13 +224,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
-        getLog().debug("Compiling " + sources.size() + " sources");
+        getLog().debug("Compiling " + sources.size() + " sources.");
         for (File source : sources) {
             URL url = null;
             try {
                 url = source.toURI().toURL();
             } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for stub generation", e);
+                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for stub generation.", e);
             }
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", URL.class), javaStubCompilationUnit, url);
         }

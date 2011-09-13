@@ -28,4 +28,10 @@ public class SomeClassTest {
         Assert.assertEquals("Hello, world.", someClass.someMethod());
     }
 
+    @Test
+    public void testSomeMethod2() {
+        SomeOtherClass someOtherClass = new SomeOtherClass();
+        Assert.assertEquals("Hello, world.", someOtherClass.someMethod());
+    }
+
 }

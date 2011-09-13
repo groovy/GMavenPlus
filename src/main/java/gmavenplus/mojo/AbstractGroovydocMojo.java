@@ -34,7 +34,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     /**
-     * Groovy source files.
+     * Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -49,7 +49,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected File groovydocOutputDirectory;
 
     /**
-     * Groovy test source files.
+     * Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
      *
      * @parameter
@@ -106,7 +106,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected File overviewFile;
 
     /**
-     * Stylesheet file to copy to output directory (will overwrite default stylesheet.css)
+     * Stylesheet file (absolute path) to copy to output directory (will overwrite default stylesheet.css)
      *
      * @parameter
      */
@@ -189,7 +189,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
                     break;
             }
         } catch (IllegalArgumentException e) {
-            getLog().warn("Scope (" + scope + ") was not recognized.  Skipping argument...");
+            getLog().warn("Scope (" + scope + ") was not recognized.  Skipping argument.");
         }
         Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
         Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
@@ -211,7 +211,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
         if (stylesheetFile != null) {
-            getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + "...");
+            getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
             try {
                 BufferedReader in = new BufferedReader(new FileReader(stylesheetFile));
                 StringBuilder css = new StringBuilder();
@@ -242,6 +242,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0;
     }
 
+    /**
+     * @param sources
+     */
     protected void setDefaultSourceDirectories(FileSet[] sources) {
         if (sources == null) {
             FileSet fileSet = new FileSet();

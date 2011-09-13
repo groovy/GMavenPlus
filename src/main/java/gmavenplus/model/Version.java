@@ -38,7 +38,7 @@ public class Version implements Comparable<Version> {
     public Version(int major, int minor, int revision, String tag) {
         if (major <= 0 || minor < 0 || revision < 0) {
             // note we don't check the tag since it can be null
-            throw new IllegalArgumentException("Major must be > 0 and minor >= 0 and revision >= 0");
+            throw new IllegalArgumentException("Major must be > 0 and minor >= 0 and revision >= 0.");
         }
 
         this.major = major;
@@ -77,7 +77,7 @@ public class Version implements Comparable<Version> {
      */
     public static Version parseFromString(String version) {
         if (version == null || version.isEmpty()) {
-            throw new IllegalArgumentException("Version must not be null or empty");
+            throw new IllegalArgumentException("Version must not be null or empty.");
         }
         String[] split = version.split("[.-]", 4);
         try {
@@ -92,7 +92,7 @@ public class Version implements Comparable<Version> {
             }
             return new Version(major, minor, revision);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Major, minor, and revision must be integers");
+            throw new IllegalArgumentException("Major, minor, and revision must be integers.");
         }
     }
 

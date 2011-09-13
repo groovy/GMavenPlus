@@ -54,7 +54,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
             try {
                 doCompile(getTestSources(), getProjectClasspathElements(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
                 throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
             } catch (InstantiationException e) {
@@ -67,7 +67,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
             }
         } else {
-            getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true");
+            getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true.");
         }
     }
 

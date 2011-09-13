@@ -42,10 +42,10 @@ public class ReflectionUtils {
      */
     public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
         if (clazz == null) {
-            throw new IllegalArgumentException("Class must not be null");
+            throw new IllegalArgumentException("Class must not be null.");
         }
         if (name == null) {
-            throw new IllegalArgumentException("Method name must not be null");
+            throw new IllegalArgumentException("Method name must not be null.");
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
@@ -57,7 +57,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ")");
+        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ").");
     }
 
     /**
@@ -71,7 +71,7 @@ public class ReflectionUtils {
      */
     public static Constructor findConstructor(Class<?> clazz, Class<?>... paramTypes) {
         if (clazz == null) {
-            throw new IllegalArgumentException("Class must not be null");
+            throw new IllegalArgumentException("Class must not be null.");
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
@@ -83,7 +83,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ")");
+        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ").");
     }
 
     /**
@@ -100,7 +100,7 @@ public class ReflectionUtils {
      */
     public static Object invokeMethod(Method method, Object target, Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
-            throw new IllegalArgumentException("Method must not be null");
+            throw new IllegalArgumentException("Method must not be null.");
         }
         return method.invoke(target, args);
     }
@@ -118,7 +118,7 @@ public class ReflectionUtils {
      */
     public static Object invokeStaticMethod(Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
-            throw new IllegalArgumentException("Method must not be null");
+            throw new IllegalArgumentException("Method must not be null.");
         }
         return method.invoke(args);
     }
@@ -137,7 +137,7 @@ public class ReflectionUtils {
             throw new IllegalArgumentException("Class must not be null");
         }
         if (name == null && type == null) {
-            throw new IllegalArgumentException("Either name or type of the field must be specified");
+            throw new IllegalArgumentException("Either name or type of the field must be specified.");
         }
         Class<?> searchType = clazz;
         while (!Object.class.equals(searchType) && searchType != null) {
@@ -149,7 +149,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find " + type.getName() + " " + name);
+        throw new IllegalArgumentException("Unable to find " + type.getName() + " " + name + ".");
     }
 
     /**
@@ -160,6 +160,7 @@ public class ReflectionUtils {
      * @param field the field to get
      * @param target the target object from which to get the field
      * @return the field's current value
+     * @throws IllegalAccessException
      */
     public static Object getField(Field field, Object target) throws IllegalAccessException {
         boolean accessible = field.isAccessible();
@@ -176,6 +177,7 @@ public class ReflectionUtils {
      * has a primitive type.
      * @param field the field to get
      * @return the field's current value
+     * @throws IllegalAccessException
      */
     public static Object getField(Field field) throws IllegalAccessException {
         return getField(field, null);

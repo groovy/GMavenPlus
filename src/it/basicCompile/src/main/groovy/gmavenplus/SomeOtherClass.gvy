@@ -17,7 +17,7 @@
 package gmavenplus
 
 
-class SomeClass {
+class SomeOtherClass {
     String someMethod() {
         return "Hello, world."
     }
