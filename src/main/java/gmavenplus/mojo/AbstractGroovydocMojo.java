@@ -66,21 +66,21 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     /**
      * Window title
      *
-     * @parameter default-value="Groovy Documentation1"
+     * @parameter default-value="Groovy Documentation"
      */
     protected String windowTitle;
 
     /**
      * Page title
      *
-     * @parameter default-value="Groovy Documentation2"
+     * @parameter default-value="Groovy Documentation"
      */
     protected String docTitle;
 
     /**
      * Page footer
      *
-     * @parameter default-value="Groovy Documentation3"
+     * @parameter default-value="Groovy Documentation"
      */
     protected String footer;
 
