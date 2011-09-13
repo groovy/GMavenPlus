@@ -92,12 +92,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level, should be one of below values
-     *
-     * * NONE 0
-     * * LIKELY_ERRORS 1
-     * * POSSIBLE_ERRORS 2
-     * * PARANOIA 3
+     * Groovy compiler warning level, should be one of
+     * "0" (None)
+     * "1" (Likely Errors)
+     * "2" (Possible Errors)
+     * "3" (Paranoia)
      *
      * @parameter default-value="0"
      */
