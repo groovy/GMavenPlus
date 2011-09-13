@@ -145,7 +145,7 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn GMavenPlus-Plugin:groovydoc>>>, Groovydoc will be generated for the main sources.
+ When you execute <<<mvn gmavenplus:groovydoc>>>, Groovydoc will be generated for the main sources.
 
 
 * {Add Groovydoc to Site}
@@ -256,4 +256,4 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn GMavenPlus-Plugin:execute>>>, your scripts will be executed.
+ When you execute <<<mvn gmavenplus:execute>>>, your scripts will be executed.
