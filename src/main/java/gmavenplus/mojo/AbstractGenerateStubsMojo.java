@@ -147,7 +147,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
             }
         } else {
             FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "test" + File.separator + "groovy";
             fileSet.setDirectory(directory);
             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
             for (String file : fileSetManager.getIncludedFiles(fileSet)) {
