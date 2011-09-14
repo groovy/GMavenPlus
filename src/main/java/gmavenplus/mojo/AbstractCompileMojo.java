@@ -200,12 +200,16 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
             getLog().debug("Classpath: ");
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
-                getLog().debug("    " + classpathElement);
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("    " + classpathElement);
+                }
             }
         }
         Object transformLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class).newInstance(getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
-        getLog().debug("Compiling " + sources.size() + " sources.");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Compiling " + sources.size() + " sources.");
+        }
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
@@ -216,9 +220,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         // log compiled classes
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
         if (getLog().isDebugEnabled()) {
-            getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes:");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes:");
+            }
             for (Object aClass : classes) {
-                getLog().debug("    " + ((Class) aClass).getName());
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("    " + ((Class) aClass).getName());
+                }
             }
         }
     }

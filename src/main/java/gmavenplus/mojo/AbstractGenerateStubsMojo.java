@@ -19,8 +19,6 @@ package gmavenplus.mojo;
 import gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -223,7 +221,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
-        getLog().debug("Generating stubs for " + sources.size() + " sources.");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Generating stubs for " + sources.size() + " sources.");
+        }
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
         }
@@ -234,7 +234,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         // log compiled classes
         Integer stubCount = (Integer) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getStubCount"), javaStubCompilationUnit);
         if (getLog().isDebugEnabled()) {
-            getLog().debug("Generated " + stubCount + " stubs: ");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Generated " + stubCount + " stubs: ");
+            }
         }
     }
 
