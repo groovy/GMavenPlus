@@ -46,6 +46,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
             logGroovyVersion("generateTestStubs");
+
             try {
                 doStubGeneration(getTestSources(), testStubsOutputDirectory);
                 resetStubModifiedDates(getTestStubs());
