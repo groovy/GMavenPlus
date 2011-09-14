@@ -221,9 +221,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Generating stubs for " + sources.size() + " sources.");
-        }
+        getLog().debug("Generating stubs for " + sources.size() + " sources.");
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
         }
@@ -233,11 +231,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
         // log compiled classes
         Integer stubCount = (Integer) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getStubCount"), javaStubCompilationUnit);
-        if (getLog().isDebugEnabled()) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Generated " + stubCount + " stubs: ");
-            }
-        }
+        getLog().debug("Generated " + stubCount + " stubs: ");
     }
 
     /**
