@@ -16,6 +16,7 @@
 
 package gmavenplus.mojo;
 
+import gmavenplus.util.DotGroovyFile;
 import gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +35,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
-     * Note that only files ending in .groovy are currently accepted.
      *
      * @parameter
      */
@@ -50,7 +50,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
-     * Note that only files ending in .groovy are currently accepted.
      *
      * @parameter
      */
@@ -225,8 +224,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
         getLog().debug("Generating stubs for " + sources.size() + " sources.");
         for (File source : sources) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
         }
+        /* I'm not sure why, but whenever I try to use the
+         * JavaStubCompilationUnit.addSources(File[]) to avoid the .groovy
+         * extension limitation, I get a "java.lang.IllegalArgumentException: wrong number of arguments".
+         * So for now, will use my DotGroovyFile hack.
+         */
 
         // generate the stubs
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);

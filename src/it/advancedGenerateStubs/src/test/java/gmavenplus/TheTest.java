@@ -29,11 +29,10 @@ public class TheTest {
         Assert.assertTrue(generatedStub.exists());
     }
 
-    // commented out until workaround for the JavaStubCompilationUnit.addSource() file extension limitation
-//    @Test
-//    public void testSomeOtherClassExists() {
-//        File generatedStub = new File("target/generated-sources/groovy-stubs/main/gmavenplus/SomeOtherClass.java");
-//        Assert.assertTrue(generatedStub.exists());
-//    }
+    @Test
+    public void testSomeOtherClassExists() {
+        File generatedStub = new File("target/generated-sources/groovy-stubs/main/gmavenplus/SomeOtherClass.java");
+        Assert.assertTrue(generatedStub.exists());
+    }
 
 }
