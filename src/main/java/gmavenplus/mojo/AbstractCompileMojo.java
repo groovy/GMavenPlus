@@ -183,7 +183,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
 
         // set up compile options
-        Object compilerConfiguration = ReflectionUtils.findConstructor(compilerConfigurationClass).newInstance();
+        Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
@@ -194,7 +194,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
         ClassLoader parent = ClassLoader.getSystemClassLoader();
-        Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
         // append project classpath to groovyClassLoader
         if (classpath != null) {
             getLog().debug("Classpath: ");
@@ -203,8 +203,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
                 getLog().debug("    " + classpathElement);
             }
         }
-        Object transformLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class).newInstance(getClass().getClassLoader());
-        Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
+        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
+        Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Compiling " + sources.size() + " sources.");
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);

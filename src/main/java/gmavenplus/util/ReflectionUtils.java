@@ -102,13 +102,12 @@ public class ReflectionUtils {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
+        method.setAccessible(true);
         return method.invoke(target, args);
     }
 
     /**
-     * Invoke the specified {@link Method} against the supplied target object with the
-     * supplied arguments. The target object can be <code>null</code> when invoking a
-     * static {@link Method}.
+     * Invoke the specified static {@link Method} with the supplied arguments.
      *
      * @param method the method to invoke
      * @param args the invocation arguments (may be <code>null</code>)
@@ -120,7 +119,25 @@ public class ReflectionUtils {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
+        method.setAccessible(true);
         return method.invoke(args);
+    }
+
+    /**
+     * Invoke the specified {@link Constructor}  with the supplied arguments.
+     *
+     * @param constructor the method to invoke
+     * @param args the invocation arguments (may be <code>null</code>)
+     * @return the invocation result, if any
+     * @throws IllegalAccessException
+     * @throws java.lang.reflect.InvocationTargetException
+     */
+    public static Object invokeConstructor(Constructor constructor, Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        if (constructor == null) {
+            throw new IllegalArgumentException("Constructor must not be null.");
+        }
+        constructor.setAccessible(true);
+        return constructor.newInstance(args);
     }
 
     /**
@@ -163,11 +180,8 @@ public class ReflectionUtils {
      * @throws IllegalAccessException
      */
     public static Object getField(Field field, Object target) throws IllegalAccessException {
-        boolean accessible = field.isAccessible();
         field.setAccessible(true);
-        Object value = field.get(target);
-        field.setAccessible(accessible);
-        return value;
+        return field.get(target);
     }
 
     /**

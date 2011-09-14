@@ -198,12 +198,12 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         } catch (IllegalArgumentException e) {
             getLog().warn("Scope (" + scope + ") was not recognized.  Skipping argument.");
         }
-        Object fileOutputTool = ReflectionUtils.findConstructor(fileOutputToolClass).newInstance();
-        Object classpathResourceManager = ReflectionUtils.findConstructor(classpathResourceManagerClass).newInstance();
+        Object fileOutputTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(fileOutputToolClass));
+        Object classpathResourceManager = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classpathResourceManagerClass));
 
         // generate Groovydoc
         for (FileSet sourceDirectory : sourceDirectories) {
-            Object groovyDocTool = ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class).newInstance(
+            Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     new String[] {sourceDirectory.getDirectory()},
                     ReflectionUtils.getField(ReflectionUtils.findField(groovyDocTemplateInfoClass, "DEFAULT_DOC_TEMPLATES", String[].class)),
