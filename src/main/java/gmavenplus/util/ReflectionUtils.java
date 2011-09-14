@@ -131,6 +131,7 @@ public class ReflectionUtils {
      * @return the invocation result, if any
      * @throws IllegalAccessException
      * @throws java.lang.reflect.InvocationTargetException
+     * @throws InstantiationException
      */
     public static Object invokeConstructor(Constructor constructor, Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (constructor == null) {
