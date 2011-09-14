@@ -5,15 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>GMavenPlus</groupId>
-  <artifactId>GMavenPlus-Plugin-it-basicCompile</artifactId>
+  <artifactId>GMavenPlus-Plugin-it-basicGenerateStubs</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Basic Compile Test</name>
-  <description>The simplest compile use case</description>
+  <name>GMavenPlus Plugin Basic Generate Stubs Test</name>
+  <description>The simplest generate stubs use case</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <groovyVersion>1.8.1</groovyVersion>
+    <groovyVersion>1.8.2</groovyVersion>
     <junitVersion>4.8.2</junitVersion>
   </properties>
 
@@ -43,6 +43,8 @@
             <goals>
               <goal>compile</goal>
               <goal>testCompile</goal>
+              <goal>generateStubs</goal>
+              <goal>testGenerateStubs</goal>
             </goals>
           </execution>
         </executions>

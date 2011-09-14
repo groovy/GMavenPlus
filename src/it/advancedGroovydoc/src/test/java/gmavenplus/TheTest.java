@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package gmavenplus
+package gmavenplus;
+
+import java.io.File;
+import org.junit.Assert;
+import org.junit.Test;
 
 
-class SomeClass {
+public class TheTest {
 
-    String someMethod() {
-        return "Hello, world."
+    @Test
+    public void testSomeClassExists() {
+        File generatedGroovydoc = new File("target/gapidocs/gmavenplus/SomeClass.html");
+        Assert.assertTrue(generatedGroovydoc.exists());
+    }
+
+    @Test
+    public void testSomeOtherClassExists() {
+        File generatedGroovydoc = new File("target/gapidocs/gmavenplus/SomeOtherClass.html");
+        Assert.assertTrue(generatedGroovydoc.exists());
     }
 
 }

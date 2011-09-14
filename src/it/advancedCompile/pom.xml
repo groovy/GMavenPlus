@@ -5,15 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>GMavenPlus</groupId>
-  <artifactId>GMavenPlus-Plugin-it-basicCompile</artifactId>
+  <artifactId>GMavenPlus-Plugin-it-advancedCompile</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Basic Compile Test</name>
-  <description>The simplest compile use case</description>
+  <name>GMavenPlus Plugin Advanced Compile Test</name>
+  <description>The kitchen sink of compile use cases</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <groovyVersion>1.8.1</groovyVersion>
+    <groovyVersion>1.7.10</groovyVersion>
     <junitVersion>4.8.2</junitVersion>
   </properties>
 
@@ -46,6 +46,22 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sources>
+            <source>
+              <directory>src/main/groovy</directory>
+              <includes>
+                <include>**/*.groovy</include>
+                <include>**/*.gvy</include>
+              </includes>
+            </source>
+          </sources>
+          <targetBytecode>1.5</targetBytecode>
+          <sourceEncoding>UTF-8</sourceEncoding>
+          <debug>true</debug>
+          <warningLevel>0</warningLevel>
+          <tolerance>0</tolerance>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

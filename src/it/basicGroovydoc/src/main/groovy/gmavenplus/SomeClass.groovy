@@ -17,10 +17,18 @@
 package gmavenplus
 
 
+/**
+* Some Example Cass
+*
+* @author Keegan Witt
+* @version super awesome
+*/
 class SomeClass {
 
-    String someMethod() {
-        return "Hello, world."
-    }
+   /**
+    * This method does absolutely nothing
+    * @param unusedParam a useless parameter
+    */
+   void doNothing(String unusedParam) {}
 
 }

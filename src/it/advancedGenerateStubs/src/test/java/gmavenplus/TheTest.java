@@ -16,16 +16,24 @@
 
 package gmavenplus;
 
+import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
 
-public class SomeClassTest {
+public class TheTest {
 
     @Test
-    public void testSomeMethod() {
-        SomeClass someClass = new SomeClass();
-        Assert.assertEquals("Hello, world.", someClass.someMethod());
+    public void testSomeClassExists() {
+        File generatedStub = new File("target/generated-sources/groovy-stubs/main/gmavenplus/SomeClass.java");
+        Assert.assertTrue(generatedStub.exists());
     }
+
+    // commented out until workaround for the JavaStubCompilationUnit.addSource() file extension limitation
+//    @Test
+//    public void testSomeOtherClassExists() {
+//        File generatedStub = new File("target/generated-sources/groovy-stubs/main/gmavenplus/SomeOtherClass.java");
+//        Assert.assertTrue(generatedStub.exists());
+//    }
 
 }

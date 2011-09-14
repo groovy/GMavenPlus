@@ -5,10 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>GMavenPlus</groupId>
-  <artifactId>GMavenPlus-Plugin-it-generateStubs</artifactId>
+  <artifactId>GMavenPlus-Plugin-it-advancedGenerateStubs</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Generate Stubs Test</name>
+  <name>GMavenPlus Plugin Advanced Generate Stubs Test</name>
+  <description>The kitchen sink of stub generation use cases</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,6 +48,17 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sources>
+            <source>
+              <directory>src/main/groovy</directory>
+              <includes>
+                <include>**/*.groovy</include>
+                <include>**/*.gvy</include>
+              </includes>
+            </source>
+          </sources>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -64,17 +76,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <!--<reporting>-->
-    <!--<plugins>-->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-        <!--<version>2.8</version>-->
-        <!--<configuration>-->
-        <!--</configuration>-->
-      <!--</plugin>-->
-    <!--</plugins>-->
-  <!--</reporting>-->
 
 </project>

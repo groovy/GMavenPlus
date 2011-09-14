@@ -1,5 +1,6 @@
 import org.junit.Test
 
+
 class HelloWorldMojoTest {
     HelloWorldMojo mojo = new HelloWorldMojo()
 
