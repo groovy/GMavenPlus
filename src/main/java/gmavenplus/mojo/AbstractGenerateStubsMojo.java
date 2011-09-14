@@ -34,6 +34,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
+     * Note that only files ending in .groovy are currently accepted.
      *
      * @parameter
      */
@@ -49,6 +50,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
+     * Note that only files ending in .groovy are currently accepted.
      *
      * @parameter
      */
