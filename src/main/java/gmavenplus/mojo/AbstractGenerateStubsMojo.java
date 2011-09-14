@@ -85,12 +85,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level, should be one of below values
-     *
-     * * NONE 0
-     * * LIKELY_ERRORS 1
-     * * POSSIBLE_ERRORS 2
-     * * PARANOIA 3
+     * Groovy compiler warning level, should be one of
+     * "0" (None)
+     * "1" (Likely Errors)
+     * "2" (Possible Errors)
+     * "3" (Paranoia)
      *
      * @parameter default-value="0"
      */
@@ -113,6 +112,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         if (sources != null) {
+            getLog().info("+++Sources were not null+++");
             for (FileSet fileSet : sources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
                     files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
@@ -224,7 +224,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass).newInstance(parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
-        getLog().debug("Compiling " + sources.size() + " sources.");
+        getLog().debug("Generating stubs for " + sources.size() + " sources.");
         for (File source : sources) {
             URL url = null;
             try {
