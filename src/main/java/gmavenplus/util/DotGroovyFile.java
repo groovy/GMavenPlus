@@ -69,8 +69,8 @@ public class DotGroovyFile extends File {
     }
 
     /**
-     * A method to lie about the file extension and say it is ".groovy" as long
-     * as the original extension was now ".java"
+     * A method to lie about the file extension and say it is ".groovy" (as long
+     * as the original extension was not ".java")
      *
      * @return
      */
