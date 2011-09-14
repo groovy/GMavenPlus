@@ -27,6 +27,7 @@ import java.net.URI;
  * @author Keegan Witt
  */
 public class DotGroovyFile extends File {
+    // TODO: make this class unnecessary?
 
     /**
      * @param pathname
