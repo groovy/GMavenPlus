@@ -225,13 +225,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         Object javaStubCompilationUnit = ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class).newInstance(compilerConfiguration, groovyClassLoader, outputDirectory);
         getLog().debug("Generating stubs for " + sources.size() + " sources.");
         for (File source : sources) {
-            URL url = null;
-            try {
-                url = source.toURI().toURL();
-            } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for stub generation.", e);
-            }
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", URL.class), javaStubCompilationUnit, url);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
         }
 
         // compile the classes

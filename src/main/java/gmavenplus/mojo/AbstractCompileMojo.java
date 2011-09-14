@@ -207,13 +207,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         Object compilationUnit = ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass).newInstance(compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Compiling " + sources.size() + " sources.");
         for (File source : sources) {
-            URL url = null;
-            try {
-                url = source.toURI().toURL();
-            } catch (MalformedURLException e) {
-                getLog().error("Unable to add source file " + source.getAbsolutePath() + " for compiling.", e);
-            }
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", URL.class), compilationUnit, url);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
 
         // compile the classes
