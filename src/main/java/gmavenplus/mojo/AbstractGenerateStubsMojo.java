@@ -112,7 +112,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         if (sources != null) {
-            getLog().info("+++Sources were not null+++");
             for (FileSet fileSet : sources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
                     files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
