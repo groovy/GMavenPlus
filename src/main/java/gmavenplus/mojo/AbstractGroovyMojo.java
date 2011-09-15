@@ -16,8 +16,7 @@
 
 package gmavenplus.mojo;
 
-import gmavenplus.util.ReflectionUtils;
-import java.lang.reflect.InvocationTargetException;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
@@ -63,24 +62,33 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
+     * Gets the version of Groovy used from the dependency information
+     *
      * @return
      */
     protected String getGroovyVersion() {
         String groovyVersion = null;
 
-        try {
-            /* This method is considered to be for internal-only use by the Groovy folks, but the preferred method
-             * <code>groovy.lang.GroovySystem.getVersion()</code> was not added until 1.6.6.  So to reliably get the
-             * information we need, we're going to use this method anyway.
-             */
-            Class InvokerHelperClass = Class.forName("org.codehaus.groovy.runtime.InvokerHelper");
-            groovyVersion = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(InvokerHelperClass, "getVersion"));
-        } catch (ClassNotFoundException e) {
-            getLog().warn("Unable to log Groovy Version.", e);
-        } catch (IllegalAccessException e) {
-            getLog().warn("Unable to log Groovy Version.", e);
-        } catch (InvocationTargetException e) {
-            getLog().warn("Unable to log Groovy Version.", e);
+        /*
+         * You can call InvokerHelper.getVersion() for versions 1.0 - 1.8.x but
+         * not for 1.9+
+         * You can call GroovySystem.getVersion() for versions 1.6.6+
+         * And for some reason InvokerHelper.getVersion() was returning an empty
+         * String for 1.5.0, so I decided to just get it from the dependency itself.
+         */
+
+        for (Object dependency : project.getCompileDependencies()) {
+            Dependency dep = (Dependency) dependency;
+            if (dep.getGroupId().equals("org.codehaus.groovy") &&
+                    (dep.getArtifactId().equals("groovy-all") || dep.getArtifactId().equals("groovy")) &&
+                    dep.getType().equals("jar")) {
+                groovyVersion = dep.getVersion();
+                break;
+            }
+        }
+
+        if (groovyVersion == null || groovyVersion.isEmpty()) {
+            getLog().error("Unable to determine Groovy version.");
         }
 
         return groovyVersion;

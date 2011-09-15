@@ -176,7 +176,7 @@ public class Version implements Comparable<Version> {
         int mine = (100 * major) + (10 * minor) + revision;
         int theirs = (100 * version.major) + (10 * version.minor) + version.revision;
 
-        if (mine == theirs) {
+        if (mine == theirs && tag != null && version.tag != null) {
             return tag.compareTo(version.tag);
         } else {
             return mine - theirs;

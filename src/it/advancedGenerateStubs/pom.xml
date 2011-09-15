@@ -13,7 +13,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <groovyVersion>1.8.2</groovyVersion>
+    <!-- use an ancient version to make sure things work even all the way back then -->
+    <groovyVersion>1.7.0</groovyVersion>
     <junitVersion>4.8.2</junitVersion>
   </properties>
 

@@ -16,13 +16,12 @@
 
 package gmavenplus.mojo;
 
+import gmavenplus.model.Version;
 import gmavenplus.util.DotGroovyFile;
 import gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
@@ -68,6 +67,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @parameter default-value="${project.build.sourceEncoding}"
      */
     protected String sourceEncoding;
+
+    /**
+     * Groovy compiler bytecode compatibility ("1.4" or "1.5")
+     *
+     * @parameter default-value="1.5"
+     */
+    protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug or not
@@ -215,29 +221,48 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
+//        Map<String,Object> options = new HashMap<String,Object>();
+//        options.put("destDir", outputDirectory.getAbsolutePath());
+//        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
         getLog().debug("Generating stubs for " + sources.size() + " sources.");
-        for (File source : sources) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
-        }
+        // TODO: call CompilerConfiguration.setScriptExtensions()
         /* I'm not sure why, but whenever I try to use the
          * JavaStubCompilationUnit.addSources(File[]) to avoid the .groovy
          * extension limitation, I get a "java.lang.IllegalArgumentException: wrong number of arguments".
          * So for now, will use my DotGroovyFile hack.
          */
+        for (File source : sources) {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
+        }
 
         // generate the stubs
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
 
         // log generated stubs
-        Integer stubCount = (Integer) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getStubCount"), javaStubCompilationUnit);
-        getLog().debug("Generated " + stubCount + " stubs.");
+        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 7, 0)) >= 0) {
+            Integer stubCount = (Integer) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getStubCount"), javaStubCompilationUnit);
+            getLog().debug("Generated " + stubCount + " stubs.");
+        }
+    }
+
+    /**
+     * Determines whether this mojo can be run with the version of Groovy supplied.
+     * Must be >= 1.6.0 because not all the classes needed were available in
+     * previous versions.
+     *
+     * @return
+     */
+    protected boolean groovyVersionSupportsAction() {
+        // TODO: get working with >= 1.5.0
+        return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 6, 0)) >= 0;
     }
 
     /**

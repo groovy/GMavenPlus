@@ -26,7 +26,8 @@ public class SomeClassTest {
     @Test
     public void testSomeMethod() {
         File generatedStub = new File("target/generated-sources/groovy-stubs/main/gmavenplus/SomeClass.java");
-        Assert.assertTrue(generatedStub.exists());
+        Assert.assertTrue(generatedStub + " does not exist.", generatedStub.exists());
+        Assert.assertTrue(generatedStub + " is empty.", generatedStub.length() > 0);
     }
 
 }
