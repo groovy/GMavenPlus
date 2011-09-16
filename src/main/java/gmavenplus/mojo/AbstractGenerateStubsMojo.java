@@ -260,8 +260,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.7.0 because not all the classes needed were available in
-     * previous versions.
+     * Must be >= 1.7.0 because not all the classes needed were available and
+     * functioning correctly in previous versions.
      *
      * @return
      */
