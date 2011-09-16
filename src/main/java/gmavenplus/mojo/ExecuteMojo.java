@@ -100,9 +100,9 @@ public class ExecuteMojo extends AbstractGroovyMojo {
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
-            throw new MojoExecutionException("Unable to call a method on a Groovy class from classpath.", e);
+            throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
         } catch (InstantiationException e) {
-            throw new MojoExecutionException("Unable to instantiate a Groovy class from classpath.", e);
+            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
         } catch (IllegalAccessException e) {
             throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
         }
