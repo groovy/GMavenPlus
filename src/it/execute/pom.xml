@@ -8,7 +8,7 @@
   <artifactId>GMavenPlus-Plugin-it-execute</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Generate Execute Test</name>
+  <name>GMavenPlus Plugin Execute Test</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
