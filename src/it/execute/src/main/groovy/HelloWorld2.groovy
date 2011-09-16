@@ -15,5 +15,7 @@
  */
 
 
-new File('target').mkdir()
+File targetDir = new File('target')
+if (!targetDir.exists())
+    targetDir.mkdir()
 new File('target/helloWorld2.txt').append('Hello again world!')
