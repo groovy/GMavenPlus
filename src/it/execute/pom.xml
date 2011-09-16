@@ -21,14 +21,12 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy should work here -->
       <version>${groovyVersion}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.ivy</groupId>
       <artifactId>ivy</artifactId>
-      <!-- any version of Ivy should work here -->
       <version>${ivyVersion}</version>
       <scope>compile</scope>
     </dependency>

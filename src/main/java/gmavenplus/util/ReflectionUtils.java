@@ -197,4 +197,24 @@ public class ReflectionUtils {
     public static Object getField(Field field) throws IllegalAccessException {
         return getField(field, null);
     }
+
+    /**
+     *
+     * @param enumClass
+     * @param constantName
+     * @return
+     */
+    public static Object getEnumConstant(Class<?> enumClass, String constantName) {
+        if (enumClass.isEnum()) {
+            for ( Object o : enumClass.getEnumConstants()) {
+              if (o.toString().equals(constantName)) {
+                  return o;
+              }
+            }
+            throw new IllegalArgumentException("Unable to get an enum constant with that name.");
+        } else {
+            throw new IllegalArgumentException(enumClass + " must be an enum.");
+        }
+    }
+
 }

@@ -28,11 +28,17 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
- * Note that this mojo cannot be run on versions of Groovy before 1.5.0
+ * Note that this mojo cannot be run on versions of Groovy before 1.6.2
  *
  * @author Keegan Witt
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
+    // TODO: support Groovy 1.5.0 - 1.6.1?
+    /*
+     * For some reason some NPE about a rootDoc occurs with older versions
+     * (note that I used a different constructor and an addSource(File) instead
+     * of addSources(List<File>) because those didn't exist back then .
+     */
 
     /**
      * Groovy source files (relative paths).
@@ -164,11 +170,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      */
     protected void generateGroovydoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
-        Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
-        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
-        Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
-        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
-        Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class<?> groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
+        Class<?> outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
+        Class<?> fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
+        Class<?> resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
+        Class<?> classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
 
         // set up Groovydoc options
         List links = new ArrayList();
@@ -204,65 +210,54 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         // generate Groovydoc
         for (FileSet sourceDirectory : sourceDirectories) {
             Object groovyDocTool;
-            if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 2)) >= 0) {
-                groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
-                        classpathResourceManager,
-                        new String[] {sourceDirectory.getDirectory()},
-                        GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
-                        GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
-                        GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
-                        links,
-                        properties
-                );
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
-            } else {
-                groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),
-                        classpathResourceManager,
-                        sourceDirectory.getDirectory(),
-                        GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
-                        GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
-                        GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES
-                );
-                for (String source : getSources(sourceDirectory)) {
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", String.class), groovyDocTool, source);
-                }
-            }
-
+            groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
+                    classpathResourceManager,
+                    new String[] {sourceDirectory.getDirectory()},
+                    GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
+                    GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
+                    GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
+                    links,
+                    properties
+            );
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
         }
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
         if (stylesheetFile != null) {
-            getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
-            try {
-                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
-                StringBuilder css = new StringBuilder();
-                String line;
-                while ((line = in.readLine()) != null) {
-                    css.append(line).append("\n");
-                }
-                in.close();
-                File outfile = new File(outputDirectory, "stylesheet.css");
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
-                out.write(css.toString());
-                out.flush();
-                out.close();
-            } catch (IOException e) {
-                getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").", e);
+            copyStylesheet(outputDirectory);
+        }
+    }
+
+    private void copyStylesheet(File outputDirectory) {
+        getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
+            StringBuilder css = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                css.append(line).append("\n");
             }
+            in.close();
+            File outfile = new File(outputDirectory, "stylesheet.css");
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
+            out.write(css.toString());
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").", e);
         }
     }
 
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.7.0 because not all the classes needed were available in
-     * previous versions.
+     * Must be >= 1.6.2 because not all the classes/methods needed were available
+     * and functioning correctly in previous versions.
      *
      * @return
      */
     protected boolean groovyVersionSupportsAction() {
-        // TODO: get working with >= 1.5.0
-        return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 7, 0)) >= 0;
+        return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 6, 2)) >= 0;
     }
 
     /**

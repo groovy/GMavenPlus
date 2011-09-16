@@ -14,7 +14,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- use an ancient version to make sure things work even all the way back then -->
-    <groovyVersion>1.7.0</groovyVersion>
+    <groovyVersion>1.6.2</groovyVersion>
     <junitVersion>4.8.2</junitVersion>
   </properties>
 

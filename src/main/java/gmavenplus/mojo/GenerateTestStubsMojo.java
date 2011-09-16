@@ -23,6 +23,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Generates stubs for the test sources
+ * (note that this mojo cannot be run on versions of Groovy before 1.7.0)
  *
  * @author Keegan Witt
  *

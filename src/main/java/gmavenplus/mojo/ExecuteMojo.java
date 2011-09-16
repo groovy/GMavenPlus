@@ -62,7 +62,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
 
         try {
             // get classes we need with reflection
-            Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+            Class<?> groovyShellClass = Class.forName("groovy.lang.GroovyShell");
 
             // create a GroovyShell to run scripts in
             Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
@@ -75,7 +75,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                 try {
                     URL url = new URL(script);
                     // it's a URL to a script
-                    getLog().debug("Fetching Groovy script from " + url.toString() + ".");
+                    getLog().info("Fetching Groovy script from " + url.toString() + ".");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
                     StringBuilder scriptSource = new StringBuilder();
                     String line;

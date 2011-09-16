@@ -178,9 +178,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected void doCompile(Set<File> sources, List classpath, File outputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
-        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
-        Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit");
-        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
+        Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
+        Class<?> compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit");
+        Class<?> groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
@@ -215,7 +215,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
         // log compiled classes
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
-        getLog().debug("Compiled " + String.valueOf(classes.size()) + " classes.");
+        getLog().info("Compiled " + String.valueOf(classes.size()) + " classes.");
     }
 
     /**
