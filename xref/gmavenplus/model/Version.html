@@ -110,90 +110,86 @@
 <a class="jxr_linenumber" name="100" href="#100">100</a> <em class="jxr_javadoccomment">     * @param obj</em>
 <a class="jxr_linenumber" name="101" href="#101">101</a> <em class="jxr_javadoccomment">     * @return</em>
 <a class="jxr_linenumber" name="102" href="#102">102</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="103" href="#103">103</a>     @Override
-<a class="jxr_linenumber" name="104" href="#104">104</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> equals(Object obj) {
-<a class="jxr_linenumber" name="105" href="#105">105</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong> == obj) {
-<a class="jxr_linenumber" name="106" href="#106">106</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="107" href="#107">107</a>         }
-<a class="jxr_linenumber" name="108" href="#108">108</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (obj == <strong class="jxr_keyword">null</strong> || getClass() != obj.getClass()) {
-<a class="jxr_linenumber" name="109" href="#109">109</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="110" href="#110">110</a>         }
-<a class="jxr_linenumber" name="111" href="#111">111</a> 
-<a class="jxr_linenumber" name="112" href="#112">112</a>         <a href="../../gmavenplus/model/Version.html">Version</a> version = (Version) obj;
-<a class="jxr_linenumber" name="113" href="#113">113</a> 
-<a class="jxr_linenumber" name="114" href="#114">114</a>         <strong class="jxr_keyword">if</strong> (major != version.major) {
-<a class="jxr_linenumber" name="115" href="#115">115</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="116" href="#116">116</a>         }
-<a class="jxr_linenumber" name="117" href="#117">117</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (minor != version.minor) {
-<a class="jxr_linenumber" name="118" href="#118">118</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="119" href="#119">119</a>         }
-<a class="jxr_linenumber" name="120" href="#120">120</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (revision != version.revision) {
-<a class="jxr_linenumber" name="121" href="#121">121</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="122" href="#122">122</a>         }
-<a class="jxr_linenumber" name="123" href="#123">123</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tag != <strong class="jxr_keyword">null</strong> ? !tag.equals(version.tag) : version.tag != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="124" href="#124">124</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="125" href="#125">125</a>         }
-<a class="jxr_linenumber" name="126" href="#126">126</a> 
-<a class="jxr_linenumber" name="127" href="#127">127</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="128" href="#128">128</a>     }
-<a class="jxr_linenumber" name="129" href="#129">129</a> 
-<a class="jxr_linenumber" name="130" href="#130">130</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="131" href="#131">131</a> <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="132" href="#132">132</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="133" href="#133">133</a>     @Override
-<a class="jxr_linenumber" name="134" href="#134">134</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> hashCode() {
-<a class="jxr_linenumber" name="135" href="#135">135</a>         <strong class="jxr_keyword">int</strong> result;
-<a class="jxr_linenumber" name="136" href="#136">136</a> 
-<a class="jxr_linenumber" name="137" href="#137">137</a>         result = major;
-<a class="jxr_linenumber" name="138" href="#138">138</a>         result = 31 * result + minor;
-<a class="jxr_linenumber" name="139" href="#139">139</a>         result = 31 * result + revision;
-<a class="jxr_linenumber" name="140" href="#140">140</a>         result = 31 * result + (tag != <strong class="jxr_keyword">null</strong> ? tag.hashCode() : 0);
-<a class="jxr_linenumber" name="141" href="#141">141</a> 
-<a class="jxr_linenumber" name="142" href="#142">142</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="143" href="#143">143</a>     }
-<a class="jxr_linenumber" name="144" href="#144">144</a> 
-<a class="jxr_linenumber" name="145" href="#145">145</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="146" href="#146">146</a> <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="147" href="#147">147</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="148" href="#148">148</a>     @Override
-<a class="jxr_linenumber" name="149" href="#149">149</a>     <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="150" href="#150">150</a>         StringBuilder buff = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="151" href="#151">151</a> 
-<a class="jxr_linenumber" name="152" href="#152">152</a>         buff.append(major);
-<a class="jxr_linenumber" name="153" href="#153">153</a> 
-<a class="jxr_linenumber" name="154" href="#154">154</a>         <strong class="jxr_keyword">if</strong> (minor != -1) {
-<a class="jxr_linenumber" name="155" href="#155">155</a>             buff.append(<span class="jxr_string">"."</span>).append(minor);
+<a class="jxr_linenumber" name="103" href="#103">103</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> equals(Object obj) {
+<a class="jxr_linenumber" name="104" href="#104">104</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong> == obj) {
+<a class="jxr_linenumber" name="105" href="#105">105</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="106" href="#106">106</a>         }
+<a class="jxr_linenumber" name="107" href="#107">107</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (obj == <strong class="jxr_keyword">null</strong> || getClass() != obj.getClass()) {
+<a class="jxr_linenumber" name="108" href="#108">108</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="109" href="#109">109</a>         }
+<a class="jxr_linenumber" name="110" href="#110">110</a> 
+<a class="jxr_linenumber" name="111" href="#111">111</a>         <a href="../../gmavenplus/model/Version.html">Version</a> version = (Version) obj;
+<a class="jxr_linenumber" name="112" href="#112">112</a> 
+<a class="jxr_linenumber" name="113" href="#113">113</a>         <strong class="jxr_keyword">if</strong> (major != version.major) {
+<a class="jxr_linenumber" name="114" href="#114">114</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="115" href="#115">115</a>         }
+<a class="jxr_linenumber" name="116" href="#116">116</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (minor != version.minor) {
+<a class="jxr_linenumber" name="117" href="#117">117</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="118" href="#118">118</a>         }
+<a class="jxr_linenumber" name="119" href="#119">119</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (revision != version.revision) {
+<a class="jxr_linenumber" name="120" href="#120">120</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="121" href="#121">121</a>         }
+<a class="jxr_linenumber" name="122" href="#122">122</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tag != <strong class="jxr_keyword">null</strong> ? !tag.equals(version.tag) : version.tag != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="123" href="#123">123</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="124" href="#124">124</a>         }
+<a class="jxr_linenumber" name="125" href="#125">125</a> 
+<a class="jxr_linenumber" name="126" href="#126">126</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="127" href="#127">127</a>     }
+<a class="jxr_linenumber" name="128" href="#128">128</a> 
+<a class="jxr_linenumber" name="129" href="#129">129</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="130" href="#130">130</a> <em class="jxr_javadoccomment">     * @return</em>
+<a class="jxr_linenumber" name="131" href="#131">131</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="132" href="#132">132</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> hashCode() {
+<a class="jxr_linenumber" name="133" href="#133">133</a>         <strong class="jxr_keyword">int</strong> result;
+<a class="jxr_linenumber" name="134" href="#134">134</a> 
+<a class="jxr_linenumber" name="135" href="#135">135</a>         result = major;
+<a class="jxr_linenumber" name="136" href="#136">136</a>         result = 31 * result + minor;
+<a class="jxr_linenumber" name="137" href="#137">137</a>         result = 31 * result + revision;
+<a class="jxr_linenumber" name="138" href="#138">138</a>         result = 31 * result + (tag != <strong class="jxr_keyword">null</strong> ? tag.hashCode() : 0);
+<a class="jxr_linenumber" name="139" href="#139">139</a> 
+<a class="jxr_linenumber" name="140" href="#140">140</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="141" href="#141">141</a>     }
+<a class="jxr_linenumber" name="142" href="#142">142</a> 
+<a class="jxr_linenumber" name="143" href="#143">143</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="144" href="#144">144</a> <em class="jxr_javadoccomment">     * @return</em>
+<a class="jxr_linenumber" name="145" href="#145">145</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="146" href="#146">146</a>     <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="147" href="#147">147</a>         StringBuilder buff = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="148" href="#148">148</a> 
+<a class="jxr_linenumber" name="149" href="#149">149</a>         buff.append(major);
+<a class="jxr_linenumber" name="150" href="#150">150</a> 
+<a class="jxr_linenumber" name="151" href="#151">151</a>         <strong class="jxr_keyword">if</strong> (minor != -1) {
+<a class="jxr_linenumber" name="152" href="#152">152</a>             buff.append(<span class="jxr_string">"."</span>).append(minor);
+<a class="jxr_linenumber" name="153" href="#153">153</a>         }
+<a class="jxr_linenumber" name="154" href="#154">154</a>         <strong class="jxr_keyword">if</strong> (revision != -1) {
+<a class="jxr_linenumber" name="155" href="#155">155</a>             buff.append(<span class="jxr_string">"."</span>).append(revision);
 <a class="jxr_linenumber" name="156" href="#156">156</a>         }
-<a class="jxr_linenumber" name="157" href="#157">157</a>         <strong class="jxr_keyword">if</strong> (revision != -1) {
-<a class="jxr_linenumber" name="158" href="#158">158</a>             buff.append(<span class="jxr_string">"."</span>).append(revision);
+<a class="jxr_linenumber" name="157" href="#157">157</a>         <strong class="jxr_keyword">if</strong> (tag != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="158" href="#158">158</a>             buff.append(<span class="jxr_string">"-"</span>).append(tag);
 <a class="jxr_linenumber" name="159" href="#159">159</a>         }
-<a class="jxr_linenumber" name="160" href="#160">160</a>         <strong class="jxr_keyword">if</strong> (tag != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="161" href="#161">161</a>             buff.append(<span class="jxr_string">"-"</span>).append(tag);
-<a class="jxr_linenumber" name="162" href="#162">162</a>         }
-<a class="jxr_linenumber" name="163" href="#163">163</a>         
-<a class="jxr_linenumber" name="164" href="#164">164</a>         <strong class="jxr_keyword">return</strong> buff.toString();
-<a class="jxr_linenumber" name="165" href="#165">165</a>     }
-<a class="jxr_linenumber" name="166" href="#166">166</a> 
-<a class="jxr_linenumber" name="167" href="#167">167</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="168" href="#168">168</a> <em class="jxr_javadoccomment">     * Compares versions.  Note that if the major, minor, and revision are all</em>
-<a class="jxr_linenumber" name="169" href="#169">169</a> <em class="jxr_javadoccomment">     * the same tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}</em>
-<a class="jxr_linenumber" name="170" href="#170">170</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="171" href="#171">171</a> <em class="jxr_javadoccomment">     * @param version</em>
-<a class="jxr_linenumber" name="172" href="#172">172</a> <em class="jxr_javadoccomment">     * @return</em>
-<a class="jxr_linenumber" name="173" href="#173">173</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="174" href="#174">174</a>     @Override
-<a class="jxr_linenumber" name="175" href="#175">175</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compareTo(<a href="../../gmavenplus/model/Version.html">Version</a> version) {
-<a class="jxr_linenumber" name="176" href="#176">176</a>         <strong class="jxr_keyword">int</strong> mine = (100 * major) + (10 * minor) + revision;
-<a class="jxr_linenumber" name="177" href="#177">177</a>         <strong class="jxr_keyword">int</strong> theirs = (100 * version.major) + (10 * version.minor) + version.revision;
-<a class="jxr_linenumber" name="178" href="#178">178</a> 
-<a class="jxr_linenumber" name="179" href="#179">179</a>         <strong class="jxr_keyword">if</strong> (mine == theirs) {
-<a class="jxr_linenumber" name="180" href="#180">180</a>             <strong class="jxr_keyword">return</strong> tag.compareTo(version.tag);
-<a class="jxr_linenumber" name="181" href="#181">181</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="182" href="#182">182</a>             <strong class="jxr_keyword">return</strong> mine - theirs;
-<a class="jxr_linenumber" name="183" href="#183">183</a>         }
-<a class="jxr_linenumber" name="184" href="#184">184</a>     }
-<a class="jxr_linenumber" name="185" href="#185">185</a> 
-<a class="jxr_linenumber" name="186" href="#186">186</a> }
+<a class="jxr_linenumber" name="160" href="#160">160</a>         
+<a class="jxr_linenumber" name="161" href="#161">161</a>         <strong class="jxr_keyword">return</strong> buff.toString();
+<a class="jxr_linenumber" name="162" href="#162">162</a>     }
+<a class="jxr_linenumber" name="163" href="#163">163</a> 
+<a class="jxr_linenumber" name="164" href="#164">164</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="165" href="#165">165</a> <em class="jxr_javadoccomment">     * Compares versions.  Note that if the major, minor, and revision are all</em>
+<a class="jxr_linenumber" name="166" href="#166">166</a> <em class="jxr_javadoccomment">     * the same tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}</em>
+<a class="jxr_linenumber" name="167" href="#167">167</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="168" href="#168">168</a> <em class="jxr_javadoccomment">     * @param version</em>
+<a class="jxr_linenumber" name="169" href="#169">169</a> <em class="jxr_javadoccomment">     * @return</em>
+<a class="jxr_linenumber" name="170" href="#170">170</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="171" href="#171">171</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compareTo(<a href="../../gmavenplus/model/Version.html">Version</a> version) {
+<a class="jxr_linenumber" name="172" href="#172">172</a>         <strong class="jxr_keyword">int</strong> mine = (100 * major) + (10 * minor) + revision;
+<a class="jxr_linenumber" name="173" href="#173">173</a>         <strong class="jxr_keyword">int</strong> theirs = (100 * version.major) + (10 * version.minor) + version.revision;
+<a class="jxr_linenumber" name="174" href="#174">174</a> 
+<a class="jxr_linenumber" name="175" href="#175">175</a>         <strong class="jxr_keyword">if</strong> (mine == theirs &amp;&amp; tag != <strong class="jxr_keyword">null</strong> &amp;&amp; version.tag != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="176" href="#176">176</a>             <strong class="jxr_keyword">return</strong> tag.compareTo(version.tag);
+<a class="jxr_linenumber" name="177" href="#177">177</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="178" href="#178">178</a>             <strong class="jxr_keyword">return</strong> mine - theirs;
+<a class="jxr_linenumber" name="179" href="#179">179</a>         }
+<a class="jxr_linenumber" name="180" href="#180">180</a>     }
+<a class="jxr_linenumber" name="181" href="#181">181</a> 
+<a class="jxr_linenumber" name="182" href="#182">182</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
