@@ -84,13 +84,20 @@ public class Version implements Comparable<Version> {
             int major = Integer.parseInt(split[0]);
             int minor = 0;
             int revision = 0;
+            String tag = null;
             if (split.length >= 2) {
                 minor = Integer.parseInt(split[1]);
             }
             if (split.length >= 3) {
-                revision= Integer.parseInt(split[2]);
+                revision = Integer.parseInt(split[2]);
             }
-            return new Version(major, minor, revision);
+            if (split.length >= 4) {
+                tag = "";
+                for (int i = 3; i < split.length; i++) {
+                    tag += split[i];
+                }
+            }
+            return new Version(major, minor, revision, tag);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Major, minor, and revision must be integers.");
         }
@@ -169,11 +176,15 @@ public class Version implements Comparable<Version> {
      * @return
      */
     public int compareTo(Version version) {
-        int mine = (100 * major) + (10 * minor) + revision;
-        int theirs = (100 * version.major) + (10 * version.minor) + version.revision;
+        int mine = (1000 * major) + (100 * minor) + (revision * 10);
+        int theirs = (1000 * version.major) + (100 * version.minor) + (version.revision * 10);
 
         if (mine == theirs && tag != null && version.tag != null) {
             return tag.compareTo(version.tag);
+        } else if (mine == theirs && tag == null && version.tag != null) {
+            return -1;
+        } else if (mine == theirs && tag != null && version.tag == null) {
+            return 1;
         } else {
             return mine - theirs;
         }

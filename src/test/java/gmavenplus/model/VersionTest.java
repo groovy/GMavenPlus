@@ -15,4 +15,11 @@ public class VersionTest {
         Assert.assertTrue(new Version(1, 9).compareTo(new Version(1, 10)) < 0);
     }
 
+    @Test
+    public void testCompareWithTag() {
+        Version v1 = Version.parseFromString("1.0.0");
+        Version v2 = Version.parseFromString("1.0.0-beta1");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
 }
