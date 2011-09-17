@@ -79,7 +79,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         for (Object dependency : project.getCompileDependencies()) {
             Dependency dep = (Dependency) dependency;
             if ((dep.getGroupId().equals("org.codehaus.groovy") || dep.getGroupId().equals("groovy")) &&
-                    (dep.getArtifactId().equals("groovy-all") || dep.getArtifactId().equals("groovy-all-minimal") || dep.getArtifactId().equals("groovy")) &&
+                    (dep.getArtifactId().equals("groovy-all") || dep.getArtifactId().equals("groovy-all-minimal")
+                            || dep.getArtifactId().equals("groovy") || dep.getArtifactId().equals("groovy-all-jdk14")
+                            || dep.getArtifactId().equals("groovy-jdk14")) &&
                     dep.getType().equals("jar")) {
                 groovyVersion = dep.getVersion();
                 break;
