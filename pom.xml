@@ -13,6 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <javaVersion>1.5</javaVersion>
+    <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
     <minMavenVersion>2.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <plexusContainerVersion>1.5.5</plexusContainerVersion>
@@ -268,9 +269,19 @@
         <artifactId>taglist-maven-plugin</artifactId>
         <version>2.4</version>
         <configuration>
-          <tags>
-            <tag>TODO</tag>
-          </tags>
+          <tagListOptions>
+            <tagClasses>
+              <tagClass>
+                <displayName>Todo</displayName>
+                <tags>
+                  <tag>
+                    <matchString>todo</matchString>
+                    <matchType>ignoreCase</matchType>
+                  </tag>
+                </tags>
+              </tagClass>
+            </tagClasses>
+          </tagListOptions>
         </configuration>
       </plugin>
     </plugins>
