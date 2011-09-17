@@ -16,6 +16,7 @@
 
 package gmavenplus.mojo;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -67,6 +68,13 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
         } else {
             getLog().info("Skipping generation of test stubs because ${maven.test.skip} was set to true.");
         }
+    }
+
+    /**
+     * @param file
+     */
+    protected void forceCompile(final File file) {
+        compileState.addForcedCompilationTestSource(project, file);
     }
 
 }

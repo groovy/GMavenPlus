@@ -31,7 +31,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
+public abstract class AbstractGenerateStubsMojo extends AbstractCompileStateMojo {
     // TODO: support Groovy 1.5.0 - 1.6.9?
     /*
      * For some reason, the JavaStubCompilationUnit is silently not creating my
@@ -246,7 +246,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
          * it recognize other extensions.  So for now, will use my DotGroovyFile hack.
          */
         for (File source : sources) {
+            // add source
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
+            // add stubs to forced compilation (for mixing Groovy and Java)
+            forceCompile(source);
         }
 
         // generate the stubs
@@ -257,6 +260,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         int stubCount = ((List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getClasses"), javaStubCompilationUnit)).size();
         getLog().info("Generated " + stubCount + " stubs.");
     }
+
+    /**
+     * @param file
+     */
+    protected abstract void forceCompile(final File file);
 
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.

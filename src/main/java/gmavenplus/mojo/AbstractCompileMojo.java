@@ -32,7 +32,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 /**
  * @author Keegan Witt
  */
-public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
+public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
 
     /**
      * Groovy source files (relative paths).
@@ -206,11 +206,21 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
                 getLog().debug("    " + classpathElement);
             }
         }
+        // add Groovy sources
         Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
-        getLog().debug("Compiling " + sources.size() + " sources.");
-        // TODO: call CompilerConfiguration.setScriptExtensions()
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
+        }
+        // add forced sources
+        Set forcedSources = getForcedCompileSources();
+        getLog().debug("Compiling " + (sources.size() + forcedSources.size()) + " sources.");
+        if (!forcedSources.isEmpty()) {
+            getLog().debug("Forcing to compile:");
+            for (Object forcedSource : forcedSources) {
+                File file = (File) forcedSource;
+                getLog().debug("    " + file);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, file);
+            }
         }
 
         // compile the classes
@@ -226,5 +236,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @throws DependencyResolutionRequiredException
      */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
+
+    protected abstract Set getForcedCompileSources();
 
 }

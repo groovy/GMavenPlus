@@ -19,6 +19,7 @@ package gmavenplus.mojo;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Set;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -74,6 +75,11 @@ public class CompileTestsMojo extends AbstractCompileMojo {
     @Override
     protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
         return project.getTestClasspathElements();
+    }
+
+    @Override
+    protected Set getForcedCompileSources() {
+        return compileState.getForcedCompilationTestSources(project);
     }
 
 }

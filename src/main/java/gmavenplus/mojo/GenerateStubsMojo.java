@@ -16,6 +16,7 @@
 
 package gmavenplus.mojo;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -56,6 +57,13 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  Skipping stub generation.");
         }
+    }
+
+    /**
+     * @param file
+     */
+    protected void forceCompile(final File file) {
+        compileState.addForcedCompilationSource(project, file);
     }
 
 }

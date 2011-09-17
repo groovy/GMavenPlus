@@ -4,7 +4,7 @@
 
   <components>
 
-    <!-- Defines the 'groovy-jar' packaging and artifact handling. -->
+    <!-- defines the groovy-jar packaging and artifact handling -->
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
       <role-hint>groovy-jar</role-hint>
@@ -30,17 +30,17 @@
                 org.apache.maven.plugins:maven-resources-plugin:resources
               </process-resources>
               <compile>
-                gmavenplus:GMavenPlus-plugin:generateStubs,
+                GMavenPlus:GMavenPlus-Plugin:generateStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:compile,
-                gmavenplus:GMavenPlus-plugin:compile
+                GMavenPlus:GMavenPlus-Plugin:compile
               </compile>
               <process-test-resources>
                 org.apache.maven.plugins:maven-resources-plugin:testResources
               </process-test-resources>
               <test-compile>
-                gmavenplus:GMavenPlus-plugin:generateTestStubs,
+                GMavenPlus:GMavenPlus-Plugin:generateTestStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:testCompile,
-                gmavenplus:GMavenPlus-plugin:testCompile
+                GMavenPlus:GMavenPlus-Plugin:testCompile
               </test-compile>
               <test>
                 org.apache.maven.plugins:maven-surefire-plugin:test
@@ -60,13 +60,13 @@
       </configuration>
     </component>
 
-    <!-- Defines the 'GMavenPlus-plugin' packaging and artifact handling. -->
+    <!-- defines the GMavenPlus-Plugin packaging and artifact handling -->
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>GMavenPlus-plugin</role-hint>
+      <role-hint>GMavenPlus-Plugin</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
-        <type>GMavenPlus-plugin</type>
+        <type>GMavenPlus-Plugin</type>
         <extension>jar</extension>
         <language>java</language>
         <addedToClasspath>true</addedToClasspath>
@@ -75,7 +75,7 @@
 
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-      <role-hint>GMavenPlus-plugin</role-hint>
+      <role-hint>GMavenPlus-Plugin</role-hint>
       <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
       <configuration>
         <lifecycles>
@@ -86,9 +86,9 @@
                 org.apache.maven.plugins:maven-resources-plugin:resources
               </process-resources>
               <compile>
-                gmavenplus:GMavenPlus-plugin:generateStubs,
+                GMavenPlus:GMavenPlus-Plugin:generateStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:compile,
-                gmavenplus:GMavenPlus-plugin:compile
+                GMavenPlus:GMavenPlus-Plugin:compile
               </compile>
               <process-classes>
                 org.apache.maven.plugins:maven-plugin-plugin:descriptor
@@ -97,9 +97,9 @@
                 org.apache.maven.plugins:maven-resources-plugin:testResources
               </process-test-resources>
               <test-compile>
-                gmavenplus:GMavenPlus-plugin:generateTestStubs,
+                GMavenPlus:GMavenPlus-Plugin:generateTestStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:testCompile,
-                gmavenplus:GMavenPlus-plugin:testCompile
+                GMavenPlus:GMavenPlus-Plugin:testCompile
               </test-compile>
               <test>
                 org.apache.maven.plugins:maven-surefire-plugin:test
@@ -119,6 +119,13 @@
           </lifecycle>
         </lifecycles>
       </configuration>
+    </component>
+
+    <!-- support for communication between stub generation and compilation -->
+    <component>
+      <role>gmavenplus.model.CompileState</role>
+      <implementation>gmavenplus.model.CompileState</implementation>
+      <instantiation-strategy>singleton</instantiation-strategy>
     </component>
 
   </components>
