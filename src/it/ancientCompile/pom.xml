@@ -6,7 +6,7 @@
 
   <groupId>GMavenPlus</groupId>
   <artifactId>GMavenPlus-Plugin-it-ancientCompile</artifactId>
-  <version>1.0</version>
+  <version>testing</version>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Ancient Compile Test</name>
   <description>The simplest compile use case with an ancient version of Groovy</description>

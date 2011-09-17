@@ -6,7 +6,7 @@
 
   <groupId>GMavenPlus</groupId>
   <artifactId>GMavenPlus-Plugin-it-basicCompile</artifactId>
-  <version>1.0</version>
+  <version>testing</version>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Basic Compile Test</name>
   <description>The simplest compile use case</description>

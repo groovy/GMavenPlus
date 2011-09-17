@@ -6,7 +6,7 @@
 
   <groupId>GMavenPlus-Examples</groupId>
   <artifactId>GMavenPlus-Groovy-Maven-Plugin</artifactId>
-  <version>1.0</version>
+  <version>testing</version>
   <name>GMavenPlus Plugin Maven Plugin Test</name>
 
   <properties>
