@@ -20,7 +20,9 @@ Usage
 
 * {Basic Usage}
 
- To compile Groovy code as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
+ To compile Groovy code as part of the project compilation when there is no
+ dependencies between Java and Groovy, you should add something similar to
+ the following in the \<build\> section of your pom:
 
 +-----+
 <project>
@@ -60,12 +62,15 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn compile>>>, both the main and test Groovy sources will be compiled.
+ When you execute <<<mvn compile>>>, both the main and test Groovy sources
+ will be compiled.
 
 
 * {Generate Stubs}
 
- To generate stubs as part of the project compilation, you should add the GMavenPlus Plugin in the \<build\> section of your pom:
+ To generate stubs as part of the project compilation (needed when you have a
+ mixed Groovy and Java project with dependencies between the two), you should
+ add something similar to the following in the \<build\> section of your pom:
 
 +-----+
 <project>
@@ -81,6 +86,8 @@ Usage
             <goals>
               <goal>generateStubs</goal>
               <goal>testGenerateStubs</goal>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
             </goals>
           </execution>
         </executions>
@@ -105,7 +112,8 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn generate-test-sources>>>, the stubs will be generated for both the main and test Groovy sources.
+ When you execute <<<mvn generate-test-sources>>>, the stubs will be generated
+ for both the main and test Groovy sources.
 
 
 * {Generate Groovydoc}
@@ -145,7 +153,8 @@ Usage
 </project>
 +-----+
 
- When you execute <<<mvn gmavenplus:groovydoc>>>, Groovydoc will be generated for the main sources.
+ When you execute <<<mvn gmavenplus:groovydoc>>>, Groovydoc will be generated
+ for the main sources.
 
 
 * {Add Groovydoc to Site}
