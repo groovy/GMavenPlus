@@ -93,11 +93,4 @@ public class CompileMojo extends AbstractCompileMojo {
         return javaSources;
     }
 
-    /**
-     * @return
-     */
-    protected Set getForcedCompileSources() {
-        return compileState.getForcedCompilationSources(project);
-    }
-
 }

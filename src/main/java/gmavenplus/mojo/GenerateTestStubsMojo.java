@@ -72,11 +72,4 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
         }
     }
 
-    /**
-     * @param file
-     */
-    protected void forceCompile(final File file) {
-        compileState.addForcedCompilationTestSource(project, file);
-    }
-
 }

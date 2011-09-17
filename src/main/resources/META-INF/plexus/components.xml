@@ -17,6 +17,19 @@
       </configuration>
     </component>
 
+    <!-- defines the GMavenPlus-Plugin packaging and artifact handling -->
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>GMavenPlus-Plugin</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>GMavenPlus-Plugin</type>
+        <extension>jar</extension>
+        <language>java</language>
+        <addedToClasspath>true</addedToClasspath>
+      </configuration>
+    </component>
+
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>groovy-jar</role-hint>
@@ -58,26 +71,6 @@
           </lifecycle>
         </lifecycles>
       </configuration>
-    </component>
-
-    <!-- defines the GMavenPlus-Plugin packaging and artifact handling -->
-    <component>
-      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>GMavenPlus-Plugin</role-hint>
-      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-      <configuration>
-        <type>GMavenPlus-Plugin</type>
-        <extension>jar</extension>
-        <language>java</language>
-        <addedToClasspath>true</addedToClasspath>
-      </configuration>
-    </component>
-
-    <!-- support for communication between stub generation and compilation -->
-    <component>
-      <role>gmavenplus.model.CompileState</role>
-      <implementation>gmavenplus.model.CompileState</implementation>
-      <instantiation-strategy>singleton</instantiation-strategy>
     </component>
 
   </components>

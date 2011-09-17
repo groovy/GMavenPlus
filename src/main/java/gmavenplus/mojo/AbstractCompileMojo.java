@@ -32,7 +32,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 /**
  * @author Keegan Witt
  */
-public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
+public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected static final String JAVA_PATTERN = "**/*.java";
 
     /**
@@ -215,17 +215,6 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
         for (File source : sources) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
-        // add forced sources
-        Set forcedSources = getForcedCompileSources();
-        getLog().debug("Compiling " + (sources.size() + forcedSources.size()) + " sources.");
-        if (!forcedSources.isEmpty()) {
-            getLog().debug("Forcing to compile:");
-            for (Object forcedSource : forcedSources) {
-                File file = (File) forcedSource;
-                getLog().debug("    " + file);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, file);
-            }
-        }
         // add Java sources
         List sourceRoots = getJavaSources();
         getLog().debug("Compiling " + (sources.size() + sourceRoots.size()) + " sources.");
@@ -257,10 +246,5 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
      * @return
      */
     protected abstract List<File> getJavaSources();
-
-    /**
-     * @return
-     */
-    protected abstract Set getForcedCompileSources();
 
 }

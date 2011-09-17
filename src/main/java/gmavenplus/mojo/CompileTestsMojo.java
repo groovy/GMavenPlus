@@ -105,11 +105,4 @@ public class CompileTestsMojo extends AbstractCompileMojo {
         return javaSources;
     }
 
-    /**
-     * @return
-     */
-    protected Set getForcedCompileSources() {
-        return compileState.getForcedCompilationTestSources(project);
-    }
-
 }
