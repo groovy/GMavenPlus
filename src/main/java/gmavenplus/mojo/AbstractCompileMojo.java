@@ -72,12 +72,13 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
      */
     protected String sourceEncoding;
 
+    // if plugin only runs on 1.5, then can assume 1.5
     /**
      * Groovy compiler bytecode compatibility ("1.4" or "1.5")
      *
      * @parameter default-value="1.5"
      */
-    protected String targetBytecode;
+//    protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug or not
@@ -191,7 +192,9 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
         if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+//            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+            // if plugin only runs on 1.5, then can assume 1.5
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
         }
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
