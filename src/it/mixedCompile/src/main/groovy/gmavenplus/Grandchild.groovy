@@ -17,7 +17,7 @@
 package gmavenplus
 
 
-class Grandchild extends Child{
+class Grandchild extends Child {
 
     String yetAnotherMethod() {
         return someMethod()
