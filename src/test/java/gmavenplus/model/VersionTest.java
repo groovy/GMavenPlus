@@ -22,4 +22,11 @@ public class VersionTest {
         Assert.assertTrue(v1.compareTo(v2) < 0);
     }
 
+    @Test
+    public void testCompareWithTwoTags() {
+        Version v1 = Version.parseFromString("1.0.0-beta1");
+        Version v2 = Version.parseFromString("1.0.0-beta2");
+        Assert.assertTrue(v1.compareTo(v2) > 0);
+    }
+
 }
