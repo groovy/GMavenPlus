@@ -100,7 +100,6 @@ public class Version implements Comparable<Version> {
      * @param obj
      * @return
      */
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -130,7 +129,6 @@ public class Version implements Comparable<Version> {
     /**
      * @return
      */
-    @Override
     public int hashCode() {
         int result;
 
@@ -145,7 +143,6 @@ public class Version implements Comparable<Version> {
     /**
      * @return
      */
-    @Override
     public String toString() {
         StringBuilder buff = new StringBuilder();
 
@@ -171,7 +168,6 @@ public class Version implements Comparable<Version> {
      * @param version
      * @return
      */
-    @Override
     public int compareTo(Version version) {
         int mine = (100 * major) + (10 * minor) + revision;
         int theirs = (100 * version.major) + (10 * version.minor) + version.revision;

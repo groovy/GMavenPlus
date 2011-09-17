@@ -33,6 +33,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  * @author Keegan Witt
  */
 public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
+    protected static final String JAVA_PATTERN = "**/*.java";
 
     /**
      * Groovy source files (relative paths).
@@ -222,6 +223,18 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, file);
             }
         }
+        // add Java sources
+        List sourceRoots = getJavaSources();
+        getLog().debug("Compiling " + (sources.size() + sourceRoots.size()) + " sources.");
+        if (!sourceRoots.isEmpty()) {
+            getLog().debug("Adding Java to compile:");
+            for (Object javaSource : sourceRoots) {
+                File file = (File) javaSource;
+                getLog().debug("    " + file);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, file);
+            }
+        }
+
 
         // compile the classes
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "compile"), compilationUnit);
@@ -237,6 +250,14 @@ public abstract class AbstractCompileMojo extends AbstractCompileStateMojo {
      */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
 
+    /**
+     * @return
+     */
+    protected abstract List<File> getJavaSources();
+
+    /**
+     * @return
+     */
     protected abstract Set getForcedCompileSources();
 
 }

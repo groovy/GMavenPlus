@@ -44,12 +44,14 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
             if (groovyVersionSupportsAction()) {
                 logGroovyVersion("generateTestStubs");
 
+                // log generated stubs
+                int stubCount = getTestStubs().size();
+                getLog().info("Generated " + stubCount + " stubs.");
                 try {
                     doStubGeneration(getTestSources(), testStubsOutputDirectory);
                     resetStubModifiedDates(getTestStubs());

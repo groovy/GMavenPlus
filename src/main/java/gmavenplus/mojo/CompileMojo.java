@@ -16,13 +16,18 @@
 
 package gmavenplus.mojo;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
@@ -39,7 +44,6 @@ public class CompileMojo extends AbstractCompileMojo {
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("compile");
 
@@ -60,12 +64,38 @@ public class CompileMojo extends AbstractCompileMojo {
         }
     }
 
-    @Override
+    /**
+     * @return
+     * @throws DependencyResolutionRequiredException
+     */
     protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
         return project.getCompileClasspathElements();
     }
 
-    @Override
+    /**
+     * @return
+     */
+    protected List<File> getJavaSources() {
+        List<File> javaSources = new ArrayList<File>();
+
+        FileSetManager fileSetManager = new FileSetManager();
+        for (Object root : project.getCompileSourceRoots()) {
+            String directory = (String) root;
+            FileSet fs = new FileSet();
+            fs.setDirectory(directory);
+            fs.setIncludes(Arrays.asList(JAVA_PATTERN));
+            String[] includes = fileSetManager.getIncludedFiles(fs);
+            for (String file : includes) {
+                javaSources.add(new File(directory + File.separator + file));
+            }
+        }
+
+        return javaSources;
+    }
+
+    /**
+     * @return
+     */
     protected Set getForcedCompileSources() {
         return compileState.getForcedCompilationSources(project);
     }

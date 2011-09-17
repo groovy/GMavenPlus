@@ -37,7 +37,6 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("generateStubs");
@@ -45,6 +44,10 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
             try {
                 doStubGeneration(getSources(), stubsOutputDirectory);
                 resetStubModifiedDates(getStubs());
+
+                // log generated stubs
+                int stubCount = getStubs().size();
+                getLog().info("Generated " + stubCount + " stubs.");
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {

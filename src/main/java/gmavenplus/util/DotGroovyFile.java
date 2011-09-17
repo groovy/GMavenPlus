@@ -74,7 +74,6 @@ public class DotGroovyFile extends File {
      *
      * @return
      */
-    @Override
     public String getName() {
         if (!super.getName().toLowerCase().endsWith(".java")) {
             return super.getName().replaceAll("\\.[A-z]+$", ".groovy");

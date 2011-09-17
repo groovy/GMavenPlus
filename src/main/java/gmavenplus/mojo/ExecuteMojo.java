@@ -56,7 +56,6 @@ public class ExecuteMojo extends AbstractGroovyMojo {
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("execute");
 

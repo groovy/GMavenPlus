@@ -255,10 +255,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractCompileStateMojo
         // generate the stubs
         Object convPhase = ReflectionUtils.getField(ReflectionUtils.findField(phasesClass, "CONVERSION", int.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
-
-        // log generated stubs
-        int stubCount = ((List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getClasses"), javaStubCompilationUnit)).size();
-        getLog().info("Generated " + stubCount + " stubs.");
     }
 
     /**

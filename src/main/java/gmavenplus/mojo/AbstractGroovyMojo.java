@@ -43,7 +43,6 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected MavenProject project;
 
-    @Override
     public Log getLog() {
         if (log == null) {
             log = new SystemStreamLog();
