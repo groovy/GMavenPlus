@@ -57,7 +57,7 @@
               </includes>
             </source>
           </sources>
-          <targetBytecode>1.5</targetBytecode>
+          <!--<targetBytecode>1.5</targetBytecode>-->
           <sourceEncoding>UTF-8</sourceEncoding>
           <debug>true</debug>
           <warningLevel>0</warningLevel>
