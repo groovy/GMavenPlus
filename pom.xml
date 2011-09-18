@@ -19,7 +19,7 @@
     <plexusContainerVersion>1.5.5</plexusContainerVersion>
     <classworldsVersion>2.4</classworldsVersion>
     <junitVersion>4.8.2</junitVersion>
-    <groovyVersion>1.8.2</groovyVersion>  <!-- this is only used for the site documentation, not for any dependency version -->
+    <groovyVersion>1.8.2</groovyVersion>  <!-- this is only used for the site documentation and unit tests, not for any compile/runtime dependencies -->
     <deployRepoUrl>dav:https://public-repo.googlecode.com/svn/maven2/repository</deployRepoUrl>
     <deploySnapshotUrl>dav:https://public-repo.googlecode.com/svn/maven2/snapshots</deploySnapshotUrl>
   </properties>
@@ -54,6 +54,12 @@
       <artifactId>plexus-classworlds</artifactId>
       <version>${classworldsVersion}</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${groovyVersion}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
