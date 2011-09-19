@@ -134,6 +134,8 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      */
     protected String scope;
 
+    // TODO: add links parameter
+
     /**
      * @param fileSet
      * @return
