@@ -113,6 +113,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected int tolerance;
 
     /**
+     * Allow setting whether to support invokeDynamic (requires Java 7 or greater).
+     *
+     * @parameter expression="${invokeDynamic}" default-value="false"
+     *
+     * @noinspection UnusedDeclaration
+     */
+    private boolean invokeDynamic;
+
+    /**
      * Gets the set of files for the main sources
      *
      * @return
@@ -178,6 +187,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @throws InvocationTargetException
      * @throws java.net.MalformedURLException
      */
+    @SuppressWarnings("unchecked")
     protected void doCompile(Set<File> sources, List classpath, File outputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
@@ -200,6 +210,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
+        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
+            if (isGroovyIndy()) {
+                Map<java.lang.String,java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
+                optimizationOptions.put("indy", true);
+                optimizationOptions.put("int", false);
+            } else {
+                getLog().warn("Requested to use InvokeDynamic option but the version of Groovy on the project classpath doesn't support it.  Ignoring invokeDynamic option.");
+            }
+        }
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
         // append project classpath to groovyClassLoader
