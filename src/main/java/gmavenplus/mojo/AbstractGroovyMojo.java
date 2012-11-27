@@ -52,7 +52,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * @param goal
+     * @param goal the goal to mention in the log statement showing Groovy version
      */
     protected void logGroovyVersion(String goal) {
         if (getLog().isInfoEnabled()) {
@@ -63,7 +63,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Gets the version of Groovy used from the dependency information
      *
-     * @return
+     * @return the version Groovy used by the project
      */
     protected String getGroovyVersion() {
         String groovyVersion = null;
@@ -75,24 +75,56 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
          * And for some reason InvokerHelper.getVersion() was returning an empty
          * String for 1.5.0, so I decided to just get it from the dependency itself.
          */
+        Dependency groovyDependency = getGroovyDependency();
 
-        for (Object dependency : project.getCompileDependencies()) {
-            Dependency dep = (Dependency) dependency;
-            if ((dep.getGroupId().equals("org.codehaus.groovy") || dep.getGroupId().equals("groovy")) &&
-                    (dep.getArtifactId().equals("groovy-all") || dep.getArtifactId().equals("groovy-all-minimal")
-                            || dep.getArtifactId().equals("groovy") || dep.getArtifactId().equals("groovy-all-jdk14")
-                            || dep.getArtifactId().equals("groovy-jdk14")) &&
-                    dep.getType().equals("jar")) {
-                groovyVersion = dep.getVersion();
+        if (groovyDependency == null) {
+            getLog().error("Unable to determine Groovy version.");
+        } else {
+            groovyVersion = groovyDependency.getVersion();
+        }
+
+        return groovyVersion;
+    }
+
+    /**
+     * Gets the version of Groovy used from the dependency information
+     *
+     * @return true if the version of Groovy uses InvokeDynamic, false if not or Groovy dependency cannot be found
+     */
+    protected boolean isGroovyIndy() {
+        boolean isGroovyIndy = false;
+
+        Dependency groovyDependency = getGroovyDependency();
+        if (groovyDependency == null) {
+            getLog().error("Unable to determine Groovy version.");
+        } else if ("indy".equals(groovyDependency.getClassifier())) {
+            isGroovyIndy = true;
+        }
+
+        return isGroovyIndy;
+    }
+
+    /**
+     * Gets the Groovy dependency used by the project
+     *
+     * @return the Groovy dependency used by the project
+     */
+    protected Dependency getGroovyDependency() {
+        Dependency groovyDependency = null;
+
+        for (Object dep : project.getCompileDependencies()) {
+            Dependency dependency = (Dependency) dep;
+            if ((dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy")) &&
+                    (dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
+                            || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
+                            || dependency.getArtifactId().equals("groovy-jdk14")) &&
+                    dependency.getType().equals("jar")) {
+                groovyDependency = dependency;
                 break;
             }
         }
 
-        if (groovyVersion == null || groovyVersion.isEmpty()) {
-            getLog().error("Unable to determine Groovy version.");
-        }
-
-        return groovyVersion;
+        return groovyDependency;
     }
 
 }
