@@ -49,12 +49,13 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
             if (groovyVersionSupportsAction()) {
                 logGroovyVersion("generateTestStubs");
 
-                // log generated stubs
-                int stubCount = getTestStubs().size();
-                getLog().info("Generated " + stubCount + " stubs.");
                 try {
                     doStubGeneration(getTestSources(), testStubsOutputDirectory);
                     resetStubModifiedDates(getTestStubs());
+
+                    // log generated stubs
+                    int stubCount = getTestStubs().size();
+                    getLog().info("Generated " + stubCount + " stubs.");
                 } catch (ClassNotFoundException e) {
                     throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
                 } catch (InvocationTargetException e) {
