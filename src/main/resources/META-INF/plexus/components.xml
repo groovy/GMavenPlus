@@ -39,6 +39,9 @@
           <lifecycle>
             <id>default</id>
             <phases>
+              <initialize>
+                GMavenPlus:GMavenPlus-Plugin:addSource
+              </initialize>
               <process-resources>
                 org.apache.maven.plugins:maven-resources-plugin:resources
               </process-resources>
