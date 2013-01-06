@@ -62,7 +62,7 @@
       <!-- this is only used for the site documentation and unit tests, not for any compile/runtime dependencies -->
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>2.0.5</version>
+      <version>2.0.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
