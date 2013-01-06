@@ -4,6 +4,8 @@
 
 package gmavenplus.plexus;
 
+// TODO: use new ClassRealm API
+//import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -26,7 +28,7 @@ import java.util.List;
  * A custom ComponentConfigurator which adds the project's compile time classpath elements
  *
  * @author Brian Jackson
- * @since Aug 1, 2008 3:04:17 PM
+ * @author Keegan Witt
  *
  * @plexus.component role="org.codehaus.plexus.component.configurator.ComponentConfigurator"
  *                   role-hint="include-project-dependencies"
@@ -37,12 +39,12 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     // TODO: add logging?
 //    private static final Logger LOGGER = LoggerFactory.getLogger(IncludeProjectDependenciesComponentConfigurator.class);
 
-    public void configureComponent(Object component, PlexusConfiguration configuration,
-                                   ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm,
-                                   ConfigurationListener listener) throws ComponentConfigurationException {
+    public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
+                                   ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
         addProjectDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
+//        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
         converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
@@ -58,6 +60,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         // Add the project dependencies to the ClassRealm
         final URL[] urls = buildURLs(compileClasspathElements);
         for (URL url : urls) {
+//            containerRealm.addURL(url);
             containerRealm.addConstituent(url);
         }
     }
@@ -77,4 +80,4 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         return urls.toArray(new URL[urls.size()]);
     }
 
-   }
+}
