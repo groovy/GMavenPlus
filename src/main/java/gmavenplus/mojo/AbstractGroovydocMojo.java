@@ -42,7 +42,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     /**
      * Groovy source files (relative paths).
-     * Default: "${project.basedir}/src/main/groovy/**&#47;*.groovy"
+     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
      */
@@ -57,7 +57,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     /**
      * Groovy test source files (relative paths).
-     * Default: "${project.basedir}/src/test/groovy/**&#47;*.groovy"
+     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
      */
