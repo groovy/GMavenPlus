@@ -250,8 +250,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
          * And doing a CompilerConfiguration.setScriptExtensions() doesn't make
          * it recognize other extensions.  So for now, will use my DotGroovyFile hack.
          */
+        // add Groovy sources
+        getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : sources) {
-            // add source
+            getLog().debug("    " + source);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
         }
 

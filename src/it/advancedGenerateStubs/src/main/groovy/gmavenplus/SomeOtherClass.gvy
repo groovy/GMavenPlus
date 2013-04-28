@@ -19,6 +19,11 @@ package gmavenplus
 
 class SomeOtherClass {
 
+    /**
+     * Some javadoc
+     *
+     * @return
+     */
     String someMethod() {
         return "Hello, world."
     }
