@@ -360,7 +360,7 @@
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy with Maven</description>
   <inceptionYear>2011</inceptionYear>
-  <url>http://keeganwitt.github.com/GMavenPlus/</url>
+  <url>http://keeganwitt.github.io/GMavenPlus/</url>
   <developers>
     <developer>
       <id>keeganwitt</id>
