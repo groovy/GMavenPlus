@@ -23,12 +23,13 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Generates Groovydoc for the test sources
- * (note that this mojo cannot be run on versions of Groovy before 1.6.2)
+ * Note that this mojo requires Groovy >= 1.6.2.
  *
  * @author Keegan Witt
  *
  * @goal testGroovydoc
  * @execute phase="generate-test-sources"
+ * @threadSafe
  */
 public class GroovydocTestsMojo extends AbstractGroovydocMojo {
 

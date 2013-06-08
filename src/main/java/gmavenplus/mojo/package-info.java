@@ -1,4 +1,4 @@
 /**
- * All the Maven mojos
+ * Maven mojos
  */
 package gmavenplus.mojo;

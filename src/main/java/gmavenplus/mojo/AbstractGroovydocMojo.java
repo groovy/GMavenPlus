@@ -28,8 +28,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
- * Note that this mojo cannot be run on versions of Groovy before 1.6.2
- *
  * @author Keegan Witt
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {

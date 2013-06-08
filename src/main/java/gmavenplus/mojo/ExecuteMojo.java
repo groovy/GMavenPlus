@@ -28,7 +28,7 @@ import java.net.URL;
 
 
 /**
- * Executes Groovy scripts (in the pom or external)
+ * Executes Groovy scripts (in the pom or external).
  *
  * @author Keegan Witt
  *

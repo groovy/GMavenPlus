@@ -188,7 +188,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @throws java.net.MalformedURLException
      */
     @SuppressWarnings("unchecked")
-    protected void doCompile(Set<File> sources, List classpath, File outputDirectory)
+    protected synchronized void doCompile(Set<File> sources, List classpath, File outputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");

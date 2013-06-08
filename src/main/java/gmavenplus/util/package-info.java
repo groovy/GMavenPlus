@@ -1,4 +1,4 @@
 /**
- * All utility classes
+ * Utility classes
  */
 package gmavenplus.util;

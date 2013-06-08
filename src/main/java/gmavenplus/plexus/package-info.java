@@ -1,4 +1,4 @@
 /**
- * All classes related to working with the Plexus container
+ * Classes related to working with the Plexus container
  */
 package gmavenplus.plexus;

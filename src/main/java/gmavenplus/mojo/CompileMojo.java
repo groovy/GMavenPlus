@@ -31,12 +31,14 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
- * Compiles the main sources
+ * Compiles the main sources.
+ * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic optiuon.
  *
  * @author Keegan Witt
  *
  * @phase compile
  * @goal compile
+ * @threadSafe
  */
 public class CompileMojo extends AbstractCompileMojo {
 

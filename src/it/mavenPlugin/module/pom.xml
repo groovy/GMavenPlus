@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>GMavenPlus</groupId>
+    <artifactId>GMavenPlus-Plugin-it-mavenPlugin</artifactId>
+    <version>testing</version>
+  </parent>
+
+  <artifactId>GMavenPlus-Plugin-it-mavenPlugin-Module</artifactId>
+  <packaging>jar</packaging>
+  <name>GMavenPlus Plugin Maven Plugin Test Mojo Test</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin-it-mavenPlugin-Mojo</artifactId>
+        <version>testing</version>
+        <executions>
+          <execution>
+            <id>1</id>
+            <phase>install</phase>
+            <goals>
+              <goal>helloworld</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

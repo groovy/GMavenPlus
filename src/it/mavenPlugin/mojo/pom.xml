@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>GMavenPlus</groupId>
+    <artifactId>GMavenPlus-Plugin-it-mavenPlugin</artifactId>
+    <version>testing</version>
+  </parent>
+
+  <artifactId>GMavenPlus-Plugin-it-mavenPlugin-Mojo</artifactId>
+  <packaging>maven-plugin</packaging>
+  <name>GMavenPlus Plugin Maven Plugin Test Mojo</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>GMavenPlus</groupId>
+        <artifactId>GMavenPlus-Plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <!-- note that stubs are needed so Mojo annotations will work -->
+              <goal>generateStubs</goal>
+              <goal>testGenerateStubs</goal>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+        <executions>
+          <execution>
+            <id>generate-metadata</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <goalPrefix>helloworld</goalPrefix>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

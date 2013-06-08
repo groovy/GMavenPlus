@@ -31,13 +31,15 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
- * Compiles the test sources
+ * Compiles the test sources.
+ * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic optiuon.
  *
  * @author Keegan Witt
  *
  * @phase test-compile
  * @goal testCompile
  * @requiresDependencyResolution test
+ * @threadSafe
  */
 public class CompileTestsMojo extends AbstractCompileMojo {
 

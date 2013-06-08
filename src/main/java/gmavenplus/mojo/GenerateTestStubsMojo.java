@@ -23,13 +23,14 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
- * Generates stubs for the test sources
- * (note that this mojo cannot be run on versions of Groovy before 1.7.0)
+ * Generates stubs for the test sources.
+ * Note that this mojo requires Groovy >= 1.7.0.
  *
  * @author Keegan Witt
  *
  * @goal testGenerateStubs
  * @phase generate-test-sources
+ * @threadSafe
  */
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 

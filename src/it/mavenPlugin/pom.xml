@@ -1,59 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>GMavenPlus-Examples</groupId>
-  <artifactId>GMavenPlus-Groovy-Maven-Plugin</artifactId>
+  <parent>
+    <groupId>GMavenPlus</groupId>
+    <artifactId>GMavenPlus-Plugin-it-root</artifactId>
+    <version>testing</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>GMavenPlus-Plugin-it-mavenPlugin</artifactId>
   <version>testing</version>
-  <name>GMavenPlus Plugin Maven Plugin Test</name>
+  <packaging>pom</packaging>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
-        <version>@project.version@</version>
-        <executions>
-          <execution>
-            <goals>
-              <!-- note that stubs are needed so Mojo annotations will work -->
-              <goal>generateStubs</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-      <version>2.2.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <!-- use an old version to make sure things work even all the way back then -->
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>1.7.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>mojo</module>
+    <module>module</module>
+  </modules>
 
 </project>

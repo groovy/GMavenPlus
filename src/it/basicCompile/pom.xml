@@ -4,30 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>GMavenPlus</groupId>
+  <parent>
+    <groupId>GMavenPlus</groupId>
+    <artifactId>GMavenPlus-Plugin-it-root</artifactId>
+    <version>testing</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>GMavenPlus-Plugin-it-basicCompile</artifactId>
   <version>testing</version>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Basic Compile Test</name>
   <description>The simplest compile use case</description>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
   <dependencies>
     <dependency>
-      <!-- use an old version to make sure things work even all the way back then -->
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.7.0</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -36,7 +33,6 @@
       <plugin>
         <groupId>GMavenPlus</groupId>
         <artifactId>GMavenPlus-Plugin</artifactId>
-        <version>@project.version@</version>
         <executions>
           <execution>
             <goals>
@@ -47,18 +43,12 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.12</version>
       </plugin>
     </plugins>
   </build>

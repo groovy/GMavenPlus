@@ -31,12 +31,12 @@ import java.util.Set;
 /**
  * This mojo adds Groovy sources to the project's sources
  *
+ * @author Keegan Witt
+ *
  * @phase initialize
  * @goal addSource
  * @executionStrategy always
  * @requiresDirectInvocation false
- *
- * @author Keegan Witt
  */
 public class AddSourceMojo extends AbstractCompileMojo {
 

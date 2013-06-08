@@ -27,8 +27,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
- * Note that this mojo cannot be run on versions of Groovy before 1.7.0
- *
  * @author Keegan Witt
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
@@ -218,7 +216,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    protected void doStubGeneration(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected synchronized void doStubGeneration(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
