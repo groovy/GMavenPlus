@@ -352,7 +352,7 @@
     </snapshotRepository>
     <site>
       <id>github-project-site</id>
-      <url>gitsite:git@github.com/keeganwitt/GMavenPlus.git</url>
+      <url>gitsite:git@github.com/groovy/GMavenPlus.git</url>
     </site>
   </distributionManagement>
 
@@ -360,7 +360,7 @@
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy with Maven</description>
   <inceptionYear>2011</inceptionYear>
-  <url>http://keeganwitt.github.io/GMavenPlus/</url>
+  <url>http://groovy.github.io/GMavenPlus/</url>
   <developers>
     <developer>
       <id>keeganwitt</id>
@@ -378,12 +378,12 @@
   </licenses>
   <issueManagement>
     <system>GitHub Issues</system>
-    <url>http://github.com/keeganwitt/GMavenPlus/issues</url>
+    <url>http://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
   <scm>
-    <connection>scm:git:git://github.com/keeganwitt/GMavenPlus.git</connection>
-    <developerConnection>scm:git:git@github.com:keeganwitt/GMavenPlus.git</developerConnection>
-    <url>http://github.com/keeganwitt/GMavenPlus</url>
+    <connection>scm:git:git://github.com/groovy/GMavenPlus.git</connection>
+    <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
+    <url>http://github.com/groovy/GMavenPlus</url>
   </scm>
 
 </project>
