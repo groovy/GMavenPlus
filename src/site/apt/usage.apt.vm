@@ -30,8 +30,8 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -78,8 +78,8 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -126,8 +126,8 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
         <executions>
           ...
@@ -169,8 +169,8 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -219,8 +219,8 @@ Usage
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>

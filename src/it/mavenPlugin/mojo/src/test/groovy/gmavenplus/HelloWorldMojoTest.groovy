@@ -1,4 +1,4 @@
-package gmavenplus
+package org.codehaus.gmavenplus
 
 import org.junit.Test
 

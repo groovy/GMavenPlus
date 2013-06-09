@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>GMavenPlus</groupId>
+    <groupId>org.codehaus.gmavenplus</groupId>
     <artifactId>GMavenPlus-Plugin-it-mavenPlugin</artifactId>
     <version>testing</version>
   </parent>
@@ -16,7 +16,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
+        <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>GMavenPlus-Plugin-it-mavenPlugin-Mojo</artifactId>
         <version>testing</version>
         <executions>

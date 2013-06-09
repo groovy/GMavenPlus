@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package gmavenplus;
+package org.codehaus.gmavenplus;
 
 import java.io.File;
 import org.junit.Assert;

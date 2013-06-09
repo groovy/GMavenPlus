@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>GMavenPlus</groupId>
+    <groupId>org.codehaus.gmavenplus</groupId>
     <artifactId>GMavenPlus-Plugin-it-root</artifactId>
     <version>testing</version>
     <relativePath>../pom.xml</relativePath>
@@ -30,8 +30,8 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>GMavenPlus</groupId>
-        <artifactId>GMavenPlus-Plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
         <executions>
           <execution>
             <goals>

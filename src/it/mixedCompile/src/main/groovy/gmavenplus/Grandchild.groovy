@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package gmavenplus
+package org.codehaus.gmavenplus
 
 
 class Grandchild extends Child {

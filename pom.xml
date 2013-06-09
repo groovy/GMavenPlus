@@ -4,8 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>GMavenPlus</groupId>
-  <artifactId>GMavenPlus-Plugin</artifactId>
+  <parent>
+    <groupId>org.codehaus</groupId>
+    <artifactId>codehaus-parent</artifactId>
+    <version>4</version>
+  </parent>
+
+  <groupId>org.codehaus.gmavenplus</groupId>
+  <artifactId>gmavenplus-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <version>1.0-beta1-SNAPSHOT</version>
 
@@ -16,8 +22,6 @@
     <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <deployRepoUrl>dav:https://public-repo.googlecode.com/svn/maven2/repository</deployRepoUrl>
-    <deploySnapshotUrl>dav:https://public-repo.googlecode.com/svn/maven2/snapshots</deploySnapshotUrl>
   </properties>
 
   <dependencies>
@@ -340,16 +344,6 @@
   </reporting>
 
   <distributionManagement>
-    <repository>
-      <id>public-repo_maven2-repository</id>
-      <url>${deployRepoUrl}</url>
-      <uniqueVersion>false</uniqueVersion>
-    </repository>
-    <snapshotRepository>
-      <id>public-repo_maven2-snapshots</id>
-      <url>${deploySnapshotUrl}</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
     <site>
       <id>github-project-site</id>
       <url>gitsite:git@github.com/groovy/GMavenPlus.git</url>
