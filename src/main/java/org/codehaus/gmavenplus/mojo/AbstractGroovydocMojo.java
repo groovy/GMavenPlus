@@ -28,6 +28,8 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
+ * The base groovydoc mojo, which all groovydoc mojos extend.
+ *
  * @author Keegan Witt
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {

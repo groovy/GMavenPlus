@@ -27,6 +27,8 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
+ * The base generate stubs mojo, which all generate stubs mojos extend.
+ *
  * @author Keegan Witt
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
@@ -230,8 +232,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
         if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0) {
-//            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
             // if plugin only runs on 1.5, then can assume 1.5
+//            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+            //
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
         }
         if (sourceEncoding != null) {

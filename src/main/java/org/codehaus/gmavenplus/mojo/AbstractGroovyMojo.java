@@ -24,6 +24,8 @@ import org.apache.maven.project.MavenProject;
 
 
 /**
+ * The base mojo class, which all other mojos extend.
+ *
  * @author Keegan Witt
  *
  * @requiresDependencyResolution compile
