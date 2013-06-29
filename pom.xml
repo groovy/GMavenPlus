@@ -19,8 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <javaVersion>1.5</javaVersion>
-    <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect
-         "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
+    <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
   </properties>
