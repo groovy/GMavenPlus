@@ -23,21 +23,21 @@ public class VersionTest {
     @Test
     public void testCompareWithTag() {
         Version v1 = Version.parseFromString("1.0.0");
-        Version v2 = Version.parseFromString("1.0.0-beta1");
+        Version v2 = Version.parseFromString("1.0.0-beta-1");
         Assert.assertTrue(v1.compareTo(v2) > 0);
     }
 
     @Test
     public void testCompareWithTwoTags() {
-        Version v1 = Version.parseFromString("1.0.0-beta1");
-        Version v2 = Version.parseFromString("1.0.0-beta2");
+        Version v1 = Version.parseFromString("1.0.0-beta-1");
+        Version v2 = Version.parseFromString("1.0.0-beta-2");
         Assert.assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testSort() {
-        Version v1 = Version.parseFromString("1.0.0-beta2");
-        Version v2 = Version.parseFromString("1.0.0-beta1");
+        Version v1 = Version.parseFromString("1.0.0-beta-2");
+        Version v2 = Version.parseFromString("1.0.0-beta-1");
         List<Version> versions = new ArrayList<Version>();
         versions.add(v1);
         versions.add(v2);
