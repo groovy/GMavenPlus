@@ -16,6 +16,8 @@
 
 package org.codehaus.gmavenplus.model;
 
+import com.google.common.base.Objects;
+
 
 /**
  * Container for version information in the form of <tt>major.minor.revision-tag</tt>.
@@ -102,7 +104,7 @@ public class Version implements Comparable<Version> {
                     revision = Integer.parseInt(split[2]);
                 } catch (NumberFormatException nfe) {
                     // version must not specify a revision version, leave revision as 0
-                    tag.append("-").append(split[2]);
+                    tag.append(split[2]);
                 }
             }
             if (split.length >= 4) {
@@ -120,67 +122,41 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * @param obj
-     * @return
-     */
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        else if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-
-        Version version = (Version) obj;
-
-        if (major != version.major) {
-            return false;
-        }
-        else if (minor != version.minor) {
-            return false;
-        }
-        else if (revision != version.revision) {
-            return false;
-        }
-        else if (tag != null ? !tag.equals(version.tag) : version.tag != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @return
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
-        int result;
-
-        result = major;
-        result = 31 * result + minor;
-        result = 31 * result + revision;
-        result = 31 * result + (tag != null ? tag.hashCode() : 0);
-
-        return result;
+        return Objects.hashCode(major, minor, revision, tag);
     }
 
     /**
-     * @return
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj){
+        if(obj instanceof Version) {
+            final Version other = (Version) obj;
+            return major == other.major &&
+                    minor == other.minor &&
+                    revision == other.revision &&
+                    Objects.equal(tag, other.tag);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         StringBuilder buff = new StringBuilder();
 
-        buff.append(major);
-
-        if (minor != -1) {
-            buff.append(".").append(minor);
-        }
-        if (revision != -1) {
-            buff.append(".").append(revision);
-        }
+        buff.append(major)
+                .append(".").append(minor)
+                .append(".").append(revision);
         if (tag != null) {
             buff.append("-").append(tag);
         }
-        
+
         return buff.toString();
     }
 

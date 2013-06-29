@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import com.google.common.io.Closer;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.GroovyDocTemplateInfo;
@@ -233,37 +234,25 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     private void copyStylesheet(File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
-        BufferedReader bufferedReader = null;
-        BufferedWriter bufferedWriter = null;
+        Closer closer = Closer.create();
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
-            StringBuilder css = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                css.append(line).append("\n");
+            try {
+                BufferedReader bufferedReader = closer.register(new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding)));
+                StringBuilder css = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    css.append(line).append("\n");
+                }
+                File outfile = new File(outputDirectory, "stylesheet.css");
+                BufferedWriter bufferedWriter = closer.register(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding)));
+                bufferedWriter.write(css.toString());
+            } catch (Throwable throwable) {
+                throw closer.rethrow(throwable);
+            } finally {
+                closer.close();
             }
-            bufferedReader.close();
-            File outfile = new File(outputDirectory, "stylesheet.css");
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
-            bufferedWriter.write(css.toString());
         } catch (IOException e) {
-            getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").", e);
-        } finally {
-            try {
-                if (bufferedReader != null) {
-                    bufferedReader.close();
-                }
-            } catch (IOException e) {
-                // if we can't close the steam there's nothing more we can do
-            }
-            try {
-                if (bufferedWriter != null) {
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                }
-            } catch (IOException e) {
-                // if we can't close the steam there's nothing more we can do
-            }
+            getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").");
         }
     }
 
