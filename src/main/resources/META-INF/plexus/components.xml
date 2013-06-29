@@ -20,10 +20,10 @@
     <!-- defines the GMavenPlus-Plugin packaging and artifact handling -->
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>GMavenPlus-Plugin</role-hint>
+      <role-hint>gmavenplus-plugin</role-hint>
       <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
       <configuration>
-        <type>GMavenPlus-Plugin</type>
+        <type>gmavenplus-plugin</type>
         <extension>jar</extension>
         <language>java</language>
         <addedToClasspath>true</addedToClasspath>
