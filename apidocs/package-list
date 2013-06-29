@@ -1,4 +1,4 @@
-gmavenplus.model
-gmavenplus.mojo
-gmavenplus.plexus
-gmavenplus.util
+org.codehaus.gmavenplus.model
+org.codehaus.gmavenplus.mojo
+org.codehaus.gmavenplus.plexus
+org.codehaus.gmavenplus.util
