@@ -6,12 +6,12 @@
 
   <parent>
     <groupId>org.codehaus.gmavenplus</groupId>
-    <artifactId>GMavenPlus-Plugin-it-root</artifactId>
+    <artifactId>gmavenplus-plugin-it-root</artifactId>
     <version>testing</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>GMavenPlus-Plugin-it-advancedGenerateStubs</artifactId>
+  <artifactId>gmavenplus-plugin-it-advancedGenerateStubs</artifactId>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Generate Stubs Test</name>
   <description>The kitchen sink of stub generation use cases</description>

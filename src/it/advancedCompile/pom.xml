@@ -6,12 +6,12 @@
 
   <parent>
     <groupId>org.codehaus.gmavenplus</groupId>
-    <artifactId>GMavenPlus-Plugin-it-root</artifactId>
+    <artifactId>gmavenplus-plugin-it-root</artifactId>
     <version>testing</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>GMavenPlus-Plugin-it-advancedCompile</artifactId>
+  <artifactId>gmavenplus-plugin-it-advancedCompile</artifactId>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Compile Test</name>
   <description>The kitchen sink of compile use cases</description>

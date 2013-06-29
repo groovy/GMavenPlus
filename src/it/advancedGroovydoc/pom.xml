@@ -6,12 +6,12 @@
 
   <parent>
     <groupId>org.codehaus.gmavenplus</groupId>
-    <artifactId>GMavenPlus-Plugin-it-root</artifactId>
+    <artifactId>gmavenplus-plugin-it-root</artifactId>
     <version>testing</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>GMavenPlus-Plugin-it-advancedGroovydoc</artifactId>
+  <artifactId>gmavenplus-plugin-it-advancedGroovydoc</artifactId>
   <version>testing</version>
   <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Groovydoc Test</name>

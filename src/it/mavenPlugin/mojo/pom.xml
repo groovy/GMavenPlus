@@ -6,11 +6,11 @@
 
   <parent>
     <groupId>org.codehaus.gmavenplus</groupId>
-    <artifactId>GMavenPlus-Plugin-it-mavenPlugin</artifactId>
+    <artifactId>gmavenplus-plugin-it-mavenPlugin</artifactId>
     <version>testing</version>
   </parent>
 
-  <artifactId>GMavenPlus-Plugin-it-mavenPlugin-Mojo</artifactId>
+  <artifactId>gmavenplus-plugin-it-mavenPlugin-Mojo</artifactId>
   <packaging>maven-plugin</packaging>
   <name>GMavenPlus Plugin Maven Plugin Test Mojo</name>
 
