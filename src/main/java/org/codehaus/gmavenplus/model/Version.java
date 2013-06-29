@@ -100,7 +100,7 @@ public class Version implements Comparable<Version> {
             }
             return new Version(major, minor, revision, tag);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Major, minor, and revision must be integers.");
+            throw new IllegalArgumentException("Major, minor, and revision must be integers.", e);
         }
     }
 
