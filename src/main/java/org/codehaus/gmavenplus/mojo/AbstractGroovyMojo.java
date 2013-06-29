@@ -116,17 +116,35 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
 
         for (Object dep : project.getCompileDependencies()) {
             Dependency dependency = (Dependency) dep;
-            if ((dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy")) &&
-                    (dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
-                            || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
-                            || dependency.getArtifactId().equals("groovy-jdk14")) &&
-                    dependency.getType().equals("jar")) {
+            if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
                 groovyDependency = dependency;
                 break;
             }
         }
 
         return groovyDependency;
+    }
+
+    /**
+     * Whether the groupId of the dependency is Groovy's groupId.
+     *
+     * @param dependency the dependency to inspect
+     * @return
+     */
+    protected boolean isGroovyGroupId(Dependency dependency) {
+        return dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy");
+    }
+
+    /**
+     * Whether the artifactId of the dependency is Groovy's artifactId.
+     *
+     * @param dependency the dependency to inspect
+     * @return
+     */
+    protected boolean isGroovyArtifactId(Dependency dependency) {
+        return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
+                                    || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
+                                    || dependency.getArtifactId().equals("groovy-jdk14");
     }
 
 }
