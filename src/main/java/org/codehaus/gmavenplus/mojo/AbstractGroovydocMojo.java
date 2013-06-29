@@ -233,21 +233,37 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
 
     private void copyStylesheet(File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
             StringBuilder css = new StringBuilder();
             String line;
-            while ((line = in.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 css.append(line).append("\n");
             }
-            in.close();
+            bufferedReader.close();
             File outfile = new File(outputDirectory, "stylesheet.css");
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
-            out.write(css.toString());
-            out.flush();
-            out.close();
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
+            bufferedWriter.write(css.toString());
         } catch (IOException e) {
             getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").", e);
+        } finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                // if we can't close the steam there's nothing more we can do
+            }
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                }
+            } catch (IOException e) {
+                // if we can't close the steam there's nothing more we can do
+            }
         }
     }
 
