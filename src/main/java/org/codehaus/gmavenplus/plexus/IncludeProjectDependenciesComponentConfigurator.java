@@ -4,9 +4,7 @@
 
 package org.codehaus.gmavenplus.plexus;
 
-// TODO: use new ClassRealm API
-//import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -44,8 +42,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         addProjectDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-//        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
-        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
+        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
     }
 
     private void addProjectDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
@@ -60,8 +57,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         // Add the project dependencies to the ClassRealm
         final URL[] urls = buildURLs(compileClasspathElements);
         for (URL url : urls) {
-//            containerRealm.addURL(url);
-            containerRealm.addConstituent(url);
+            containerRealm.addURL(url);
         }
     }
 
