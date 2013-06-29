@@ -182,9 +182,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <goalPrefix>gmavenplus</goalPrefix>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -271,6 +268,16 @@
         <version>0.3.1</version>
       </extension>
     </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>1.8</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <reporting>
