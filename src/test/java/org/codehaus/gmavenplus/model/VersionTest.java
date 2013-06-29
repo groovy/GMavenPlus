@@ -35,6 +35,31 @@ public class VersionTest {
     }
 
     @Test
+    public void testCompareWithSnapshotTag() {
+        Version v1 = Version.parseFromString("1.0-SNAPSHOT");
+        Version v2 = Version.parseFromString("1.0");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
+    @Test
+    public void testCompareWithSnapshotTagOtherHasRevision() {
+        Version v1 = Version.parseFromString("1.0-SNAPSHOT");
+        Version v2 = Version.parseFromString("1.0.1");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
+    @Test
+    public void testCompareWithTwoTagsOneSnapshot() {
+        Version v1 = Version.parseFromString("1.0.0-beta-1");
+        Version v2 = Version.parseFromString("1.0.0-beta-2-SNAPSHOT");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+
+        v1 = Version.parseFromString("1.0.0-beta-1-SNAPSHOT");
+        v2 = Version.parseFromString("1.0.0-beta-2");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
+    @Test
     public void testSort() {
         Version v1 = Version.parseFromString("1.0.0-beta-2");
         Version v2 = Version.parseFromString("1.0.0-beta-1");

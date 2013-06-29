@@ -44,7 +44,11 @@ public class Version implements Comparable<Version> {
         this.major = major;
         this.minor = minor;
         this.revision = revision;
-        this.tag = tag;
+        if (tag == null || !tag.isEmpty()) {
+            this.tag = tag;
+        } else if (tag.isEmpty()) {
+            this.tag = null;
+        }
     }
 
     /**
@@ -84,21 +88,32 @@ public class Version implements Comparable<Version> {
             int major = Integer.parseInt(split[0]);
             int minor = 0;
             int revision = 0;
-            String tag = null;
+            StringBuilder tag = new StringBuilder();
             if (split.length >= 2) {
-                minor = Integer.parseInt(split[1]);
+                try {
+                    minor = Integer.parseInt(split[1]);
+                } catch (NumberFormatException nfe) {
+                    // version must not specify a minor version, leave minor as 0
+                    tag.append(split[1]);
+                }
             }
             if (split.length >= 3) {
-                revision = Integer.parseInt(split[2]);
+                try {
+                    revision = Integer.parseInt(split[2]);
+                } catch (NumberFormatException nfe) {
+                    // version must not specify a revision version, leave revision as 0
+                    tag.append("-").append(split[2]);
+                }
             }
             if (split.length >= 4) {
-                StringBuilder tagBuilder = new StringBuilder();
                 for (int i = 3; i < split.length; i++) {
-                    tagBuilder.append(split[i]);
+                    if (i > 3) {
+                        tag.append("-");
+                    }
+                    tag.append(split[i]);
                 }
-                tag = tagBuilder.toString();
             }
-            return new Version(major, minor, revision, tag);
+            return new Version(major, minor, revision, tag.toString());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Major, minor, and revision must be integers.", e);
         }
