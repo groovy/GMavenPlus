@@ -40,23 +40,23 @@
             <id>default</id>
             <phases>
               <initialize>
-                GMavenPlus:GMavenPlus-Plugin:addSource
+                org.codehaus.gmavenplus:gmavenplus-plugin:addSource
               </initialize>
               <process-resources>
                 org.apache.maven.plugins:maven-resources-plugin:resources
               </process-resources>
               <compile>
-                GMavenPlus:GMavenPlus-Plugin:generateStubs,
+                org.codehaus.gmavenplus:gmavenplus-plugin:generateStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:compile,
-                GMavenPlus:GMavenPlus-Plugin:compile
+                org.codehaus.gmavenplus:gmavenplus-plugin:compile
               </compile>
               <process-test-resources>
                 org.apache.maven.plugins:maven-resources-plugin:testResources
               </process-test-resources>
               <test-compile>
-                GMavenPlus:GMavenPlus-Plugin:generateTestStubs,
+                org.codehaus.gmavenplus:gmavenplus-plugin:generateTestStubs,
                 org.apache.maven.plugins:maven-compiler-plugin:testCompile,
-                GMavenPlus:GMavenPlus-Plugin:testCompile
+                org.codehaus.gmavenplus:gmavenplus-plugin:testCompile
               </test-compile>
               <test>
                 org.apache.maven.plugins:maven-surefire-plugin:test
