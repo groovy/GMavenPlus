@@ -106,12 +106,16 @@
     </profile>
   </profiles>
 
+  <prerequisites>
+    <maven>${minMavenVersion}</maven>
+  </prerequisites>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -194,7 +198,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.14.1</version>
+        <version>2.15</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -305,17 +309,17 @@
       <plugin>
        <groupId>org.apache.maven.plugins</groupId>
        <artifactId>maven-project-info-reports-plugin</artifactId>
-       <version>2.4</version>
+       <version>2.6</version>
      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.9</version>
+        <version>2.15</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>2.5.2</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -348,7 +352,7 @@
   </distributionManagement>
 
   <name>GMavenPlus Plugin</name>
-  <description>Integrates Groovy with Maven</description>
+  <description>Integrates Groovy into Maven projects.</description>
   <inceptionYear>2011</inceptionYear>
   <url>http://groovy.github.io/GMavenPlus/</url>
   <developers>
