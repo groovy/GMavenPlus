@@ -92,10 +92,11 @@ public class Version implements Comparable<Version> {
                 revision = Integer.parseInt(split[2]);
             }
             if (split.length >= 4) {
-                tag = "";
+                StringBuilder tagBuilder = new StringBuilder();
                 for (int i = 3; i < split.length; i++) {
-                    tag += split[i];
+                    tagBuilder.append(split[i]);
                 }
+                tag = tagBuilder.toString();
             }
             return new Version(major, minor, revision, tag);
         } catch (NumberFormatException e) {
