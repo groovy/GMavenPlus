@@ -19,7 +19,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <javaVersion>1.5</javaVersion>
-    <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
+    <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect
+         "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
   </properties>
@@ -256,6 +257,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.4.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.7</version>
         </plugin>
@@ -350,7 +356,6 @@
     </site>
   </distributionManagement>
 
-  <!-- project metadata -->
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy with Maven</description>
   <inceptionYear>2011</inceptionYear>
@@ -375,9 +380,9 @@
     <url>http://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
   <scm>
-    <connection>scm:git:git://github.com/groovy/GMavenPlus.git</connection>
-    <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
     <url>http://github.com/groovy/GMavenPlus</url>
+    <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>
+    <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
   </scm>
 
 </project>
