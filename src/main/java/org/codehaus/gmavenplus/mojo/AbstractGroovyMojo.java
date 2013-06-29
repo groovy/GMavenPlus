@@ -39,7 +39,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * The Maven project this plugin is being used on
      *
-     * @parameter expression="${project}"
+     * @parameter property="project"
      * @required
      * @readonly
      */

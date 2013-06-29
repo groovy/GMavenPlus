@@ -117,7 +117,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Allow setting whether to support invokeDynamic (requires Java 7 or greater).
      *
-     * @parameter expression="${invokeDynamic}" default-value="false"
+     * @parameter property="invokeDynamic" default-value="false"
      *
      * @noinspection UnusedDeclaration
      */

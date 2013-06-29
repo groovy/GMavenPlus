@@ -36,7 +36,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * Flag to allow test compilation to be skipped
      *
-     * @parameter expression="${maven.test.skip}" default-value="false"
+     * @parameter property="maven.test.skip" default-value="false"
      */
     protected boolean skip;
 
