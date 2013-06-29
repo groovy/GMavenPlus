@@ -71,11 +71,12 @@ public class ExecuteMojo extends AbstractGroovyMojo {
             // run the scripts
             int scriptNum = 1;
             for (String script : scripts) {
+                BufferedReader reader = null;
                 try {
                     URL url = new URL(script);
                     // it's a URL to a script
                     getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
                     StringBuilder scriptSource = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -92,6 +93,14 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                         getLog().error("An Exception occurred while executing script " + scriptNum + ".  Continuing to execute remaining scripts.", e);
                     } else {
                         throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", e);
+                    }
+                } finally {
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        // if we can't close the steam there's nothing more we can do
                     }
                 }
                 scriptNum++;

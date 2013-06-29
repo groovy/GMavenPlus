@@ -21,7 +21,10 @@ package org.codehaus.gmavenplus.util;
  * collection of Strings, but it wasn't available prior to Groovy 1.7 and we
  * need it for Groovydoc generation.
  */
-public class GroovyDocTemplateInfo {
+public final class GroovyDocTemplateInfo {
+
+    private GroovyDocTemplateInfo() {}
+
     private static final String TEMPLATE_BASEDIR = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
     private static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
     public static final String[] DEFAULT_DOC_TEMPLATES = new String[]{ // top level templates
@@ -43,4 +46,5 @@ public class GroovyDocTemplateInfo {
     public static final String[] DEFAULT_CLASS_TEMPLATES = new String[]{ // class level templates
             TEMPLATE_BASEDIR + "classLevel/classDocName.html"
     };
+
 }

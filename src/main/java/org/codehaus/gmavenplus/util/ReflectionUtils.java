@@ -28,7 +28,9 @@ import java.util.Arrays;
  *
  * @author Keegan Witt
  */
-public class ReflectionUtils {
+public final class ReflectionUtils {
+
+    private ReflectionUtils() {}
 
     /**
      * Attempt to find a {@link Method} on the supplied class with the supplied name
