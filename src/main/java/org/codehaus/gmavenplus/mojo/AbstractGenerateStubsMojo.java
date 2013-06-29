@@ -268,7 +268,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Must be >= 1.7.0 because not all the classes needed were available and
      * functioning correctly in previous versions.
      *
-     * @return
+     * @return true only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 7, 0)) >= 0;
@@ -286,8 +286,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @param stubs the files on which to reset the modified date
      */
     protected void resetStubModifiedDates(Set<File> stubs ) {
-        for (File file : stubs) {
-            file.setLastModified(0L);
+        for (File stub : stubs) {
+            boolean success = stub.setLastModified(0L);
+            if (!success) {
+                getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
+            }
         }
     }
 

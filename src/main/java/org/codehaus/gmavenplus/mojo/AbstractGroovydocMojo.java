@@ -256,7 +256,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * Must be >= 1.6.2 because not all the classes/methods needed were available
      * and functioning correctly in previous versions.
      *
-     * @return
+     * @return true only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 6, 2)) >= 0;
