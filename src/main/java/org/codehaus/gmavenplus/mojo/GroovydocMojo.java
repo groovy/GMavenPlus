@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 public class GroovydocMojo extends AbstractGroovydocMojo {
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */

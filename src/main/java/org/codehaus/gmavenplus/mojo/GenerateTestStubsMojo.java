@@ -34,13 +34,15 @@ import org.apache.maven.plugin.MojoFailureException;
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
-     * Flag to allow test compilation to be skipped
+     * Flag to allow test compilation to be skipped.
      *
      * @parameter property="maven.test.skip" default-value="false"
      */
     protected boolean skip;
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */

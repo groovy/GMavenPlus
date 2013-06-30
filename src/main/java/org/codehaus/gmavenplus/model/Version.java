@@ -20,7 +20,7 @@ import com.google.common.base.Objects;
 
 
 /**
- * Container for version information in the form of <tt>major.minor.revision-tag</tt>.
+ * Container for Version information in the form of <tt>major.minor.revision-tag</tt>.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Keegan Witt
@@ -32,10 +32,12 @@ public class Version implements Comparable<Version> {
     public String tag;
 
     /**
-     * @param major
-     * @param minor
-     * @param revision
-     * @param tag
+     * Constructs a new version object with the specified parameters.
+     *
+     * @param major version major number
+     * @param minor version minor number
+     * @param revision version revision number
+     * @param tag version tag string
      */
     public Version(int major, int minor, int revision, String tag) {
         if (major <= 0 || minor < 0 || revision < 0) {
@@ -54,32 +56,40 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * @param major
-     * @param minor
-     * @param revision
+     * Constructs a new Version object with the specified parameters.
+     *
+     * @param major version major number
+     * @param minor version minor number
+     * @param revision version revision number
      */
     public Version(int major, int minor, int revision) {
         this(major, minor, revision, null);
     }
 
     /**
-     * @param major
-     * @param minor
+     * Constructs a new Version object with the specified parameters.
+     *
+     * @param major version major number
+     * @param minor version minor number
      */
     public Version(int major, int minor) {
         this(major, minor, 0);
     }
 
     /**
-     * @param major
+     * Constructs a new Version object with the specified parameters.
+     *
+     * @param major version major number
      */
     public Version(int major) {
         this(major, 0);
     }
 
     /**
-     * @param version
-     * @return
+     * Parses a new Version object from a string.
+     *
+     * @param version the version string to parse
+     * @return the version parsed from the string
      */
     public static Version parseFromString(String version) {
         if (version == null || version.isEmpty()) {
@@ -95,7 +105,7 @@ public class Version implements Comparable<Version> {
                 try {
                     minor = Integer.parseInt(split[1]);
                 } catch (NumberFormatException nfe) {
-                    // version must not specify a minor version, leave minor as 0
+                    // version string must not have specified a minor version, leave minor as 0
                     tag.append(split[1]);
                 }
             }
@@ -103,7 +113,7 @@ public class Version implements Comparable<Version> {
                 try {
                     revision = Integer.parseInt(split[2]);
                 } catch (NumberFormatException nfe) {
-                    // version must not specify a revision version, leave revision as 0
+                    // version string must not have specified a revision version, leave revision as 0
                     tag.append(split[2]);
                 }
             }
@@ -131,7 +141,6 @@ public class Version implements Comparable<Version> {
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    @Override
     public boolean equals(final Object obj){
         if(obj instanceof Version) {
             final Version other = (Version) obj;
@@ -161,11 +170,12 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Compares versions.  Note that if the major, minor, and revision are all
-     * the same tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}
+     * Compares two versions objects.  Note that if the major, minor, and revision are all
+     * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
-     * @param version
-     * @return
+     * @param version the version to compare this version to
+     * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
+     *         this version, or <code>-1</code> if the version is lower than this version.
      */
     public int compareTo(Version version) {
         int mine = (1000 * major) + (100 * minor) + (revision * 10);

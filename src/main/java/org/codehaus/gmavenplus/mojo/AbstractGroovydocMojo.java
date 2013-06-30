@@ -57,7 +57,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected File groovydocOutputDirectory;
 
     /**
-     * Groovy test source files (relative paths).
+     * Groovy test source files (relative paths)
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -100,7 +100,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected String header;
 
     /**
-     * Whether or not to display the author in the generated Groovydoc
+     * Whether to display the author in the generated Groovydoc
      *
      * @parameter default-value="true"
      */
@@ -138,6 +138,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     // TODO: add links parameter
 
     /**
+     * Gets a list of filename strings for the sources to generate groovydoc for, using sources from the default
+     * directory if no source directories are specified.
+     *
      * @param fileSet
      * @return
      */
@@ -164,8 +167,10 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * @param sourceDirectories
-     * @param outputDirectory
+     * Generates the groovydoc for the specified sources.
+     *
+     * @param sourceDirectories the sources to generate groovydoc for
+     * @param outputDirectory the directory to save the generated groovydoc in
      * @throws ClassNotFoundException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -261,14 +266,16 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * Must be >= 1.6.2 because not all the classes/methods needed were available
      * and functioning correctly in previous versions.
      *
-     * @return true only if the version of Groovy supports this mojo
+     * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 6, 2)) >= 0;
     }
 
     /**
-     * @param sources
+     * Checks if the passed sources are null and adds the sources from the default directory if they are.
+     *
+     * @param sources the sources to check against
      */
     protected void setDefaultSourceDirectories(FileSet[] sources) {
         if (sources == null) {

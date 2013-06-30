@@ -40,7 +40,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      */
 
     /**
-     * Groovy source files (relative paths).
+     * Groovy source files (relative paths)
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -55,7 +55,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected File stubsOutputDirectory;
 
     /**
-     * Groovy test source files (relative paths).
+     * Groovy test source files (relative paths)
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -85,41 +85,44 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 //    protected String targetBytecode;
 
     /**
-     * Whether Groovy compiler should be set to debug or not
+     * Whether Groovy compiler should be set to debug
      *
      * @parameter default-value="false"
      */
     protected boolean debug;
 
     /**
-     * Whether Groovy compiler should be set to verbose or not
+     * Whether Groovy compiler should be set to verbose
      *
      * @parameter default-value="false"
      */
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level, should be one of
-     * "0" (None)
-     * "1" (Likely Errors)
-     * "2" (Possible Errors)
-     * "3" (Paranoia)
+     * Groovy compiler warning level.  Should be one of:
+     * <ul>
+     *   <li>"0" (None)</li>
+     *   <li>"1" (Likely Errors)</li>
+     *   <li>"2" (Possible Errors)</li>
+     *   <li>"3" (Paranoia)</li>
+     *</ul>
      *
-     * @parameter default-value="0"
+     * @parameter default-value="0"@
      */
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
+     * Groovy compiler error tolerance
+     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
      *
      * @parameter default-value="0"
      */
     protected int tolerance;
 
     /**
-     * Gets the set of files for the main sources
+     * Gets the set of files for the main sources.
      *
-     * @return
+     * @return the set of files for the main sources
      */
     protected Set<File> getSources() {
         Set<File> files = new HashSet<File>();
@@ -145,9 +148,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files for the test sources
+     * Gets the set of files of the test sources.
      *
-     * @return
+     * @return the set of files of the test sources
      */
     protected Set<File> getTestSources() {
         Set<File> files = new HashSet<File>();
@@ -173,9 +176,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files for the main stubs
+     * Gets the set of files of the main stubs.
      *
-     * @return
+     * @return the set of files of the main stubs
      */
     protected Set<File> getStubs() {
         Set<File> files = new HashSet<File>();
@@ -192,9 +195,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files for the test stubs
+     * Gets the set of files of the test stubs.
      *
-     * @return
+     * @return the set of files of the test stubs
      */
     protected Set<File> getTestStubs() {
         Set<File> files = new HashSet<File>();
@@ -211,8 +214,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * @param sources
-     * @param outputDirectory
+     * Performs the stub generation on the specified source files.
+     *
+     * @param sources the sources to perform stub generation on
+     * @param outputDirectory the directory to write the stub files to
      * @throws ClassNotFoundException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -268,7 +273,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Must be >= 1.7.0 because not all the classes needed were available and
      * functioning correctly in previous versions.
      *
-     * @return true only if the version of Groovy supports this mojo
+     * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 7, 0)) >= 0;

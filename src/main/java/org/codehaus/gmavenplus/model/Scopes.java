@@ -21,8 +21,20 @@ package org.codehaus.gmavenplus.model;
  * @author Keegan Witt
  */
 public enum Scopes {
+    /**
+     * Public scope
+     */
     PUBLIC,
+    /**
+     * Protected scope
+     */
     PROTECTED,
+    /**
+     * Package scope
+     */
     PACKAGE,
+    /**
+     * Private scope
+     */
     PRIVATE
 }

@@ -39,6 +39,12 @@ import java.util.List;
  */
 public class AddSourceMojo extends AbstractCompileMojo {
 
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException
+     * @throws MojoFailureException
+     */
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("addSource");
 
@@ -55,9 +61,8 @@ public class AddSourceMojo extends AbstractCompileMojo {
         }
     }
 
-     /**
-     * @return
-     * @throws DependencyResolutionRequiredException
+    /**
+     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
      */
     @SuppressWarnings("unchecked")
     protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
@@ -65,12 +70,17 @@ public class AddSourceMojo extends AbstractCompileMojo {
     }
 
     /**
-     * @return
+     * @see AbstractCompileMojo#getJavaSources()
      */
     protected List<File> getJavaSources() {
         throw new UnsupportedOperationException("This method does not apply for this mojo");
     }
 
+    /**
+     * Adds the specified source path to the project's main compile sources.
+     *
+     * @param path the source path to add to the project's main compile sources
+     */
     protected void addSourcePath(String path) {
         if (!project.getCompileSourceRoots().contains(path)) {
             getLog().debug("Added Source directory: " + path);
@@ -78,6 +88,11 @@ public class AddSourceMojo extends AbstractCompileMojo {
         }
     }
 
+    /**
+     * Adds the specified source path to the project's test compile sources.
+     *
+     * @param path the source path to add to the project's test compile sources
+     */
     protected void addTestSourcePath(String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {
             getLog().debug("Added Test Source directory: " + path);

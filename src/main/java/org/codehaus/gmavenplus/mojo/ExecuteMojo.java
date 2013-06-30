@@ -54,6 +54,8 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     protected boolean continueExecuting;
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */

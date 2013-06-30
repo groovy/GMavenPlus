@@ -34,6 +34,8 @@ import org.apache.maven.plugin.MojoFailureException;
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */

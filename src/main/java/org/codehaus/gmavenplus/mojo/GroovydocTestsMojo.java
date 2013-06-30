@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * Generates Groovydoc for the test sources
+ * Generates Groovydoc for the test sources.
  * Note that this mojo requires Groovy >= 1.6.2.
  *
  * @author Keegan Witt
@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 public class GroovydocTestsMojo extends AbstractGroovydocMojo {
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */

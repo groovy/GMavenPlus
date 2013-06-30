@@ -38,7 +38,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected static final String JAVA_PATTERN = "**/*.java";
 
     /**
-     * Groovy source files (relative paths).
+     * Groovy source files (relative paths)
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -53,7 +53,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected File outputDirectory;
 
     /**
-     * Groovy test source files (relative paths).
+     * Groovy test source files (relative paths)
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -76,39 +76,41 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
     // if plugin only runs on 1.5, then can assume 1.5
     /**
-     * Groovy compiler bytecode compatibility ("1.4" or "1.5")
+     * Groovy compiler bytecode compatibility ("1.4" or "1.5").
      *
      * @parameter default-value="1.5"
      */
 //    protected String targetBytecode;
 
     /**
-     * Whether Groovy compiler should be set to debug or not
+     * Whether Groovy compiler should be set to debug
      *
      * @parameter default-value="false"
      */
     protected boolean debug;
 
     /**
-     * Whether Groovy compiler should be set to verbose or not
+     * Whether Groovy compiler should be set to verbose
      *
      * @parameter default-value="false"
      */
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level, should be one of
-     * "0" (None)
-     * "1" (Likely Errors)
-     * "2" (Possible Errors)
-     * "3" (Paranoia)
+     * Groovy compiler warning level.  Should be one of:
+     * <ul>
+     *   <li>"0" (None)</li>
+     *   <li>"1" (Likely Errors)</li>
+     *   <li>"2" (Possible Errors)</li>
+     *   <li>"3" (Paranoia)</li>
+     *</ul>
      *
-     * @parameter default-value="0"
+     * @parameter default-value="0"@
      */
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
+     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
      *
      * @parameter default-value="0"
      */
@@ -118,15 +120,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * Allow setting whether to support invokeDynamic (requires Java 7 or greater).
      *
      * @parameter property="invokeDynamic" default-value="false"
-     *
-     * @noinspection UnusedDeclaration
      */
     private boolean invokeDynamic;
 
     /**
-     * Gets the set of files for the main sources
+     * Gets the set of files for the main sources.
      *
-     * @return
+     * @return a set of main source files
      */
     protected Set<File> getSources() {
         Set<File> files = new HashSet<File>();
@@ -152,9 +152,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files for the test sources
+     * Gets the set of files for the test sources.
      *
-     * @return
+     * @return a set of test source files
      */
     protected Set<File> getTestSources() {
         Set<File> files = new HashSet<File>();
@@ -180,9 +180,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * @param sources
-     * @param classpath
-     * @param outputDirectory
+     * Performs compilation for compile mojos.
+     *
+     * @param sources sources to compile
+     * @param classpath classpath to use for compilation
+     * @param outputDirectory directory to write the compiled class files to
      * @throws ClassNotFoundException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -261,13 +263,17 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * @return
+     * Gets the project classpath elements needed for this mojo.
+     *
+     * @return a list of project classpath elements
      * @throws DependencyResolutionRequiredException
      */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
 
     /**
-     * @return
+     * Gets the list of Java source files.
+     *
+     * @return the list of Java source files
      */
     protected abstract List<File> getJavaSources();
 

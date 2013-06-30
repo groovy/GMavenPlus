@@ -21,8 +21,9 @@ import java.net.URI;
 
 
 /**
- * This class exists solely to trick <a href="http://groovy.codehaus.org/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29">JavaStubCompilationUnit.addSource(java.io.File)</a>
- * into letting us use files that don't end in ".groovy"
+ * This class exists solely to trick
+ * <a href="http://groovy.codehaus.org/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29">JavaStubCompilationUnit.addSource(java.io.File)</a>
+ * into letting us use files that don't end in ".groovy".
  *
  * @author Keegan Witt
  */
@@ -30,39 +31,47 @@ public class DotGroovyFile extends File {
     // TODO: make this class unnecessary?
 
     /**
-     * @param pathname
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param pathname pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(String pathname) {
         super(pathname);
     }
 
     /**
-     * @param parent
-     * @param child
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param parent parent pathname to use to create DotGroovyFile
+     * @param child child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(String parent, String child) {
         super(parent, child);
     }
 
     /**
-     * @param parent
-     * @param child
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param parent parent file to use to create DotGroovyFile
+     * @param child child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(File parent, String child) {
         super(parent, child);
     }
 
     /**
-     * @param uri
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param uri URI to use to create DotGroovyFile
      */
     public DotGroovyFile(URI uri) {
         super(uri);
     }
 
     /**
-     * A convenience constructor to turn a regular file into a DotGroovyFile
+     * A convenience constructor to turn a regular file into a DotGroovyFile.
      *
-     * @param file
+     * @param file File to use to create DotGroovyFile
      */
     public DotGroovyFile(File file) {
         this(file.getAbsolutePath());
@@ -70,9 +79,9 @@ public class DotGroovyFile extends File {
 
     /**
      * A method to lie about the file extension and say it is ".groovy" (as long
-     * as the original extension was not ".java")
+     * as the original extension was not ".java").
      *
-     * @return
+     * @return filename with forced <tt>.groovy</tt> extension.
      */
     public String getName() {
         if (!super.getName().toLowerCase().endsWith(".java")) {

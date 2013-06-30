@@ -32,7 +32,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 /**
  * Compiles the main sources.
- * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic optiuon.
+ * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic option.
  *
  * @author Keegan Witt
  *
@@ -43,6 +43,8 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 public class CompileMojo extends AbstractCompileMojo {
 
     /**
+     * Executes this mojo.
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
@@ -67,15 +69,14 @@ public class CompileMojo extends AbstractCompileMojo {
     }
 
     /**
-     * @return
-     * @throws DependencyResolutionRequiredException
+     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
      */
     protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
         return project.getCompileClasspathElements();
     }
 
     /**
-     * @return
+     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getJavaSources()
      */
     protected List<File> getJavaSources() {
         List<File> javaSources = new ArrayList<File>();

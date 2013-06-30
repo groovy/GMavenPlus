@@ -37,7 +37,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
 
     /**
-     * The Maven project this plugin is being used on
+     * The Maven project this plugin is being used on.
      *
      * @parameter property="project"
      * @required
@@ -45,6 +45,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected MavenProject project;
 
+    /**
+     * Gets the log for this mojo.
+     *
+     * @return the log for this mojo
+     */
     public Log getLog() {
         if (log == null) {
             log = new SystemStreamLog();
@@ -54,6 +59,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
+     * Logs the version of groovy used by this mojo.
+     *
      * @param goal the goal to mention in the log statement showing Groovy version
      */
     protected void logGroovyVersion(String goal) {
@@ -63,7 +70,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Gets the version of Groovy used from the dependency information
+     * Gets the version of Groovy used from the dependency information.
      *
      * @return the version Groovy used by the project
      */
@@ -72,8 +79,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
 
         /*
          * You can call InvokerHelper.getVersion() for versions 1.0 - 1.8.x but
-         * not for 1.9+
-         * You can call GroovySystem.getVersion() for versions 1.6.6+
+         * not for 1.9+.
+         * You can call GroovySystem.getVersion() for versions 1.6.6+.
          * And for some reason InvokerHelper.getVersion() was returning an empty
          * String for 1.5.0, so I decided to just get it from the dependency itself.
          */
@@ -89,9 +96,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Gets the version of Groovy used from the dependency information
+     * Gets the version of Groovy used from the dependency information.
      *
-     * @return true if the version of Groovy uses InvokeDynamic, false if not or Groovy dependency cannot be found
+     * @return <code>true</code> if the version of Groovy uses InvokeDynamic,
+     *         <code>false</code> if not or Groovy dependency cannot be found.
      */
     protected boolean isGroovyIndy() {
         boolean isGroovyIndy = false;
@@ -107,7 +115,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Gets the Groovy dependency used by the project
+     * Gets the Groovy dependency used by the project.
      *
      * @return the Groovy dependency used by the project
      */
@@ -129,7 +137,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * Whether the groupId of the dependency is Groovy's groupId.
      *
      * @param dependency the dependency to inspect
-     * @return
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise.
      */
     protected boolean isGroovyGroupId(Dependency dependency) {
         return dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy");
@@ -139,7 +147,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * Whether the artifactId of the dependency is Groovy's artifactId.
      *
      * @param dependency the dependency to inspect
-     * @return
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise.
      */
     protected boolean isGroovyArtifactId(Dependency dependency) {
         return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")

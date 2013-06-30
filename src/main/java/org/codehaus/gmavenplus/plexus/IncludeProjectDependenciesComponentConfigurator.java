@@ -23,7 +23,7 @@ import java.util.List;
 
 
 /**
- * A custom ComponentConfigurator which adds the project's compile time classpath elements
+ * A custom ComponentConfigurator which adds the project's compile time classpath elements.
  *
  * @author Brian Jackson
  * @author Keegan Witt
