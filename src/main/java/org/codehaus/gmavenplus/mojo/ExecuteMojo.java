@@ -78,7 +78,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                         URL url = new URL(script);
                         // it's a URL to a script
                         getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                        BufferedReader reader = closer.register(new BufferedReader(new InputStreamReader(url.openStream())));
                         StringBuilder scriptSource = new StringBuilder();
                         String line;
                         while ((line = reader.readLine()) != null) {
