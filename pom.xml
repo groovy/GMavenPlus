@@ -20,6 +20,8 @@
     <javaVersion>1.5</javaVersion>
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
+    <!-- this is a property to that site generation can use it -->
+    <groovyVersion>2.1.5</groovyVersion>
   </properties>
 
   <dependencies>
@@ -66,10 +68,9 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <!-- this is only used for the site documentation and unit tests, not for any compile/runtime dependencies -->
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>2.1.5</version>
+      <version>${groovyVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
