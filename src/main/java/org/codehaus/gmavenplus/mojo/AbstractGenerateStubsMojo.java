@@ -40,6 +40,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      */
 
     /**
+     * The minimum version of Groovy that this mojo supports
+     */
+    protected static final Version MIN_GROOVY_VERSION = new Version(1, 7, 0);
+
+    /**
      * Groovy source files (relative paths)
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
@@ -276,7 +281,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 7, 0)) >= 0;
+        return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
     /**

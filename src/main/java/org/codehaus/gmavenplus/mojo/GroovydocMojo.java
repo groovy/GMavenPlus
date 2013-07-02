@@ -56,7 +56,7 @@ public class GroovydocMojo extends AbstractGroovydocMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  Skipping Groovydoc generation.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping Groovydoc generation.");
         }
     }
 
