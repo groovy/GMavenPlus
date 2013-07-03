@@ -41,9 +41,6 @@ Usage
             </goals>
           </execution>
         </executions>
-        <configuration>
-          ...
-        </configuration>
       </plugin>
       ...
     </plugins>
@@ -56,7 +53,7 @@ Usage
       <!-- any version of Groovy should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ....
+    ...
   </dependencies>
   ...
 </project>
@@ -91,9 +88,6 @@ Usage
             </goals>
           </execution>
         </executions>
-        <configuration>
-          ...
-        </configuration>
       </plugin>
       ...
     </plugins>
@@ -106,7 +100,7 @@ Usage
       <!-- any version of Groovy >= 1.7.0 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ....
+    ...
   </dependencies>
   ...
 </project>
@@ -129,12 +123,6 @@ Usage
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
-        <executions>
-          ...
-        </executions>
-        <configuration>
-          ...
-        </configuration>
       </plugin>
       ...
     </plugins>
@@ -147,7 +135,7 @@ Usage
       <!-- any version of Groovy \>= 1.6.2 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ....
+    ...
   </dependencies>
   ...
 </project>
@@ -195,7 +183,7 @@ Usage
       <!-- any version of Groovy \>= 1.6.2 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ....
+    ...
   </dependencies>
   ...
 </project>
@@ -259,7 +247,7 @@ Usage
       <!-- any version of Ivy should work here -->
       <version>2.2.0</version>
     </dependency>
-    ....
+    ...
   </dependencies>
   ...
 </project>
