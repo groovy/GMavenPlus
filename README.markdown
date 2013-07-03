@@ -5,4 +5,4 @@ GMavenPlus is a rewrite of [GMaven](http://docs.codehaus.org/display/GMAVEN/Home
 You should find everything you need to know about its use in the [Maven site](http://groovy.github.com/GMavenPlus/index.html).  For more information, check out the [wiki](http://github.com/groovy/GMavenPlus/wiki).
 
 ##Status##
-The project is currently in beta, but it is believed to be stable enough to use.
+The project is currently in beta, but plan to do a GA release soon (depending on the feedback we get).
