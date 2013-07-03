@@ -211,7 +211,7 @@
             </goals>
           </execution>
           <execution>
-            <id>generate-metadata</id>
+            <id>generate-descriptor</id>
             <goals>
               <goal>descriptor</goal>
             </goals>
