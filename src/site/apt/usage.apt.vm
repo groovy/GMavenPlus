@@ -7,7 +7,7 @@ Usage
 
  * {{Basic Usage}}
 
- * {{Generate Stubs}}
+ * {{Mixed Compilation}}
 
  * {{Generate Groovydoc}}
 
@@ -20,13 +20,12 @@ Usage
 
 * {Basic Usage}
 
- To compile Groovy code as part of the project compilation when there is no
+ To compile Groovy code as part of the project compilation when there are no
  dependencies between Java and Groovy, you should add something similar to
- the following in the \<build\> section of your pom:
+ the following in your pom:
 
 +-----+
 <project>
-  ...
   <build>
     <plugins>
       <plugin>
@@ -42,9 +41,7 @@ Usage
           </execution>
         </executions>
       </plugin>
-      ...
     </plugins>
-    ...
   </build>
   <dependencies>
     <dependency>
@@ -53,9 +50,7 @@ Usage
       <!-- any version of Groovy should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ...
   </dependencies>
-  ...
 </project>
 +-----+
 
@@ -63,15 +58,15 @@ Usage
  will be compiled.
 
 
-* {Generate Stubs}
+* {Mixed Compilation}
 
- To generate stubs as part of the project compilation (needed when you have a
- mixed Groovy and Java project with dependencies between the two), you should
- add something similar to the following in the \<build\> section of your pom:
+ To compile projects where you have mixed Java and Groovy (with dependencies
+ between the two), you'll need to generate stubs and tell the Maven Compiler
+ Plugin where those stubs are.  To do this, you should add something
+ similar to the following in your pom:
 
 +-----+
 <project>
-  ...
   <build>
     <plugins>
       <plugin>
@@ -89,9 +84,19 @@ Usage
           </execution>
         </executions>
       </plugin>
-      ...
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>src/main/java/**/*.java</include>
+            <include>target/generated-sources/groovy-stubs/main/**/*.java</include>
+            <include>src/test/java/**/*.java</include>
+            <include>target/generated-sources/groovy-stubs/test/**/*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
     </plugins>
-    ...
   </build>
   <dependencies>
     <dependency>
@@ -100,9 +105,7 @@ Usage
       <!-- any version of Groovy >= 1.7.0 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ...
   </dependencies>
-  ...
 </project>
 +-----+
 
@@ -112,11 +115,12 @@ Usage
 
 * {Generate Groovydoc}
 
- Here is the basic usage to get Groovydoc in your target directory:
+ To generate Groovydoc manually, you only need add the plugin (no need to
+ configure any executions).  To do this, you should add something similar
+ to the following in your pom:
 
 +-----+
 <project>
-  ...
   <build>
     <plugins>
       <plugin>
@@ -124,9 +128,7 @@ Usage
         <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
       </plugin>
-      ...
     </plugins>
-    ...
   </build>
   <dependencies>
     <dependency>
@@ -135,9 +137,7 @@ Usage
       <!-- any version of Groovy \>= 1.6.2 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ...
   </dependencies>
-  ...
 </project>
 +-----+
 
@@ -149,11 +149,11 @@ Usage
 
  Note that this mojo is not set up to be used in the \<reporting\> section.
  So you will need to set the \<outputDirectory\> and \<executions\>
- to mimic this functionality:
+ to mimic this functionality.  To do this, you should add something
+ similar to the following in your pom:
 
 +-----+
 <project>
-  ...
   <build>
     <plugins>
       <plugin>
@@ -172,9 +172,7 @@ Usage
           <groovydocOutputDirectory>\${project.reporting.outputDirectory}/gapidocs</groovydocOutputDirectory>
         </configuration>
       </plugin>
-      ...
     </plugins>
-    ...
   </build>
   <dependencies>
     <dependency>
@@ -183,9 +181,7 @@ Usage
       <!-- any version of Groovy \>= 1.6.2 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
-    ...
   </dependencies>
-  ...
 </project>
 +-----+
 
@@ -203,7 +199,6 @@ Usage
 
 +-----+
 <project>
-  ...
   <build>
     <plugins>
       <plugin>
@@ -230,9 +225,7 @@ Usage
           </scripts>
         </configuration>
       </plugin>
-      ...
     </plugins>
-    ...
   </build>
   <dependencies>
     <dependency>
@@ -247,9 +240,7 @@ Usage
       <!-- any version of Ivy should work here -->
       <version>2.2.0</version>
     </dependency>
-    ...
   </dependencies>
-  ...
 </project>
 +-----+
 
