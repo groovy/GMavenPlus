@@ -19,13 +19,13 @@
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-all</artifactId>
-          <version>2.1.5</version>
+          <version>@groovyVersion@</version>
           <scope>compile</scope>
         </dependency>
         <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
-          <version>4.11</version>
+          <version>@junitVersion@</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -41,7 +41,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.1</version>
+          <version>@compilerVersion@</version>
           <configuration>
             <source>${javaVersion}</source>
             <target>${javaVersion}</target>
@@ -51,7 +51,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.15</version>
+          <version>@surefireVersion@</version>
         </plugin>
       </plugins>
     </pluginManagement>

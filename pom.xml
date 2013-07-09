@@ -21,7 +21,11 @@
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <!-- this is a property to that site generation can use it -->
-    <groovyVersion>2.1.5</groovyVersion>
+    <groovyVersion>2.1.6</groovyVersion>
+    <junitVersion>4.11</junitVersion>
+    <compilerVersion>3.1</compilerVersion>
+    <surefireVersion>2.15</surefireVersion>
+    <pluginVersion>3.2</pluginVersion>
   </properties>
 
   <dependencies>
@@ -76,7 +80,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junitVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -202,7 +206,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.2</version>
+        <version>${pluginVersion}</version>
         <executions>
           <execution>
             <id>generate-helpmojo</id>
@@ -221,7 +225,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>${compilerVersion}</version>
         <configuration>
           <source>${javaVersion}</source>
           <target>${javaVersion}</target>
@@ -230,7 +234,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.15</version>
+        <version>${surefireVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -320,7 +324,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.2</version>
+        <version>${pluginVersion}</version>
         <configuration>
           <requirements>
             <jdk>${javaVersion}</jdk>
@@ -346,7 +350,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.15</version>
+        <version>${surefireVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
