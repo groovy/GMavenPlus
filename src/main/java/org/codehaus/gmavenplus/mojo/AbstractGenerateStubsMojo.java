@@ -251,17 +251,19 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
+
+        // setup groovyClassLoader
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
-        getLog().debug("Generating stubs for " + sources.size() + " sources.");
+
+        // add Groovy sources
         /* I'm not sure why, but whenever I try to use the
          * JavaStubCompilationUnit.addSources(File[]) to avoid the .groovy
          * extension limitation, I get a "java.lang.IllegalArgumentException: wrong number of arguments".
          * And doing a CompilerConfiguration.setScriptExtensions() doesn't make
          * it recognize other extensions.  So for now, will use my DotGroovyFile hack.
          */
-        // add Groovy sources
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : sources) {
             getLog().debug("    " + source);
@@ -271,6 +273,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         // generate the stubs
         Object convPhase = ReflectionUtils.getField(ReflectionUtils.findField(phasesClass, "CONVERSION", int.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
+
+        // log generated stubs
+        getLog().debug("Generated " + sources.size() + "stubs.");
     }
 
     /**

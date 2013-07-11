@@ -55,6 +55,9 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                     doStubGeneration(getTestSources(), testStubsOutputDirectory);
                     resetStubModifiedDates(getTestStubs());
 
+                    // add stubs to project source so the Maven Compiler Plugin can find them
+                    project.addCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
+
                     // log generated stubs
                     int stubCount = getTestStubs().size();
                     getLog().info("Generated " + stubCount + " stubs.");

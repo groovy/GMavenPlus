@@ -61,9 +61,9 @@ Usage
 * {Mixed Compilation}
 
  To compile projects where you have mixed Java and Groovy (with dependencies
- between the two), you'll need to generate stubs and tell the Maven Compiler
- Plugin where those stubs are.  To do this, you should add something
- similar to the following in your pom:
+ between the two), you'll need to generate stubs in addition to normal
+ compilation.  To do this, you should add something similar to the following
+ in your pom:
 
 +-----+
 <project>
@@ -77,8 +77,8 @@ Usage
           <execution>
             <goals>
               <goal>generateStubs</goal>
-              <goal>testGenerateStubs</goal>
               <goal>compile</goal>
+              <goal>testGenerateStubs</goal>
               <goal>testCompile</goal>
             </goals>
           </execution>
@@ -87,14 +87,6 @@ Usage
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <includes>
-            <include>src/main/java/**/*.java</include>
-            <include>target/generated-sources/groovy-stubs/main/**/*.java</include>
-            <include>src/test/java/**/*.java</include>
-            <include>target/generated-sources/groovy-stubs/test/**/*.java</include>
-          </includes>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -221,7 +213,6 @@ Usage
               import org.apache.commons.lang.SystemUtils
               println "Using Java $${SystemUtils.JAVA_VERSION}"
             ]]></script>
-            <script>file:///\${project.basedir}/src/main/groovy/HelloWorld2.groovy</script>
           </scripts>
         </configuration>
       </plugin>
@@ -235,9 +226,9 @@ Usage
       <version>${groovyVersion}</version>
     </dependency>
     <dependency>
+      <!-- this is only needed because the script uses it -->
       <groupId>org.apache.ivy</groupId>
       <artifactId>ivy</artifactId>
-      <!-- any version of Ivy should work here -->
       <version>2.2.0</version>
     </dependency>
   </dependencies>

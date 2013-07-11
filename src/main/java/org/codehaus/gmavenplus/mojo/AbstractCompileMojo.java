@@ -192,7 +192,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @throws java.net.MalformedURLException
      */
     @SuppressWarnings("unchecked")
-    protected synchronized void doCompile(Set<File> sources, List classpath, File outputDirectory)
+    protected synchronized void doCompile(Set<File> sources, List classpath, String mavenBuildOutputDirectory, File outputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
@@ -224,35 +224,27 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
                 getLog().warn("Requested to use InvokeDynamic option but the version of Groovy on the project classpath doesn't support it.  Ignoring invokeDynamic option.");
             }
         }
+
+        // append project classpath to groovyClassLoader
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
-        // append project classpath to groovyClassLoader
+        getLog().debug("Classpath: ");
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addClasspath", String.class), groovyClassLoader, mavenBuildOutputDirectory);
+        getLog().debug("    " + mavenBuildOutputDirectory);
         if (classpath != null) {
-            getLog().debug("Classpath: ");
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
                 getLog().debug("    " + classpathElement);
             }
         }
+
         // add Groovy sources
         Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
-        getLog().debug("Compiling " + (sources.size() + sources.size()) + " Groovy sources.");
         getLog().debug("Adding Groovy to compile:");
         for (File source : sources) {
             getLog().debug("    " + source);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
-        }
-        // add Java sources
-        List sourceRoots = getJavaSources();
-        getLog().debug("Compiling " + (sources.size() + sourceRoots.size()) + " Java sources.");
-        if (!sourceRoots.isEmpty()) {
-            getLog().debug("Adding Java to compile:");
-            for (Object javaSource : sourceRoots) {
-                File file = (File) javaSource;
-                getLog().debug("    " + file);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, file);
-            }
         }
 
         // compile the classes
@@ -270,12 +262,5 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @throws DependencyResolutionRequiredException
      */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
-
-    /**
-     * Gets the list of Java source files.
-     *
-     * @return the list of Java source files
-     */
-    protected abstract List<File> getJavaSources();
 
 }

@@ -72,15 +72,6 @@ public class AddSourceMojo extends AbstractCompileMojo {
     }
 
     /**
-     * This method does not apply for this mojo.
-     *
-     * @see AbstractCompileMojo#getJavaSources()
-     */
-    protected List<File> getJavaSources() {
-        throw new UnsupportedOperationException("This method does not apply for this mojo");
-    }
-
-    /**
      * Adds the specified source path to the project's main compile sources.
      *
      * @param path the source path to add to the project's main compile sources

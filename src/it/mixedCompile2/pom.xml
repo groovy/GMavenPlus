@@ -36,8 +36,8 @@
           <execution>
             <goals>
               <goal>generateStubs</goal>
-              <goal>testGenerateStubs</goal>
               <goal>compile</goal>
+              <goal>testGenerateStubs</goal>
               <goal>testCompile</goal>
             </goals>
           </execution>
@@ -46,17 +46,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <includes>
-            <include>src/main/java/**/*.java</include>
-            <include>target/generated-sources/groovy-stubs/main/**/*.java</include>
-            <include>src/test/java/**/*.java</include>
-            <include>target/generated-sources/groovy-stubs/test/**/*.java</include>
-          </includes>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

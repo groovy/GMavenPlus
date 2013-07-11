@@ -61,7 +61,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
             logGroovyVersion("compileTests");
 
             try {
-                doCompile(getTestSources(), getProjectClasspathElements(), testOutputDirectory);
+                doCompile(getTestSources(), getProjectClasspathElements(), project.getBuild().getTestOutputDirectory(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
@@ -85,27 +85,6 @@ public class CompileTestsMojo extends AbstractCompileMojo {
      */
     protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
         return project.getTestClasspathElements();
-    }
-
-    /**
-     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getJavaSources()
-     */
-    protected List<File> getJavaSources() {
-        List<File> javaSources = new ArrayList<File>();
-
-        FileSetManager fileSetManager = new FileSetManager();
-        for (Object root : project.getTestCompileSourceRoots()) {
-            String directory = (String) root;
-            FileSet fs = new FileSet();
-            fs.setDirectory(directory);
-            fs.setIncludes(Arrays.asList(JAVA_PATTERN));
-            String[] includes = fileSetManager.getIncludedFiles(fs);
-            for (String file : includes) {
-                javaSources.add(new File(directory + File.separator + file));
-            }
-        }
-
-        return javaSources;
     }
 
 }
