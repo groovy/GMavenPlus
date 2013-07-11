@@ -237,6 +237,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         // add Groovy sources
         Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
+        getLog().debug("Compiling " + (sources.size() + sources.size()) + " Groovy sources.");
         getLog().debug("Adding Groovy to compile:");
         for (File source : sources) {
             getLog().debug("    " + source);
@@ -244,7 +245,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         }
         // add Java sources
         List sourceRoots = getJavaSources();
-        getLog().debug("Compiling " + (sources.size() + sourceRoots.size()) + " sources.");
+        getLog().debug("Compiling " + (sources.size() + sourceRoots.size()) + " Java sources.");
         if (!sourceRoots.isEmpty()) {
             getLog().debug("Adding Java to compile:");
             for (Object javaSource : sourceRoots) {
