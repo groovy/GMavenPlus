@@ -62,6 +62,8 @@ public class AddSourceMojo extends AbstractCompileMojo {
     }
 
     /**
+     * This method does not apply for this mojo.
+     *
      * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
      */
     @SuppressWarnings("unchecked")
@@ -70,6 +72,8 @@ public class AddSourceMojo extends AbstractCompileMojo {
     }
 
     /**
+     * This method does not apply for this mojo.
+     *
      * @see AbstractCompileMojo#getJavaSources()
      */
     protected List<File> getJavaSources() {
