@@ -32,7 +32,6 @@ import org.apache.maven.project.MavenProject;
  * @configurator include-project-dependencies
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
-    private Log log;
     protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
     protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
 
@@ -44,19 +43,6 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @readonly
      */
     protected MavenProject project;
-
-    /**
-     * Gets the log for this mojo.
-     *
-     * @return the log for this mojo
-     */
-    public Log getLog() {
-        if (log == null) {
-            log = new SystemStreamLog();
-        }
-
-        return log;
-    }
 
     /**
      * Logs the version of groovy used by this mojo.
