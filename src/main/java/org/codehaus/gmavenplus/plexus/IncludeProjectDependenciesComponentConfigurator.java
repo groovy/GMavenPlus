@@ -4,6 +4,8 @@
 
 package org.codehaus.gmavenplus.plexus;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -13,8 +15,6 @@ import org.codehaus.plexus.component.configurator.converters.special.ClassRealmC
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,8 +34,7 @@ import java.util.List;
  *                     role-hint="default"
  */
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
-    // TODO: add logging?
-//    private static final Logger LOGGER = LoggerFactory.getLogger(IncludeProjectDependenciesComponentConfigurator.class);
+    private static final Log LOG = new SystemStreamLog();
 
     public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
                                    ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
@@ -67,7 +66,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
             try {
                 final URL url = new File((String) element).toURI().toURL();
                 urls.add(url);
-//                LOGGER.debug("Added to project class loader: {}", url);
+                LOG.debug("Added to project class loader: " + url);
             } catch (MalformedURLException e) {
                 throw new ComponentConfigurationException("Unable to access project dependency: " + element + ".", e);
             }
