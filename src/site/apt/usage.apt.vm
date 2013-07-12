@@ -90,7 +90,7 @@ mvn compile
 </project>
 +-------------------------------------------------------------------------+
 
-  To compile both the main and test Groovy and sources, simply execute the
+  To compile both the main and test Groovy and Java sources, simply execute the
   normal compile phase from the default lifecycle:
 
 +-----------------------+
