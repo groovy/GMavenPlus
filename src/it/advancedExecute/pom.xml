@@ -26,6 +26,14 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
+      <!-- this is only needed because the script uses it -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.13</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <!-- this is only needed because the script uses it -->
       <groupId>org.apache.ivy</groupId>
       <artifactId>ivy</artifactId>
       <version>2.3.0</version>
@@ -50,14 +58,18 @@
           <scripts>
             <script>file:///${project.basedir}/src/main/groovy/HelloWorld.groovy</script>
             <script><![CDATA[
-            @Grapes([
-                @Grab(group='commons-lang', module='commons-lang', version='2.6')
-            ])
-            import org.apache.commons.lang.SystemUtils
-            File targetDir = new File('target')
-            if (!targetDir.exists())
-                targetDir.mkdir()
-            new File(targetDir, 'javaVersion.txt').append("Using Java $${SystemUtils.JAVA_VERSION}")
+              @Grapes([
+                  @Grab(group='commons-lang', module='commons-lang', version='2.6')
+              ])
+              import org.apache.commons.lang.SystemUtils
+              import org.slf4j.Logger
+              import org.slf4j.LoggerFactory
+              Logger logger = LoggerFactory.getLogger("chapters.introduction.HelloWorld1")
+              logger.debug("Hello world.")
+              File targetDir = new File('target')
+              if (!targetDir.exists())
+                  targetDir.mkdir()
+              new File(targetDir, 'javaVersion.txt').append("Using Java $${SystemUtils.JAVA_VERSION}")
             ]]></script>
           </scripts>
         </configuration>
