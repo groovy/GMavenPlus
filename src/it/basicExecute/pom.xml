@@ -43,11 +43,11 @@
         <configuration>
           <scripts>
             <script><![CDATA[
-            File targetDir = new File('target')
-            if (!targetDir.exists())
-                targetDir.mkdir()
-            new File(targetDir, 'helloWorld.txt').append('Hello world!')
-            ]]></script>
+              File targetDir = new File('target')
+              if (!targetDir.exists())
+                  targetDir.mkdir()
+              new File(targetDir, 'helloWorld.txt').append('Hello world!')
+              ]]></script>
           </scripts>
         </configuration>
       </plugin>
