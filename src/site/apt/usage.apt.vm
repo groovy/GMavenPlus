@@ -9,6 +9,8 @@ Usage
 
  * {{Mixed Compilation}}
 
+ * {{InvokeDynamic}}
+
  * {{Generate Groovydoc}}
 
  * {{Add Groovydoc to Site}}
@@ -103,6 +105,44 @@ Usage
 
  When you execute <<<mvn generate-test-sources>>>, the stubs will be generated
  for both the main and test Groovy sources.
+
+
+* {InvokeDynamic}
+
+ To take advantage of
+ {{{http://docs.oracle.com/javase/7/docs/technotes/guides/vm/multiple-language-support.html#invokedynamic}invokedynamic}},
+ you need to include the Groovy jar that
+ {{{http://groovy.codehaus.org/InvokeDynamic+support}supports it}} and set the
+ configuration option.  If you only include the Groovy indy jar without setting
+ the configuration option only Groovy's classes will take advantage of
+ invokedynamic, your compiled classes will not.  To do this, you should add
+ something similar to the following in your pom:
+
++-----+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <invokeDynamic>true</invokeDynamic>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy \>= 2.1 should work here -->
+      <version>${groovyVersion}</version>
+      <classifier>indy</classifier>
+    </dependency>
+  </dependencies>
+</project>
++-----+
 
 
 * {Generate Groovydoc}
