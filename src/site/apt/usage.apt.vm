@@ -1,32 +1,15 @@
 Usage
 
- The following examples describe the basic usage of the GMavenPlus Plugin.
-
-
-* Contents
-
- * {{Basic Usage}}
-
- * {{Mixed Compilation}}
-
- * {{InvokeDynamic}}
-
- * {{Generate Groovydoc}}
-
- * {{Add Groovydoc to Site}}
-
- * {{Execute Scripts}}
-
- []
+  The following examples describe the basic usage of the GMavenPlus Plugin.
 
 
 * {Basic Usage}
 
- To compile Groovy code as part of the project compilation when there are no
- dependencies between Java and Groovy, you should add something similar to
- the following in your pom:
+  To compile Groovy code as part of the project compilation when there are no
+  dependencies between Java and Groovy, you should add something similar to
+  the following in your pom:
 
-+-----+
++-------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -54,20 +37,24 @@ Usage
     </dependency>
   </dependencies>
 </project>
-+-----+
++-------------------------------------------------------------------------+
 
- When you execute <<<mvn compile>>>, both the main and test Groovy sources
- will be compiled.
+  To compile both the main and test Groovy sources, simply execute the normal
+  compile phase from the default lifecycle:
+
++-----------------------+
+mvn compile
++-----------------------+
 
 
 * {Mixed Compilation}
 
- To compile projects where you have mixed Java and Groovy (with dependencies
- between the two), you'll need to generate stubs in addition to normal
- compilation.  To do this, you should add something similar to the following
- in your pom:
+  To compile projects where you have mixed Java and Groovy (with dependencies
+  between the two), you'll need to generate stubs in addition to normal
+  compilation.  To do this, you should add something similar to the following
+  in your pom:
 
-+-----+
++-------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -101,24 +88,28 @@ Usage
     </dependency>
   </dependencies>
 </project>
-+-----+
++-------------------------------------------------------------------------+
 
- When you execute <<<mvn generate-test-sources>>>, the stubs will be generated
- for both the main and test Groovy sources.
+  To compile both the main and test Groovy and sources, simply execute the
+  normal compile phase from the default lifecycle:
+
++-----------------------+
+mvn compile
++-----------------------+
 
 
 * {InvokeDynamic}
 
- To take advantage of
- {{{http://docs.oracle.com/javase/7/docs/technotes/guides/vm/multiple-language-support.html#invokedynamic}invokedynamic}},
- you need to include the Groovy jar that
- {{{http://groovy.codehaus.org/InvokeDynamic+support}supports it}} and set the
- configuration option.  If you only include the Groovy indy jar without setting
- the configuration option only Groovy's classes will take advantage of
- invokedynamic, your compiled classes will not.  To do this, you should add
- something similar to the following in your pom:
+  To take advantage of
+  {{{http://docs.oracle.com/javase/7/docs/technotes/guides/vm/multiple-language-support.html#invokedynamic}invokedynamic}},
+  you need to include the Groovy jar that
+  {{{http://groovy.codehaus.org/InvokeDynamic+support}supports it}} and set
+  the configuration option.  If you only include the Groovy indy jar without
+  setting the configuration option only Groovy's classes will take advantage
+  of invokedynamic, your compiled classes will not.  To do this, you should
+  add something similar to the following in your pom:
 
-+-----+
++-----------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -142,16 +133,16 @@ Usage
     </dependency>
   </dependencies>
 </project>
-+-----+
++-----------------------------------------------------------------------------+
 
 
 * {Generate Groovydoc}
 
- To generate Groovydoc manually, you only need add the plugin (no need to
- configure any executions).  To do this, you should add something similar
- to the following in your pom:
+  To generate Groovydoc manually, you only need add the plugin (no need to
+  configure any executions).  To do this, you should add something similar
+  to the following in your pom:
 
-+-----+
++-----------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -171,20 +162,24 @@ Usage
     </dependency>
   </dependencies>
 </project>
-+-----+
++-----------------------------------------------------------------------------+
 
- When you execute <<<mvn gplus:groovydoc>>>, Groovydoc will be generated
- for the main sources.
+  To generate the groovydoc for the main sources, simply execute GMavenPlus's
+  groovydoc goal:
+
++-----------------------+
+mvn gplus:groovydoc
++-----------------------+
 
 
 * {Add Groovydoc to Site}
 
- Note that this mojo is not set up to be used in the \<reporting\> section.
- So you will need to set the \<outputDirectory\> and \<executions\>
- to mimic this functionality.  To do this, you should add something
- similar to the following in your pom:
+  Note that this mojo is not set up to be used in the \<reporting\> section.
+  So you will need to set the \<outputDirectory\> and \<executions\>
+  to mimic this functionality.  To do this, you should add something
+  similar to the following in your pom:
 
-+-----+
++-----------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -215,21 +210,27 @@ Usage
     </dependency>
   </dependencies>
 </project>
-+-----+
++-------------------------------------------------------------------------+
 
- When you execute <<<mvn site>>>, Groovydoc will be generated for the main sources.
+  To generate the groovydoc for the main sources, simply execute the normal
+  site phase from the default lifecycle:
+
++-----------------------+
+mvn site
++-----------------------+
 
 
 * {Execute Scripts}
 
- Note that you can't yet use project dependencies in your scripts.  You can
- use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}} annotations, but you
- will need a compile dependency on Ivy since GMavenPlus doesn't depend on Ivy.
- Also note that you need to escape any dollar signs in your script so Maven
- doesn't try to filter the values.
- To execute Groovy scripts in your pom, add something similar to the following:
+  Note that if you'd like to separate script dependencies from those of your
+  project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
+  annotations, but you will need a compile dependency on Ivy.  Any compile
+  dependencies your project uses are also available for use in your scripts.
+  This example demonstrates both.  Note that you need to escape any dollar
+  signs in your script so Maven doesn't try to filter the values.  To
+  execute Groovy scripts in your pom, add something similar to the following:
 
-+-----+
++-----------------------------------------------------------------------------+
 <project>
   <build>
     <plugins>
@@ -248,10 +249,17 @@ Usage
           <scripts>
             <script><![CDATA[
               @Grapes([
-                @Grab(group='commons-lang', module='commons-lang', version='2.6')
+                  @Grab(group='commons-lang', module='commons-lang', version='2.6')
               ])
               import org.apache.commons.lang.SystemUtils
-              println "Using Java $${SystemUtils.JAVA_VERSION}"
+              import org.slf4j.Logger
+              import org.slf4j.LoggerFactory
+              Logger logger = LoggerFactory.getLogger("chapters.introduction.HelloWorld1")
+              logger.debug("Hello world.")
+              File targetDir = new File('target')
+              if (!targetDir.exists())
+                  targetDir.mkdir()
+              new File(targetDir, 'javaVersion.txt').append("Using Java $${SystemUtils.JAVA_VERSION}")
             ]]></script>
           </scripts>
         </configuration>
@@ -271,8 +279,19 @@ Usage
       <artifactId>ivy</artifactId>
       <version>2.2.0</version>
     </dependency>
+    <dependency>
+      <!-- this is only needed because the script uses it -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.13</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 </project>
-+-----+
++-----------------------------------------------------------------------------+
 
- When you execute <<<mvn gplus:execute>>>, your scripts will be executed.
+  To execute your script(s), simply execute GMavenPlus's execute goal:
+
++-----------------------+
+mvn gplus:execute
++-----------------------+
