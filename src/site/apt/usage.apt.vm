@@ -120,8 +120,8 @@ mvn compile
   {{{http://groovy.codehaus.org/InvokeDynamic+support}supports it}} and set
   the configuration option.  If you only include the Groovy indy jar without
   setting the configuration option only Groovy's classes will take advantage
-  of invokedynamic, your compiled classes will not.  To do this, you should
-  add something similar to the following in your pom:
+  of invokedynamic, your classes will not.  To do this, you should add
+  something similar to the following in your pom:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -131,6 +131,14 @@ mvn compile
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <invokeDynamic>true</invokeDynamic>
         </configuration>
