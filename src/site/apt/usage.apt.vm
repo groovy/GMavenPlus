@@ -96,7 +96,7 @@ Usage
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy >= 1.7.0 should work here -->
+      <!-- any version of Groovy \>= 1.7.0 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
   </dependencies>
