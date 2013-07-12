@@ -149,6 +149,13 @@ mvn compile
 </project>
 +-----------------------------------------------------------------------------+
 
+  To compile both the main and test Groovy sources, simply execute the normal
+  compile phase from the default lifecycle:
+
++-----------------------+
+mvn compile
++-----------------------+
+
 
 * {Generate Groovydoc}
 
