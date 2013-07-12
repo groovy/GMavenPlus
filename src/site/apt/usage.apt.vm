@@ -2,6 +2,20 @@ Usage
 
   The following examples describe the basic usage of the GMavenPlus Plugin.
 
+ * {{Basic Usage}}
+
+ * {{Mixed Compilation}}
+
+ * {{InvokeDynamic}}
+
+ * {{Generate Groovydoc}}
+
+ * {{Add Groovydoc to Site}}
+
+ * {{Execute Scripts}}
+
+ []
+
 
 * {Basic Usage}
 
