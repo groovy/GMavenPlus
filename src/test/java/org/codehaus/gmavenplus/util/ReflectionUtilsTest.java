@@ -93,6 +93,11 @@ public class ReflectionUtilsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testGetStaticFieldNotStatic() throws IllegalAccessException {
+        ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "stringField", String.class));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testInvokeConstructorNull() throws IllegalAccessException, InstantiationException, InvocationTargetException {
         ReflectionUtils.invokeConstructor(null);
     }
@@ -110,6 +115,11 @@ public class ReflectionUtilsTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvokeStaticMethodMethodNull() throws InvocationTargetException, IllegalAccessException {
         ReflectionUtils.invokeStaticMethod(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvokeStaticMethodMethodNotStatic() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        ReflectionUtils.invokeStaticMethod(TestClass.class.getMethod("getStringField"));
     }
 
     private static class TestClass {

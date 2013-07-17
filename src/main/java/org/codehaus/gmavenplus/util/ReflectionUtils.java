@@ -16,10 +16,7 @@
 
 package org.codehaus.gmavenplus.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.Arrays;
 
 
@@ -124,6 +121,9 @@ public final class ReflectionUtils {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
+        if (!Modifier.isStatic(method.getModifiers())) {
+            throw new IllegalArgumentException("Method must be static.");
+        }
         method.setAccessible(true);
         return method.invoke(args);
     }
@@ -200,6 +200,9 @@ public final class ReflectionUtils {
      * @throws IllegalAccessException
      */
     public static Object getStaticField(Field field) throws IllegalAccessException {
+        if (!Modifier.isStatic(field.getModifiers())) {
+            throw new IllegalArgumentException("Method must be static.");
+        }
         return getField(field, null);
     }
 
