@@ -356,6 +356,13 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
         <version>2.5.2</version>
+        <configuration>
+          <instrumentation>
+            <excludes>
+              <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>  <!-- don't run coverage on generated class -->
+            </excludes>
+          </instrumentation>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
