@@ -35,6 +35,7 @@ import java.util.List;
  * @plexus.requirement role="org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup"
  *                     role-hint="default"
  */
+@SuppressWarnings("deprecated")
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
     private static final Log LOG = new SystemStreamLog();
 
