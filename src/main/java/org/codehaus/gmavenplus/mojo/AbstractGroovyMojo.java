@@ -18,8 +18,6 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.apache.maven.project.MavenProject;
 
 
@@ -32,7 +30,15 @@ import org.apache.maven.project.MavenProject;
  * @configurator include-project-dependencies
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
+
+    /**
+     * The pattern defining Groovy files.
+     */
     protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
+
+    /**
+     * The pattern defining Java stub files.
+     */
     protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
 
     /**

@@ -35,6 +35,10 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  * @author Keegan Witt
  */
 public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
+
+    /**
+     * The pattern defining Java files.
+     */
     protected static final String JAVA_PATTERN = "**/*.java";
 
     /**
@@ -217,7 +221,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
         if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
             if (isGroovyIndy()) {
-                Map<java.lang.String,java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
+                Map<java.lang.String, java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("indy", true);
                 optimizationOptions.put("int", false);
             } else {

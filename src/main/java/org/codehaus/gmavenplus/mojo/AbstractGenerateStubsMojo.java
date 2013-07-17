@@ -130,6 +130,27 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @return the set of files for the main sources
      */
     protected Set<File> getSources() {
+        return getFiles(sources, "main");
+    }
+
+    /**
+     * Gets the set of files of the test sources.
+     *
+     * @return the set of files of the test sources
+     */
+    protected Set<File> getTestSources() {
+        return getFiles(testSources, "test");
+    }
+
+    /**
+     * Gets the set of included files from the specified source files or source directory (if sources are null).
+     *
+     * @param sources the sources to get the included files from
+     * @param sourceDirectory the source directory to fall back on if sources are null
+     *
+     * @return the included files from the specified sources
+     */
+    protected Set<File> getFiles(FileSet[] sources, String sourceDirectory) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
@@ -141,35 +162,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
             }
         } else {
             FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
-            fileSet.setDirectory(directory);
-            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-                files.add(new File(directory, file));
-            }
-        }
-
-        return files;
-    }
-
-    /**
-     * Gets the set of files of the test sources.
-     *
-     * @return the set of files of the test sources
-     */
-    protected Set<File> getTestSources() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        if (testSources != null) {
-            for (FileSet fileSet : testSources) {
-                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
-                }
-            }
-        } else {
-            FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "test" + File.separator + "groovy";
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + sourceDirectory + File.separator + "groovy";
             fileSet.setDirectory(directory);
             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
             for (String file : fileSetManager.getIncludedFiles(fileSet)) {
@@ -300,7 +293,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *
      * @param stubs the files on which to reset the modified date
      */
-    protected void resetStubModifiedDates(Set<File> stubs ) {
+    protected void resetStubModifiedDates(Set<File> stubs) {
         for (File stub : stubs) {
             boolean success = stub.setLastModified(0L);
             if (!success) {

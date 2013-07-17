@@ -70,7 +70,7 @@ public class AbstractGroovyMojoTest {
     }
 
     private static class TestGroovyMojo extends AbstractGroovyMojo {
-        public void execute() throws MojoExecutionException, MojoFailureException {}
+        public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 
 }

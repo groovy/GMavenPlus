@@ -24,13 +24,13 @@ import java.util.Arrays;
 
 
 /**
- * Inspired by Spring's <a href="https://src.springframework.org/svn/spring-framework/trunk/org.springframework.core/src/main/java/org/springframework/util/ReflectionUtils.java">ReflectionUtils</a>.
+ * Inspired by Spring's <a href="https://github.com/SpringSource/spring-framework/blob/master/spring-core/src/main/java/org/springframework/util/ReflectionUtils.java">ReflectionUtils</a>.
  *
  * @author Keegan Witt
  */
 public final class ReflectionUtils {
 
-    private ReflectionUtils() {}
+    private ReflectionUtils() { }
 
     /**
      * Attempt to find a {@link Method} on the supplied class with the supplied name
@@ -208,7 +208,7 @@ public final class ReflectionUtils {
      */
     public static Object getEnumConstant(Class<?> enumClass, String constantName) {
         if (enumClass.isEnum()) {
-            for ( Object o : enumClass.getEnumConstants()) {
+            for (Object o : enumClass.getEnumConstants()) {
               if (o.toString().equals(constantName)) {
                   return o;
               }

@@ -29,6 +29,6 @@ class SomeClass {
     * This method does absolutely nothing
     * @param unusedParam a useless parameter
     */
-   void doNothing(String unusedParam) {}
+   void doNothing(String unusedParam) { }
 
 }

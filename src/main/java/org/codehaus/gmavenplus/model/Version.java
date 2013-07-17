@@ -20,7 +20,8 @@ import com.google.common.base.Objects;
 
 
 /**
- * Container for Version information in the form of <tt>major.minor.revision-tag</tt>.
+ * Container for Version information in the form of
+ * <tt>major.minor.revision-tag</tt>.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Keegan Witt
@@ -141,13 +142,13 @@ public class Version implements Comparable<Version> {
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Object obj){
-        if(obj instanceof Version) {
+    public boolean equals(final Object obj) {
+        if (obj instanceof Version) {
             final Version other = (Version) obj;
-            return major == other.major &&
-                    minor == other.minor &&
-                    revision == other.revision &&
-                    Objects.equal(tag, other.tag);
+            return major == other.major
+                    && minor == other.minor
+                    && revision == other.revision
+                    && Objects.equal(tag, other.tag);
         } else {
             return false;
         }

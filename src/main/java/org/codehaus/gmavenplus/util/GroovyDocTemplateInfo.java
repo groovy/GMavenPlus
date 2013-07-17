@@ -23,11 +23,11 @@ package org.codehaus.gmavenplus.util;
  */
 public final class GroovyDocTemplateInfo {
 
-    private GroovyDocTemplateInfo() {}
+    private GroovyDocTemplateInfo() { }
 
     private static final String TEMPLATE_BASEDIR = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
     private static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
-    public static final String[] DEFAULT_DOC_TEMPLATES = new String[]{ // top level templates
+    public static final String[] DEFAULT_DOC_TEMPLATES = new String[] {// top level templates
             TEMPLATE_BASEDIR + "topLevel/index.html",
             TEMPLATE_BASEDIR + "topLevel/overview-frame.html", // needs all package names
             TEMPLATE_BASEDIR + "topLevel/allclasses-frame.html", // needs all packages / class names
@@ -39,11 +39,11 @@ public final class GroovyDocTemplateInfo {
             TEMPLATE_BASEDIR + "topLevel/inherit.gif",
             DOCGEN_BASEDIR + "groovy.ico",
     };
-    public static final String[] DEFAULT_PACKAGE_TEMPLATES = new String[]{ // package level templates
+    public static final String[] DEFAULT_PACKAGE_TEMPLATES = new String[] {// package level templates
             TEMPLATE_BASEDIR + "packageLevel/package-frame.html",
             TEMPLATE_BASEDIR + "packageLevel/package-summary.html"
     };
-    public static final String[] DEFAULT_CLASS_TEMPLATES = new String[]{ // class level templates
+    public static final String[] DEFAULT_CLASS_TEMPLATES = new String[] {// class level templates
             TEMPLATE_BASEDIR + "classLevel/classDocName.html"
     };
 
