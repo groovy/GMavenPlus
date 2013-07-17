@@ -149,7 +149,7 @@ mvn compile
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 2.1 should work here -->
+      <!-- any indy version of Groovy \>= 2.0.0-beta-3 should work here -->
       <version>${groovyVersion}</version>
       <classifier>indy</classifier>
     </dependency>
