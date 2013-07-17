@@ -264,7 +264,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         }
 
         // generate the stubs
-        Object convPhase = ReflectionUtils.getField(ReflectionUtils.findField(phasesClass, "CONVERSION", int.class));
+        Object convPhase = ReflectionUtils.getStaticField(ReflectionUtils.findField(phasesClass, "CONVERSION", int.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
 
         // log generated stubs

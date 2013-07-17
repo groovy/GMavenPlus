@@ -104,6 +104,9 @@ public final class ReflectionUtils {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
+        if (target == null) {
+            throw new IllegalArgumentException("Object must not be null.");
+        }
         method.setAccessible(true);
         return method.invoke(target, args);
     }
@@ -169,7 +172,7 @@ public final class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find " + type.getName() + " " + name + ".");
+        throw new IllegalArgumentException("Unable to find " + (type != null ? type.getName() : "") + " " + (name != null ? name : "") + ".");
     }
 
     /**
@@ -196,7 +199,7 @@ public final class ReflectionUtils {
      * @return the field's current value
      * @throws IllegalAccessException
      */
-    public static Object getField(Field field) throws IllegalAccessException {
+    public static Object getStaticField(Field field) throws IllegalAccessException {
         return getField(field, null);
     }
 
