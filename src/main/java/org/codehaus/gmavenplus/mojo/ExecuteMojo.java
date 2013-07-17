@@ -54,6 +54,13 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     protected boolean continueExecuting;
 
     /**
+     * Encoding of script files
+     *
+     * @parameter default-value="${project.build.sourceEncoding}"
+     */
+    protected String sourceEncoding;
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException
@@ -80,7 +87,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
                         URL url = new URL(script);
                         // it's a URL to a script
                         getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                        BufferedReader reader = closer.register(new BufferedReader(new InputStreamReader(url.openStream())));
+                        BufferedReader reader = closer.register(new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding)));
                         StringBuilder scriptSource = new StringBuilder();
                         String line;
                         while ((line = reader.readLine()) != null) {
