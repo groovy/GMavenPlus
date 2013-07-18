@@ -39,6 +39,8 @@ import java.util.Set;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractGenerateStubsMojoTest {
+    private TestMojo testMojo;
+
     @Mock
     private MavenProject project;
 
@@ -50,8 +52,6 @@ public class AbstractGenerateStubsMojoTest {
 
     @Mock
     private File stubsOutputDirectory;
-
-    private TestMojo testMojo;
 
     @Before
     public void setup() {
@@ -108,7 +108,31 @@ public class AbstractGenerateStubsMojoTest {
         Assert.assertEquals(0, testStubs.size());
     }
 
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        testMojo = new TestMojo("1.7.0");
+        Assert.assertTrue(testMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        testMojo = new TestMojo("1.6.9");
+        Assert.assertFalse(testMojo.groovyVersionSupportsAction());
+    }
+
     private class TestMojo extends AbstractGenerateStubsMojo {
+        private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+
+        private TestMojo() { }
+
+        private TestMojo(String overrideGroovyVersion) {
+            this.overrideGroovyVersion = overrideGroovyVersion;
+        }
+
+        @Override
+        protected String getGroovyVersion() {
+            return overrideGroovyVersion;
+        }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }
 

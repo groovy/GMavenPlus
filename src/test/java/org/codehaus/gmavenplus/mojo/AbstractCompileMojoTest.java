@@ -41,13 +41,13 @@ import java.util.Set;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCompileMojoTest {
+    private TestMojo testMojo;
+
     @Mock
     private MavenProject project;
 
     @Mock
     private FileSet fileSet;
-
-    private TestMojo testMojo;
 
     @Before
     public void setup() {
@@ -67,6 +67,20 @@ public class AbstractCompileMojoTest {
 
     @Test
     public void testGetTestSources() {
+        Set<File> testSources = testMojo.getTestSources();
+        Assert.assertEquals(0, testSources.size());
+    }
+
+    @Test
+    public void testGetSourcesWithNullSources() {
+        testMojo.sources = null;
+        Set<File> sources = testMojo.getSources();
+        Assert.assertEquals(0, sources.size());
+    }
+
+    @Test
+    public void testGetTestSourcesWithNullTestSources() {
+        testMojo.testSources = null;
         Set<File> testSources = testMojo.getTestSources();
         Assert.assertEquals(0, testSources.size());
     }
