@@ -11,6 +11,3 @@ ${project.name}
 
   General instructions on how to use the GMavenPlus Plugin can be found on the {{{./usage.html}usage page}}.
   For more information, consult the {{{http://github.com/groovy/GMavenPlus/wiki}wiki}}.
-
-
-[]
