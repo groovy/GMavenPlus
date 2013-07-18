@@ -53,7 +53,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
-            logGroovyVersion("compileTests");
+            logGroovyVersion("testCompile");
 
             try {
                 doCompile(getTestSources(), getProjectClasspathElements(), project.getBuild().getTestOutputDirectory(), testOutputDirectory);

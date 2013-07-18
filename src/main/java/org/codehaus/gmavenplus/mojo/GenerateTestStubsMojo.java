@@ -49,7 +49,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
             if (groovyVersionSupportsAction()) {
-                logGroovyVersion("generateTestStubs");
+                logGroovyVersion("testGenerateStubs");
 
                 try {
                     doStubGeneration(getTestSources(), testStubsOutputDirectory);
