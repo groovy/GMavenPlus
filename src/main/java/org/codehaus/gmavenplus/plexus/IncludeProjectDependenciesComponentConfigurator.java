@@ -37,7 +37,7 @@ import java.util.List;
  */
 @SuppressWarnings("deprecated")
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
-    private static final Log LOG = new SystemStreamLog();
+//    private static final Log LOG = new SystemStreamLog();
 
     public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
                                    ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
