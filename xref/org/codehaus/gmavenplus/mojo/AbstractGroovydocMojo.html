@@ -252,57 +252,62 @@
 <a class="jxr_linenumber" name="242" href="#242">242</a>         }
 <a class="jxr_linenumber" name="243" href="#243">243</a>     }
 <a class="jxr_linenumber" name="244" href="#244">244</a> 
-<a class="jxr_linenumber" name="245" href="#245">245</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> copyStylesheet(File outputDirectory) {
-<a class="jxr_linenumber" name="246" href="#246">246</a>         getLog().info(<span class="jxr_string">"Using stylesheet from "</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">"."</span>);
-<a class="jxr_linenumber" name="247" href="#247">247</a>         Closer closer = Closer.create();
-<a class="jxr_linenumber" name="248" href="#248">248</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="249" href="#249">249</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="250" href="#250">250</a>                 BufferedReader bufferedReader = closer.register(<strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(<strong class="jxr_keyword">new</strong> FileInputStream(stylesheetFile), stylesheetEncoding)));
-<a class="jxr_linenumber" name="251" href="#251">251</a>                 StringBuilder css = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="252" href="#252">252</a>                 String line;
-<a class="jxr_linenumber" name="253" href="#253">253</a>                 <strong class="jxr_keyword">while</strong> ((line = bufferedReader.readLine()) != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="254" href="#254">254</a>                     css.append(line).append(<span class="jxr_string">"\n"</span>);
-<a class="jxr_linenumber" name="255" href="#255">255</a>                 }
-<a class="jxr_linenumber" name="256" href="#256">256</a>                 File outfile = <strong class="jxr_keyword">new</strong> File(outputDirectory, <span class="jxr_string">"stylesheet.css"</span>);
-<a class="jxr_linenumber" name="257" href="#257">257</a>                 BufferedWriter bufferedWriter = closer.register(<strong class="jxr_keyword">new</strong> BufferedWriter(<strong class="jxr_keyword">new</strong> OutputStreamWriter(<strong class="jxr_keyword">new</strong> FileOutputStream(outfile), stylesheetEncoding)));
-<a class="jxr_linenumber" name="258" href="#258">258</a>                 bufferedWriter.write(css.toString());
-<a class="jxr_linenumber" name="259" href="#259">259</a>             } <strong class="jxr_keyword">catch</strong> (Throwable throwable) {
-<a class="jxr_linenumber" name="260" href="#260">260</a>                 <strong class="jxr_keyword">throw</strong> closer.rethrow(throwable);
-<a class="jxr_linenumber" name="261" href="#261">261</a>             } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="262" href="#262">262</a>                 closer.close();
-<a class="jxr_linenumber" name="263" href="#263">263</a>             }
-<a class="jxr_linenumber" name="264" href="#264">264</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="265" href="#265">265</a>             getLog().warn(<span class="jxr_string">"Unable to copy specified stylesheet ("</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">")."</span>);
-<a class="jxr_linenumber" name="266" href="#266">266</a>         }
-<a class="jxr_linenumber" name="267" href="#267">267</a>     }
-<a class="jxr_linenumber" name="268" href="#268">268</a> 
-<a class="jxr_linenumber" name="269" href="#269">269</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="270" href="#270">270</a> <em class="jxr_javadoccomment">     * Determines whether this mojo can be run with the version of Groovy supplied.</em>
-<a class="jxr_linenumber" name="271" href="#271">271</a> <em class="jxr_javadoccomment">     * Must be &gt;= 1.6.2 because not all the classes/methods needed were available</em>
-<a class="jxr_linenumber" name="272" href="#272">272</a> <em class="jxr_javadoccomment">     * and functioning correctly in previous versions.</em>
-<a class="jxr_linenumber" name="273" href="#273">273</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="274" href="#274">274</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo.</em>
-<a class="jxr_linenumber" name="275" href="#275">275</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="276" href="#276">276</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> groovyVersionSupportsAction() {
-<a class="jxr_linenumber" name="277" href="#277">277</a>         <strong class="jxr_keyword">return</strong> Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) &gt;= 0;
-<a class="jxr_linenumber" name="278" href="#278">278</a>     }
-<a class="jxr_linenumber" name="279" href="#279">279</a> 
-<a class="jxr_linenumber" name="280" href="#280">280</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="281" href="#281">281</a> <em class="jxr_javadoccomment">     * Checks if the passed sources are null and adds the sources from the default directory if they are.</em>
-<a class="jxr_linenumber" name="282" href="#282">282</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="283" href="#283">283</a> <em class="jxr_javadoccomment">     * @param sources the sources to check against</em>
-<a class="jxr_linenumber" name="284" href="#284">284</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="285" href="#285">285</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> setDefaultSourceDirectories(FileSet[] sources) {
-<a class="jxr_linenumber" name="286" href="#286">286</a>         <strong class="jxr_keyword">if</strong> (sources == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="287" href="#287">287</a>             FileSet fileSet = <strong class="jxr_keyword">new</strong> FileSet();
-<a class="jxr_linenumber" name="288" href="#288">288</a>             String directory = project.getBasedir().getAbsolutePath() + File.separator + <span class="jxr_string">"src"</span> + File.separator + <span class="jxr_string">"main"</span> + File.separator + <span class="jxr_string">"groovy"</span>;
-<a class="jxr_linenumber" name="289" href="#289">289</a>             fileSet.setDirectory(directory);
-<a class="jxr_linenumber" name="290" href="#290">290</a>             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-<a class="jxr_linenumber" name="291" href="#291">291</a>             <strong class="jxr_keyword">this</strong>.sources = <strong class="jxr_keyword">new</strong> FileSet[]{fileSet};
-<a class="jxr_linenumber" name="292" href="#292">292</a>         }
-<a class="jxr_linenumber" name="293" href="#293">293</a>     }
-<a class="jxr_linenumber" name="294" href="#294">294</a> 
-<a class="jxr_linenumber" name="295" href="#295">295</a> }
+<a class="jxr_linenumber" name="245" href="#245">245</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="246" href="#246">246</a> <em class="jxr_javadoccomment">     * Copies the stylesheet to the specified output directory.</em>
+<a class="jxr_linenumber" name="247" href="#247">247</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="248" href="#248">248</a> <em class="jxr_javadoccomment">     * @param outputDirectory the output directory to copy the stylesheet to</em>
+<a class="jxr_linenumber" name="249" href="#249">249</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="250" href="#250">250</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> copyStylesheet(File outputDirectory) {
+<a class="jxr_linenumber" name="251" href="#251">251</a>         getLog().info(<span class="jxr_string">"Using stylesheet from "</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">"."</span>);
+<a class="jxr_linenumber" name="252" href="#252">252</a>         Closer closer = Closer.create();
+<a class="jxr_linenumber" name="253" href="#253">253</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="254" href="#254">254</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="255" href="#255">255</a>                 BufferedReader bufferedReader = closer.register(<strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(<strong class="jxr_keyword">new</strong> FileInputStream(stylesheetFile), stylesheetEncoding)));
+<a class="jxr_linenumber" name="256" href="#256">256</a>                 StringBuilder css = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="257" href="#257">257</a>                 String line;
+<a class="jxr_linenumber" name="258" href="#258">258</a>                 <strong class="jxr_keyword">while</strong> ((line = bufferedReader.readLine()) != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="259" href="#259">259</a>                     css.append(line).append(<span class="jxr_string">"\n"</span>);
+<a class="jxr_linenumber" name="260" href="#260">260</a>                 }
+<a class="jxr_linenumber" name="261" href="#261">261</a>                 File outfile = <strong class="jxr_keyword">new</strong> File(outputDirectory, <span class="jxr_string">"stylesheet.css"</span>);
+<a class="jxr_linenumber" name="262" href="#262">262</a>                 BufferedWriter bufferedWriter = closer.register(<strong class="jxr_keyword">new</strong> BufferedWriter(<strong class="jxr_keyword">new</strong> OutputStreamWriter(<strong class="jxr_keyword">new</strong> FileOutputStream(outfile), stylesheetEncoding)));
+<a class="jxr_linenumber" name="263" href="#263">263</a>                 bufferedWriter.write(css.toString());
+<a class="jxr_linenumber" name="264" href="#264">264</a>             } <strong class="jxr_keyword">catch</strong> (Throwable throwable) {
+<a class="jxr_linenumber" name="265" href="#265">265</a>                 <strong class="jxr_keyword">throw</strong> closer.rethrow(throwable);
+<a class="jxr_linenumber" name="266" href="#266">266</a>             } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="267" href="#267">267</a>                 closer.close();
+<a class="jxr_linenumber" name="268" href="#268">268</a>             }
+<a class="jxr_linenumber" name="269" href="#269">269</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="270" href="#270">270</a>             getLog().warn(<span class="jxr_string">"Unable to copy specified stylesheet ("</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">")."</span>);
+<a class="jxr_linenumber" name="271" href="#271">271</a>         }
+<a class="jxr_linenumber" name="272" href="#272">272</a>     }
+<a class="jxr_linenumber" name="273" href="#273">273</a> 
+<a class="jxr_linenumber" name="274" href="#274">274</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="275" href="#275">275</a> <em class="jxr_javadoccomment">     * Determines whether this mojo can be run with the version of Groovy supplied.</em>
+<a class="jxr_linenumber" name="276" href="#276">276</a> <em class="jxr_javadoccomment">     * Must be &gt;= 1.6.2 because not all the classes/methods needed were available</em>
+<a class="jxr_linenumber" name="277" href="#277">277</a> <em class="jxr_javadoccomment">     * and functioning correctly in previous versions.</em>
+<a class="jxr_linenumber" name="278" href="#278">278</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="279" href="#279">279</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo.</em>
+<a class="jxr_linenumber" name="280" href="#280">280</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="281" href="#281">281</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> groovyVersionSupportsAction() {
+<a class="jxr_linenumber" name="282" href="#282">282</a>         <strong class="jxr_keyword">return</strong> Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) &gt;= 0;
+<a class="jxr_linenumber" name="283" href="#283">283</a>     }
+<a class="jxr_linenumber" name="284" href="#284">284</a> 
+<a class="jxr_linenumber" name="285" href="#285">285</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="286" href="#286">286</a> <em class="jxr_javadoccomment">     * Checks if the passed sources are null and adds the sources from the default directory if they are.</em>
+<a class="jxr_linenumber" name="287" href="#287">287</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="288" href="#288">288</a> <em class="jxr_javadoccomment">     * @param sources the sources to check against</em>
+<a class="jxr_linenumber" name="289" href="#289">289</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="290" href="#290">290</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> setDefaultSourceDirectories(FileSet[] sources) {
+<a class="jxr_linenumber" name="291" href="#291">291</a>         <strong class="jxr_keyword">if</strong> (sources == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="292" href="#292">292</a>             FileSet fileSet = <strong class="jxr_keyword">new</strong> FileSet();
+<a class="jxr_linenumber" name="293" href="#293">293</a>             String directory = project.getBasedir().getAbsolutePath() + File.separator + <span class="jxr_string">"src"</span> + File.separator + <span class="jxr_string">"main"</span> + File.separator + <span class="jxr_string">"groovy"</span>;
+<a class="jxr_linenumber" name="294" href="#294">294</a>             fileSet.setDirectory(directory);
+<a class="jxr_linenumber" name="295" href="#295">295</a>             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
+<a class="jxr_linenumber" name="296" href="#296">296</a>             <strong class="jxr_keyword">this</strong>.sources = <strong class="jxr_keyword">new</strong> FileSet[]{fileSet};
+<a class="jxr_linenumber" name="297" href="#297">297</a>         }
+<a class="jxr_linenumber" name="298" href="#298">298</a>     }
+<a class="jxr_linenumber" name="299" href="#299">299</a> 
+<a class="jxr_linenumber" name="300" href="#300">300</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
