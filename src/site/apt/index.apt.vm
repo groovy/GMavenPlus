@@ -1,17 +1,16 @@
- ------
-GMavenPlus Plugin
- ------
-Keegan Witt
- ------
- ------
+  ---------------
+  ${project.name}
+  ---------------
+  Keegan Witt
+  ---------------
+  ---------------
 
-GMavenPlus Plugin
+${project.name}
 
 * Introduction
 
   General instructions on how to use the GMavenPlus Plugin can be found on the {{{./usage.html}usage page}}.
   For more information, consult the {{{http://github.com/groovy/GMavenPlus/wiki}wiki}}.
-  To fork or download the project, see the {{{http://github.com/groovy/GMavenPlus/}GitHub page}}.
 
 
 []

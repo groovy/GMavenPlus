@@ -2,22 +2,22 @@ Usage
 
   The following examples describe the basic usage of the GMavenPlus Plugin.
 
- * {{Basic Usage}}
+ * {{Basic_Usage}}
 
- * {{Mixed Compilation}}
+ * {{Mixed_Compilation}}
 
  * {{InvokeDynamic}}
 
- * {{Generate Groovydoc}}
+ * {{Generate_Groovydoc}}
 
- * {{Add Groovydoc to Site}}
+ * {{Add_Groovydoc_to_Site}}
 
- * {{Execute Scripts}}
+ * {{Execute_Scripts}}
 
  []
 
 
-* {Basic Usage}
+* {Basic_Usage}
 
   To compile Groovy code as part of the project compilation when there are no
   dependencies between Java and Groovy, you should add something similar to
@@ -61,7 +61,7 @@ mvn compile
 +-----------------------+
 
 
-* {Mixed Compilation}
+* {Mixed_Compilation}
 
   To compile projects where you have mixed Java and Groovy (with dependencies
   between the two), you'll need to generate stubs in addition to normal
@@ -165,7 +165,7 @@ mvn compile
 +-----------------------+
 
 
-* {Generate Groovydoc}
+* {Generate_Groovydoc}
 
   To generate Groovydoc manually, you only need add the plugin (no need to
   configure any executions).  To do this, you should add something similar
@@ -201,7 +201,7 @@ mvn gplus:groovydoc
 +-----------------------+
 
 
-* {Add Groovydoc to Site}
+* {Add_Groovydoc_to_Site}
 
   Note that this mojo is not set up to be used in the \<reporting\> section.
   So you will need to set the \<outputDirectory\> and \<executions\>
@@ -249,7 +249,7 @@ mvn site
 +-----------------------+
 
 
-* {Execute Scripts}
+* {Execute_Scripts}
 
   Note that if you'd like to separate script dependencies from those of your
   project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
