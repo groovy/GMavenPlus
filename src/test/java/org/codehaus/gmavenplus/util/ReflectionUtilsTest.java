@@ -36,7 +36,7 @@ public class ReflectionUtilsTest {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "setStringField", String.class), test1, expectedString);
         Assert.assertEquals(expectedString, ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "getStringField"), test1));
         Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld"), test1));
-        Assert.assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumConstant(TestClass.ENUM.class, "VALUE"));
+        Assert.assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumValue(TestClass.ENUM.class, "VALUE"));
         Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "HELLO_WORLD", null)));
         Object test2 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class, String.class), expectedString );
         Assert.assertEquals(expectedString, ReflectionUtils.getField(ReflectionUtils.findField(TestClass.class, "stringField", String.class), test2));
@@ -84,12 +84,12 @@ public class ReflectionUtilsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetEnumConstantNonEnumClass() {
-        ReflectionUtils.getEnumConstant(TestClass.class, "VALUE");
+        ReflectionUtils.getEnumValue(TestClass.class, "VALUE");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetEnumConstantValueNotFound() {
-        ReflectionUtils.getEnumConstant(TestClass.ENUM.class, "NON_EXISTENT_VALUE");
+        ReflectionUtils.getEnumValue(TestClass.ENUM.class, "NON_EXISTENT_VALUE");
     }
 
     @Test(expected = IllegalArgumentException.class)

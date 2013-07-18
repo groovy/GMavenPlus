@@ -29,6 +29,8 @@ import java.util.List;
 
 
 /**
+ * Unit tests for the AbstractGroovyMojo class.
+ *
  * @author Keegan Witt
  */
 public class AbstractGroovyMojoTest {

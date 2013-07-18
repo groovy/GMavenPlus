@@ -242,6 +242,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         }
     }
 
+    /**
+     * Copies the stylesheet to the specified output directory.
+     *
+     * @param outputDirectory the output directory to copy the stylesheet to
+     */
     private void copyStylesheet(File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
         Closer closer = Closer.create();

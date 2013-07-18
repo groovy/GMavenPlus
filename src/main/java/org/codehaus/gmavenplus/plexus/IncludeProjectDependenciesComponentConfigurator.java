@@ -4,8 +4,8 @@
 
 package org.codehaus.gmavenplus.plexus;
 
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugin.logging.SystemStreamLog;
+//import org.apache.maven.plugin.logging.Log;
+//import org.apache.maven.plugin.logging.SystemStreamLog;
 // TODO: figure out why switching to Plexus ClassRealm instead of Classworlds ClassRealm causes a StackOverflowError in some projects
 //import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.classworlds.ClassRealm;
@@ -25,7 +25,7 @@ import java.util.List;
 
 
 /**
- * A custom ComponentConfigurator which adds the project's compile time classpath elements.
+ * A custom ComponentConfigurator which adds the project's compile-time classpath elements.
  *
  * @author Brian Jackson
  * @author Keegan Witt
@@ -41,33 +41,47 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
 
     public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
                                    ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
-        addProjectDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
 //        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
         converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
-    private void addProjectDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
-        List compileClasspathElements;
+    /**
+     * Adds the project's compile dependencies to the specified ClassRealm.
+     *
+     * @param expressionEvaluator the expression evaluator to use to get project elements
+     * @param containerRealm the ClassRealm to add dependencies to
+     * @throws ComponentConfigurationException
+     */
+    private void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
+        List classpathElements;
 
         try {
-            compileClasspathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
+            classpathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
         } catch (ExpressionEvaluationException e) {
             throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}.", e);
         }
 
         // Add the project dependencies to the ClassRealm
-        final URL[] urls = buildURLs(compileClasspathElements);
+        final URL[] urls = buildURLs(classpathElements);
         for (URL url : urls) {
 //            containerRealm.addURL(url);
             containerRealm.addConstituent(url);
         }
     }
 
-    private URL[] buildURLs(List compileClasspathElements) throws ComponentConfigurationException {
-        List<URL> urls = new ArrayList<URL>(compileClasspathElements.size());
-        for (Object element : compileClasspathElements) {
+    /**
+     * Create an array of URLs for all the elements in the classpath.
+     *
+     * @param classpathElements the classpath elements to create URLs for
+     * @return URLs for all the classpath elements
+     * @throws ComponentConfigurationException
+     */
+    private URL[] buildURLs(List classpathElements) throws ComponentConfigurationException {
+        List<URL> urls = new ArrayList<URL>(classpathElements.size());
+        for (Object element : classpathElements) {
             try {
                 final URL url = new File((String) element).toURI().toURL();
                 urls.add(url);

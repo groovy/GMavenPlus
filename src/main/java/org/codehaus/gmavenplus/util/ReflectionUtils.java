@@ -27,6 +27,9 @@ import java.util.Arrays;
  */
 public final class ReflectionUtils {
 
+    /**
+     * Private constructor that should never be called since this is a static utility class.
+     */
     private ReflectionUtils() { }
 
     /**
@@ -39,7 +42,7 @@ public final class ReflectionUtils {
      *                   (may be <code>null</code> to indicate any signature)
      * @return the Method object
      */
-    public static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
+    public static Method findMethod(final Class<?> clazz, final String name, final Class<?>... paramTypes) {
         if (clazz == null) {
             throw new IllegalArgumentException("Class must not be null.");
         }
@@ -68,7 +71,7 @@ public final class ReflectionUtils {
      *                   (may be <code>null</code> to indicate any signature)
      * @return the Constructor object
      */
-    public static Constructor findConstructor(Class<?> clazz, Class<?>... paramTypes) {
+    public static Constructor findConstructor(final Class<?> clazz, final Class<?>... paramTypes) {
         if (clazz == null) {
             throw new IllegalArgumentException("Class must not be null.");
         }
@@ -97,7 +100,7 @@ public final class ReflectionUtils {
      * @throws IllegalAccessException
      * @throws java.lang.reflect.InvocationTargetException
      */
-    public static Object invokeMethod(Method method, Object target, Object... args) throws InvocationTargetException, IllegalAccessException {
+    public static Object invokeMethod(final Method method, final Object target, final Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
@@ -117,7 +120,7 @@ public final class ReflectionUtils {
      * @throws IllegalAccessException
      * @throws java.lang.reflect.InvocationTargetException
      */
-    public static Object invokeStaticMethod(Method method, Object... args) throws InvocationTargetException, IllegalAccessException {
+    public static Object invokeStaticMethod(final Method method, final Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
             throw new IllegalArgumentException("Method must not be null.");
         }
@@ -138,7 +141,7 @@ public final class ReflectionUtils {
      * @throws java.lang.reflect.InvocationTargetException
      * @throws InstantiationException
      */
-    public static Object invokeConstructor(Constructor constructor, Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    public static Object invokeConstructor(final Constructor constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (constructor == null) {
             throw new IllegalArgumentException("Constructor must not be null.");
         }
@@ -150,12 +153,13 @@ public final class ReflectionUtils {
      * Attempt to find a {@link Field field} on the supplied {@link Class} with the
      * supplied <code>name</code> and/or {@link Class type}. Searches all superclasses
      * up to {@link Object}.
+     *
      * @param clazz the class to introspect
      * @param name the name of the field (may be <code>null</code> if type is specified)
      * @param type the type of the field (may be <code>null</code> if name is specified)
      * @return the corresponding Field object
      */
-    public static Field findField(Class<?> clazz, String name, Class<?> type) {
+    public static Field findField(final Class<?> clazz, final String name, final Class<?> type) {
         if (clazz == null) {
             throw new IllegalArgumentException("Class must not be null");
         }
@@ -185,7 +189,7 @@ public final class ReflectionUtils {
      * @return the field's current value
      * @throws IllegalAccessException
      */
-    public static Object getField(Field field, Object target) throws IllegalAccessException {
+    public static Object getField(final Field field, final Object target) throws IllegalAccessException {
         field.setAccessible(true);
         return field.get(target);
     }
@@ -195,11 +199,12 @@ public final class ReflectionUtils {
      * specified {@link Object target object}. In accordance with {@link Field#get(Object)}
      * semantics, the returned value is automatically wrapped if the underlying field
      * has a primitive type.
+     *
      * @param field the field to get
      * @return the field's current value
      * @throws IllegalAccessException
      */
-    public static Object getStaticField(Field field) throws IllegalAccessException {
+    public static Object getStaticField(final Field field) throws IllegalAccessException {
         if (!Modifier.isStatic(field.getModifiers())) {
             throw new IllegalArgumentException("Method must be static.");
         }
@@ -207,21 +212,23 @@ public final class ReflectionUtils {
     }
 
     /**
+     * Find and return the specified value from the specified enum class.
      *
-     * @param enumClass
-     * @param constantName
-     * @return
+     * @param clazz the enum class to introspect
+     * @param valueName the name of the enum value to get
+     *
+     * @return the enum value
      */
-    public static Object getEnumConstant(Class<?> enumClass, String constantName) {
-        if (enumClass.isEnum()) {
-            for (Object o : enumClass.getEnumConstants()) {
-              if (o.toString().equals(constantName)) {
+    public static Object getEnumValue(final Class<?> clazz, final String valueName) {
+        if (clazz.isEnum()) {
+            for (Object o : clazz.getEnumConstants()) {
+              if (o.toString().equals(valueName)) {
                   return o;
               }
             }
             throw new IllegalArgumentException("Unable to get an enum constant with that name.");
         } else {
-            throw new IllegalArgumentException(enumClass + " must be an enum.");
+            throw new IllegalArgumentException(clazz + " must be an enum.");
         }
     }
 

@@ -18,23 +18,25 @@ package org.codehaus.gmavenplus.model;
 
 
 /**
+ * Scope access modifiers supported by Java.
+ *
  * @author Keegan Witt
  */
 public enum Scopes {
     /**
-     * Public scope
+     * The public scope.
      */
     PUBLIC,
     /**
-     * Protected scope
+     * The protected scope.
      */
     PROTECTED,
     /**
-     * Package scope
+     * The package scope.
      */
     PACKAGE,
     /**
-     * Private scope
+     * The private scope.
      */
     PRIVATE
 }

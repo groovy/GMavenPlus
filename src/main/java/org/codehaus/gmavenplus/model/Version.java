@@ -27,31 +27,43 @@ import com.google.common.base.Objects;
  * @author Keegan Witt
  */
 public class Version implements Comparable<Version> {
-    public int major;
-    public int minor;
-    public int revision;
-    public String tag;
+    /**
+     * The version major number.
+     */
+    private int major;
+    /**
+     * The version minor number.
+     */
+    private int minor;
+    /**
+     * The version revision.
+     */
+    private int revision;
+    /**
+     * The version tag.
+     */
+    private String tag;
 
     /**
      * Constructs a new version object with the specified parameters.
      *
-     * @param major version major number
-     * @param minor version minor number
-     * @param revision version revision number
-     * @param tag version tag string
+     * @param newMajor version major number
+     * @param newMinor version minor number
+     * @param newRevision version revision number
+     * @param newTag version tag string
      */
-    public Version(int major, int minor, int revision, String tag) {
-        if (major <= 0 || minor < 0 || revision < 0) {
+    public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {
+        if (newMajor <= 0 || newMinor < 0 || newRevision < 0) {
             // note we don't check the tag since it can be null
             throw new IllegalArgumentException("Major must be > 0 and minor >= 0 and revision >= 0.");
         }
 
-        this.major = major;
-        this.minor = minor;
-        this.revision = revision;
-        if (tag == null || !tag.isEmpty()) {
-            this.tag = tag;
-        } else if (tag.isEmpty()) {
+        this.major = newMajor;
+        this.minor = newMinor;
+        this.revision = newRevision;
+        if (newTag == null || !newTag.isEmpty()) {
+            this.tag = newTag;
+        } else if (newTag.isEmpty()) {
             this.tag = null;
         }
     }
@@ -59,31 +71,31 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param major version major number
-     * @param minor version minor number
-     * @param revision version revision number
+     * @param newMajor version major number
+     * @param newMinor version minor number
+     * @param newRevision version revision number
      */
-    public Version(int major, int minor, int revision) {
-        this(major, minor, revision, null);
+    public Version(final int newMajor, final int newMinor, final int newRevision) {
+        this(newMajor, newMinor, newRevision, null);
     }
 
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param major version major number
-     * @param minor version minor number
+     * @param newMajor version major number
+     * @param newMinor version minor number
      */
-    public Version(int major, int minor) {
-        this(major, minor, 0);
+    public Version(final int newMajor, final int newMinor) {
+        this(newMajor, newMinor, 0);
     }
 
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param major version major number
+     * @param newMajor version major number
      */
-    public Version(int major) {
-        this(major, 0);
+    public Version(final int newMajor) {
+        this(newMajor, 0);
     }
 
     /**
@@ -92,7 +104,7 @@ public class Version implements Comparable<Version> {
      * @param version the version string to parse
      * @return the version parsed from the string
      */
-    public static Version parseFromString(String version) {
+    public static Version parseFromString(final String version) {
         if (version == null || version.isEmpty()) {
             throw new IllegalArgumentException("Version must not be null or empty.");
         }
@@ -178,7 +190,7 @@ public class Version implements Comparable<Version> {
      * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
-    public int compareTo(Version version) {
+    public int compareTo(final Version version) {
         int mine = (1000 * major) + (100 * minor) + (revision * 10);
         int theirs = (1000 * version.major) + (100 * version.minor) + (version.revision * 10);
 
@@ -191,6 +203,78 @@ public class Version implements Comparable<Version> {
         } else {
             return mine - theirs;
         }
+    }
+
+    /**
+     * Gets the version major number.
+     *
+     * @return the major version number
+     */
+    public int getMajor() {
+        return major;
+    }
+
+    /**
+     * Sets the version major number.
+     *
+     * @param newMajor the major version number to set
+     */
+    public void setMajor(final int newMajor) {
+        this.major = newMajor;
+    }
+
+    /**
+     * Gets the version minor number.
+     *
+     * @return the version minor number
+     */
+    public int getMinor() {
+        return minor;
+    }
+
+    /**
+     * Sets the version minor number.
+     *
+     * @param newMinor the version minor number to set
+     */
+    public void setMinor(final int newMinor) {
+        this.minor = newMinor;
+    }
+
+    /**
+     * Gets the version revision number.
+     *
+     * @return the version revision number
+     */
+    public int getRevision() {
+        return revision;
+    }
+
+    /**
+     * Sets the version revision number.
+     *
+     * @param newRevision the revision number to set
+     */
+    public void setRevision(final int newRevision) {
+        this.revision = newRevision;
+    }
+
+    /**
+     * Gets the version tag string.
+     *
+     * @return the version tag string
+     */
+    public String getTag() {
+        return tag;
+    }
+
+    /**
+     * Sets the version tag string.
+     *
+     * @param newTag the version tag string to set
+     */
+    public void setTag(final String newTag) {
+        this.tag = newTag;
     }
 
 }

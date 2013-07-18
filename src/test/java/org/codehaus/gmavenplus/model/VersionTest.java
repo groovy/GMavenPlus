@@ -9,8 +9,9 @@ import java.util.List;
 
 
 /**
+ * Unit tests for the Version class.
+ *
  * @author wittk
- * @version $Rev$ $Date$
  */
 public class VersionTest {
 
