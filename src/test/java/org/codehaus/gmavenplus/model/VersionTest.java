@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Unit tests for the Version class.
  *
- * @author wittk
+ * @author Keegan Witt
  */
 public class VersionTest {
 
