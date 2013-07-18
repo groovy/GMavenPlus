@@ -27,14 +27,14 @@
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
       <item name="Usage" href="usage.html" />
-    </menu>
-    <menu name="Examples">
-      <item name="Pure Groovy" href="examples.html#Pure_Groovy" />
-      <item name="Joint Compilation" href="examples.html#Joint_Compilation" />
-      <item name="InvokeDynamic" href="examples.html#InvokeDynamic" />
-      <item name="Generate Groovydoc" href="examples.html#Generate_Groovydoc" />
-      <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
-      <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
+      <item name="Examples" href="examples.html" collapse="true">
+        <item name="Pure Groovy" href="examples.html#Pure_Groovy" />
+        <item name="Joint Compilation" href="examples.html#Joint_Compilation" />
+        <item name="InvokeDynamic" href="examples.html#InvokeDynamic" />
+        <item name="Generate Groovydoc" href="examples.html#Generate_Groovydoc" />
+        <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
+        <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
+      </item>
     </menu>
     <menu ref="reports" />
   </body>
