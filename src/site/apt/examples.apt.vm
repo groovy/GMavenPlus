@@ -28,7 +28,7 @@ Examples
 
   To compile Groovy code as part of the project compilation when there are no
   dependencies between Java and Groovy, you should add something similar to
-  the following in your pom:
+  the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
@@ -73,7 +73,7 @@ mvn compile
   To compile projects where you have mixed Java and Groovy (with dependencies
   between the two), you'll need to generate stubs in addition to normal
   compilation.  To do this, you should add something similar to the following
-  in your pom:
+  in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
@@ -128,7 +128,7 @@ mvn compile
   the configuration option.  If you only include the Groovy indy jar without
   setting the configuration option only Groovy's classes will take advantage
   of invokedynamic, your classes will not.  To do this, you should add
-  something similar to the following in your pom:
+  something similar to the following in your <<<pom.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -176,7 +176,7 @@ mvn compile
 
   To generate Groovydoc manually, you only need add the plugin (no need to
   configure any executions).  To do this, you should add something similar
-  to the following in your pom:
+  to the following in your <<<pom.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -207,13 +207,21 @@ mvn compile
 mvn gplus:groovydoc
 +-----------------------+
 
+  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
+
++-----------------------------------------------------------------------------+
+<pluginGroups>
+  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
+<pluginGroups>
++-----------------------------------------------------------------------------+
+
 
 * {Add Groovydoc to Site}
 
   Note that this mojo is not set up to be used in the \<reporting\> section.
   So you will need to set the \<outputDirectory\> and \<executions\>
   to mimic this functionality.  To do this, you should add something
-  similar to the following in your pom:
+  similar to the following in your <<<pom.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -264,7 +272,7 @@ mvn site
   dependencies your project uses are also available for use in your scripts.
   This example demonstrates both.  Note that you need to escape any dollar
   signs in your script so Maven doesn't try to filter the values.  To
-  execute Groovy scripts in your pom, add something similar to the following:
+  execute Groovy scripts in your <<<pom.xml>>>, add something similar to the following:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -331,3 +339,11 @@ mvn site
 +-----------------------+
 mvn gplus:execute
 +-----------------------+
+
+  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
+
++-----------------------------------------------------------------------------+
+<pluginGroups>
+  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
+<pluginGroups>
++-----------------------------------------------------------------------------+
