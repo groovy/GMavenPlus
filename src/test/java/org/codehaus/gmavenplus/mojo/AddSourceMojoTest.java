@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public class AddSourceMojoTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testGetProjectClasspathElementsThrowsUnsupportedOperationException() throws DependencyResolutionRequiredException {
+    public void testGetProjectClasspathElementsThrowsUnsupportedOperationException() throws Exception {
         addSourceMojo.getProjectClasspathElements();
     }
 

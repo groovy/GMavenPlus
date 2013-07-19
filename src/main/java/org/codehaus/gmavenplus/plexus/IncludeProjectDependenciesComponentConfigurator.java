@@ -55,7 +55,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm the ClassRealm to add dependencies to
      * @throws ComponentConfigurationException
      */
-    private void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
@@ -79,7 +79,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @return URLs for all the classpath elements
      * @throws ComponentConfigurationException
      */
-    private URL[] buildURLs(List classpathElements) throws ComponentConfigurationException {
+    protected URL[] buildURLs(List classpathElements) throws ComponentConfigurationException {
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
         for (Object element : classpathElements) {
             try {

@@ -19,8 +19,6 @@ package org.codehaus.gmavenplus.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
-
 
 /**
  * Unit tests for the ReflectionUtils class.
@@ -30,7 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ReflectionUtilsTest {
 
     @Test
-    public void testHappyPaths() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public void testHappyPaths() throws Exception {
         String expectedString = "some string";
         Object test1 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "setStringField", String.class), test1, expectedString);
@@ -93,32 +91,32 @@ public class ReflectionUtilsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetStaticFieldNotStatic() throws IllegalAccessException {
+    public void testGetStaticFieldNotStatic() throws Exception {
         ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "stringField", String.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInvokeConstructorNull() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public void testInvokeConstructorNull() throws Exception {
         ReflectionUtils.invokeConstructor(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInvokeMethodMethodNull() throws InvocationTargetException, IllegalAccessException {
+    public void testInvokeMethodMethodNull() throws Exception {
         ReflectionUtils.invokeMethod(null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInvokeMethodObjectNull() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    public void testInvokeMethodObjectNull() throws Exception {
         ReflectionUtils.invokeMethod(TestClass.class.getMethod("getStringField"), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInvokeStaticMethodMethodNull() throws InvocationTargetException, IllegalAccessException {
+    public void testInvokeStaticMethodMethodNull() throws Exception {
         ReflectionUtils.invokeStaticMethod(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testInvokeStaticMethodMethodNotStatic() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    public void testInvokeStaticMethodMethodNotStatic() throws Exception {
         ReflectionUtils.invokeStaticMethod(TestClass.class.getMethod("getStringField"));
     }
 
