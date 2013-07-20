@@ -41,6 +41,7 @@ import java.io.FileReader;
 public class ExecuteMojoTest {
     @Spy
     private ExecuteMojo executeMojo;
+
     @Rule
     public TemporaryFolder tmpDir = new TemporaryFolder();
 
