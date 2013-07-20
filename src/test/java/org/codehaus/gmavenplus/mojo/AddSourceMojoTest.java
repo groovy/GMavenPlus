@@ -62,14 +62,14 @@ public class AddSourceMojoTest {
 
     @Test
     public void testAddTestSourcePathContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
+        Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
         addSourceMojo.addTestSourcePath(PATH);
-        Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
+        Mockito.verify(project, Mockito.never()).addTestCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
     public void testAddTestSourcePathNotContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
+        Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
         addSourceMojo.addTestSourcePath("OTHER_PATH");
         Mockito.verify(project, Mockito.times(1)).addTestCompileSourceRoot(Mockito.anyString());
     }
