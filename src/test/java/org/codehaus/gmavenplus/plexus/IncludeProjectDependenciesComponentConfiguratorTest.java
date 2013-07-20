@@ -16,12 +16,18 @@
 
 package org.codehaus.gmavenplus.plexus;
 
+//import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.classworlds.ClassRealm;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -36,6 +42,17 @@ public class IncludeProjectDependenciesComponentConfiguratorTest {
     @Before
     public void setup() {
         configurator = new IncludeProjectDependenciesComponentConfigurator();
+    }
+
+    @Test
+    public void testAddProjectCompileDependenciesToClassRealm() throws Exception {
+        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
+        List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
+        Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
+        ClassRealm containerRealm = Mockito.mock(ClassRealm.class);
+        configurator.addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
+        Mockito.verify(containerRealm, Mockito.times(1)).addConstituent(Mockito.any(URL.class));
     }
 
     @Test

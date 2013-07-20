@@ -46,41 +46,21 @@ public class AbstractCompileMojoTest {
     @Mock
     private MavenProject project;
 
-    @Mock
-    private FileSet fileSet;
-
     @Before
     public void setup() {
-        Mockito.doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
-        Mockito.doReturn(new String[] { "STUBBED_INCLUDES" }).when(fileSet).getIncludesArray();
         testMojo = new TestMojo();
-        testMojo.project = project;
+    }
+
+    @Test
+    public void testGetSourcesEmpty() {
         testMojo.sources = new FileSet[] { };
+        Set<File> sources = testMojo.getSources();
+        Assert.assertEquals(0, sources.size());
+    }
+
+    @Test
+    public void testGetTestSourcesEmpty() {
         testMojo.testSources = new FileSet[] { };
-    }
-
-    @Test
-    public void testGetSources() {
-        Set<File> sources = testMojo.getSources();
-        Assert.assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetTestSources() {
-        Set<File> testSources = testMojo.getTestSources();
-        Assert.assertEquals(0, testSources.size());
-    }
-
-    @Test
-    public void testGetSourcesWithNullSources() {
-        testMojo.sources = null;
-        Set<File> sources = testMojo.getSources();
-        Assert.assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetTestSourcesWithNullTestSources() {
-        testMojo.testSources = null;
         Set<File> testSources = testMojo.getTestSources();
         Assert.assertEquals(0, testSources.size());
     }
