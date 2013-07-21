@@ -61,11 +61,11 @@
 <a class="jxr_linenumber" name="51" href="#51">51</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     * Adds the project's compile dependencies to the specified ClassRealm.</em>
 <a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment">     * @param expressionEvaluator the expression evaluator to use to get project elements</em>
-<a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment">     * @param containerRealm the ClassRealm to add dependencies to</em>
-<a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment">     * @throws ComponentConfigurationException</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment">     * @param expressionEvaluator The expression evaluator to use to get project elements</em>
+<a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment">     * @param containerRealm The ClassRealm to add dependencies to</em>
+<a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment">     * @throws ComponentConfigurationException When parsing components configuration fails</em>
 <a class="jxr_linenumber" name="57" href="#57">57</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="58" href="#58">58</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) <strong class="jxr_keyword">throws</strong> ComponentConfigurationException {
+<a class="jxr_linenumber" name="58" href="#58">58</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) <strong class="jxr_keyword">throws</strong> ComponentConfigurationException {
 <a class="jxr_linenumber" name="59" href="#59">59</a>          List classpathElements;
 <a class="jxr_linenumber" name="60" href="#60">60</a>  
 <a class="jxr_linenumber" name="61" href="#61">61</a>          <strong class="jxr_keyword">try</strong> {
@@ -85,11 +85,11 @@
 <a class="jxr_linenumber" name="75" href="#75">75</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="76" href="#76">76</a>  <em class="jxr_javadoccomment">     * Create an array of URLs for all the elements in the classpath.</em>
 <a class="jxr_linenumber" name="77" href="#77">77</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="78" href="#78">78</a>  <em class="jxr_javadoccomment">     * @param classpathElements the classpath elements to create URLs for</em>
+<a class="jxr_linenumber" name="78" href="#78">78</a>  <em class="jxr_javadoccomment">     * @param classpathElements The classpath elements to create URLs for</em>
 <a class="jxr_linenumber" name="79" href="#79">79</a>  <em class="jxr_javadoccomment">     * @return URLs for all the classpath elements</em>
-<a class="jxr_linenumber" name="80" href="#80">80</a>  <em class="jxr_javadoccomment">     * @throws ComponentConfigurationException</em>
+<a class="jxr_linenumber" name="80" href="#80">80</a>  <em class="jxr_javadoccomment">     * @throws ComponentConfigurationException When parsing components configuration fails</em>
 <a class="jxr_linenumber" name="81" href="#81">81</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="82" href="#82">82</a>      <strong class="jxr_keyword">private</strong> URL[] buildURLs(List classpathElements) <strong class="jxr_keyword">throws</strong> ComponentConfigurationException {
+<a class="jxr_linenumber" name="82" href="#82">82</a>      <strong class="jxr_keyword">protected</strong> URL[] buildURLs(List classpathElements) <strong class="jxr_keyword">throws</strong> ComponentConfigurationException {
 <a class="jxr_linenumber" name="83" href="#83">83</a>          List&lt;URL&gt; urls = <strong class="jxr_keyword">new</strong> ArrayList&lt;URL&gt;(classpathElements.size());
 <a class="jxr_linenumber" name="84" href="#84">84</a>          <strong class="jxr_keyword">for</strong> (Object element : classpathElements) {
 <a class="jxr_linenumber" name="85" href="#85">85</a>              <strong class="jxr_keyword">try</strong> {
