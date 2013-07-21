@@ -16,19 +16,23 @@
 
 package org.codehaus.gmavenplus.util;
 
+import com.google.common.io.Files;
+
 import java.io.File;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
  * This class exists solely to trick
  * <a href="http://groovy.codehaus.org/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29">JavaStubCompilationUnit.addSource(java.io.File)</a>
- * into letting us use files that don't end in ".groovy".
+ * into letting us use files that don't end in ".groovy" (as a workaround for <a href="http://jira.codehaus.org/browse/GROOVY-5021">GROOVY-5021</a>).
  *
  * @author Keegan Witt
  */
 public class DotGroovyFile extends File {
-    // TODO: make this class unnecessary?
+    private Set<String> scriptExtensions = new HashSet<String>();
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -78,17 +82,52 @@ public class DotGroovyFile extends File {
     }
 
     /**
-     * A method to lie about the file extension and say it is ".groovy" (as long
-     * as the original extension was not ".java").
+     * Default Groovy file extensions (currently '.groovy', '.gvy', '.gy', and '.gsh').
+     *
+     * @return The default Groovy file extensions.
+     */
+    public static Set<String> defaultScriptExtensions() {
+        Set<String> defaultScriptExtensions = new HashSet<String>();
+
+        defaultScriptExtensions.add("groovy");
+        defaultScriptExtensions.add("gvy");
+        defaultScriptExtensions.add("gy");
+        defaultScriptExtensions.add("gsh");
+
+        return defaultScriptExtensions;
+    }
+
+    /**
+     * A method to lie about the file extension and say it is ".groovy".
      *
      * @return filename with forced <tt>.groovy</tt> extension.
      */
     public String getName() {
-        if (!super.getName().toLowerCase().endsWith(".java")) {
-            return super.getName().replaceAll("\\.[A-z]+$", ".groovy");
+        if (scriptExtensions != null && !scriptExtensions.isEmpty() && scriptExtensions.contains(Files.getFileExtension(super.getAbsolutePath()))) {
+            return Files.getNameWithoutExtension(super.getName()) + ".groovy";
         } else {
             return super.getName();
         }
+    }
+
+    /**
+     * Gets the script extensions for this Groovy file.
+     *
+     * @return The script extensions for this Groovy file.
+     */
+    public Set<String> getScriptExtensions() {
+        return scriptExtensions;
+    }
+
+    /**
+     * Sets the script extensions for this Groovy file.
+     *
+     * @param scriptExtensions The script extensions to set on this Groovy file.
+     * @return this object (for fluent invocation)
+     */
+    public DotGroovyFile setScriptExtensions(Set<String> scriptExtensions) {
+        this.scriptExtensions = scriptExtensions;
+        return this;
     }
 
 }

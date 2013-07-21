@@ -81,6 +81,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      */
     protected String sourceEncoding;
 
+    /**
+     * Files extensions of Groovy source files
+     *
+     * @parameter
+     */
+    protected Set<String> scriptExtensions;
+
     // if plugin only runs on 1.5, then can assume 1.5
     /**
      * Groovy compiler bytecode compatibility ("1.4" or "1.5")
@@ -251,16 +258,29 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
 
         // add Groovy sources
-        /* I'm not sure why, but whenever I try to use the
-         * JavaStubCompilationUnit.addSources(File[]) to avoid the .groovy
-         * extension limitation, I get a "java.lang.IllegalArgumentException: wrong number of arguments".
-         * And doing a CompilerConfiguration.setScriptExtensions() doesn't make
-         * it recognize other extensions.  So for now, will use my DotGroovyFile hack.
-         */
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : sources) {
             getLog().debug("    " + source);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, new DotGroovyFile(source));
+            if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 8, 3)) >= 0) {
+                Set<String> extensions;
+                if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
+                    extensions = scriptExtensions;
+                } else {
+                    extensions = DotGroovyFile.defaultScriptExtensions();
+                }
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, extensions);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
+            } else {
+                DotGroovyFile dotGroovyFile = new DotGroovyFile(source);
+                Set<String> extensions;
+                if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
+                    extensions = scriptExtensions;
+                } else {
+                    extensions = DotGroovyFile.defaultScriptExtensions();
+                }
+                dotGroovyFile.setScriptExtensions(extensions);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
+            }
         }
 
         // generate the stubs

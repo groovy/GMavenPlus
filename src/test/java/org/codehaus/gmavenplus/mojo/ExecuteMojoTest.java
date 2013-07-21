@@ -54,15 +54,12 @@ public class ExecuteMojoTest {
 
     @Test
     public void testScriptString() throws Exception {
-        // setup test
         File file = tmpDir.newFile();
         String line = "hello world";
         executeMojo.scripts = new String[] { "new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line +"' }" };
 
-        // run test
         executeMojo.execute();
 
-        // run assertions
         LineReader lineReader = new LineReader(new BufferedReader(new FileReader(file)));
         String actualLine = lineReader.readLine();
         Assert.assertEquals(line, actualLine);
@@ -70,13 +67,11 @@ public class ExecuteMojoTest {
 
     @Test
     public void testScriptPath() throws Exception {
-        // setup test
         executeMojo.sourceEncoding = "UTF-8";
         File file = new File("target/testFile.txt");
         String line = "Hello world!";
         executeMojo.scripts = new String[] { new File("src/test/resources/testScript.groovy").toURI().toURL().toString() };
 
-        // run test
         String actualLine;
         try {
             executeMojo.execute();
@@ -88,7 +83,6 @@ public class ExecuteMojoTest {
             file.delete();
         }
 
-        // run assertions
         Assert.assertEquals(line, actualLine);
     }
 
