@@ -40,12 +40,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      */
 
     /**
-     * The minimum version of Groovy that this mojo supports
+     * The minimum version of Groovy that this mojo supports.
      */
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 7, 0);
 
     /**
-     * Groovy source files (relative paths)
+     * The Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -53,14 +53,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected FileSet[] sources;
 
     /**
-     * Location for the compiled classes
+     * The location for the compiled classes.
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
      */
     protected File stubsOutputDirectory;
 
     /**
-     * Groovy test source files (relative paths)
+     * The Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -68,21 +68,21 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected FileSet[] testSources;
 
     /**
-     * Location for the compiled test classes
+     * The location for the compiled test classes.
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
      */
     protected File testStubsOutputDirectory;
 
     /**
-     * Encoding of source files
+     * The encoding of source files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
      */
     protected String sourceEncoding;
 
     /**
-     * Files extensions of Groovy source files
+     * The file extensions of Groovy source files.
      *
      * @parameter
      */
@@ -90,21 +90,21 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
     // if plugin only runs on 1.5, then can assume 1.5
     /**
-     * Groovy compiler bytecode compatibility ("1.4" or "1.5")
+     * Groovy compiler bytecode compatibility ("1.4" or "1.5").
      *
      * @parameter default-value="1.5"
      */
 //    protected String targetBytecode;
 
     /**
-     * Whether Groovy compiler should be set to debug
+     * Whether Groovy compiler should be set to debug.
      *
      * @parameter default-value="false"
      */
     protected boolean debug;
 
     /**
-     * Whether Groovy compiler should be set to verbose
+     * Whether Groovy compiler should be set to verbose.
      *
      * @parameter default-value="false"
      */
@@ -117,14 +117,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *   <li>"1" (Likely Errors)</li>
      *   <li>"2" (Possible Errors)</li>
      *   <li>"3" (Paranoia)</li>
-     *</ul>
+     * </ul>
      *
      * @parameter default-value="0"@
      */
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance
+     * Groovy compiler error tolerance.
      * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
      *
      * @parameter default-value="0"
@@ -134,7 +134,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files for the main sources.
      *
-     * @return the set of files for the main sources
+     * @return The set of files for the main sources.
      */
     protected Set<File> getSources() {
         return getFiles(sources, "main");
@@ -143,7 +143,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the test sources.
      *
-     * @return the set of files of the test sources
+     * @return The set of files of the test sources.
      */
     protected Set<File> getTestSources() {
         return getFiles(testSources, "test");
@@ -152,24 +152,24 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
-     * @param sources the sources to get the included files from
-     * @param sourceDirectory the source directory to fall back on if sources are null
+     * @param fromSources The sources to get the included files from
+     * @param defaultSourceDirectory The source directory to fall back on if sources are null
      *
-     * @return the included files from the specified sources
+     * @return The included files from the specified sources.
      */
-    protected Set<File> getFiles(FileSet[] sources, String sourceDirectory) {
+    protected Set<File> getFiles(FileSet[] fromSources, String defaultSourceDirectory) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        if (sources != null) {
-            for (FileSet fileSet : sources) {
+        if (fromSources != null) {
+            for (FileSet fileSet : fromSources) {
                 for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
                     files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
                 }
             }
         } else {
             FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + sourceDirectory + File.separator + "groovy";
+            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + defaultSourceDirectory + File.separator + "groovy";
             fileSet.setDirectory(directory);
             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
             for (String file : fileSetManager.getIncludedFiles(fileSet)) {
@@ -183,7 +183,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the main stubs.
      *
-     * @return the set of files of the main stubs
+     * @return The set of files of the main stubs
      */
     protected Set<File> getStubs() {
         Set<File> files = new HashSet<File>();
@@ -202,7 +202,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the test stubs.
      *
-     * @return the set of files of the test stubs
+     * @return The set of files of the test stubs
      */
     protected Set<File> getTestStubs() {
         Set<File> files = new HashSet<File>();
@@ -221,14 +221,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     /**
      * Performs the stub generation on the specified source files.
      *
-     * @param sources the sources to perform stub generation on
+     * @param stubSources the sources to perform stub generation on
      * @param outputDirectory the directory to write the stub files to
-     * @throws ClassNotFoundException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @throws ClassNotFoundException When a class needed for stub generation cannot be found
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    protected synchronized void doStubGeneration(Set<File> sources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected synchronized void doStubGeneration(Set<File> stubSources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
@@ -259,7 +259,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
         // add Groovy sources
         getLog().debug("Adding Groovy to generate stubs for:");
-        for (File source : sources) {
+        for (File source : stubSources) {
             getLog().debug("    " + source);
             if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 8, 3)) >= 0) {
                 Set<String> extensions;
@@ -288,7 +288,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
 
         // log generated stubs
-        getLog().debug("Generated " + sources.size() + "stubs.");
+        getLog().debug("Generated " + stubSources.size() + "stubs.");
     }
 
     /**

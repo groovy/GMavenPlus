@@ -51,9 +51,9 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     /**
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
-     * @param expressionEvaluator the expression evaluator to use to get project elements
-     * @param containerRealm the ClassRealm to add dependencies to
-     * @throws ComponentConfigurationException
+     * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param containerRealm The ClassRealm to add dependencies to
+     * @throws ComponentConfigurationException When parsing components configuration fails
      */
     protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
@@ -75,9 +75,9 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     /**
      * Create an array of URLs for all the elements in the classpath.
      *
-     * @param classpathElements the classpath elements to create URLs for
+     * @param classpathElements The classpath elements to create URLs for
      * @return URLs for all the classpath elements
-     * @throws ComponentConfigurationException
+     * @throws ComponentConfigurationException When parsing components configuration fails
      */
     protected URL[] buildURLs(List classpathElements) throws ComponentConfigurationException {
         List<URL> urls = new ArrayList<URL>(classpathElements.size());

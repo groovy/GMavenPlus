@@ -49,10 +49,10 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new version object with the specified parameters.
      *
-     * @param newMajor version major number
-     * @param newMinor version minor number
-     * @param newRevision version revision number
-     * @param newTag version tag string
+     * @param newMajor The version major number
+     * @param newMinor The version minor number
+     * @param newRevision The version revision number
+     * @param newTag The version tag string
      */
     public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {
         if (newMajor <= 0 || newMinor < 0 || newRevision < 0) {
@@ -73,9 +73,9 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param newMajor version major number
-     * @param newMinor version minor number
-     * @param newRevision version revision number
+     * @param newMajor The version major number
+     * @param newMinor The version minor number
+     * @param newRevision The version revision number
      */
     public Version(final int newMajor, final int newMinor, final int newRevision) {
         this(newMajor, newMinor, newRevision, null);
@@ -84,8 +84,8 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param newMajor version major number
-     * @param newMinor version minor number
+     * @param newMajor The version major number
+     * @param newMinor The version minor number
      */
     public Version(final int newMajor, final int newMinor) {
         this(newMajor, newMinor, 0);
@@ -94,7 +94,7 @@ public class Version implements Comparable<Version> {
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param newMajor version major number
+     * @param newMajor The version major number
      */
     public Version(final int newMajor) {
         this(newMajor, 0);
@@ -103,8 +103,8 @@ public class Version implements Comparable<Version> {
     /**
      * Parses a new Version object from a string.
      *
-     * @param version the version string to parse
-     * @return the version parsed from the string
+     * @param version The version string to parse
+     * @return The version parsed from the string
      */
     public static Version parseFromString(final String version) {
         if (version == null || version.isEmpty()) {
@@ -147,16 +147,23 @@ public class Version implements Comparable<Version> {
     }
 
     /**
+     * Returns a hash code for this object.
+     *
+     * @return The hash code for this object
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(major, minor, revision, tag);
     }
 
     /**
+     * Determines whether the specified object is equal to this object.
+     *
+     * @param obj The object to compare to this object
+     * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (obj instanceof Version) {
             final Version other = (Version) obj;
             return major == other.major
@@ -169,9 +176,12 @@ public class Version implements Comparable<Version> {
     }
 
     /**
+     * Returns a String representation of this object.
+     *
+     * @return The String representation of this object
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    public final String toString() {
         StringBuilder buff = new StringBuilder();
 
         buff.append(major)
@@ -188,11 +198,11 @@ public class Version implements Comparable<Version> {
      * Compares two versions objects.  Note that if the major, minor, and revision are all
      * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
-     * @param version the version to compare this version to
+     * @param version The version to compare this version to
      * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
-    public int compareTo(final Version version) {
+    public final int compareTo(final Version version) {
         return ComparisonChain.start()
                 .compare(major, version.major)
                 .compare(minor, version.minor)
@@ -204,7 +214,7 @@ public class Version implements Comparable<Version> {
     /**
      * Gets the version major number.
      *
-     * @return the major version number
+     * @return The major version number
      */
     public int getMajor() {
         return major;
@@ -213,7 +223,7 @@ public class Version implements Comparable<Version> {
     /**
      * Sets the version major number.
      *
-     * @param newMajor the major version number to set
+     * @param newMajor The major version number to set
      */
     public void setMajor(final int newMajor) {
         this.major = newMajor;
@@ -222,7 +232,7 @@ public class Version implements Comparable<Version> {
     /**
      * Gets the version minor number.
      *
-     * @return the version minor number
+     * @return The version minor number
      */
     public int getMinor() {
         return minor;
@@ -231,7 +241,7 @@ public class Version implements Comparable<Version> {
     /**
      * Sets the version minor number.
      *
-     * @param newMinor the version minor number to set
+     * @param newMinor The version minor number to set
      */
     public void setMinor(final int newMinor) {
         this.minor = newMinor;
@@ -240,7 +250,7 @@ public class Version implements Comparable<Version> {
     /**
      * Gets the version revision number.
      *
-     * @return the version revision number
+     * @return The version revision number
      */
     public int getRevision() {
         return revision;
@@ -249,7 +259,7 @@ public class Version implements Comparable<Version> {
     /**
      * Sets the version revision number.
      *
-     * @param newRevision the revision number to set
+     * @param newRevision The revision number to set
      */
     public void setRevision(final int newRevision) {
         this.revision = newRevision;
@@ -258,7 +268,7 @@ public class Version implements Comparable<Version> {
     /**
      * Gets the version tag string.
      *
-     * @return the version tag string
+     * @return The version tag string
      */
     public String getTag() {
         return tag;
@@ -267,7 +277,7 @@ public class Version implements Comparable<Version> {
     /**
      * Sets the version tag string.
      *
-     * @param newTag the version tag string to set
+     * @param newTag The version tag string to set
      */
     public void setTag(final String newTag) {
         this.tag = newTag;

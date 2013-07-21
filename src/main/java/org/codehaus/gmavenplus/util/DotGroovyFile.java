@@ -37,7 +37,7 @@ public class DotGroovyFile extends File {
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
      *
-     * @param pathname pathname to use to create DotGroovyFile
+     * @param pathname Pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(String pathname) {
         super(pathname);
@@ -46,8 +46,8 @@ public class DotGroovyFile extends File {
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
      *
-     * @param parent parent pathname to use to create DotGroovyFile
-     * @param child child pathname to use to create DotGroovyFile
+     * @param parent Parent pathname to use to create DotGroovyFile
+     * @param child Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(String parent, String child) {
         super(parent, child);
@@ -56,8 +56,8 @@ public class DotGroovyFile extends File {
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
      *
-     * @param parent parent file to use to create DotGroovyFile
-     * @param child child pathname to use to create DotGroovyFile
+     * @param parent Parent file to use to create DotGroovyFile
+     * @param child Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(File parent, String child) {
         super(parent, child);
@@ -84,7 +84,7 @@ public class DotGroovyFile extends File {
     /**
      * Default Groovy file extensions (currently '.groovy', '.gvy', '.gy', and '.gsh').
      *
-     * @return The default Groovy file extensions.
+     * @return The default Groovy file extensions
      */
     public static Set<String> defaultScriptExtensions() {
         Set<String> defaultScriptExtensions = new HashSet<String>();
@@ -100,7 +100,7 @@ public class DotGroovyFile extends File {
     /**
      * A method to lie about the file extension and say it is ".groovy".
      *
-     * @return filename with forced <tt>.groovy</tt> extension.
+     * @return Filename with forced <tt>.groovy</tt> extension
      */
     public String getName() {
         if (scriptExtensions != null && !scriptExtensions.isEmpty() && scriptExtensions.contains(Files.getFileExtension(super.getAbsolutePath()))) {
@@ -113,7 +113,7 @@ public class DotGroovyFile extends File {
     /**
      * Gets the script extensions for this Groovy file.
      *
-     * @return The script extensions for this Groovy file.
+     * @return The script extensions for this Groovy file
      */
     public Set<String> getScriptExtensions() {
         return scriptExtensions;
@@ -122,11 +122,11 @@ public class DotGroovyFile extends File {
     /**
      * Sets the script extensions for this Groovy file.
      *
-     * @param scriptExtensions The script extensions to set on this Groovy file.
-     * @return this object (for fluent invocation)
+     * @param newScriptExtensions The script extensions to set on this Groovy file
+     * @return This object (for fluent invocation)
      */
-    public DotGroovyFile setScriptExtensions(Set<String> scriptExtensions) {
-        this.scriptExtensions = scriptExtensions;
+    public DotGroovyFile setScriptExtensions(Set<String> newScriptExtensions) {
+        this.scriptExtensions = newScriptExtensions;
         return this;
     }
 

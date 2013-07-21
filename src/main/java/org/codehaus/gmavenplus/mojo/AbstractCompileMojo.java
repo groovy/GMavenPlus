@@ -42,7 +42,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected static final String JAVA_PATTERN = "**/*.java";
 
     /**
-     * Groovy source files (relative paths)
+     * The Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -50,14 +50,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected FileSet[] sources;
 
     /**
-     * Location for the compiled classes
+     * The location for the compiled classes.
      *
      * @parameter default-value="${project.build.outputDirectory}"
      */
     protected File outputDirectory;
 
     /**
-     * Groovy test source files (relative paths)
+     * The Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -65,14 +65,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected FileSet[] testSources;
 
     /**
-     * Location for the compiled test classes
+     * The location for the compiled test classes.
      *
      * @parameter default-value="${project.build.testOutputDirectory}"
      */
     protected File testOutputDirectory;
 
     /**
-     * Encoding of source files
+     * The Encoding of source files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
      */
@@ -80,21 +80,21 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
     // if plugin only runs on 1.5, then can assume 1.5
     /**
-     * Groovy compiler bytecode compatibility ("1.4" or "1.5").
+     * The Groovy compiler bytecode compatibility ("1.4" or "1.5").
      *
      * @parameter default-value="1.5"
      */
 //    protected String targetBytecode;
 
     /**
-     * Whether Groovy compiler should be set to debug
+     * Whether Groovy compiler should be set to debug.
      *
      * @parameter default-value="false"
      */
     protected boolean debug;
 
     /**
-     * Whether Groovy compiler should be set to verbose
+     * Whether Groovy compiler should be set to verbose.
      *
      * @parameter default-value="false"
      */
@@ -107,7 +107,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      *   <li>"1" (Likely Errors)</li>
      *   <li>"2" (Possible Errors)</li>
      *   <li>"3" (Paranoia)</li>
-     *</ul>
+     * </ul>
      *
      * @parameter default-value="0"@
      */
@@ -130,7 +130,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files for the main sources.
      *
-     * @return a set of main source files
+     * @return The set of main source files
      */
     protected Set<File> getSources() {
         Set<File> files = new HashSet<File>();
@@ -158,7 +158,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files for the test sources.
      *
-     * @return a set of test source files
+     * @return The set of test source files
      */
     protected Set<File> getTestSources() {
         Set<File> files = new HashSet<File>();
@@ -186,17 +186,18 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Performs compilation for compile mojos.
      *
-     * @param sources sources to compile
-     * @param classpath classpath to use for compilation
-     * @param outputDirectory directory to write the compiled class files to
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws java.net.MalformedURLException
+     * @param sourcesToCompile The sources to compile
+     * @param classpath The classpath to use for compilation
+     * @param mavenBuildOutputDirectory Maven's build output directory
+     * @param compileOutputDirectory The directory to write the compiled class files to
+     * @throws ClassNotFoundException When a class needed for compilation cannot be found
+     * @throws InstantiationException When a class needed for compilation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for compilation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for compilation cannot be completed
+     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected synchronized void doCompile(Set<File> sources, List classpath, String mavenBuildOutputDirectory, File outputDirectory)
+    protected synchronized void doCompile(Set<File> sourcesToCompile, List classpath, String mavenBuildOutputDirectory, File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
@@ -218,7 +219,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
         if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
             if (isGroovyIndy()) {
                 Map<java.lang.String, java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
@@ -246,7 +247,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Adding Groovy to compile:");
-        for (File source : sources) {
+        for (File source : sourcesToCompile) {
             getLog().debug("    " + source);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
@@ -262,8 +263,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     /**
      * Gets the project classpath elements needed for this mojo.
      *
-     * @return a list of project classpath elements
-     * @throws DependencyResolutionRequiredException
+     * @return The list of project classpath elements
+     * @throws DependencyResolutionRequiredException When attempting to access project dependencies that haven't been resolved yet
      */
     protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
 

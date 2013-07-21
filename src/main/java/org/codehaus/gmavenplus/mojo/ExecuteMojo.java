@@ -47,14 +47,14 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     protected String[] scripts;
 
     /**
-     * Whether to continue executing remaining scripts when a script fails
+     * Whether to continue executing remaining scripts when a script fails.
      *
      * @parameter default-value="false"
      */
     protected boolean continueExecuting;
 
     /**
-     * Encoding of script files
+     * The encoding of script files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
      */
@@ -63,8 +63,8 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException
-     * @throws MojoFailureException
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("execute");

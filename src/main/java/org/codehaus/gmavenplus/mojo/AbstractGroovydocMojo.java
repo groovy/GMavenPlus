@@ -38,16 +38,16 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     /*
      * For some reason some NPE about a rootDoc occurs with older versions
      * (note that I used a different constructor and an addSource(File) instead
-     * of addSources(List<File>) because those didn't exist back then .
+     * of addSources(List<File>) because that didn't exist back then.
      */
 
     /**
-     * The minimum version of Groovy that this mojo supports
+     * The minimum version of Groovy that this mojo supports.
      */
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 6, 2);
 
     /**
-     * Groovy source files (relative paths).
+     * The Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -55,14 +55,14 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected FileSet[] sources;
 
     /**
-     * Location for the generated API docs
+     * The location for the generated API docs.
      *
      * @parameter default-value="${project.build.directory}/gapidocs"
      */
     protected File groovydocOutputDirectory;
 
     /**
-     * Groovy test source files (relative paths)
+     * The Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
      *
      * @parameter
@@ -70,71 +70,76 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected FileSet[] testSources;
 
     /**
-     * Location for the generated test API docs
+     * The location for the generated test API docs.
      *
      * @parameter default-value="${project.build.directory}/testgapidocs"
      */
     protected File testGroovydocOutputDirectory;
 
     /**
-     * Window title
+     * The window title.
      *
      * @parameter default-value="Groovy Documentation"
      */
     protected String windowTitle;
 
     /**
-     * Page title
+     * The page title.
      *
      * @parameter default-value="Groovy Documentation"
      */
     protected String docTitle;
 
     /**
-     * Page footer
+     * The page footer.
      *
      * @parameter default-value="Groovy Documentation"
      */
     protected String footer;
 
     /**
-     * Page header
+     * The page header.
      *
      * @parameter default-value="Groovy Documentation"
      */
     protected String header;
 
     /**
-     * Whether to display the author in the generated Groovydoc
+     * Whether to display the author in the generated Groovydoc.
      *
      * @parameter default-value="true"
      */
     protected boolean displayAuthor;
 
     /**
-     * HTML file to be used for overview documentation
+     * The HTML file to be used for overview documentation.
      *
      * @parameter
      */
     protected File overviewFile;
 
     /**
-     * Stylesheet file (absolute path) to copy to output directory (will overwrite default stylesheet.css)
+     * The stylesheet file (absolute path) to copy to output directory (will overwrite default stylesheet.css).
      *
      * @parameter
      */
     protected File stylesheetFile;
 
     /**
-     * Encoding of stylesheetFile
+     * The encoding of stylesheetFile.
      *
      * @parameter default-value="UTF-8"
      */
     protected String stylesheetEncoding;
 
     /**
-     * Scope to generate Groovydoc for, should be
-     * "public", "protected", "package", or "private"
+     * The scope to generate Groovydoc for, should be one of:
+     * <ul>
+     *   <li>"public"</li>
+     *   <li>"protected"</li>
+     *   <li>"package"</li>
+     *   <li>"private"</li>
+     * </ul>
      *
      * @parameter default-value="private"
      */
@@ -146,8 +151,8 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * Gets a list of filename strings for the sources to generate groovydoc for, using sources from the default
      * directory if no source directories are specified.
      *
-     * @param fileSet
-     * @return
+     * @param fileSet The fileset to get sources from
+     * @return The sources from the specified fileset
      */
     protected List<String> getSources(FileSet fileSet) {
         List<String> files = new ArrayList<String>();
@@ -174,12 +179,12 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     /**
      * Generates the groovydoc for the specified sources.
      *
-     * @param sourceDirectories the sources to generate groovydoc for
-     * @param outputDirectory the directory to save the generated groovydoc in
-     * @throws ClassNotFoundException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @param sourceDirectories The sources to generate groovydoc for
+     * @param outputDirectory The directory to save the generated groovydoc in
+     * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found
+     * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
      */
     protected void generateGroovydoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
@@ -200,19 +205,14 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
         properties.setProperty("overviewFile", overviewFile != null ? overviewFile.getAbsolutePath() : "");
         try {
             Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());
-            switch (scopeVal) {
-                case PUBLIC:
-                    properties.setProperty("publicScope", "true");
-                    break;
-                case PROTECTED:
-                    properties.setProperty("protectedScope", "true");
-                    break;
-                case PACKAGE:
-                    properties.setProperty("packageScope", "true");
-                    break;
-                case PRIVATE:
-                    properties.setProperty("privateScope", "true");
-                    break;
+            if (scopeVal.equals(Scopes.PUBLIC)) {
+                properties.setProperty("publicScope", "true");
+            } else if (scopeVal.equals(Scopes.PROTECTED)) {
+                properties.setProperty("protectedScope", "true");
+            } else if (scopeVal.equals(Scopes.PACKAGE)) {
+                properties.setProperty("packageScope", "true");
+            } else if (scopeVal.equals(Scopes.PRIVATE)) {
+                properties.setProperty("privateScope", "true");
             }
         } catch (IllegalArgumentException e) {
             getLog().warn("Scope (" + scope + ") was not recognized.  Skipping argument.");
@@ -245,7 +245,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     /**
      * Copies the stylesheet to the specified output directory.
      *
-     * @param outputDirectory the output directory to copy the stylesheet to
+     * @param outputDirectory The output directory to copy the stylesheet to
      */
     private void copyStylesheet(File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
@@ -276,7 +276,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * Must be >= 1.6.2 because not all the classes/methods needed were available
      * and functioning correctly in previous versions.
      *
-     * @return <code>true</code> only if the version of Groovy supports this mojo.
+     * @return <code>true</code> only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
@@ -285,10 +285,10 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     /**
      * Checks if the passed sources are null and adds the sources from the default directory if they are.
      *
-     * @param sources the sources to check against
+     * @param defaultSources The sources to check against
      */
-    protected void setDefaultSourceDirectories(FileSet[] sources) {
-        if (sources == null) {
+    protected void setDefaultSourceDirectories(FileSet[] defaultSources) {
+        if (defaultSources == null) {
             FileSet fileSet = new FileSet();
             String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
             fileSet.setDirectory(directory);

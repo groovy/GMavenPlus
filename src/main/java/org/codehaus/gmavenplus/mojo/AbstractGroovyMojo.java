@@ -53,7 +53,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Logs the version of groovy used by this mojo.
      *
-     * @param goal the goal to mention in the log statement showing Groovy version
+     * @param goal The goal to mention in the log statement showing Groovy version
      */
     protected void logGroovyVersion(String goal) {
         if (getLog().isInfoEnabled()) {
@@ -64,7 +64,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Gets the version of Groovy used from the dependency information.
      *
-     * @return the version Groovy used by the project
+     * @return The version Groovy used by the project
      */
     protected String getGroovyVersion() {
         String groovyVersion = null;
@@ -109,7 +109,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Gets the Groovy dependency used by the project.
      *
-     * @return the Groovy dependency used by the project
+     * @return The Groovy dependency used by the project
      */
     protected Dependency getGroovyDependency() {
         Dependency groovyDependency = null;
@@ -128,8 +128,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Whether the groupId of the dependency is Groovy's groupId.
      *
-     * @param dependency the dependency to inspect
-     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise.
+     * @param dependency The dependency to inspect
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyGroupId(Dependency dependency) {
         return dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy");
@@ -138,8 +138,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Whether the artifactId of the dependency is Groovy's artifactId.
      *
-     * @param dependency the dependency to inspect
-     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise.
+     * @param dependency The dependency to inspect
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyArtifactId(Dependency dependency) {
         return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")

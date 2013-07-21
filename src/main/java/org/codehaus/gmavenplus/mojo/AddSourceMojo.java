@@ -28,7 +28,7 @@ import java.util.List;
 
 
 /**
- * This mojo adds Groovy sources to the project's sources
+ * This mojo adds Groovy sources to the project's sources.
  *
  * @author Keegan Witt
  *
@@ -42,8 +42,8 @@ public class AddSourceMojo extends AbstractCompileMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException
-     * @throws MojoFailureException
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("addSource");
@@ -64,6 +64,8 @@ public class AddSourceMojo extends AbstractCompileMojo {
     /**
      * This method does not apply for this mojo.
      *
+     * @return Nothing, throws UnsupportedOperationException if called
+     * @throws DependencyResolutionRequiredException When attempting to access project dependencies that haven't been resolved yet
      * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
      */
     @SuppressWarnings("unchecked")
@@ -74,7 +76,7 @@ public class AddSourceMojo extends AbstractCompileMojo {
     /**
      * Adds the specified source path to the project's main compile sources.
      *
-     * @param path the source path to add to the project's main compile sources
+     * @param path The source path to add to the project's main compile sources
      */
     protected void addSourcePath(String path) {
         if (!project.getCompileSourceRoots().contains(path)) {
@@ -86,7 +88,7 @@ public class AddSourceMojo extends AbstractCompileMojo {
     /**
      * Adds the specified source path to the project's test compile sources.
      *
-     * @param path the source path to add to the project's test compile sources
+     * @param path The source path to add to the project's test compile sources
      */
     protected void addTestSourcePath(String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {
