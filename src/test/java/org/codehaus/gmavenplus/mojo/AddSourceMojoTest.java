@@ -37,6 +37,7 @@ public class AddSourceMojoTest {
     private AddSourceMojo addSourceMojo;
 
     private static final String PATH = "PATH";
+
     @Mock
     private MavenProject project;
 
