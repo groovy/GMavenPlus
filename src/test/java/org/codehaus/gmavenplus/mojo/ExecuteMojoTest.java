@@ -59,9 +59,11 @@ public class ExecuteMojoTest {
         executeMojo.scripts = new String[] { "new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line +"' }" };
 
         executeMojo.execute();
-
-        LineReader lineReader = new LineReader(new BufferedReader(new FileReader(file)));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        LineReader lineReader = new LineReader(reader);
         String actualLine = lineReader.readLine();
+        reader.close();
+
         Assert.assertEquals(line, actualLine);
     }
 
