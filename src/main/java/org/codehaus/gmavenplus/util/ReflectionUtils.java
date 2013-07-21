@@ -51,7 +51,7 @@ public final class ReflectionUtils {
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
-            Method[] methods = (searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods());
+            Method[] methods = searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods();
             for (Method method : methods) {
                 if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
                     return method;
@@ -77,7 +77,7 @@ public final class ReflectionUtils {
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
-            Constructor[] constructors = (searchType.isInterface() ? searchType.getConstructors() : searchType.getDeclaredConstructors());
+            Constructor[] constructors = searchType.isInterface() ? searchType.getConstructors() : searchType.getDeclaredConstructors();
             for (Constructor constructor : constructors) {
                 if (paramTypes == null || Arrays.equals(paramTypes, constructor.getParameterTypes())) {
                     return constructor;
