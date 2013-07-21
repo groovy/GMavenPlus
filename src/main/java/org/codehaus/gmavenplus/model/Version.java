@@ -17,6 +17,8 @@
 package org.codehaus.gmavenplus.model;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 
 
 /**
@@ -191,18 +193,12 @@ public class Version implements Comparable<Version> {
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
     public int compareTo(final Version version) {
-        int mine = (1000 * major) + (100 * minor) + (revision * 10);
-        int theirs = (1000 * version.major) + (100 * version.minor) + (version.revision * 10);
-
-        if (mine == theirs && tag != null && version.tag != null) {
-            return tag.compareTo(version.tag);
-        } else if (mine == theirs && tag == null && version.tag != null) {
-            return 1;
-        } else if (mine == theirs && tag != null && version.tag == null) {
-            return -1;
-        } else {
-            return mine - theirs;
-        }
+        return ComparisonChain.start()
+                .compare(major, version.major)
+                .compare(minor, version.minor)
+                .compare(revision, version.revision)
+                .compare(tag, version.tag, Ordering.natural().nullsLast())
+                .result();
     }
 
     /**
