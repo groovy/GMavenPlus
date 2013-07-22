@@ -78,7 +78,7 @@ public class DotGroovyFile extends File {
      * @param file File to use to create DotGroovyFile
      */
     public DotGroovyFile(File file) {
-        this(file.getAbsolutePath());
+        super(file.getAbsolutePath());
     }
 
     /**

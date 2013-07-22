@@ -55,9 +55,9 @@ public class Version implements Comparable<Version> {
      * @param newTag The version tag string
      */
     public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {
-        if (newMajor <= 0 || newMinor < 0 || newRevision < 0) {
+        if (newMajor < 0 || newMinor < 0 || newRevision < 0) {
             // note we don't check the tag since it can be null
-            throw new IllegalArgumentException("Major must be > 0 and minor >= 0 and revision >= 0.");
+            throw new IllegalArgumentException("Major must be >= 0 and minor >= 0 and revision >= 0.");
         }
 
         this.major = newMajor;
@@ -112,6 +112,7 @@ public class Version implements Comparable<Version> {
         }
         String[] split = version.split("[.-]", 4);
         try {
+            int tagIdx = 3;
             int major = Integer.parseInt(split[0]);
             int minor = 0;
             int revision = 0;
@@ -120,21 +121,29 @@ public class Version implements Comparable<Version> {
                 try {
                     minor = Integer.parseInt(split[1]);
                 } catch (NumberFormatException nfe) {
-                    // version string must not have specified a minor version, leave minor as 0
+                    // version string must not have specified a minor version, leave minor as 0 and append to tag instead
                     tag.append(split[1]);
+                    tagIdx = 1;
+                    if (tagIdx != 3) {
+                        tag.append("-");
+                    }
                 }
             }
             if (split.length >= 3) {
                 try {
                     revision = Integer.parseInt(split[2]);
                 } catch (NumberFormatException nfe) {
-                    // version string must not have specified a revision version, leave revision as 0
+                    // version string must not have specified a revision version, leave revision as 0 and append to tag instead
                     tag.append(split[2]);
+                    tagIdx = 2;
+                    if (tagIdx != 3) {
+                        tag.append("-");
+                    }
                 }
             }
             if (split.length >= 4) {
-                for (int i = 3; i < split.length; i++) {
-                    if (i > 3) {
+                for (int i = tagIdx; i < split.length; i++) {
+                    if (i > tagIdx) {
                         tag.append("-");
                     }
                     tag.append(split[i]);
@@ -224,9 +233,11 @@ public class Version implements Comparable<Version> {
      * Sets the version major number.
      *
      * @param newMajor The major version number to set
+     * @return This object (for fluent invocation)
      */
-    public void setMajor(final int newMajor) {
+    public Version setMajor(final int newMajor) {
         this.major = newMajor;
+        return this;
     }
 
     /**
@@ -242,9 +253,11 @@ public class Version implements Comparable<Version> {
      * Sets the version minor number.
      *
      * @param newMinor The version minor number to set
+     * @return This object (for fluent invocation)
      */
-    public void setMinor(final int newMinor) {
+    public Version setMinor(final int newMinor) {
         this.minor = newMinor;
+        return this;
     }
 
     /**
@@ -260,9 +273,11 @@ public class Version implements Comparable<Version> {
      * Sets the version revision number.
      *
      * @param newRevision The revision number to set
+     * @return This object (for fluent invocation)
      */
-    public void setRevision(final int newRevision) {
+    public Version setRevision(final int newRevision) {
         this.revision = newRevision;
+        return this;
     }
 
     /**
@@ -278,9 +293,11 @@ public class Version implements Comparable<Version> {
      * Sets the version tag string.
      *
      * @param newTag The version tag string to set
+     * @return This object (for fluent invocation)
      */
-    public void setTag(final String newTag) {
+    public Version setTag(final String newTag) {
         this.tag = newTag;
+        return this;
     }
 
 }

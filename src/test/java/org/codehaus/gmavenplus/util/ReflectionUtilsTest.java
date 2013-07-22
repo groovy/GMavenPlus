@@ -120,6 +120,11 @@ public class ReflectionUtilsTest {
         ReflectionUtils.invokeStaticMethod(TestClass.class.getMethod("getStringField"));
     }
 
+    @Test
+    public void testConstructor() throws Exception {
+        ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ReflectionUtils.class));
+    }
+
     private static class TestClass {
         public static final String HELLO_WORLD = "Hello world!";
         public String stringField;

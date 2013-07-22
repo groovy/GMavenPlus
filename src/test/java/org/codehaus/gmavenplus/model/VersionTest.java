@@ -71,4 +71,61 @@ public class VersionTest {
         Assert.assertEquals(v1, versions.get(1));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorWithNegatives() {
+        Version version = new Version(-1);
+    }
+
+    @Test
+    public void testNotEqualsWithNonVersion() {
+        Version version = new Version(0);
+        Assert.assertFalse(version.equals(""));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFromStringMajorIsNotInteger() {
+        Version.parseFromString("a.b");
+    }
+
+    @Test
+    public void testParseFromStringMinorIsNotInteger() {
+        Version version = Version.parseFromString("0.a");
+        Assert.assertEquals(0, version.getMinor());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFromStringNull() {
+        Version.parseFromString(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFromStringEmpty() {
+        Version.parseFromString("");
+    }
+
+    @Test
+    public void testParseFromStringAndToStringWithMultiPartTag() {
+        Assert.assertEquals(5, Version.parseFromString("0-multi-part-tag").toString().split("-").length);
+    }
+
+    @Test
+    public void testGettersAndSetters() {
+        int num = 1;
+        String str = "string";
+        Version version = new Version(0)
+                .setMajor(num)
+                .setMinor(num)
+                .setRevision(num)
+                .setTag(str);
+        Assert.assertEquals(num, version.getMajor());
+        Assert.assertEquals(num, version.getMinor());
+        Assert.assertEquals(num, version.getRevision());
+        Assert.assertEquals(str, version.getTag());
+    }
+
+    @Test
+    public void testHashCode() {
+        Assert.assertNotNull(new Version(0).hashCode());
+    }
+
 }

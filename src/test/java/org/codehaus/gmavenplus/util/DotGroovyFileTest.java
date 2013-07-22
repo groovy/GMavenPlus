@@ -88,4 +88,13 @@ public class DotGroovyFileTest {
         }
     }
 
+    @Test
+    public void testGettersAndSetters() {
+        Set<String> extensions = new HashSet<String>();
+        extensions.add("ext");
+        DotGroovyFile dotGroovyFile = new DotGroovyFile("")
+                .setScriptExtensions(extensions);
+        Assert.assertEquals(extensions, dotGroovyFile.getScriptExtensions());
+    }
+
 }
