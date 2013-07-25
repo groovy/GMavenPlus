@@ -48,7 +48,6 @@ public class CompileMojoTest {
     public void setup() throws Exception {
         Mockito.doNothing().when(compileMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(compileMojo).getSources();
-        Mockito.doReturn(new ArrayList()).when(compileMojo).getProjectClasspathElements();
         compileMojo.project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Mockito.mock(Build.class)).when(compileMojo.project).getBuild();
     }

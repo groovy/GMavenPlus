@@ -260,12 +260,4 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
         getLog().info("Compiled " + classes.size() + " classes.");
     }
 
-    /**
-     * Gets the project classpath elements needed for this mojo.
-     *
-     * @return The list of project classpath elements
-     * @throws DependencyResolutionRequiredException When attempting to access project dependencies that haven't been resolved yet
-     */
-    protected abstract List getProjectClasspathElements() throws DependencyResolutionRequiredException;
-
 }

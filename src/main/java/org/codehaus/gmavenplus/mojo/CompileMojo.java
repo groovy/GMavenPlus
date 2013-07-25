@@ -48,7 +48,7 @@ public class CompileMojo extends AbstractCompileMojo {
         logGroovyVersion("compile");
 
         try {
-            doCompile(getSources(), getProjectClasspathElements(), project.getBuild().getOutputDirectory(), outputDirectory);
+            doCompile(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), outputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
@@ -62,13 +62,6 @@ public class CompileMojo extends AbstractCompileMojo {
         } catch (MalformedURLException e) {
             throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
         }
-    }
-
-    /**
-     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
-     */
-    protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
-        return project.getCompileClasspathElements();
     }
 
 }

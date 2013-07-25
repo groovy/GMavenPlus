@@ -56,7 +56,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
             logGroovyVersion("testCompile");
 
             try {
-                doCompile(getTestSources(), getProjectClasspathElements(), project.getBuild().getTestOutputDirectory(), testOutputDirectory);
+                doCompile(getTestSources(), project.getTestClasspathElements(), project.getBuild().getTestOutputDirectory(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
@@ -73,13 +73,6 @@ public class CompileTestsMojo extends AbstractCompileMojo {
         } else {
             getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true.");
         }
-    }
-
-    /**
-     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
-     */
-    protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
-        return project.getTestClasspathElements();
     }
 
 }
