@@ -6,7 +6,7 @@ package org.codehaus.gmavenplus.plexus;
 
 //import org.apache.maven.plugin.logging.Log;
 //import org.apache.maven.plugin.logging.SystemStreamLog;
-// TODO: figure out why switching to Plexus ClassRealm instead of Classworlds ClassRealm causes a StackOverflowError in some projects
+// TODO: switch to Plexus ClassRealm instead of Classworlds ClassRealm?
 //import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
