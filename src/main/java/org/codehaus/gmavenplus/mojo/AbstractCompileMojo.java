@@ -71,7 +71,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected File testOutputDirectory;
 
     /**
-     * The Encoding of source files.
+     * The encoding of source files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
      */
@@ -113,7 +113,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
+     * Groovy compiler error tolerance
+     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
      *
      * @parameter default-value="0"
      */
@@ -155,7 +156,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files for the test sources.
+     * Gets the set of files of the test sources.
      *
      * @return The set of test source files
      */
@@ -183,7 +184,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Performs compilation for compile mojos.
+     * Performs compilation of compile mojos.
      *
      * @param sourcesToCompile The sources to compile
      * @param classpath The classpath to use for compilation

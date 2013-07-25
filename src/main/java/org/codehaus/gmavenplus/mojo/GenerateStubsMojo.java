@@ -17,6 +17,9 @@
 package org.codehaus.gmavenplus.mojo;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -45,7 +48,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
             logGroovyVersion("generateStubs");
 
             try {
-                doStubGeneration(getSources(), stubsOutputDirectory);
+                doStubGeneration(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), stubsOutputDirectory);
                 resetStubModifiedDates(getStubs());
 
                 // add stubs to project source so the Maven Compiler Plugin can find them
@@ -62,6 +65,10 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");

@@ -21,6 +21,8 @@ import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
@@ -90,7 +92,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
 
     // if plugin only runs on 1.5, then can assume 1.5
     /**
-     * Groovy compiler bytecode compatibility ("1.4" or "1.5").
+     * The Groovy compiler bytecode compatibility ("1.4" or "1.5").
      *
      * @parameter default-value="1.5"
      */
@@ -227,8 +229,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @throws InstantiationException When a class needed for stub generation cannot be instantiated
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
-    protected synchronized void doStubGeneration(Set<File> stubSources, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected synchronized void doStubGeneration(Set<File> stubSources, List classpath, String mavenBuildOutputDirectory, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
@@ -252,10 +255,19 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
 
-        // setup groovyClassLoader
+        // append project classpath to groovyClassLoader
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
+        getLog().debug("Classpath: ");
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addClasspath", String.class), groovyClassLoader, mavenBuildOutputDirectory);
+        getLog().debug("    " + mavenBuildOutputDirectory);
+        if (classpath != null) {
+            for (Object classpathElement : classpath) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
+                getLog().debug("    " + classpathElement);
+            }
+        }
 
         // add Groovy sources
         getLog().debug("Adding Groovy to generate stubs for:");
