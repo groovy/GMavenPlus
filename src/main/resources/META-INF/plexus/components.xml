@@ -17,7 +17,7 @@
       </configuration>
     </component>
 
-    <!-- defines the gmnvenplus-plugin packaging and artifact handling -->
+    <!-- defines the gmavenplus-plugin packaging and artifact handling -->
     <component>
       <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
       <role-hint>gmavenplus-plugin</role-hint>
