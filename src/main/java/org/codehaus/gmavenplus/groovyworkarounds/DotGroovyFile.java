@@ -32,6 +32,9 @@ import java.util.Set;
  * @author Keegan Witt
  */
 public class DotGroovyFile extends File {
+    /**
+     * The file extensions to consider as Groovy files.
+     */
     private Set<String> scriptExtensions = new HashSet<String>();
 
     /**
