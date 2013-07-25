@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.shared.model.fileset.FileSet;
@@ -24,7 +23,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -37,7 +35,7 @@ import java.util.List;
  * @executionStrategy always
  * @requiresDirectInvocation false
  */
-public class AddSourceMojo extends AbstractCompileMojo {
+public class AddSourceMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Executes this mojo.
@@ -49,28 +47,16 @@ public class AddSourceMojo extends AbstractCompileMojo {
         logGroovyVersion("addSource");
 
         FileSetManager fileSetManager = new FileSetManager(getLog());
-        for (FileSet source : sources) {
+        for (FileSet source : getSourceRoots()) {
             for (String include : Arrays.asList(fileSetManager.getIncludedFiles(source))) {
                 addSourcePath(project.getBasedir().getAbsolutePath() + File.separator + source.getDirectory() + File.separator + include);
             }
         }
-        for (FileSet testSource : testSources) {
+        for (FileSet testSource : getTestSourceRoots()) {
             for (String include : Arrays.asList(fileSetManager.getIncludedFiles(testSource))) {
                 addTestSourcePath(project.getBasedir().getAbsolutePath() + File.separator + testSource.getDirectory() + File.separator + include);
             }
         }
-    }
-
-    /**
-     * This method does not apply for this mojo.
-     *
-     * @return Nothing, throws UnsupportedOperationException if called
-     * @throws DependencyResolutionRequiredException When attempting to access project dependencies that haven't been resolved yet
-     * @see org.codehaus.gmavenplus.mojo.AbstractCompileMojo#getProjectClasspathElements()
-     */
-    @SuppressWarnings("unchecked")
-    protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
-        throw new UnsupportedOperationException("This method does not apply for this mojo");
     }
 
     /**

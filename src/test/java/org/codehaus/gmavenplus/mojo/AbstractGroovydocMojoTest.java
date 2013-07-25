@@ -56,20 +56,8 @@ public class AbstractGroovydocMojoTest {
         Mockito.doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.sources = new FileSet[] { };
-        testMojo.testSources = new FileSet[] { };
-    }
-
-    @Test
-    public void testGetSources() {
-        List<String> sources = testMojo.getSources(fileSet);
-        Assert.assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetSourcesWithNullFileset() {
-        List<String> sources = testMojo.getSources(null);
-        Assert.assertEquals(0, sources.size());
+        testMojo.setSources(new FileSet[] { });
+        testMojo.setTestSources(new FileSet[] { });
     }
 
     @Test

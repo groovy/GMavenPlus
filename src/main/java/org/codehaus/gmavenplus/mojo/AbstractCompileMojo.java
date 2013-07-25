@@ -24,8 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.*;
-import org.apache.maven.shared.model.fileset.FileSet;
-import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
@@ -33,15 +31,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
-
-    /**
-     * The Groovy source files (relative paths).
-     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] sources;
+public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * The location for the compiled classes.
@@ -49,14 +39,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @parameter default-value="${project.build.outputDirectory}"
      */
     protected File outputDirectory;
-
-    /**
-     * The Groovy test source files (relative paths).
-     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] testSources;
 
     /**
      * The location for the compiled test classes.
@@ -121,62 +103,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
      * @parameter property="invokeDynamic" default-value="false"
      */
     private boolean invokeDynamic;
-
-    /**
-     * Gets the set of files for the main sources.
-     *
-     * @return The set of main source files
-     */
-    protected Set<File> getSources() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        if (sources != null) {
-            for (FileSet fileSet : sources) {
-                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
-                }
-            }
-        } else {
-            FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
-            fileSet.setDirectory(directory);
-            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-                files.add(new File(directory, file));
-            }
-        }
-
-        return files;
-    }
-
-    /**
-     * Gets the set of files of the test sources.
-     *
-     * @return The set of test source files
-     */
-    protected Set<File> getTestSources() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        if (testSources != null) {
-            for (FileSet fileSet : testSources) {
-                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
-                }
-            }
-        } else {
-            FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "test" + File.separator + "groovy";
-            fileSet.setDirectory(directory);
-            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-                files.add(new File(directory, file));
-            }
-        }
-
-        return files;
-    }
 
     /**
      * Performs compilation of compile mojos.

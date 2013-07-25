@@ -64,8 +64,8 @@ public class AbstractGenerateStubsMojoTest {
         Mockito.doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.sources = new FileSet[] { };
-        testMojo.testSources = new FileSet[] { };
+        testMojo.setSources(new FileSet[] { });
+        testMojo.setTestSources(new FileSet[] { });
         testMojo.stubsOutputDirectory = stubsOutputDirectory;
         testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
     }
@@ -84,14 +84,14 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testGetSourcesWithNullSources() {
-        testMojo.sources = null;
+        testMojo.setSources(null);
         Set<File> sources = testMojo.getSources();
         Assert.assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSourcesWithNullTestSources() {
-        testMojo.testSources = null;
+        testMojo.setTestSources(null);
         Set<File> testSources = testMojo.getTestSources();
         Assert.assertEquals(0, testSources.size());
     }

@@ -75,9 +75,4 @@ public class AddSourceMojoTest {
         Mockito.verify(project, Mockito.times(1)).addTestCompileSourceRoot(Mockito.anyString());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testGetProjectClasspathElementsThrowsUnsupportedOperationException() throws Exception {
-        addSourceMojo.getProjectClasspathElements();
-    }
-
 }

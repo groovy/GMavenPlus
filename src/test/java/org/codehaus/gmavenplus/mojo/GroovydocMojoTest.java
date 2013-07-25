@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 
 /**
@@ -45,7 +45,7 @@ public class GroovydocMojoTest {
     @SuppressWarnings("unchecked")
     public void setup() throws Exception {
         Mockito.doNothing().when(groovydocMojo).logGroovyVersion(Mockito.anyString());
-        Mockito.doReturn(new ArrayList<String>()).when(groovydocMojo).getSources(Mockito.any(FileSet.class));
+        Mockito.doReturn(new HashSet<File>()).when(groovydocMojo).getSources();
         groovydocMojo.project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Mockito.mock(File.class)).when(groovydocMojo.project).getBasedir();
     }

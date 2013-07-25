@@ -33,7 +33,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
+public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.6.9?
     /*
      * For some reason, the JavaStubCompilationUnit is silently not creating my
@@ -47,27 +47,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 7, 0);
 
     /**
-     * The Groovy source files (relative paths).
-     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] sources;
-
-    /**
      * The location for the compiled classes.
      *
      * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
      */
     protected File stubsOutputDirectory;
-
-    /**
-     * The Groovy test source files (relative paths).
-     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] testSources;
 
     /**
      * The location for the compiled test classes.
@@ -132,55 +116,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @parameter default-value="0"
      */
     protected int tolerance;
-
-    /**
-     * Gets the set of files for the main sources.
-     *
-     * @return The set of files for the main sources.
-     */
-    protected Set<File> getSources() {
-        return getFiles(sources, "main");
-    }
-
-    /**
-     * Gets the set of files of the test sources.
-     *
-     * @return The set of files of the test sources.
-     */
-    protected Set<File> getTestSources() {
-        return getFiles(testSources, "test");
-    }
-
-    /**
-     * Gets the set of included files from the specified source files or source directory (if sources are null).
-     *
-     * @param fromSources The sources to get the included files from
-     * @param defaultSourceDirectory The source directory to fall back on if sources are null
-     *
-     * @return The included files from the specified sources.
-     */
-    protected Set<File> getFiles(final FileSet[] fromSources, final String defaultSourceDirectory) {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        if (fromSources != null) {
-            for (FileSet fileSet : fromSources) {
-                for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                    files.add(new File(project.getBasedir().getAbsolutePath() + File.separator + fileSet.getDirectory(), include));
-                }
-            }
-        } else {
-            FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + defaultSourceDirectory + File.separator + "groovy";
-            fileSet.setDirectory(directory);
-            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-                files.add(new File(directory, file));
-            }
-        }
-
-        return files;
-    }
 
     /**
      * Gets the set of files of the main stubs.

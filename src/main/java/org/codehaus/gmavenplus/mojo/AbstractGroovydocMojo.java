@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
+import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
@@ -25,7 +26,6 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import org.apache.maven.shared.model.fileset.FileSet;
-import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
@@ -33,7 +33,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
+public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.6.1?
     /*
      * For some reason some NPE about a rootDoc occurs with older versions
@@ -47,27 +47,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 6, 2);
 
     /**
-     * The Groovy source files (relative paths).
-     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] sources;
-
-    /**
      * The location for the generated API docs.
      *
      * @parameter default-value="${project.build.directory}/gapidocs"
      */
     protected File groovydocOutputDirectory;
-
-    /**
-     * The Groovy test source files (relative paths).
-     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
-     */
-    protected FileSet[] testSources;
 
     /**
      * The location for the generated test API docs.
@@ -148,38 +132,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     // TODO: add links parameter
 
     /**
-     * Gets a list of filename strings for the sources to generate groovydoc for, using sources from the default
-     * directory if no source directories are specified.
-     *
-     * @param fileSet The fileset to get sources from
-     * @return The sources from the specified fileset
-     */
-    protected List<String> getSources(final FileSet fileSet) {
-        List<String> files = new ArrayList<String>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        if (fileSet != null) {
-            for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
-                files.add(include);
-            }
-        } else {
-            FileSet fs = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
-            fs.setDirectory(directory);
-            fs.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            String[] includes = fileSetManager.getIncludedFiles(fs);
-            for (String file : includes) {
-                files.add(directory + File.separator + file);
-            }
-        }
-
-        return files;
-    }
-
-    /**
      * Generates the groovydoc for the specified sources.
      *
-     * @param sourceDirectories The sources to generate groovydoc for
+     * @param sourceDirectories The source directories to generate groovydoc for
      * @param outputDirectory The directory to save the generated groovydoc in
      * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found
      * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated
@@ -232,7 +187,8 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
                     links,
                     properties
             );
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, getSources(sourceDirectory));
+            FileSetManager fileSetManager = new FileSetManager(getLog());
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, fileSetManager.getIncludedFiles(sourceDirectory));
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
         }
 
@@ -280,21 +236,6 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      */
     protected boolean groovyVersionSupportsAction() {
         return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
-    }
-
-    /**
-     * Checks if the passed sources are null and adds the sources from the default directory if they are.
-     *
-     * @param defaultSources The sources to check against
-     */
-    protected void setDefaultSourceDirectories(final FileSet[] defaultSources) {
-        if (defaultSources == null) {
-            FileSet fileSet = new FileSet();
-            String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";
-            fileSet.setDirectory(directory);
-            fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            this.sources = new FileSet[]{fileSet};
-        }
     }
 
 }
