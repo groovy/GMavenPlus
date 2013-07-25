@@ -16,8 +16,6 @@
 
 package org.codehaus.gmavenplus.plexus;
 
-//import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,10 +46,22 @@ public class IncludeProjectDependenciesComponentConfiguratorTest {
         ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
         List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
         Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
-        ClassRealm containerRealm = Mockito.mock(ClassRealm.class);
+        org.codehaus.classworlds.ClassRealm containerRealm = Mockito.mock(org.codehaus.classworlds.ClassRealm.class);
         configurator.addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
         Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
         Mockito.verify(containerRealm, Mockito.times(1)).addConstituent(Mockito.any(URL.class));
+    }
+
+
+    @Test
+    public void testAddProjectCompileDependenciesToPlexusClassRealm() throws Exception {
+        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
+        List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
+        Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
+        org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = Mockito.mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
+        configurator.addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
+        Mockito.verify(containerRealm, Mockito.times(1)).addURL(Mockito.any(URL.class));
     }
 
     @Test

@@ -6,9 +6,6 @@ package org.codehaus.gmavenplus.plexus;
 
 //import org.apache.maven.plugin.logging.Log;
 //import org.apache.maven.plugin.logging.SystemStreamLog;
-// TODO: switch to Plexus ClassRealm instead of Classworlds ClassRealm?
-//import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
@@ -35,16 +32,23 @@ import java.util.List;
  * @plexus.requirement role="org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup"
  *                     role-hint="default"
  */
-@SuppressWarnings("deprecation")
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
 //    private static final Log LOG = new SystemStreamLog();
 
     public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
-                                   ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
+                                   org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
         addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-//        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
+        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
+                                   org.codehaus.classworlds.ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
+        addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
+        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
         converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
@@ -55,7 +59,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
@@ -67,7 +71,29 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         // Add the project dependencies to the ClassRealm
         final URL[] urls = buildURLs(classpathElements);
         for (URL url : urls) {
-//            containerRealm.addURL(url);
+            containerRealm.addURL(url);
+        }
+    }
+
+    /**
+     * Adds the project's compile dependencies to the specified ClassRealm.
+     *
+     * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param containerRealm The ClassRealm to add dependencies to
+     * @throws ComponentConfigurationException When parsing components configuration fails
+     */
+    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
+        List classpathElements;
+
+        try {
+            classpathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
+        } catch (ExpressionEvaluationException e) {
+            throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}.", e);
+        }
+
+        // Add the project dependencies to the ClassRealm
+        final URL[] urls = buildURLs(classpathElements);
+        for (URL url : urls) {
             containerRealm.addConstituent(url);
         }
     }
