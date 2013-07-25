@@ -29,15 +29,11 @@
       <!-- this is only needed because the script uses it -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.13</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <!-- this is only needed because the script uses it -->
       <groupId>org.apache.ivy</groupId>
       <artifactId>ivy</artifactId>
-      <version>2.3.0</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.util;
+package org.codehaus.gmavenplus.groovyworkarounds;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 import org.junit.Assert;

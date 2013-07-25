@@ -19,7 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import com.google.common.io.Closer;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
-import org.codehaus.gmavenplus.util.GroovyDocTemplateInfo;
+import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;

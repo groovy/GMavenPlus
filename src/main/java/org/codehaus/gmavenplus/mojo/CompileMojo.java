@@ -33,6 +33,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @phase compile
  * @goal compile
+ * @requiresDependencyResolution compile
  * @threadSafe
  */
 public class CompileMojo extends AbstractCompileMojo {

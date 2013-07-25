@@ -66,7 +66,6 @@ public class AbstractCompileMojoTest {
 
     private class TestMojo extends AbstractCompileMojo {
 
-        @Override
         protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
             return null;
         }

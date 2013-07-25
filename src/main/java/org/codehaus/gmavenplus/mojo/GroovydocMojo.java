@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @goal groovydoc
  * @execute phase="generate-sources"
+ * @requiresDependencyResolution compile
  * @threadSafe
  */
 public class GroovydocMojo extends AbstractGroovydocMojo {

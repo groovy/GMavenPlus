@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus;
+package org.codehaus.gmavenplus.java;
+
+import org.codehaus.gmavenplus.groovy.Parent;
 
 
-public class Parent {
+public class Child extends Parent {
 
-    String someMethod() {
-        return "Hello, world.";
+    public String someOtherMethod() {
+        return someMethod();
     }
 
 }

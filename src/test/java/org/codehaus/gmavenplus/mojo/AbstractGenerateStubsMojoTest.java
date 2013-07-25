@@ -129,7 +129,6 @@ public class AbstractGenerateStubsMojoTest {
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 
-        @Override
         protected String getGroovyVersion() {
             return overrideGroovyVersion;
         }

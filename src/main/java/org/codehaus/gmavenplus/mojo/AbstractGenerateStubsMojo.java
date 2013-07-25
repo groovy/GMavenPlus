@@ -17,7 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.codehaus.gmavenplus.model.Version;
-import org.codehaus.gmavenplus.util.DotGroovyFile;
+import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -234,6 +234,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
         Class<?> groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
         Class<?> phasesClass = Class.forName("org.codehaus.groovy.control.Phases");
+        Class<?> astCompileUnitClass = Class.forName("org.codehaus.groovy.ast.CompileUnit");
+        Class<?> moduleNodeClass = Class.forName("org.codehaus.groovy.ast.ModuleNode");
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
@@ -281,6 +283,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
                 dotGroovyFile.setScriptExtensions(extensions);
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
             }
+        }
+
+        // this seems to be needed to avoid missing imports
+        Object astCompileUnit = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "getAST"), javaStubCompilationUnit);
+        List moduleNodes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(astCompileUnitClass, "getModules"), astCompileUnit);
+        for (Object module : moduleNodes) {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(moduleNodeClass, "setImportsResolved", boolean.class), module, false);
         }
 
         // generate the stubs

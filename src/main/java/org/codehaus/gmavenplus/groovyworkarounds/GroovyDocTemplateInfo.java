@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.util;
+package org.codehaus.gmavenplus.groovyworkarounds;
 
 /**
  * This class was taken directly from the Groovy project because it's just a

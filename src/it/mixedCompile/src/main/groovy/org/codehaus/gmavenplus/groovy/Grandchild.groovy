@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus;
+package org.codehaus.gmavenplus.groovy
+
+import org.codehaus.gmavenplus.java.Child
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
-public class Grandchild extends Child {
+class Grandchild extends Child {
+    private Logger logger = LoggerFactory.getLogger(this.getClass())
 
     String yetAnotherMethod() {
-        return someMethod();
+        return someMethod()
     }
 
 }

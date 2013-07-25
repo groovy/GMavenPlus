@@ -93,7 +93,6 @@ public class AbstractGroovydocMojoTest {
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 
-        @Override
         protected String getGroovyVersion() {
             return overrideGroovyVersion;
         }

@@ -29,6 +29,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @goal generateStubs
  * @phase generate-sources
+ * @requiresDependencyResolution compile
  * @threadSafe
  */
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.util;
+package org.codehaus.gmavenplus.groovyworkarounds;
 
 import com.google.common.io.Files;
 
