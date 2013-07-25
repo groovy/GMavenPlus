@@ -230,21 +230,22 @@ public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
             }
         }
 
-        // append project classpath to groovyClassLoader
+        // append project classpath to groovyClassLoader and transformLoader
         ClassLoader parent = ClassLoader.getSystemClassLoader();
         Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
+        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         getLog().debug("Classpath: ");
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addClasspath", String.class), groovyClassLoader, mavenBuildOutputDirectory);
         getLog().debug("    " + mavenBuildOutputDirectory);
         if (classpath != null) {
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), transformLoader, new File((String) classpathElement).toURI().toURL());
                 getLog().debug("    " + classpathElement);
             }
         }
 
         // add Groovy sources
-        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         getLog().debug("Adding Groovy to compile:");
         for (File source : sourcesToCompile) {
