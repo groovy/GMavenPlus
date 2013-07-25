@@ -18,7 +18,6 @@ package org.codehaus.gmavenplus.mojo;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;

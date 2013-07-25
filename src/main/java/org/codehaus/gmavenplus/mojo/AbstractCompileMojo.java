@@ -24,7 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.*;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
