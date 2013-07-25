@@ -18,7 +18,6 @@ package org.codehaus.gmavenplus.plexus;
 
 //import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.classworlds.ClassRealm;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.junit.Assert;
 import org.junit.Before;
