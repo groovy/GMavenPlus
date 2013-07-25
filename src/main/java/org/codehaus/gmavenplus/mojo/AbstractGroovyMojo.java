@@ -55,7 +55,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      *
      * @param goal The goal to mention in the log statement showing Groovy version
      */
-    protected void logGroovyVersion(String goal) {
+    protected void logGroovyVersion(final String goal) {
         if (getLog().isInfoEnabled()) {
             getLog().info("Using Groovy " + getGroovyVersion() + " from project compile classpath to perform " + goal + ".");
         }
@@ -131,7 +131,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @param dependency The dependency to inspect
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
-    protected boolean isGroovyGroupId(Dependency dependency) {
+    protected boolean isGroovyGroupId(final Dependency dependency) {
         return dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy");
     }
 
@@ -141,7 +141,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @param dependency The dependency to inspect
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
-    protected boolean isGroovyArtifactId(Dependency dependency) {
+    protected boolean isGroovyArtifactId(final Dependency dependency) {
         return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
                                     || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
                                     || dependency.getArtifactId().equals("groovy-jdk14");

@@ -78,7 +78,7 @@ public class AddSourceMojo extends AbstractCompileMojo {
      *
      * @param path The source path to add to the project's main compile sources
      */
-    protected void addSourcePath(String path) {
+    protected void addSourcePath(final String path) {
         if (!project.getCompileSourceRoots().contains(path)) {
             getLog().debug("Added Source directory: " + path);
             project.addCompileSourceRoot(path);
@@ -90,7 +90,7 @@ public class AddSourceMojo extends AbstractCompileMojo {
      *
      * @param path The source path to add to the project's test compile sources
      */
-    protected void addTestSourcePath(String path) {
+    protected void addTestSourcePath(final String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {
             getLog().debug("Added Test Source directory: " + path);
             project.addTestCompileSourceRoot(path);

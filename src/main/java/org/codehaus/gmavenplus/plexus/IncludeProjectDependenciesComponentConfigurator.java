@@ -35,8 +35,8 @@ import java.util.List;
 public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
 //    private static final Log LOG = new SystemStreamLog();
 
-    public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
-                                   org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
+    public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
+                                   final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
         addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
@@ -44,8 +44,8 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     }
 
     @SuppressWarnings("deprecation")
-    public void configureComponent(Object component, PlexusConfiguration configuration, ExpressionEvaluator expressionEvaluator,
-                                   org.codehaus.classworlds.ClassRealm containerRealm, ConfigurationListener listener) throws ComponentConfigurationException {
+    public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
+                                   final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
         addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
@@ -59,7 +59,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addProjectCompileDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
@@ -82,7 +82,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected void addProjectCompileDependenciesToClassRealm(ExpressionEvaluator expressionEvaluator, org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addProjectCompileDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
@@ -105,7 +105,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @return URLs for all the classpath elements
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected URL[] buildURLs(List classpathElements) throws ComponentConfigurationException {
+    protected URL[] buildURLs(final List classpathElements) throws ComponentConfigurationException {
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
         for (Object element : classpathElements) {
             try {

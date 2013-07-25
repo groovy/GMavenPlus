@@ -133,7 +133,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
     protected String stylesheetEncoding;
 
     /**
-     * The scope to generate Groovydoc for, should be one of:
+     * The scope to generate Groovydoc for, should be one of
      * <ul>
      *   <li>"public"</li>
      *   <li>"protected"</li>
@@ -154,7 +154,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * @param fileSet The fileset to get sources from
      * @return The sources from the specified fileset
      */
-    protected List<String> getSources(FileSet fileSet) {
+    protected List<String> getSources(final FileSet fileSet) {
         List<String> files = new ArrayList<String>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
@@ -186,7 +186,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
      */
-    protected void generateGroovydoc(FileSet[] sourceDirectories, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected void generateGroovydoc(final FileSet[] sourceDirectories, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class<?> groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
         Class<?> outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
@@ -247,7 +247,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      *
      * @param outputDirectory The output directory to copy the stylesheet to
      */
-    private void copyStylesheet(File outputDirectory) {
+    private void copyStylesheet(final File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
         Closer closer = Closer.create();
         try {
@@ -287,7 +287,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovyMojo {
      *
      * @param defaultSources The sources to check against
      */
-    protected void setDefaultSourceDirectories(FileSet[] defaultSources) {
+    protected void setDefaultSourceDirectories(final FileSet[] defaultSources) {
         if (defaultSources == null) {
             FileSet fileSet = new FileSet();
             String directory = project.getBasedir().getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "groovy";

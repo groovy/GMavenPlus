@@ -39,7 +39,7 @@ public class DotGroovyFile extends File {
      *
      * @param pathname Pathname to use to create DotGroovyFile
      */
-    public DotGroovyFile(String pathname) {
+    public DotGroovyFile(final String pathname) {
         super(pathname);
     }
 
@@ -49,7 +49,7 @@ public class DotGroovyFile extends File {
      * @param parent Parent pathname to use to create DotGroovyFile
      * @param child Child pathname to use to create DotGroovyFile
      */
-    public DotGroovyFile(String parent, String child) {
+    public DotGroovyFile(final String parent, final String child) {
         super(parent, child);
     }
 
@@ -59,7 +59,7 @@ public class DotGroovyFile extends File {
      * @param parent Parent file to use to create DotGroovyFile
      * @param child Child pathname to use to create DotGroovyFile
      */
-    public DotGroovyFile(File parent, String child) {
+    public DotGroovyFile(final File parent, final String child) {
         super(parent, child);
     }
 
@@ -68,7 +68,7 @@ public class DotGroovyFile extends File {
      *
      * @param uri URI to use to create DotGroovyFile
      */
-    public DotGroovyFile(URI uri) {
+    public DotGroovyFile(final URI uri) {
         super(uri);
     }
 
@@ -77,7 +77,7 @@ public class DotGroovyFile extends File {
      *
      * @param file File to use to create DotGroovyFile
      */
-    public DotGroovyFile(File file) {
+    public DotGroovyFile(final File file) {
         super(file.getAbsolutePath());
     }
 
@@ -125,7 +125,7 @@ public class DotGroovyFile extends File {
      * @param newScriptExtensions The script extensions to set on this Groovy file
      * @return This object (for fluent invocation)
      */
-    public DotGroovyFile setScriptExtensions(Set<String> newScriptExtensions) {
+    public DotGroovyFile setScriptExtensions(final Set<String> newScriptExtensions) {
         this.scriptExtensions = newScriptExtensions;
         return this;
     }

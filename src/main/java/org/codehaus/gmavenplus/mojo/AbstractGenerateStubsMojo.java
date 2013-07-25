@@ -126,8 +126,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance.
-     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted)
+     * Groovy compiler error tolerance
+     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
      *
      * @parameter default-value="0"
      */
@@ -159,7 +159,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *
      * @return The included files from the specified sources.
      */
-    protected Set<File> getFiles(FileSet[] fromSources, String defaultSourceDirectory) {
+    protected Set<File> getFiles(final FileSet[] fromSources, final String defaultSourceDirectory) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
@@ -224,6 +224,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources the sources to perform stub generation on
+     * @param classpath The classpath to use for compilation
+     * @param mavenBuildOutputDirectory Maven's build output directory
      * @param outputDirectory the directory to write the stub files to
      * @throws ClassNotFoundException When a class needed for stub generation cannot be found
      * @throws InstantiationException When a class needed for stub generation cannot be instantiated
@@ -231,7 +233,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
-    protected synchronized void doStubGeneration(Set<File> stubSources, List classpath, String mavenBuildOutputDirectory, File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+    protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final String mavenBuildOutputDirectory, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
@@ -325,7 +327,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyMojo {
      *
      * @param stubs the files on which to reset the modified date
      */
-    protected void resetStubModifiedDates(Set<File> stubs) {
+    protected void resetStubModifiedDates(final Set<File> stubs) {
         for (File stub : stubs) {
             boolean success = stub.setLastModified(0L);
             if (!success) {
