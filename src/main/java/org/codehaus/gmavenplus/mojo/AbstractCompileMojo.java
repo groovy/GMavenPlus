@@ -36,11 +36,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 public abstract class AbstractCompileMojo extends AbstractGroovyMojo {
 
     /**
-     * The pattern defining Java files.
-     */
-    protected static final String JAVA_PATTERN = "**/*.java";
-
-    /**
      * The Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
      *
