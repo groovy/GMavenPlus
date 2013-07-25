@@ -37,10 +37,10 @@ public class DotGroovyFileTest {
     public void testGroovyWithCustomExtension() {
         DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
                 new DotGroovyFile("pathname.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[]{"ext"}))),
-                new DotGroovyFile("parent", "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] { "ext" }))),
-                new DotGroovyFile(new File("parent"), "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] { "ext" }))),
-                new DotGroovyFile(new File("filename.ext")).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] { "ext" }))),
-                new DotGroovyFile(new File("filename.ext").toURI()).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] { "ext" })))
+                new DotGroovyFile("parent", "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("parent"), "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("filename.ext")).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("filename.ext").toURI()).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"})))
         };
         for (DotGroovyFile dotGroovyFile : dotGroovyFiles) {
             Assert.assertTrue(dotGroovyFile.getName() + " doesn't end with .groovy", dotGroovyFile.getName().endsWith(".groovy"));

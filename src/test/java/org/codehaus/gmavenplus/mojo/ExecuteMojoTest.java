@@ -57,7 +57,7 @@ public class ExecuteMojoTest {
     public void testScriptString() throws Exception {
         File file = tmpDir.newFile();
         String line = "hello world";
-        executeMojo.scripts = new String[] { "new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line +"' }" };
+        executeMojo.scripts = new String[] {"new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line +"' }"};
 
         executeMojo.execute();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -73,7 +73,7 @@ public class ExecuteMojoTest {
         executeMojo.sourceEncoding = "UTF-8";
         File file = new File("target/testFile.txt");
         String line = "Hello world!";
-        executeMojo.scripts = new String[] { new File("src/test/resources/testScript.groovy").toURI().toURL().toString() };
+        executeMojo.scripts = new String[] {new File("src/test/resources/testScript.groovy").toURI().toURL().toString()};
 
         String actualLine;
         try {

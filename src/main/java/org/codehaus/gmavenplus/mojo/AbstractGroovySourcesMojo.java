@@ -119,26 +119,26 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
             String directory = "src" + File.separator + defaultSourceDirectory + File.separator + "groovy";
             fileSet.setDirectory(directory);
             fileSet.setIncludes(Arrays.asList(DEFAULT_SOURCE_PATTERN));
-            return new FileSet[] { fileSet };
+            return new FileSet[] {fileSet};
         }
     }
 
     /**
      * Sets the sources to specified.
      *
-     * @param sources the sources to set
+     * @param newSources the sources to set
      */
-    public void setSources(final FileSet[] sources) {
-        this.sources = sources;
+    public void setSources(final FileSet[] newSources) {
+        this.sources = newSources;
     }
 
     /**
      * Sets the test sources to specified.
      *
-     * @param testSources the test sources to set
+     * @param newTestSources the test sources to set
      */
-    public void setTestSources(final FileSet[] testSources) {
-        this.testSources = testSources;
+    public void setTestSources(final FileSet[] newTestSources) {
+        this.testSources = newTestSources;
     }
 
 }

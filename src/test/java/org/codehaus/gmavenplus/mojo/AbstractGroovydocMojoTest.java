@@ -50,14 +50,14 @@ public class AbstractGroovydocMojoTest {
     @Before
     public void setup() {
         Mockito.doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
-        Mockito.doReturn(new String[] { "STUBBED_INCLUDES" }).when(fileSet).getIncludesArray();
+        Mockito.doReturn(new String[] {"STUBBED_INCLUDES"}).when(fileSet).getIncludesArray();
         File mockBaseDir = Mockito.mock(File.class);
         Mockito.doReturn("STUBBED_BASEDIR").when(mockBaseDir).getAbsolutePath();
         Mockito.doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.setSources(new FileSet[] { });
-        testMojo.setTestSources(new FileSet[] { });
+        testMojo.setSources(new FileSet[] {});
+        testMojo.setTestSources(new FileSet[] {});
     }
 
     @Test
