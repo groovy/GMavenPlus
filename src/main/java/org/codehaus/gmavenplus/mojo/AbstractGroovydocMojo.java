@@ -176,6 +176,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         Object classpathResourceManager = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classpathResourceManagerClass));
 
         // generate Groovydoc
+        FileSetManager fileSetManager = new FileSetManager(getLog());
         for (FileSet sourceDirectory : sourceDirectories) {
             Object groovyDocTool;
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
@@ -187,8 +188,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     links,
                     properties
             );
-            FileSetManager fileSetManager = new FileSetManager(getLog());
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, fileSetManager.getIncludedFiles(sourceDirectory));
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
         }
 
