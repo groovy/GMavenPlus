@@ -178,8 +178,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         // generate Groovydoc
         FileSetManager fileSetManager = new FileSetManager(getLog());
         for (FileSet sourceDirectory : sourceDirectories) {
-            Object groovyDocTool;
-            groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
+            Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     new String[] {sourceDirectory.getDirectory()},
                     GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
