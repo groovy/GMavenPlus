@@ -28,7 +28,6 @@ import java.lang.reflect.InvocationTargetException;
  * @author Keegan Witt
  *
  * @goal testGroovydoc
- * @execute phase="generate-test-sources"
  * @requiresDependencyResolution test
  * @threadSafe
  */
