@@ -9,13 +9,15 @@ Examples
 
   The following examples describe the various ways ${project.name} can be used.
 
-  * {{{Pure_Groovy}Pure Groovy}}
+  * {{{Pure_Groovy_Compilation}Pure Groovy Compilation}}
 
   * {{{Joint_Compilation}Joint Compilation}}
 
-  * {{InvokeDynamic}}
+  * {{InvokeDynamic_Compilation}InvokeDynamic Compilation}
 
-  * {{{Generate_Groovydoc}Generate Groovydoc}}
+  * {{{Groovydoc_for_Pure_Groovy}Groovydoc for Pure Groovy}}
+
+  * {{{Groovydoc_for_Joint_Projects}Groovydoc for Joint Projects}}
 
   * {{{Add_Groovydoc_to_Site}Add Groovydoc to Site}}
 
@@ -24,7 +26,7 @@ Examples
   []
 
 
-* {Pure Groovy}
+* {Pure Groovy Compilation}
 
   To compile Groovy code as part of the project compilation when there are no
   dependencies between Java and Groovy, you should add something similar to
@@ -63,9 +65,9 @@ Examples
   To compile both the main and test Groovy sources, simply execute the normal
   compile phase from the default lifecycle:
 
-+-----------------------+
++---------------------------------------+
 mvn compile
-+-----------------------+
++---------------------------------------+
 
 
 * {Joint Compilation}
@@ -114,12 +116,12 @@ mvn compile
   To compile both the main and test Groovy and Java sources, simply execute the
   normal compile phase from the default lifecycle:
 
-+-----------------------+
++---------------------------------------+
 mvn compile
-+-----------------------+
++---------------------------------------+
 
 
-* {InvokeDynamic}
+* {InvokeDynamic Compilation}
 
   To take advantage of
   {{{http://docs.oracle.com/javase/7/docs/technotes/guides/vm/multiple-language-support.html#invokedynamic}invokedynamic}},
@@ -167,16 +169,16 @@ mvn compile
   To compile both the main and test Groovy sources, simply execute the normal
   compile phase from the default lifecycle:
 
-+-----------------------+
++---------------------------------------+
 mvn compile
-+-----------------------+
++---------------------------------------+
 
 
-* {Generate Groovydoc}
+* {Groovydoc for Pure Groovy}
 
-  To generate Groovydoc manually, you only need add the plugin (no need to
-  configure any executions).  To do this, you should add something similar
-  to the following in your <<<pom.xml>>>:
+  To generate Groovydoc for mixed Groovy and Java projects manually, you
+  only need add the plugin (no need to configure any executions).  To do
+  this, you should add something similar to the following in your <<<pom.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -203,9 +205,9 @@ mvn compile
   To generate the groovydoc for the main sources, simply execute GMavenPlus's
   groovydoc goal:
 
-+-----------------------+
++---------------------------------------+
 mvn gplus:groovydoc
-+-----------------------+
++---------------------------------------+
 
   To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
 
@@ -215,6 +217,49 @@ mvn gplus:groovydoc
 <pluginGroups>
 +-----------------------------------------------------------------------------+
 
+
+* {Groovydoc for Joint Projects}
+
+  To generate Groovydoc for joint Groovy projects manually, you only need
+  add the plugin (no need to configure any executions).  To do this, you
+  should add something similar to the following in your <<<pom.xml>>>:
+
++-----------------------------------------------------------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy \>= 1.7.0 should work here -->
+      <version>${groovyVersion}</version>
+    </dependency>
+  </dependencies>
+</project>
++-----------------------------------------------------------------------------+
+
+  To generate the groovydoc for the main sources, simply execute GMavenPlus's
+  generateStubs and groovydoc goals:
+
++---------------------------------------+
+mvn gplus:generateStubs gplus:groovydoc
++---------------------------------------+
+
+  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
+
++-----------------------------------------------------------------------------+
+<pluginGroups>
+  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
+<pluginGroups>
++-----------------------------------------------------------------------------+
 
 * {Add Groovydoc to Site}
 
@@ -235,13 +280,13 @@ mvn gplus:groovydoc
           <execution>
             <phase>site</phase>
             <goals>
+              <goal>generateStubs</goal>
+              <goal>testGenerateStubs</goal>
               <goal>groovydoc</goal>
+              <goal>testGroovydoc</goal>
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <groovydocOutputDirectory>\${project.reporting.outputDirectory}/gapidocs</groovydocOutputDirectory>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -249,7 +294,7 @@ mvn gplus:groovydoc
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.6.2 should work here -->
+      <!-- any version of Groovy \>= 1.7.0 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
   </dependencies>
@@ -259,9 +304,9 @@ mvn gplus:groovydoc
   To generate the groovydoc for the main sources, simply execute the normal
   site phase from the default lifecycle:
 
-+-----------------------+
++---------------------------------------+
 mvn site
-+-----------------------+
++---------------------------------------+
 
 
 * {Execute Scripts}
@@ -337,9 +382,9 @@ mvn site
 
   To execute your script(s), simply execute GMavenPlus's execute goal:
 
-+-----------------------+
++---------------------------------------+
 mvn gplus:execute
-+-----------------------+
++---------------------------------------+
 
   To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
 
