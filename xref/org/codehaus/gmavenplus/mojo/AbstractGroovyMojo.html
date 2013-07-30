@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment">     * @param goal The goal to mention in the log statement showing Groovy version</em>
 <a class="jxr_linenumber" name="57" href="#57">57</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="58" href="#58">58</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> logGroovyVersion(String goal) {
+<a class="jxr_linenumber" name="58" href="#58">58</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> logGroovyVersion(<strong class="jxr_keyword">final</strong> String goal) {
 <a class="jxr_linenumber" name="59" href="#59">59</a>          <strong class="jxr_keyword">if</strong> (getLog().isInfoEnabled()) {
 <a class="jxr_linenumber" name="60" href="#60">60</a>              getLog().info(<span class="jxr_string">"Using Groovy "</span> + getGroovyVersion() + <span class="jxr_string">" from project compile classpath to perform "</span> + goal + <span class="jxr_string">"."</span>);
 <a class="jxr_linenumber" name="61" href="#61">61</a>          }
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="131" href="#131">131</a> <em class="jxr_javadoccomment">     * @param dependency The dependency to inspect</em>
 <a class="jxr_linenumber" name="132" href="#132">132</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the dependency's groupId is a Groovy groupId, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="133" href="#133">133</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="134" href="#134">134</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isGroovyGroupId(Dependency dependency) {
+<a class="jxr_linenumber" name="134" href="#134">134</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isGroovyGroupId(<strong class="jxr_keyword">final</strong> Dependency dependency) {
 <a class="jxr_linenumber" name="135" href="#135">135</a>         <strong class="jxr_keyword">return</strong> dependency.getGroupId().equals(<span class="jxr_string">"org.codehaus.groovy"</span>) || dependency.getGroupId().equals(<span class="jxr_string">"groovy"</span>);
 <a class="jxr_linenumber" name="136" href="#136">136</a>     }
 <a class="jxr_linenumber" name="137" href="#137">137</a> 
@@ -151,7 +151,7 @@
 <a class="jxr_linenumber" name="141" href="#141">141</a> <em class="jxr_javadoccomment">     * @param dependency The dependency to inspect</em>
 <a class="jxr_linenumber" name="142" href="#142">142</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the dependency's groupId is a Groovy groupId, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="143" href="#143">143</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="144" href="#144">144</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isGroovyArtifactId(Dependency dependency) {
+<a class="jxr_linenumber" name="144" href="#144">144</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isGroovyArtifactId(<strong class="jxr_keyword">final</strong> Dependency dependency) {
 <a class="jxr_linenumber" name="145" href="#145">145</a>         <strong class="jxr_keyword">return</strong> dependency.getArtifactId().equals(<span class="jxr_string">"groovy-all"</span>) || dependency.getArtifactId().equals(<span class="jxr_string">"groovy-all-minimal"</span>)
 <a class="jxr_linenumber" name="146" href="#146">146</a>                                     || dependency.getArtifactId().equals(<span class="jxr_string">"groovy"</span>) || dependency.getArtifactId().equals(<span class="jxr_string">"groovy-all-jdk14"</span>)
 <a class="jxr_linenumber" name="147" href="#147">147</a>                                     || dependency.getArtifactId().equals(<span class="jxr_string">"groovy-jdk14"</span>);

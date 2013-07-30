@@ -66,7 +66,7 @@
 <a class="jxr_linenumber" name="56" href="#56">56</a>      @Before
 <a class="jxr_linenumber" name="57" href="#57">57</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() {
 <a class="jxr_linenumber" name="58" href="#58">58</a>          Mockito.doReturn(<span class="jxr_string">"STUBBED_DIRECTORY"</span>).when(fileSet).getDirectory();
-<a class="jxr_linenumber" name="59" href="#59">59</a>          Mockito.doReturn(<strong class="jxr_keyword">new</strong> String[] { <span class="jxr_string">"STUBBED_INCLUDES"</span> }).when(fileSet).getIncludesArray();
+<a class="jxr_linenumber" name="59" href="#59">59</a>          Mockito.doReturn(<strong class="jxr_keyword">new</strong> String[] {<span class="jxr_string">"STUBBED_INCLUDES"</span>}).when(fileSet).getIncludesArray();
 <a class="jxr_linenumber" name="60" href="#60">60</a>          Mockito.doReturn(<span class="jxr_string">"STUBBED_STUBS_DIRECTORY"</span>).when(stubsOutputDirectory).getAbsolutePath();
 <a class="jxr_linenumber" name="61" href="#61">61</a>          Mockito.doReturn(<span class="jxr_string">"STUBBED_TEST_STUBS_DIRECTORY"</span>).when(testStubsOutputDirectory).getAbsolutePath();
 <a class="jxr_linenumber" name="62" href="#62">62</a>          File mockBaseDir = Mockito.mock(File.<strong class="jxr_keyword">class</strong>);
@@ -74,8 +74,8 @@
 <a class="jxr_linenumber" name="64" href="#64">64</a>          Mockito.doReturn(mockBaseDir).when(project).getBasedir();
 <a class="jxr_linenumber" name="65" href="#65">65</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovydocMojoTest.html">TestMojo</a>();
 <a class="jxr_linenumber" name="66" href="#66">66</a>          testMojo.project = project;
-<a class="jxr_linenumber" name="67" href="#67">67</a>          testMojo.sources = <strong class="jxr_keyword">new</strong> FileSet[] { };
-<a class="jxr_linenumber" name="68" href="#68">68</a>          testMojo.testSources = <strong class="jxr_keyword">new</strong> FileSet[] { };
+<a class="jxr_linenumber" name="67" href="#67">67</a>          testMojo.setSources(<strong class="jxr_keyword">new</strong> FileSet[] {});
+<a class="jxr_linenumber" name="68" href="#68">68</a>          testMojo.setTestSources(<strong class="jxr_keyword">new</strong> FileSet[] {});
 <a class="jxr_linenumber" name="69" href="#69">69</a>          testMojo.stubsOutputDirectory = stubsOutputDirectory;
 <a class="jxr_linenumber" name="70" href="#70">70</a>          testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
 <a class="jxr_linenumber" name="71" href="#71">71</a>      }
@@ -94,14 +94,14 @@
 <a class="jxr_linenumber" name="84" href="#84">84</a>  
 <a class="jxr_linenumber" name="85" href="#85">85</a>      @Test
 <a class="jxr_linenumber" name="86" href="#86">86</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetSourcesWithNullSources() {
-<a class="jxr_linenumber" name="87" href="#87">87</a>          testMojo.sources = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="87" href="#87">87</a>          testMojo.setSources(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="88" href="#88">88</a>          Set&lt;File&gt; sources = testMojo.getSources();
 <a class="jxr_linenumber" name="89" href="#89">89</a>          Assert.assertEquals(0, sources.size());
 <a class="jxr_linenumber" name="90" href="#90">90</a>      }
 <a class="jxr_linenumber" name="91" href="#91">91</a>  
 <a class="jxr_linenumber" name="92" href="#92">92</a>      @Test
 <a class="jxr_linenumber" name="93" href="#93">93</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetTestSourcesWithNullTestSources() {
-<a class="jxr_linenumber" name="94" href="#94">94</a>          testMojo.testSources = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="94" href="#94">94</a>          testMojo.setTestSources(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="95" href="#95">95</a>          Set&lt;File&gt; testSources = testMojo.getTestSources();
 <a class="jxr_linenumber" name="96" href="#96">96</a>          Assert.assertEquals(0, testSources.size());
 <a class="jxr_linenumber" name="97" href="#97">97</a>      }
@@ -139,16 +139,15 @@
 <a class="jxr_linenumber" name="129" href="#129">129</a>             <strong class="jxr_keyword">this</strong>.overrideGroovyVersion = overrideGroovyVersion;
 <a class="jxr_linenumber" name="130" href="#130">130</a>         }
 <a class="jxr_linenumber" name="131" href="#131">131</a> 
-<a class="jxr_linenumber" name="132" href="#132">132</a>         @Override
-<a class="jxr_linenumber" name="133" href="#133">133</a>         <strong class="jxr_keyword">protected</strong> String getGroovyVersion() {
-<a class="jxr_linenumber" name="134" href="#134">134</a>             <strong class="jxr_keyword">return</strong> overrideGroovyVersion;
-<a class="jxr_linenumber" name="135" href="#135">135</a>         }
-<a class="jxr_linenumber" name="136" href="#136">136</a> 
-<a class="jxr_linenumber" name="137" href="#137">137</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException { }
-<a class="jxr_linenumber" name="138" href="#138">138</a> 
-<a class="jxr_linenumber" name="139" href="#139">139</a>     }
-<a class="jxr_linenumber" name="140" href="#140">140</a> 
-<a class="jxr_linenumber" name="141" href="#141">141</a> }
+<a class="jxr_linenumber" name="132" href="#132">132</a>         <strong class="jxr_keyword">protected</strong> String getGroovyVersion() {
+<a class="jxr_linenumber" name="133" href="#133">133</a>             <strong class="jxr_keyword">return</strong> overrideGroovyVersion;
+<a class="jxr_linenumber" name="134" href="#134">134</a>         }
+<a class="jxr_linenumber" name="135" href="#135">135</a> 
+<a class="jxr_linenumber" name="136" href="#136">136</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException { }
+<a class="jxr_linenumber" name="137" href="#137">137</a> 
+<a class="jxr_linenumber" name="138" href="#138">138</a>     }
+<a class="jxr_linenumber" name="139" href="#139">139</a> 
+<a class="jxr_linenumber" name="140" href="#140">140</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
