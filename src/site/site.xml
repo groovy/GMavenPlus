@@ -32,7 +32,7 @@
         <item name="Joint Compilation" href="examples.html#Joint_Compilation" />
         <item name="InvokeDynamic Compilation" href="examples.html#InvokeDynamic_Compilation" />
         <item name="Groovydoc for Pure Groovy" href="examples.html#Groovydoc_for_Pure_Groovy" />
-        <item name="Groovydoc for Joint Projects" href="examples.html#Groovydoc for Pure Groovy" />
+        <item name="Groovydoc for Joint Projects" href="examples.html#Groovydoc_for_Joint_Projects" />
         <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
         <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
       </item>
