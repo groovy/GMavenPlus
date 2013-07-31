@@ -59,7 +59,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the filesets of the the main sources.
+     * Gets the filesets of the the main sources (not including Java sources).
      *
      * @return The filesets of the the main sources.
      */
@@ -78,7 +78,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files of the the main sources.
+     * Gets the set of files of the the main sources (not including Java sources).
      *
      * @return The set of files of the the main sources.
      */
@@ -97,7 +97,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the filesets of the test sources.
+     * Gets the filesets of the test sources (not including Java sources).
      *
      * @return The filesets of the test sources.
      */
@@ -116,7 +116,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files of the test sources.
+     * Gets the set of files of the test sources (not including Java sources).
      *
      * @return The set of files of the test sources.
      */
