@@ -54,7 +54,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @return The filesets of the the main sources.
      */
     protected FileSet[] getSourceRoots() {
-        return getFileset(sources, "main");
+        return getFilesets(sources, "main");
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @return The filesets of the test sources.
      */
     protected FileSet[] getTestSourceRoots() {
-        return getFileset(testSources, "test");
+        return getFilesets(testSources, "test");
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        for (FileSet fileSet : getFileset(fromSources, defaultSourceDirectory)) {
+        for (FileSet fileSet : getFilesets(fromSources, defaultSourceDirectory)) {
             for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
                 files.add(new File(fileSet.getDirectory(), include));
             }
@@ -111,7 +111,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param defaultSourceDirectory The source directory to fall back on if sources are null
      * @return The included filesets from the specified sources.
      */
-    protected FileSet[] getFileset(final FileSet[] fromSources, final String defaultSourceDirectory) {
+    protected FileSet[] getFilesets(final FileSet[] fromSources, final String defaultSourceDirectory) {
         if (fromSources != null) {
             return fromSources;
         } else {
