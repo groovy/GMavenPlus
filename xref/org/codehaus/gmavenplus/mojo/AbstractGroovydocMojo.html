@@ -139,115 +139,141 @@
 <a class="jxr_linenumber" name="129" href="#129">129</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="130" href="#130">130</a>     <strong class="jxr_keyword">protected</strong> String scope;
 <a class="jxr_linenumber" name="131" href="#131">131</a> 
-<a class="jxr_linenumber" name="132" href="#132">132</a>     <em class="jxr_comment">// TODO: add links parameter</em>
-<a class="jxr_linenumber" name="133" href="#133">133</a> 
-<a class="jxr_linenumber" name="134" href="#134">134</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="135" href="#135">135</a> <em class="jxr_javadoccomment">     * Generates the groovydoc for the specified sources.</em>
-<a class="jxr_linenumber" name="136" href="#136">136</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="137" href="#137">137</a> <em class="jxr_javadoccomment">     * @param sourceDirectories The source directories to generate groovydoc for</em>
-<a class="jxr_linenumber" name="138" href="#138">138</a> <em class="jxr_javadoccomment">     * @param outputDirectory The directory to save the generated groovydoc in</em>
-<a class="jxr_linenumber" name="139" href="#139">139</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found</em>
-<a class="jxr_linenumber" name="140" href="#140">140</a> <em class="jxr_javadoccomment">     * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated</em>
-<a class="jxr_linenumber" name="141" href="#141">141</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed</em>
-<a class="jxr_linenumber" name="142" href="#142">142</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed</em>
+<a class="jxr_linenumber" name="132" href="#132">132</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="133" href="#133">133</a> <em class="jxr_javadoccomment">     * Links to include in the generated groovydoc (key is link href, value is comma-separated packages to use that link).</em>
+<a class="jxr_linenumber" name="134" href="#134">134</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="135" href="#135">135</a> <em class="jxr_javadoccomment">     * @parameter</em>
+<a class="jxr_linenumber" name="136" href="#136">136</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="137" href="#137">137</a>     <strong class="jxr_keyword">protected</strong> List&lt;Link&gt; links;
+<a class="jxr_linenumber" name="138" href="#138">138</a> 
+<a class="jxr_linenumber" name="139" href="#139">139</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="140" href="#140">140</a> <em class="jxr_javadoccomment">     * Whether to include Java sources in groovydoc generation.</em>
+<a class="jxr_linenumber" name="141" href="#141">141</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="142" href="#142">142</a> <em class="jxr_javadoccomment">     * @parameter default-value="true"</em>
 <a class="jxr_linenumber" name="143" href="#143">143</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="144" href="#144">144</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> generateGroovydoc(<strong class="jxr_keyword">final</strong> FileSet[] sourceDirectories, <strong class="jxr_keyword">final</strong> File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-<a class="jxr_linenumber" name="145" href="#145">145</a>         <em class="jxr_comment">// get classes we need with reflection</em>
-<a class="jxr_linenumber" name="146" href="#146">146</a>         Class&lt;?&gt; groovyDocToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.GroovyDocTool"</span>);
-<a class="jxr_linenumber" name="147" href="#147">147</a>         Class&lt;?&gt; outputToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.OutputTool"</span>);
-<a class="jxr_linenumber" name="148" href="#148">148</a>         Class&lt;?&gt; fileOutputToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.FileOutputTool"</span>);
-<a class="jxr_linenumber" name="149" href="#149">149</a>         Class&lt;?&gt; resourceManagerClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.ResourceManager"</span>);
-<a class="jxr_linenumber" name="150" href="#150">150</a>         Class&lt;?&gt; classpathResourceManagerClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager"</span>);
-<a class="jxr_linenumber" name="151" href="#151">151</a> 
-<a class="jxr_linenumber" name="152" href="#152">152</a>         <em class="jxr_comment">// set up Groovydoc options</em>
-<a class="jxr_linenumber" name="153" href="#153">153</a>         List links = <strong class="jxr_keyword">new</strong> ArrayList();
-<a class="jxr_linenumber" name="154" href="#154">154</a>         Properties properties = <strong class="jxr_keyword">new</strong> Properties();
-<a class="jxr_linenumber" name="155" href="#155">155</a>         properties.setProperty(<span class="jxr_string">"windowTitle"</span>, windowTitle);
-<a class="jxr_linenumber" name="156" href="#156">156</a>         properties.setProperty(<span class="jxr_string">"docTitle"</span>, docTitle);
-<a class="jxr_linenumber" name="157" href="#157">157</a>         properties.setProperty(<span class="jxr_string">"footer"</span>, footer);
-<a class="jxr_linenumber" name="158" href="#158">158</a>         properties.setProperty(<span class="jxr_string">"header"</span>, header);
-<a class="jxr_linenumber" name="159" href="#159">159</a>         properties.setProperty(<span class="jxr_string">"author"</span>, Boolean.toString(displayAuthor));
-<a class="jxr_linenumber" name="160" href="#160">160</a>         properties.setProperty(<span class="jxr_string">"overviewFile"</span>, overviewFile != <strong class="jxr_keyword">null</strong> ? overviewFile.getAbsolutePath() : <span class="jxr_string">""</span>);
-<a class="jxr_linenumber" name="161" href="#161">161</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="162" href="#162">162</a>             <a href="../../../../org/codehaus/gmavenplus/model/Scopes.html">Scopes</a> scopeVal = Scopes.valueOf(scope.toUpperCase());
-<a class="jxr_linenumber" name="163" href="#163">163</a>             <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PUBLIC)) {
-<a class="jxr_linenumber" name="164" href="#164">164</a>                 properties.setProperty(<span class="jxr_string">"publicScope"</span>, <span class="jxr_string">"true"</span>);
-<a class="jxr_linenumber" name="165" href="#165">165</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PROTECTED)) {
-<a class="jxr_linenumber" name="166" href="#166">166</a>                 properties.setProperty(<span class="jxr_string">"protectedScope"</span>, <span class="jxr_string">"true"</span>);
-<a class="jxr_linenumber" name="167" href="#167">167</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PACKAGE)) {
-<a class="jxr_linenumber" name="168" href="#168">168</a>                 properties.setProperty(<span class="jxr_string">"packageScope"</span>, <span class="jxr_string">"true"</span>);
-<a class="jxr_linenumber" name="169" href="#169">169</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PRIVATE)) {
-<a class="jxr_linenumber" name="170" href="#170">170</a>                 properties.setProperty(<span class="jxr_string">"privateScope"</span>, <span class="jxr_string">"true"</span>);
-<a class="jxr_linenumber" name="171" href="#171">171</a>             }
-<a class="jxr_linenumber" name="172" href="#172">172</a>         } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException e) {
-<a class="jxr_linenumber" name="173" href="#173">173</a>             getLog().warn(<span class="jxr_string">"Scope ("</span> + scope + <span class="jxr_string">") was not recognized.  Skipping argument."</span>);
-<a class="jxr_linenumber" name="174" href="#174">174</a>         }
-<a class="jxr_linenumber" name="175" href="#175">175</a>         Object fileOutputTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(fileOutputToolClass));
-<a class="jxr_linenumber" name="176" href="#176">176</a>         Object classpathResourceManager = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classpathResourceManagerClass));
-<a class="jxr_linenumber" name="177" href="#177">177</a> 
-<a class="jxr_linenumber" name="178" href="#178">178</a>         <em class="jxr_comment">// generate Groovydoc</em>
-<a class="jxr_linenumber" name="179" href="#179">179</a>         FileSetManager fileSetManager = <strong class="jxr_keyword">new</strong> FileSetManager(getLog());
-<a class="jxr_linenumber" name="180" href="#180">180</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
-<a class="jxr_linenumber" name="181" href="#181">181</a>             Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, List.<strong class="jxr_keyword">class</strong>, Properties.<strong class="jxr_keyword">class</strong>),
-<a class="jxr_linenumber" name="182" href="#182">182</a>                     classpathResourceManager,
-<a class="jxr_linenumber" name="183" href="#183">183</a>                     <strong class="jxr_keyword">new</strong> String[] {sourceDirectory.getDirectory()},
-<a class="jxr_linenumber" name="184" href="#184">184</a>                     GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
-<a class="jxr_linenumber" name="185" href="#185">185</a>                     GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
-<a class="jxr_linenumber" name="186" href="#186">186</a>                     GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
-<a class="jxr_linenumber" name="187" href="#187">187</a>                     links,
-<a class="jxr_linenumber" name="188" href="#188">188</a>                     properties
-<a class="jxr_linenumber" name="189" href="#189">189</a>             );
-<a class="jxr_linenumber" name="190" href="#190">190</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, <span class="jxr_string">"add"</span>, List.<strong class="jxr_keyword">class</strong>), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
-<a class="jxr_linenumber" name="191" href="#191">191</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, <span class="jxr_string">"renderToOutput"</span>, outputToolClass, String.<strong class="jxr_keyword">class</strong>), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
-<a class="jxr_linenumber" name="192" href="#192">192</a>         }
-<a class="jxr_linenumber" name="193" href="#193">193</a> 
-<a class="jxr_linenumber" name="194" href="#194">194</a>         <em class="jxr_comment">// overwrite stylesheet.css with provided stylesheet (if configured)</em>
-<a class="jxr_linenumber" name="195" href="#195">195</a>         <strong class="jxr_keyword">if</strong> (stylesheetFile != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="196" href="#196">196</a>             copyStylesheet(outputDirectory);
-<a class="jxr_linenumber" name="197" href="#197">197</a>         }
-<a class="jxr_linenumber" name="198" href="#198">198</a>     }
-<a class="jxr_linenumber" name="199" href="#199">199</a> 
-<a class="jxr_linenumber" name="200" href="#200">200</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="201" href="#201">201</a> <em class="jxr_javadoccomment">     * Copies the stylesheet to the specified output directory.</em>
-<a class="jxr_linenumber" name="202" href="#202">202</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="203" href="#203">203</a> <em class="jxr_javadoccomment">     * @param outputDirectory The output directory to copy the stylesheet to</em>
-<a class="jxr_linenumber" name="204" href="#204">204</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="205" href="#205">205</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> copyStylesheet(<strong class="jxr_keyword">final</strong> File outputDirectory) {
-<a class="jxr_linenumber" name="206" href="#206">206</a>         getLog().info(<span class="jxr_string">"Using stylesheet from "</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">"."</span>);
-<a class="jxr_linenumber" name="207" href="#207">207</a>         Closer closer = Closer.create();
-<a class="jxr_linenumber" name="208" href="#208">208</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="209" href="#209">209</a>             <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="210" href="#210">210</a>                 BufferedReader bufferedReader = closer.register(<strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(<strong class="jxr_keyword">new</strong> FileInputStream(stylesheetFile), stylesheetEncoding)));
-<a class="jxr_linenumber" name="211" href="#211">211</a>                 StringBuilder css = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="212" href="#212">212</a>                 String line;
-<a class="jxr_linenumber" name="213" href="#213">213</a>                 <strong class="jxr_keyword">while</strong> ((line = bufferedReader.readLine()) != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="214" href="#214">214</a>                     css.append(line).append(<span class="jxr_string">"\n"</span>);
-<a class="jxr_linenumber" name="215" href="#215">215</a>                 }
-<a class="jxr_linenumber" name="216" href="#216">216</a>                 File outfile = <strong class="jxr_keyword">new</strong> File(outputDirectory, <span class="jxr_string">"stylesheet.css"</span>);
-<a class="jxr_linenumber" name="217" href="#217">217</a>                 BufferedWriter bufferedWriter = closer.register(<strong class="jxr_keyword">new</strong> BufferedWriter(<strong class="jxr_keyword">new</strong> OutputStreamWriter(<strong class="jxr_keyword">new</strong> FileOutputStream(outfile), stylesheetEncoding)));
-<a class="jxr_linenumber" name="218" href="#218">218</a>                 bufferedWriter.write(css.toString());
-<a class="jxr_linenumber" name="219" href="#219">219</a>             } <strong class="jxr_keyword">catch</strong> (Throwable throwable) {
-<a class="jxr_linenumber" name="220" href="#220">220</a>                 <strong class="jxr_keyword">throw</strong> closer.rethrow(throwable);
-<a class="jxr_linenumber" name="221" href="#221">221</a>             } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="222" href="#222">222</a>                 closer.close();
-<a class="jxr_linenumber" name="223" href="#223">223</a>             }
-<a class="jxr_linenumber" name="224" href="#224">224</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
-<a class="jxr_linenumber" name="225" href="#225">225</a>             getLog().warn(<span class="jxr_string">"Unable to copy specified stylesheet ("</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">")."</span>);
-<a class="jxr_linenumber" name="226" href="#226">226</a>         }
-<a class="jxr_linenumber" name="227" href="#227">227</a>     }
-<a class="jxr_linenumber" name="228" href="#228">228</a> 
-<a class="jxr_linenumber" name="229" href="#229">229</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">     * Determines whether this mojo can be run with the version of Groovy supplied.</em>
-<a class="jxr_linenumber" name="231" href="#231">231</a> <em class="jxr_javadoccomment">     * Must be &gt;= 1.6.2 because not all the classes/methods needed were available</em>
-<a class="jxr_linenumber" name="232" href="#232">232</a> <em class="jxr_javadoccomment">     * and functioning correctly in previous versions.</em>
-<a class="jxr_linenumber" name="233" href="#233">233</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="234" href="#234">234</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo</em>
-<a class="jxr_linenumber" name="235" href="#235">235</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="236" href="#236">236</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> groovyVersionSupportsAction() {
-<a class="jxr_linenumber" name="237" href="#237">237</a>         <strong class="jxr_keyword">return</strong> Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) &gt;= 0;
-<a class="jxr_linenumber" name="238" href="#238">238</a>     }
-<a class="jxr_linenumber" name="239" href="#239">239</a> 
-<a class="jxr_linenumber" name="240" href="#240">240</a> }
+<a class="jxr_linenumber" name="144" href="#144">144</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> groovydocJavaSources;
+<a class="jxr_linenumber" name="145" href="#145">145</a> 
+<a class="jxr_linenumber" name="146" href="#146">146</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="147" href="#147">147</a> <em class="jxr_javadoccomment">     * Generates the groovydoc for the specified sources.</em>
+<a class="jxr_linenumber" name="148" href="#148">148</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="149" href="#149">149</a> <em class="jxr_javadoccomment">     * @param sourceDirectories The source directories to generate groovydoc for</em>
+<a class="jxr_linenumber" name="150" href="#150">150</a> <em class="jxr_javadoccomment">     * @param outputDirectory The directory to save the generated groovydoc in</em>
+<a class="jxr_linenumber" name="151" href="#151">151</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found</em>
+<a class="jxr_linenumber" name="152" href="#152">152</a> <em class="jxr_javadoccomment">     * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated</em>
+<a class="jxr_linenumber" name="153" href="#153">153</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed</em>
+<a class="jxr_linenumber" name="154" href="#154">154</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed</em>
+<a class="jxr_linenumber" name="155" href="#155">155</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="156" href="#156">156</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="157" href="#157">157</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> generateGroovydoc(<strong class="jxr_keyword">final</strong> FileSet[] sourceDirectories, <strong class="jxr_keyword">final</strong> File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+<a class="jxr_linenumber" name="158" href="#158">158</a>         <em class="jxr_comment">// get classes we need with reflection</em>
+<a class="jxr_linenumber" name="159" href="#159">159</a>         Class&lt;?&gt; groovyDocToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.GroovyDocTool"</span>);
+<a class="jxr_linenumber" name="160" href="#160">160</a>         Class&lt;?&gt; outputToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.OutputTool"</span>);
+<a class="jxr_linenumber" name="161" href="#161">161</a>         Class&lt;?&gt; fileOutputToolClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.FileOutputTool"</span>);
+<a class="jxr_linenumber" name="162" href="#162">162</a>         Class&lt;?&gt; resourceManagerClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.ResourceManager"</span>);
+<a class="jxr_linenumber" name="163" href="#163">163</a>         Class&lt;?&gt; classpathResourceManagerClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager"</span>);
+<a class="jxr_linenumber" name="164" href="#164">164</a>         Class&lt;?&gt; linkArgumentClass = Class.forName(<span class="jxr_string">"org.codehaus.groovy.tools.groovydoc.LinkArgument"</span>);
+<a class="jxr_linenumber" name="165" href="#165">165</a> 
+<a class="jxr_linenumber" name="166" href="#166">166</a>         <em class="jxr_comment">// set up Groovydoc options</em>
+<a class="jxr_linenumber" name="167" href="#167">167</a>         Properties properties = <strong class="jxr_keyword">new</strong> Properties();
+<a class="jxr_linenumber" name="168" href="#168">168</a>         properties.setProperty(<span class="jxr_string">"windowTitle"</span>, windowTitle);
+<a class="jxr_linenumber" name="169" href="#169">169</a>         properties.setProperty(<span class="jxr_string">"docTitle"</span>, docTitle);
+<a class="jxr_linenumber" name="170" href="#170">170</a>         properties.setProperty(<span class="jxr_string">"footer"</span>, footer);
+<a class="jxr_linenumber" name="171" href="#171">171</a>         properties.setProperty(<span class="jxr_string">"header"</span>, header);
+<a class="jxr_linenumber" name="172" href="#172">172</a>         properties.setProperty(<span class="jxr_string">"author"</span>, Boolean.toString(displayAuthor));
+<a class="jxr_linenumber" name="173" href="#173">173</a>         properties.setProperty(<span class="jxr_string">"overviewFile"</span>, overviewFile != <strong class="jxr_keyword">null</strong> ? overviewFile.getAbsolutePath() : <span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="174" href="#174">174</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="175" href="#175">175</a>             <a href="../../../../org/codehaus/gmavenplus/model/Scopes.html">Scopes</a> scopeVal = Scopes.valueOf(scope.toUpperCase());
+<a class="jxr_linenumber" name="176" href="#176">176</a>             <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PUBLIC)) {
+<a class="jxr_linenumber" name="177" href="#177">177</a>                 properties.setProperty(<span class="jxr_string">"publicScope"</span>, <span class="jxr_string">"true"</span>);
+<a class="jxr_linenumber" name="178" href="#178">178</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PROTECTED)) {
+<a class="jxr_linenumber" name="179" href="#179">179</a>                 properties.setProperty(<span class="jxr_string">"protectedScope"</span>, <span class="jxr_string">"true"</span>);
+<a class="jxr_linenumber" name="180" href="#180">180</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PACKAGE)) {
+<a class="jxr_linenumber" name="181" href="#181">181</a>                 properties.setProperty(<span class="jxr_string">"packageScope"</span>, <span class="jxr_string">"true"</span>);
+<a class="jxr_linenumber" name="182" href="#182">182</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (scopeVal.equals(Scopes.PRIVATE)) {
+<a class="jxr_linenumber" name="183" href="#183">183</a>                 properties.setProperty(<span class="jxr_string">"privateScope"</span>, <span class="jxr_string">"true"</span>);
+<a class="jxr_linenumber" name="184" href="#184">184</a>             }
+<a class="jxr_linenumber" name="185" href="#185">185</a>         } <strong class="jxr_keyword">catch</strong> (IllegalArgumentException e) {
+<a class="jxr_linenumber" name="186" href="#186">186</a>             getLog().warn(<span class="jxr_string">"Scope ("</span> + scope + <span class="jxr_string">") was not recognized.  Skipping argument."</span>);
+<a class="jxr_linenumber" name="187" href="#187">187</a>         }
+<a class="jxr_linenumber" name="188" href="#188">188</a>         Object fileOutputTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(fileOutputToolClass));
+<a class="jxr_linenumber" name="189" href="#189">189</a>         Object classpathResourceManager = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classpathResourceManagerClass));
+<a class="jxr_linenumber" name="190" href="#190">190</a> 
+<a class="jxr_linenumber" name="191" href="#191">191</a>         <em class="jxr_comment">// generate Groovydoc</em>
+<a class="jxr_linenumber" name="192" href="#192">192</a>         FileSetManager fileSetManager = <strong class="jxr_keyword">new</strong> FileSetManager(getLog());
+<a class="jxr_linenumber" name="193" href="#193">193</a>         List&lt;String&gt; sourceDirectoriesStrings = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="194" href="#194">194</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
+<a class="jxr_linenumber" name="195" href="#195">195</a>             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
+<a class="jxr_linenumber" name="196" href="#196">196</a>         }
+<a class="jxr_linenumber" name="197" href="#197">197</a>         List linksList = <strong class="jxr_keyword">new</strong> ArrayList();
+<a class="jxr_linenumber" name="198" href="#198">198</a>         <strong class="jxr_keyword">if</strong> (links != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="199" href="#199">199</a>             <strong class="jxr_keyword">for</strong> (Link link : links) {
+<a class="jxr_linenumber" name="200" href="#200">200</a>                 Object linkArgument = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(linkArgumentClass));
+<a class="jxr_linenumber" name="201" href="#201">201</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, <span class="jxr_string">"setHref"</span>, String.<strong class="jxr_keyword">class</strong>), linkArgument, link.getHref());
+<a class="jxr_linenumber" name="202" href="#202">202</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, <span class="jxr_string">"setPackages"</span>, String.<strong class="jxr_keyword">class</strong>), linkArgument, link.getPackages());
+<a class="jxr_linenumber" name="203" href="#203">203</a>                 linksList.add(linkArgument);
+<a class="jxr_linenumber" name="204" href="#204">204</a>             }
+<a class="jxr_linenumber" name="205" href="#205">205</a>         }
+<a class="jxr_linenumber" name="206" href="#206">206</a>         Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, String[].<strong class="jxr_keyword">class</strong>, List.<strong class="jxr_keyword">class</strong>, Properties.<strong class="jxr_keyword">class</strong>),
+<a class="jxr_linenumber" name="207" href="#207">207</a>                 classpathResourceManager,
+<a class="jxr_linenumber" name="208" href="#208">208</a>                 sourceDirectoriesStrings.toArray(<strong class="jxr_keyword">new</strong> String[sourceDirectoriesStrings.size()]),
+<a class="jxr_linenumber" name="209" href="#209">209</a>                 GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
+<a class="jxr_linenumber" name="210" href="#210">210</a>                 GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
+<a class="jxr_linenumber" name="211" href="#211">211</a>                 GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
+<a class="jxr_linenumber" name="212" href="#212">212</a>                 linksList,
+<a class="jxr_linenumber" name="213" href="#213">213</a>                 properties
+<a class="jxr_linenumber" name="214" href="#214">214</a>         );
+<a class="jxr_linenumber" name="215" href="#215">215</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
+<a class="jxr_linenumber" name="216" href="#216">216</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, <span class="jxr_string">"add"</span>, List.<strong class="jxr_keyword">class</strong>), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
+<a class="jxr_linenumber" name="217" href="#217">217</a>         }
+<a class="jxr_linenumber" name="218" href="#218">218</a>         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, <span class="jxr_string">"renderToOutput"</span>, outputToolClass, String.<strong class="jxr_keyword">class</strong>), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+<a class="jxr_linenumber" name="219" href="#219">219</a> 
+<a class="jxr_linenumber" name="220" href="#220">220</a>         <em class="jxr_comment">// overwrite stylesheet.css with provided stylesheet (if configured)</em>
+<a class="jxr_linenumber" name="221" href="#221">221</a>         <strong class="jxr_keyword">if</strong> (stylesheetFile != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="222" href="#222">222</a>             copyStylesheet(outputDirectory);
+<a class="jxr_linenumber" name="223" href="#223">223</a>         }
+<a class="jxr_linenumber" name="224" href="#224">224</a>     }
+<a class="jxr_linenumber" name="225" href="#225">225</a> 
+<a class="jxr_linenumber" name="226" href="#226">226</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="227" href="#227">227</a> <em class="jxr_javadoccomment">     * Copies the stylesheet to the specified output directory.</em>
+<a class="jxr_linenumber" name="228" href="#228">228</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="229" href="#229">229</a> <em class="jxr_javadoccomment">     * @param outputDirectory The output directory to copy the stylesheet to</em>
+<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="231" href="#231">231</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> copyStylesheet(<strong class="jxr_keyword">final</strong> File outputDirectory) {
+<a class="jxr_linenumber" name="232" href="#232">232</a>         getLog().info(<span class="jxr_string">"Using stylesheet from "</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">"."</span>);
+<a class="jxr_linenumber" name="233" href="#233">233</a>         Closer closer = Closer.create();
+<a class="jxr_linenumber" name="234" href="#234">234</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="235" href="#235">235</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="236" href="#236">236</a>                 BufferedReader bufferedReader = closer.register(<strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(<strong class="jxr_keyword">new</strong> FileInputStream(stylesheetFile), stylesheetEncoding)));
+<a class="jxr_linenumber" name="237" href="#237">237</a>                 StringBuilder css = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="238" href="#238">238</a>                 String line;
+<a class="jxr_linenumber" name="239" href="#239">239</a>                 <strong class="jxr_keyword">while</strong> ((line = bufferedReader.readLine()) != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="240" href="#240">240</a>                     css.append(line).append(<span class="jxr_string">"\n"</span>);
+<a class="jxr_linenumber" name="241" href="#241">241</a>                 }
+<a class="jxr_linenumber" name="242" href="#242">242</a>                 File outfile = <strong class="jxr_keyword">new</strong> File(outputDirectory, <span class="jxr_string">"stylesheet.css"</span>);
+<a class="jxr_linenumber" name="243" href="#243">243</a>                 BufferedWriter bufferedWriter = closer.register(<strong class="jxr_keyword">new</strong> BufferedWriter(<strong class="jxr_keyword">new</strong> OutputStreamWriter(<strong class="jxr_keyword">new</strong> FileOutputStream(outfile), stylesheetEncoding)));
+<a class="jxr_linenumber" name="244" href="#244">244</a>                 bufferedWriter.write(css.toString());
+<a class="jxr_linenumber" name="245" href="#245">245</a>             } <strong class="jxr_keyword">catch</strong> (Throwable throwable) {
+<a class="jxr_linenumber" name="246" href="#246">246</a>                 <strong class="jxr_keyword">throw</strong> closer.rethrow(throwable);
+<a class="jxr_linenumber" name="247" href="#247">247</a>             } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="248" href="#248">248</a>                 closer.close();
+<a class="jxr_linenumber" name="249" href="#249">249</a>             }
+<a class="jxr_linenumber" name="250" href="#250">250</a>         } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="251" href="#251">251</a>             getLog().warn(<span class="jxr_string">"Unable to copy specified stylesheet ("</span> + stylesheetFile.getAbsolutePath() + <span class="jxr_string">")."</span>);
+<a class="jxr_linenumber" name="252" href="#252">252</a>         }
+<a class="jxr_linenumber" name="253" href="#253">253</a>     }
+<a class="jxr_linenumber" name="254" href="#254">254</a> 
+<a class="jxr_linenumber" name="255" href="#255">255</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="256" href="#256">256</a> <em class="jxr_javadoccomment">     * Determines whether this mojo can be run with the version of Groovy supplied.</em>
+<a class="jxr_linenumber" name="257" href="#257">257</a> <em class="jxr_javadoccomment">     * Must be &gt;= 1.6.2 because not all the classes/methods needed were available</em>
+<a class="jxr_linenumber" name="258" href="#258">258</a> <em class="jxr_javadoccomment">     * and functioning correctly in previous versions.</em>
+<a class="jxr_linenumber" name="259" href="#259">259</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="260" href="#260">260</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo</em>
+<a class="jxr_linenumber" name="261" href="#261">261</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="262" href="#262">262</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> groovyVersionSupportsAction() {
+<a class="jxr_linenumber" name="263" href="#263">263</a>         <strong class="jxr_keyword">return</strong> Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) &gt;= 0;
+<a class="jxr_linenumber" name="264" href="#264">264</a>     }
+<a class="jxr_linenumber" name="265" href="#265">265</a> 
+<a class="jxr_linenumber" name="266" href="#266">266</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
