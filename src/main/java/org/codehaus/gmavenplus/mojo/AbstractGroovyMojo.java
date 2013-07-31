@@ -34,12 +34,12 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * The pattern defining Groovy files.
      */
-    protected static final String DEFAULT_SOURCE_PATTERN = "**/*.groovy";
+    protected static final String GROOVY_SOURCES_PATTERN = "**/*.groovy";
 
     /**
      * The pattern defining Java stub files.
      */
-    protected static final String DEFAULT_STUB_PATTERN = "**/*.java";
+    protected static final String JAVA_SOURCES_PATTERN = "**/*.java";
 
     /**
      * The Maven project this plugin is being used on.

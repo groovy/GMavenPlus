@@ -128,7 +128,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
 
         FileSet fileSet = new FileSet();
         fileSet.setDirectory(stubsOutputDirectory.getAbsolutePath());
-        fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
+        fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
         for (String file : fileSetManager.getIncludedFiles(fileSet)) {
             files.add(new File(stubsOutputDirectory, file));
         }
@@ -147,7 +147,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
 
         FileSet fileSet = new FileSet();
         fileSet.setDirectory(testStubsOutputDirectory.getAbsolutePath());
-        fileSet.setIncludes(Arrays.asList(DEFAULT_STUB_PATTERN));
+        fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
         for (String file : fileSetManager.getIncludedFiles(fileSet)) {
             files.add(new File(testStubsOutputDirectory, file));
         }

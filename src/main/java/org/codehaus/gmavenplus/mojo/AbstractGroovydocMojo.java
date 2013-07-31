@@ -132,6 +132,13 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     // TODO: add links parameter
 
     /**
+     * Whether to include Java sources in groovydoc generation.
+     *
+     * @parameter default-value="true"
+     */
+    protected boolean groovydocJavaSources;
+
+    /**
      * Generates the groovydoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate groovydoc for
@@ -177,19 +184,23 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
         // generate Groovydoc
         FileSetManager fileSetManager = new FileSetManager(getLog());
+        List<String> sourceDirectoriesStrings = new ArrayList<String>();
         for (FileSet sourceDirectory : sourceDirectories) {
-            Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
-                    classpathResourceManager,
-                    new String[] {sourceDirectory.getDirectory()},
-                    GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
-                    GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
-                    GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
-                    links,
-                    properties
-            );
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
+            sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
         }
+        Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
+                classpathResourceManager,
+                sourceDirectoriesStrings.toArray(new String[sourceDirectoriesStrings.size()]),
+                GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
+                GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
+                GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
+                links,
+                properties
+        );
+        for (FileSet sourceDirectory : sourceDirectories) {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
+        }
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
         if (stylesheetFile != null) {

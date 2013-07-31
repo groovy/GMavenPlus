@@ -44,7 +44,7 @@ public class GroovydocMojo extends AbstractGroovydocMojo {
             logGroovyVersion("groovydoc");
 
             try {
-                generateGroovydoc(getSourceRoots(), groovydocOutputDirectory);
+                generateGroovydoc(getSourceRoots(groovydocJavaSources), groovydocOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
