@@ -51,11 +51,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the filesets of the the main sources.
      *
-     * @param groovydocJavaSources Whether to include Java sources in groovydoc generation.
+     * @param includeJavaSources Whether to include Java sources
      * @return The filesets of the the main sources.
      */
-    protected FileSet[] getSourceRoots(final boolean groovydocJavaSources) {
-        return getFilesets(sources, "main", groovydocJavaSources);
+    protected FileSet[] getSourceRoots(final boolean includeJavaSources) {
+        return getFilesets(sources, "main", includeJavaSources);
     }
 
     /**
@@ -70,11 +70,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the the main sources.
      *
-     * @param groovydocJavaSources Whether to include Java sources in groovydoc generation.
+     * @param includeJavaSources Whether to include Java sources
      * @return The set of files of the the main sources.
      */
-    protected Set<File> getSources(final boolean groovydocJavaSources) {
-        return getFiles(sources, "main", groovydocJavaSources);
+    protected Set<File> getSources(final boolean includeJavaSources) {
+        return getFiles(sources, "main", includeJavaSources);
     }
 
     /**
@@ -89,11 +89,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the filesets of the test sources.
      *
-     * @param groovydocJavaSources Whether to include Java sources in groovydoc generation.
+     * @param includeJavaSources Whether to include Java sources
      * @return The filesets of the test sources.
      */
-    protected FileSet[] getTestSourceRoots(final boolean groovydocJavaSources) {
-        return getFilesets(testSources, "test", groovydocJavaSources);
+    protected FileSet[] getTestSourceRoots(final boolean includeJavaSources) {
+        return getFilesets(testSources, "test", includeJavaSources);
     }
 
     /**
@@ -108,11 +108,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the test sources.
      *
-     * @param groovydocJavaSources Whether to include Java sources in groovydoc generation.
+     * @param includeJavaSources Whether to include Java sources
      * @return The set of files of the test sources.
      */
-    protected Set<File> getTestSources(final boolean groovydocJavaSources) {
-        return getFiles(testSources, "test", groovydocJavaSources);
+    protected Set<File> getTestSources(final boolean includeJavaSources) {
+        return getFiles(testSources, "test", includeJavaSources);
     }
 
     /**
@@ -129,14 +129,14 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      *
      * @param fromSources The sources to get the included files from
      * @param defaultSourceDirectory The source directory to fall back on if sources are null
-     * @param groovydocJavaSources Whether to include Java sources in groovydoc generation.
-     * @return The included files from the specified sources.
+     * @param includeJavaSources Whether to include Java sources
+     * @return The included files from the specified sources
      */
-    protected Set<File> getFiles(final FileSet[] fromSources, final String defaultSourceDirectory, final boolean groovydocJavaSources) {
+    protected Set<File> getFiles(final FileSet[] fromSources, final String defaultSourceDirectory, final boolean includeJavaSources) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        for (FileSet fileSet : getFilesets(fromSources, defaultSourceDirectory, groovydocJavaSources)) {
+        for (FileSet fileSet : getFilesets(fromSources, defaultSourceDirectory, includeJavaSources)) {
             for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
                 files.add(new File(fileSet.getDirectory(), include));
             }
@@ -151,7 +151,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param fromSources The sources to get the included files from
      * @param defaultSubDirectory The source subdirectory to fall back on if sources are null
      * @param includeJavaSources Whether to include Java sources
-     * @return The included filesets from the specified sources.
+     * @return The included filesets from the specified sources
      */
     protected FileSet[] getFilesets(final FileSet[] fromSources, final String defaultSubDirectory, boolean includeJavaSources) {
         if (fromSources != null) {
