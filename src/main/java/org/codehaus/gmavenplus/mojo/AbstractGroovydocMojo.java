@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
+import org.codehaus.gmavenplus.model.LinkArgument;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
@@ -129,7 +130,12 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      */
     protected String scope;
 
-    // TODO: add links parameter
+    /**
+     * Links to include in the generated groovydoc (key is link href, value is comma-separated packages to use that link).
+     *
+     * @parameter
+     */
+    protected List<LinkArgument> links;
 
     /**
      * Whether to include Java sources in groovydoc generation.
@@ -148,6 +154,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
      */
+    @SuppressWarnings("unchecked")
     protected void generateGroovydoc(final FileSet[] sourceDirectories, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         // get classes we need with reflection
         Class<?> groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
@@ -155,9 +162,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         Class<?> fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
         Class<?> resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
         Class<?> classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class<?> linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument");
 
         // set up Groovydoc options
-        List links = new ArrayList();
         Properties properties = new Properties();
         properties.setProperty("windowTitle", windowTitle);
         properties.setProperty("docTitle", docTitle);
@@ -188,13 +195,22 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         for (FileSet sourceDirectory : sourceDirectories) {
             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
         }
+        List linksList = new ArrayList();
+        if (links != null) {
+            for (LinkArgument link : links) {
+                Object linkArgument = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(linkArgumentClass));
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setHref", String.class), linkArgument, link.getHref());
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setPackages", String.class), linkArgument, link.getPackages());
+                linksList.add(linkArgument);
+            }
+        }
         Object groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                 classpathResourceManager,
                 sourceDirectoriesStrings.toArray(new String[sourceDirectoriesStrings.size()]),
                 GroovyDocTemplateInfo.DEFAULT_DOC_TEMPLATES,
                 GroovyDocTemplateInfo.DEFAULT_PACKAGE_TEMPLATES,
                 GroovyDocTemplateInfo.DEFAULT_CLASS_TEMPLATES,
-                links,
+                linksList,
                 properties
         );
         for (FileSet sourceDirectory : sourceDirectories) {
