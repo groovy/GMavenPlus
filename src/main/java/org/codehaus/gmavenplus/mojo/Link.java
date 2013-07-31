@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.model;
+package org.codehaus.gmavenplus.mojo;
 
 
 /**
@@ -24,7 +24,7 @@ package org.codehaus.gmavenplus.model;
  * Represents a link pair (href, packages).
  * The packages are comma separated.
  */
-public class LinkArgument {
+public class Link {
     private String href = "";
     private String packages = "";
 
@@ -42,7 +42,7 @@ public class LinkArgument {
      *
      * @param packages the comma separated package prefixs corresponding to this link
      */
-    public LinkArgument setPackages(final String packages) {
+    public Link setPackages(final String packages) {
         this.packages = packages;
         return this;
     }
@@ -61,7 +61,7 @@ public class LinkArgument {
      *
      * @param hr a <code>String</code> value representing the URL to use for this link
      */
-    public LinkArgument setHref(final String hr) {
+    public Link setHref(final String hr) {
         href = hr;
         return this;
     }

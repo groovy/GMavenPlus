@@ -18,7 +18,6 @@ package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
-import org.codehaus.gmavenplus.model.LinkArgument;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
@@ -135,7 +134,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      *
      * @parameter
      */
-    protected List<LinkArgument> links;
+    protected List<Link> links;
 
     /**
      * Whether to include Java sources in groovydoc generation.
@@ -197,7 +196,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         }
         List linksList = new ArrayList();
         if (links != null) {
-            for (LinkArgument link : links) {
+            for (Link link : links) {
                 Object linkArgument = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(linkArgumentClass));
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setHref", String.class), linkArgument, link.getHref());
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setPackages", String.class), linkArgument, link.getPackages());
