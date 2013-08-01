@@ -20,6 +20,8 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
+
 
 /**
  * The base mojo class, which all other mojos extend.
@@ -34,12 +36,12 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * The pattern defining Groovy files.
      */
-    protected static final String GROOVY_SOURCES_PATTERN = "**/*.groovy";
+    protected static final String GROOVY_SOURCES_PATTERN = "**" + File.separator + "*.groovy";
 
     /**
      * The pattern defining Java stub files.
      */
-    protected static final String JAVA_SOURCES_PATTERN = "**/*.java";
+    protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
     /**
      * The Maven project this plugin is being used on.
