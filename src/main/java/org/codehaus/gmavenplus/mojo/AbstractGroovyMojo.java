@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
@@ -51,6 +52,15 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @readonly
      */
     protected MavenProject project;
+
+    /**
+     * The Maven Session this plugin is being used on.
+     *
+     * @parameter property="session"
+     * @required
+     * @readonly
+     */
+    protected MavenSession session;
 
     /**
      * Logs the version of groovy used by this mojo.
