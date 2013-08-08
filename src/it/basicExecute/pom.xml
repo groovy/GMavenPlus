@@ -43,7 +43,6 @@
         <configuration>
           <scripts>
             <script><![CDATA[
-              println project.basedir
               File targetDir = new File('target')
               if (!targetDir.exists())
                   targetDir.mkdir()
