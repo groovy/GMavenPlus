@@ -47,7 +47,7 @@ public class IncludeProjectDependenciesComponentConfiguratorTest {
         List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
         Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
         org.codehaus.classworlds.ClassRealm containerRealm = Mockito.mock(org.codehaus.classworlds.ClassRealm.class);
-        configurator.addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectDependenciesComponentConfigurator.Classpath.COMPILE, containerRealm);
         Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
         Mockito.verify(containerRealm, Mockito.times(1)).addConstituent(Mockito.any(URL.class));
     }
@@ -59,7 +59,7 @@ public class IncludeProjectDependenciesComponentConfiguratorTest {
         List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
         Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = Mockito.mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
-        configurator.addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectDependenciesComponentConfigurator.Classpath.COMPILE, containerRealm);
         Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
         Mockito.verify(containerRealm, Mockito.times(1)).addURL(Mockito.any(URL.class));
     }

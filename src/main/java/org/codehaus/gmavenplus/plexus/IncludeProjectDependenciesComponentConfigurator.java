@@ -37,7 +37,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
 
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
         converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
@@ -46,7 +46,7 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
     @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addProjectCompileDependenciesToClassRealm(expressionEvaluator, containerRealm);
+        addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
         ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
         converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
@@ -59,13 +59,13 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected void addProjectCompileDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
-            classpathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
+            classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
         } catch (ExpressionEvaluationException e) {
-            throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}.", e);
+            throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }
 
         // Add the project dependencies to the ClassRealm
@@ -82,13 +82,13 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
-    protected void addProjectCompileDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 
         try {
-            classpathElements = (List) expressionEvaluator.evaluate("${project.compileClasspathElements}");
+            classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
         } catch (ExpressionEvaluationException e) {
-            throw new ComponentConfigurationException("There was a problem evaluating: ${project.compileClasspathElements}.", e);
+            throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }
 
         // Add the project dependencies to the ClassRealm
@@ -119,6 +119,13 @@ public class IncludeProjectDependenciesComponentConfigurator extends AbstractCom
         }
 
         return urls.toArray(new URL[urls.size()]);
+    }
+
+    public enum Classpath {
+        COMPILE,
+        RUNTIME,
+        TEST,
+        SYSTEM
     }
 
 }
