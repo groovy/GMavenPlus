@@ -16,12 +16,15 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
 
 import java.io.File;
+import java.util.List;
 
 
 /**
@@ -61,6 +64,42 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @readonly
      */
     protected MavenSession session;
+
+    /**
+     * The Maven Settings.
+     *
+     * @parameter property="settings"
+     * @required
+     * @readonly
+     */
+    protected Settings settings;
+
+    /**
+     * The plugin dependencies.
+     *
+     * @parameter property="plugin.artifacts"
+     * @required
+     * @readonly
+     */
+    protected List pluginArtifacts;
+
+    /**
+     * The local repository.
+     *
+     * @parameter property="localRepository"
+     * @required
+     * @readonly
+     */
+    protected ArtifactRepository localRepository;
+
+    /**
+     * The reactor projects.
+     *
+     * @parameter property="reactorProjects"
+     * @required
+     * @readonly
+     */
+    protected List reactorProjects;
 
     /**
      * Logs the version of groovy used by this mojo.

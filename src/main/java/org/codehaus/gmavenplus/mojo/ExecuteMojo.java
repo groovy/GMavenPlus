@@ -75,8 +75,12 @@ public class ExecuteMojo extends AbstractGroovyMojo {
 
             // create a GroovyShell to run scripts in
             Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "settings", settings);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "project", project);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "session", session);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "pluginArtifacts", pluginArtifacts);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "localRepository", localRepository);
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "reactorProjects", reactorProjects);
 
             // TODO: load runtime project dependencies onto classpath before executing so they can be used in scripts?
 
