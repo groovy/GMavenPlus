@@ -65,17 +65,17 @@ public class ExecuteMojo extends AbstractGroovyMojo {
      * Properties to make available in scripts.  By default it will include
      * <dl>
      *   <dt>settings</dt>
-     *   <dd>a org.apache.maven.settings.Settings object of the current Maven settings</dd>
+     *     <dd>a org.apache.maven.settings.Settings object of the current Maven settings</dd>
      *   <dt>project</dt>
-     *   <dd>a org.apache.maven.project.Project object of the current Maven project</dd>
+     *     <dd>a org.apache.maven.project.Project object of the current Maven project</dd>
      *   <dt>session</dt>
-     *   <dd>a org.apache.maven.execution.MavenSession object of the current Maven session</dd>
+     *     <dd>a org.apache.maven.execution.MavenSession object of the current Maven session</dd>
      *   <dt>pluginArtifacts</dt>
-     *   <dd>a list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts</dd>
+     *     <dd>a list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts</dd>
      *   <dt>localRepository</dt>
-     *   <dd>a org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository</dd>
+     *     <dd>a org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository</dd>
      *   <dt>reactorProjects</dt>
-     *   <dd>a list of org.apache.maven.project.MavenProject objects currently loaded by the reactor</dd>
+     *     <dd>a list of org.apache.maven.project.MavenProject objects currently loaded by the reactor</dd>
      * </dl>
      * These can be overridden.
      *
