@@ -317,7 +317,9 @@ mvn site
   dependencies and any project compile dependencies are also available for use
   in your scripts.
   This example demonstrates all three.  Note that you need to escape any dollar
-  signs in your script so Maven doesn't try to filter the values.  To
+  signs in your script so Maven doesn't try to filter the values.  Note that
+  you can also add your own properties to use in the script (that can be set from
+  the POM's properties or the command line.  To
   execute Groovy scripts in your <<<pom.xml>>>, add something similar to the following:
 
 +-----------------------------------------------------------------------------+
@@ -336,6 +338,12 @@ mvn site
           </execution>
         </executions>
         <configuration>
+          <properties>
+            <property>
+              <name>someProp</name>
+              <value>${someProp}</value>
+            </property>
+          </properties>
           <scripts>
             <script><![CDATA[
               @Grapes([
@@ -351,6 +359,7 @@ mvn site
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
               logger.debug("The local repository is {}.", localRepository)
               logger.debug("The reactor projects are {}.", reactorProjects)
+              logger.debug("someProp is {}.", someProp)
               File targetDir = new File(project.build.directory)
               if (!targetDir.exists())
                   targetDir.mkdir()

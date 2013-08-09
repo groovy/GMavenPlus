@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 
 /**
@@ -61,6 +62,28 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     protected String sourceEncoding;
 
     /**
+     * Properties to make available in scripts.  By default it will include
+     * <dl>
+     *   <dt>settings</dt>
+     *   <dd>a org.apache.maven.settings.Settings object of the current Maven settings</dd>
+     *   <dt>project</dt>
+     *   <dd>a org.apache.maven.project.Project object of the current Maven project</dd>
+     *   <dt>session</dt>
+     *   <dd>a org.apache.maven.execution.MavenSession object of the current Maven session</dd>
+     *   <dt>pluginArtifacts</dt>
+     *   <dd>a list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts</dd>
+     *   <dt>localRepository</dt>
+     *   <dd>a org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository</dd>
+     *   <dt>reactorProjects</dt>
+     *   <dd>a list of org.apache.maven.project.MavenProject objects currently loaded by the reactor</dd>
+     * </dl>
+     * These can be overridden.
+     *
+     * @parameter
+     */
+    protected Properties properties = new Properties();
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
@@ -81,6 +104,10 @@ public class ExecuteMojo extends AbstractGroovyMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "pluginArtifacts", pluginArtifacts);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "localRepository", localRepository);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "reactorProjects", reactorProjects);
+            // this is intentionally after the default properties so that the user can override if desired
+            for (String key : properties.stringPropertyNames()) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.getProperty(key));
+            }
 
             // TODO: load configurable (compile, test, runtime, or system) dependencies onto classpath before executing so they can be used in scripts?
 

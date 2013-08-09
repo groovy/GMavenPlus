@@ -47,6 +47,16 @@
           </execution>
         </executions>
         <configuration>
+          <properties>
+            <property>
+              <name>someProp</name>
+              <value>someValue</value>
+            </property>
+            <property>
+              <name>cliProp</name>
+              <value>${cliProp}</value>
+            </property>
+          </properties>
           <scripts>
             <script>file:///${project.basedir}/src/main/groovy/HelloWorld.groovy</script>
             <script><![CDATA[
@@ -63,6 +73,8 @@
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
               logger.debug("The local repository is {}.", localRepository)
               logger.debug("The reactor projects are {}.", reactorProjects)
+              logger.debug("someProp is {}.", someProp)
+              logger.debug("cliProp is {}.", cliProp)
               File targetDir = new File(project.build.directory)
               if (!targetDir.exists())
                   targetDir.mkdir()
