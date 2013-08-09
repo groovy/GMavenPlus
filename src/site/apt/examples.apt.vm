@@ -313,9 +313,10 @@ mvn site
 
   Note that if you'd like to separate script dependencies from those of your
   project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
-  annotations, but you will need a compile dependency on Ivy.  Any compile
-  dependencies your project uses are also available for use in your scripts.
-  This example demonstrates both.  Note that you need to escape any dollar
+  annotations, but you will need a compile dependency on Ivy.  Any plugin
+  dependencies and any project compile dependencies are also available for use
+  in your scripts.
+  This example demonstrates all three.  Note that you need to escape any dollar
   signs in your script so Maven doesn't try to filter the values.  To
   execute Groovy scripts in your <<<pom.xml>>>, add something similar to the following:
 
@@ -358,22 +359,24 @@ mvn site
             <script>src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <!-- any version of Groovy should work here -->
+            <version>${groovyVersion}</version>
+          </dependency>
+          <dependency>
+            <!-- this is only needed because the script uses it -->
+            <groupId>org.apache.ivy</groupId>
+            <artifactId>ivy</artifactId>
+            <version>2.2.0</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy should work here -->
-      <version>${groovyVersion}</version>
-    </dependency>
-    <dependency>
-      <!-- this is only needed because the script uses it -->
-      <groupId>org.apache.ivy</groupId>
-      <artifactId>ivy</artifactId>
-      <version>2.2.0</version>
-    </dependency>
     <dependency>
       <!-- this is only needed because the script uses it -->
       <groupId>ch.qos.logback</groupId>
