@@ -82,7 +82,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "localRepository", localRepository);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "reactorProjects", reactorProjects);
 
-            // TODO: load configurable (compile, test, runtime, or system dependencies onto classpath before executing so they can be used in scripts?
+            // TODO: load configurable (compile, test, runtime, or system) dependencies onto classpath before executing so they can be used in scripts?
 
             // run the scripts
             int scriptNum = 1;
