@@ -17,11 +17,11 @@
 package org.codehaus.gmavenplus
 
 
+@Immutable
 class SomeClass {
-    @Delegate List<String> str = ["dog", "cat"]
 
     def someMethod() {
-        return str
+        return ["dog", "cat"].toString()
     }
 
 }
