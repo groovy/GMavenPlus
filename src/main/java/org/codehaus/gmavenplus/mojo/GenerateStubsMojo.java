@@ -49,14 +49,11 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
 
             try {
                 doStubGeneration(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), stubsOutputDirectory);
+
                 resetStubModifiedDates(getStubs());
 
                 // add stubs to project source so the Maven Compiler Plugin can find them
                 project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
-
-                // log generated stubs
-                int stubCount = getStubs().size();
-                getLog().info("Generated " + stubCount + " stubs.");
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
