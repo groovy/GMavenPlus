@@ -17,11 +17,11 @@
 package org.codehaus.gmavenplus
 
 
-@Immutable
 class SomeClass {
+    @Lazy def list = ["dog", "cat"]
 
     def someMethod() {
-        return ["dog", "cat"].toString()
+        return list.toString()
     }
 
 }
