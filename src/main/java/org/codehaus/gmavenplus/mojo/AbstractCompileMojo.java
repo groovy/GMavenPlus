@@ -54,13 +54,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      */
     protected String sourceEncoding;
 
-    // if plugin only runs on 1.5, then can assume 1.5
     /**
-     * The Groovy compiler bytecode compatibility ("1.4" or "1.5").
+     * The Groovy compiler bytecode compatibility.  One of
+     * <ul>
+     *   <li>1.4</li>
+     *   <li>1.5</li>
+     *   <li>1.6</li>
+     *   <li>1.7</li>
+     *   <li>1.8</li>
+     * </ul>
      *
      * @parameter default-value="1.5"
      */
-//    protected String targetBytecode;
+    protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug.
@@ -78,14 +84,18 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Groovy compiler warning level.  Should be one of:
-     * <ul>
-     *   <li>"0" (None)</li>
-     *   <li>"1" (Likely Errors)</li>
-     *   <li>"2" (Possible Errors)</li>
-     *   <li>"3" (Paranoia)</li>
+     * <dl>
+     *   <dt>0</dt>
+     *     <dd>None</dd>
+     *   <dt>1</dt>
+     *     <dd>Likely Errors</dd>
+     *   <dt>2</dt>
+     *     <dd>Possible Errors</dd>
+     *   <dt>3</dt>
+     *     <dd>Paranoia</dd>
      * </ul>
      *
-     * @parameter default-value="0"@
+     * @parameter default-value="1"
      */
     protected int warningLevel;
 
@@ -102,7 +112,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *
      * @parameter property="invokeDynamic" default-value="false"
      */
-    private boolean invokeDynamic;
+    protected boolean invokeDynamic;
 
     /**
      * Performs compilation of compile mojos.
@@ -131,10 +141,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0) {
-            // if plugin only runs on 1.5, then can assume 1.5
-//            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
-            // compilerConfiguration.setTargetBytecode("1.5");
+        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 1, 3)) >= 0) {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+        } else {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
         }
         if (sourceEncoding != null) {
