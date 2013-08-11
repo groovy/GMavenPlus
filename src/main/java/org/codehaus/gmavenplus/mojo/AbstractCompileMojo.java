@@ -179,7 +179,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
         // log compiled classes
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
-        getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 ? "s" : "") + ".");
+        getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
     }
 
 }
