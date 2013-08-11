@@ -181,12 +181,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0) {
-            // if plugin only runs on 1.5, then can assume 1.5
+        // if plugin only runs on 1.5, then can assume 1.5
+//        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 5, 0)) >= 0) {
 //            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
             //
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
-        }
+//        }
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
