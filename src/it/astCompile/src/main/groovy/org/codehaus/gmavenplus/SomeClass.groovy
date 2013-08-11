@@ -17,7 +17,7 @@
 package org.codehaus.gmavenplus
 
 
-@groovy.transform.Immutable
+@Immutable
 class SomeClass {
 
     def someMethod() {
