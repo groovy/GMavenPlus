@@ -237,7 +237,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
 
         // log generated stubs
-        getLog().debug("Generated " + stubSources.size() + "stubs.");
+        getLog().debug("Generated " + stubSources.size() + " stubs.");
     }
 
     /**
