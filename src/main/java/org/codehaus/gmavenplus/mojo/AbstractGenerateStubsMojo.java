@@ -211,6 +211,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         }
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("stubDir", outputDirectory.getAbsolutePath());
+        options.put("keepStubs", Boolean.TRUE);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
 
         // append project classpath to groovyClassLoader
