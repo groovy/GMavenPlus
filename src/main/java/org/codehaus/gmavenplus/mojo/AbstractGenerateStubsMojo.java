@@ -34,10 +34,10 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  * @author Keegan Witt
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMojo {
-    // TODO: support Groovy 1.5.0 - 1.6.9?
+    // TODO: support Groovy 1.5.0 - 1.6.9 & 1.7.3?
     /*
      * For some reason, the JavaStubCompilationUnit is silently not creating my
-     * stubs (although it does create the target directory) when I use older
+     * stubs (although it does create the target directory) when I use other
      * versions.
      */
 
@@ -45,6 +45,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
      * The minimum version of Groovy that this mojo supports.
      */
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 7, 0);
+
+    /**
+     * Versions of Groovy that match the minimum Groovy version, but don't work properly.
+     */
+    protected static List<Version> BAD_GROOVY_VERSIONS = new ArrayList<Version>();
+    static {
+        BAD_GROOVY_VERSIONS.add(new Version(1, 7, 3));
+    }
 
     /**
      * The location for the compiled classes.
@@ -191,15 +199,19 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
+        String bytecode;
         if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 1, 3)) >= 0) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+            bytecode = targetBytecode;
         } else {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
+            bytecode = "1.5";
         }
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, bytecode);
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, outputDirectory.getAbsolutePath());
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("stubDir", outputDirectory.getAbsolutePath());
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
 
         // append project classpath to groovyClassLoader
         ClassLoader parent = ClassLoader.getSystemClassLoader();
@@ -242,8 +254,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         }
 
         // generate the stubs
-        Object convPhase = ReflectionUtils.getStaticField(ReflectionUtils.findField(phasesClass, "CONVERSION", int.class));
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile", int.class), javaStubCompilationUnit, convPhase);
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
 
         // log generated stubs
         getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
@@ -251,13 +262,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
 
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.7.0 because not all the classes needed were available and
+     * Must be >= 1.5.0 because not all the classes needed were available and
      * functioning correctly in previous versions.
      *
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
+        Version thisVersion = Version.parseFromString(getGroovyVersion());
+        return thisVersion.compareTo(MIN_GROOVY_VERSION) >= 0 && !BAD_GROOVY_VERSIONS.contains(thisVersion);
     }
 
     /**

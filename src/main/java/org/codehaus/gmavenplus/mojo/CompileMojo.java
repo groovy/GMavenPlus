@@ -44,22 +44,26 @@ public class CompileMojo extends AbstractCompileMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("compile");
+        if (groovyVersionSupportsAction()) {
+            logGroovyVersion("compile");
 
-        try {
-            doCompile(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), outputDirectory);
-        } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
-        } catch (InvocationTargetException e) {
-            throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-        } catch (InstantiationException e) {
-            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
-        } catch (IllegalAccessException e) {
-            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-        } catch (DependencyResolutionRequiredException e) {
-            throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
-        } catch (MalformedURLException e) {
-            throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
+            try {
+                doCompile(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), outputDirectory);
+            } catch (ClassNotFoundException e) {
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+            } catch (InvocationTargetException e) {
+                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+            } catch (InstantiationException e) {
+                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+            } catch (IllegalAccessException e) {
+                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
+            }
+        } else {
+            getLog().error("This plugin doesn't support your Groovy version (" + getGroovyVersion() + ").  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");
         }
     }
 

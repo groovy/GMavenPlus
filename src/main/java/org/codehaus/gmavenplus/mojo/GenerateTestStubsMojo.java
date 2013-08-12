@@ -26,7 +26,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Generates stubs for the test sources.
- * Note that this mojo requires Groovy >= 1.7.0.
+ * Note that this mojo requires Groovy >= 1.7.0 (except 1.7.3).
  *
  * @author Keegan Witt
  *
@@ -76,7 +76,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                     throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
                 }
             } else {
-                getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");
+                getLog().error("Your Groovy version doesn't support your Groovy version (" + getGroovyVersion() + ").  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + " (and excluding versions " + BAD_GROOVY_VERSIONS + ").  Skipping stub generation.");
             }
         } else {
             getLog().info("Skipping generation of test stubs because ${maven.test.skip} was set to true.");

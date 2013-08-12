@@ -49,6 +49,7 @@ public class CompileTestsMojoTest {
         Mockito.doReturn(new HashSet<File>()).when(compileTestsMojo).getTestSources();
         compileTestsMojo.project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Mockito.mock(Build.class)).when(compileTestsMojo.project).getBuild();
+        Mockito.doReturn(true).when(compileTestsMojo).groovyVersionSupportsAction();
     }
 
     @Test
