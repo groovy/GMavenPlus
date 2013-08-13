@@ -110,13 +110,13 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
-        testMojo = new TestMojo("1.7.0");
+        testMojo = new TestMojo("1.8.2");
         Assert.assertTrue(testMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
-        testMojo = new TestMojo("1.6.9");
+        testMojo = new TestMojo("1.8.1");
         Assert.assertFalse(testMojo.groovyVersionSupportsAction());
     }
 

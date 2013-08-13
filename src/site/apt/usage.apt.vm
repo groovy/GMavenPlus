@@ -54,7 +54,7 @@ mvn test-compile
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.7.0 (except 1.7.3) should work here -->
+      <!-- any version of Groovy \>= 1.8.2 should work here -->
       <version>${groovyVersion}</version>
     </dependency>
   </dependencies>
