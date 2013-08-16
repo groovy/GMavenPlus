@@ -35,6 +35,9 @@ import java.util.Properties;
  * @author Keegan Witt
  *
  * @goal execute
+ * @configurator include-project-dependencies
+ * @requiresDependencyResolution compile
+ * @threadSafe
  */
 public class ExecuteMojo extends AbstractGroovyMojo {
 

@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Keegan Witt
  *
  * @goal groovydoc
+ * @configurator include-project-dependencies
  * @requiresDependencyResolution compile
  * @threadSafe
  */

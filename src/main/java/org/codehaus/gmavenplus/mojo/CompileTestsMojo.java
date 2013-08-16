@@ -32,7 +32,8 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @phase test-compile
  * @goal testCompile
- * @requiresDependencyResolution test
+ * @configurator include-project-dependencies
+ * @requiresDependencyResolution compile
  * @threadSafe
  */
 public class CompileTestsMojo extends AbstractCompileMojo {

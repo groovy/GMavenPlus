@@ -32,6 +32,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @phase compile
  * @goal compile
+ * @configurator include-project-dependencies
  * @requiresDependencyResolution compile
  * @threadSafe
  */
