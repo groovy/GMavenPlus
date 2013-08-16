@@ -316,8 +316,8 @@ mvn site
   Note that if you'd like to separate script dependencies from those of your
   project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
   annotations, but you will need a compile dependency on Ivy.  Any plugin
-  dependencies and any project compile dependencies are also available for use
-  in your scripts.
+  dependencies and any project test dependencies are also available for use
+  in your scripts (remember that test scope also includes compile scope).
   This example demonstrates all three.  Note that you need to escape any dollar
   signs in your script so Maven doesn't try to filter the values.  Note that
   you can also add your own properties to use in the script (that can be set from
