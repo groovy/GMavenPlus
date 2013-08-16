@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.mojo;
+package org.codehaus.gmavenplus.mojo;  // note that this won't be properly consumed by mojo unless it's in the same package as the mojo
 
 
 /**
