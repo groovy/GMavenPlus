@@ -35,6 +35,7 @@
         <item name="Groovydoc for Joint Projects" href="examples.html#Groovydoc_for_Joint_Projects" />
         <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
         <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
+        <item name="Working with Older Groovy Versions" href="examples.html#Working_with_Older_Groovy_Versions" />
       </item>
     </menu>
     <menu ref="reports" />

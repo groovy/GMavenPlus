@@ -23,6 +23,8 @@ Examples
 
   * {{{Execute_Scripts}Execute Scripts}}
 
+  * {{{Working_with_Older_Groovy_Versions}Working with Older Groovy Versions}}
+
   []
 
 
@@ -409,3 +411,61 @@ mvn gplus:execute
   <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
 <pluginGroups>
 +-----------------------------------------------------------------------------+
+
+
+* {Working with Older Groovy Versions}
+
+  If the mojo you're trying to run doesn't support the version of Groovy you use
+  at runtime, you can override the version used by the plugin to use a version
+  that the mojo does support.  This is not the recommended solution (since
+  there's the possibility of runtime API incompatibilities and in some cases it
+  won't even compile).  It's better to just upgrade your Groovy version.
+  However, if this isn't possible, simply add a dependency to the plugin.
+  To do this, you should add something similar to the following in your <<<pom.xml>>>:
+
++-------------------------------------------------------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <!-- your goals here -->
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <!-- it's probably safest to use a version that's as close to the runtime version as possible, while still being compatible with the mojo -->
+            <version>${someMojoCompatibleGroovyVersion}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${someOldGroovyVersion}</version>
+    </dependency>
+  </dependencies>
+</project>
++-------------------------------------------------------------------------+
+
+  To compile both the main and test Groovy and Java sources, simply execute the
+  normal compile phase from the default lifecycle:
+
++---------------------------------------+
+mvn compile
++---------------------------------------+

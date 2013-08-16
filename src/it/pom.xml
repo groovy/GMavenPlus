@@ -12,6 +12,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaVersion>1.5</javaVersion>
+    <!-- this is here as a workaround for Groovy < 1.8.2 having stub generation issues -->
+    <overrideGroovyVersion>@groovyVersion@</overrideGroovyVersion>
   </properties>
 
   <dependencyManagement>

@@ -46,6 +46,14 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <!-- this is here as a workaround for Groovy < 1.8.2 having stub generation issues -->
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${overrideGroovyVersion}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
