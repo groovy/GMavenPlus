@@ -47,7 +47,7 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
-        Mockito.doReturn("SOME_GROOVY_VERSION").when(executeMojo).getGroovyVersion();
+        Mockito.doReturn("1.5.0").when(executeMojo).getGroovyVersion();
     }
 
     @Test
