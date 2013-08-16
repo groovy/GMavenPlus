@@ -17,7 +17,6 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.LineReader;
-import org.apache.maven.model.Dependency;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,8 +47,6 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
-        Dependency groovyDependency = Mockito.mock(Dependency.class);
-        Mockito.doReturn(groovyDependency).when(executeMojo).getGroovyDependency();
         Mockito.doReturn("SOME_GROOVY_VERSION").when(executeMojo).getGroovyVersion();
     }
 

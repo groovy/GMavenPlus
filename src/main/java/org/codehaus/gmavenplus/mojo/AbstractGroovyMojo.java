@@ -17,7 +17,9 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
@@ -125,10 +127,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
          * And for some reason InvokerHelper.getVersion() was returning an empty
          * String for 1.5.0, so I decided to just get it from the dependency itself.
          */
-        Dependency groovyDependency = getGroovyDependency();
+        Artifact groovyDependency = getGroovyDependency();
 
         if (groovyDependency == null) {
-            getLog().error("Unable to determine Groovy version.");
+            getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
         } else {
             groovyVersion = groovyDependency.getVersion();
         }
@@ -145,9 +147,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected boolean isGroovyIndy() {
         boolean isGroovyIndy = false;
 
-        Dependency groovyDependency = getGroovyDependency();
+        Artifact groovyDependency = getGroovyDependency();
         if (groovyDependency == null) {
-            getLog().error("Unable to determine Groovy version.");
+            getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
         } else if ("indy".equals(groovyDependency.getClassifier())) {
             isGroovyIndy = true;
         }
@@ -160,14 +162,28 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      *
      * @return The Groovy dependency used by the project
      */
-    protected Dependency getGroovyDependency() {
-        Dependency groovyDependency = null;
+    protected Artifact getGroovyDependency() {
+        Artifact groovyDependency = null;
 
-        for (Object dep : project.getCompileDependencies()) {
-            Dependency dependency = (Dependency) dep;
-            if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
-                groovyDependency = dependency;
-                break;
+        if (pluginArtifacts != null) {
+            for (Object art : pluginArtifacts) {
+                Artifact artifact = (Artifact) art;
+                if (isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar")) {
+                    groovyDependency = artifact;
+                    break;
+                }
+            }
+        }
+
+        if (groovyDependency == null) {
+            if (project.getCompileDependencies() != null) {
+                for (Object dep : project.getCompileDependencies()) {
+                    Dependency dependency = (Dependency) dep;
+                    if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                        groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
+                        break;
+                    }
+                }
             }
         }
 
@@ -194,6 +210,29 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
                                     || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
                                     || dependency.getArtifactId().equals("groovy-jdk14");
+    }
+
+
+    /**
+     * Whether the groupId of the dependency is Groovy's groupId.
+     *
+     * @param artifact The dependency to inspect
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
+     */
+    protected boolean isGroovyGroupId(final Artifact artifact) {
+        return artifact.getGroupId().equals("org.codehaus.groovy") || artifact.getGroupId().equals("groovy");
+    }
+
+    /**
+     * Whether the artifactId of the dependency is Groovy's artifactId.
+     *
+     * @param artifact The dependency to inspect
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
+     */
+    protected boolean isGroovyArtifactId(final Artifact artifact) {
+        return artifact.getArtifactId().equals("groovy-all") || artifact.getArtifactId().equals("groovy-all-minimal")
+                || artifact.getArtifactId().equals("groovy") || artifact.getArtifactId().equals("groovy-all-jdk14")
+                || artifact.getArtifactId().equals("groovy-jdk14");
     }
 
 }
