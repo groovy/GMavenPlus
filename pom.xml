@@ -20,12 +20,12 @@
     <javaVersion>1.5</javaVersion>
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <!-- these are properties so the integration tests can use them -->
+    <!-- these are properties so integration tests can use them -->
     <junitVersion>4.11</junitVersion>
     <compilerVersion>3.1</compilerVersion>
     <surefireVersion>2.15</surefireVersion>
     <pluginVersion>3.2</pluginVersion>
-    <!-- this is a property to that site generation and integration tests can use it -->
+    <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.1.6</groovyVersion>
   </properties>
 
