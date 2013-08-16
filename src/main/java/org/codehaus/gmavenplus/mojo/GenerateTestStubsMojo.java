@@ -32,8 +32,8 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @goal testGenerateStubs
  * @phase generate-test-sources
- * @configurator include-project-dependencies
- * @requiresDependencyResolution compile
+ * @configurator include-project-test-dependencies
+ * @requiresDependencyResolution test
  * @threadSafe
  */
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {

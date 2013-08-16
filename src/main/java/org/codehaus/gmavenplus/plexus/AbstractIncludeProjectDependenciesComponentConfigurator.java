@@ -22,35 +22,13 @@ import java.util.List;
 
 
 /**
- * A custom ComponentConfigurator which adds the project's compile-time classpath elements.
+ * A custom ComponentConfigurator which adds the project's classpath elements.
  *
  * @author Brian Jackson
  * @author Keegan Witt
- *
- * @plexus.component role="org.codehaus.plexus.component.configurator.ComponentConfigurator"
- *                   role-hint="include-project-dependencies"
- * @plexus.requirement role="org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup"
- *                     role-hint="default"
  */
-public class IncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
+public abstract class AbstractIncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
 //    private static final Log LOG = new SystemStreamLog();
-
-    public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
-                                   final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
-        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
-        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
-    }
-
-    @SuppressWarnings("deprecation")
-    public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
-                                   final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
-        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
-        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
-    }
 
     /**
      * Adds the project's compile dependencies to the specified ClassRealm.

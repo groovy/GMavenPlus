@@ -34,8 +34,8 @@ import java.util.Arrays;
  * @goal addSource
  * @executionStrategy always
  * @requiresDirectInvocation false
- * @configurator include-project-dependencies
- * @requiresDependencyResolution compile
+ * @configurator include-project-test-dependencies
+ * @requiresDependencyResolution test
  * @threadSafe
  */
 public class AddSourceMojo extends AbstractGroovySourcesMojo {

@@ -32,7 +32,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @goal generateStubs
  * @phase generate-sources
- * @configurator include-project-dependencies
+ * @configurator include-project-compile-dependencies
  * @requiresDependencyResolution compile
  * @threadSafe
  */

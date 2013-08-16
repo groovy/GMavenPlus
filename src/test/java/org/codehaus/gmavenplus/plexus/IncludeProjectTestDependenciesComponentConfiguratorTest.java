@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2013 the original author or authors.
+ * Copyright 2013 Keegan Witt
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,37 +29,37 @@ import java.util.List;
 
 
 /**
- * Unit tests for the IncludeProjectDependenciesComponentConfigurator class.
+ * Unit tests for the IncludeProjectTestDependenciesComponentConfigurator class.
  *
  * @author Keegan Witt
  */
-public class IncludeProjectDependenciesComponentConfiguratorTest {
-    private IncludeProjectDependenciesComponentConfigurator configurator;
+public class IncludeProjectTestDependenciesComponentConfiguratorTest {
+    private IncludeProjectTestDependenciesComponentConfigurator configurator;
 
     @Before
     public void setup() {
-        configurator = new IncludeProjectDependenciesComponentConfigurator();
+        configurator = new IncludeProjectTestDependenciesComponentConfigurator();
     }
 
     @Test
-    public void testAddProjectCompileDependenciesToClassRealm() throws Exception {
+    public void testAddProjectTestDependenciesToClassRealm() throws Exception {
         ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
         List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
         Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
         org.codehaus.classworlds.ClassRealm containerRealm = Mockito.mock(org.codehaus.classworlds.ClassRealm.class);
-        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectDependenciesComponentConfigurator.Classpath.COMPILE, containerRealm);
+        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
         Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
         Mockito.verify(containerRealm, Mockito.times(1)).addConstituent(Mockito.any(URL.class));
     }
 
 
     @Test
-    public void testAddProjectCompileDependenciesToPlexusClassRealm() throws Exception {
+    public void testAddProjectTestDependenciesToPlexusClassRealm() throws Exception {
         ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
         List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
         Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = Mockito.mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
-        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectDependenciesComponentConfigurator.Classpath.COMPILE, containerRealm);
+        configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
         Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
         Mockito.verify(containerRealm, Mockito.times(1)).addURL(Mockito.any(URL.class));
     }

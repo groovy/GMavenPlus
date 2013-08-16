@@ -35,7 +35,7 @@ import java.util.Properties;
  * @author Keegan Witt
  *
  * @goal execute
- * @configurator include-project-dependencies
+ * @configurator include-project-compile-dependencies
  * @requiresDependencyResolution compile
  * @threadSafe
  */

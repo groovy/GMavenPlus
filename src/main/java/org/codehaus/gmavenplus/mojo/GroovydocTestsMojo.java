@@ -28,8 +28,8 @@ import java.lang.reflect.InvocationTargetException;
  * @author Keegan Witt
  *
  * @goal testGroovydoc
- * @configurator include-project-dependencies
- * @requiresDependencyResolution compile
+ * @configurator include-project-test-dependencies
+ * @requiresDependencyResolution test
  * @threadSafe
  */
 public class GroovydocTestsMojo extends AbstractGroovydocMojo {
