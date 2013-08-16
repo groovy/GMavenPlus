@@ -6,14 +6,12 @@ package org.codehaus.gmavenplus.plexus;
 
 //import org.apache.maven.plugin.logging.Log;
 //import org.apache.maven.plugin.logging.SystemStreamLog;
+
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ConfigurationListener;
-import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
-import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
