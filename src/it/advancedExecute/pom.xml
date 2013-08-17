@@ -92,7 +92,8 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>@groovyVersion@</version>
+            <!-- using override version here because older version of Groovy have problems with @Grab annotation -->
+            <version>${overrideGroovyVersion}</version>
           </dependency>
         </dependencies>
       </plugin>
