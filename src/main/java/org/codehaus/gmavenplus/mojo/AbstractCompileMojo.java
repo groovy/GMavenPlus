@@ -181,7 +181,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
 
         // add Groovy sources
-        Object compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
+        Object compilationUnit;
+        if (getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
+            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
+        } else {
+            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
+        }
         getLog().debug("Adding Groovy to compile:");
         for (File source : sourcesToCompile) {
             getLog().debug("    " + source);
