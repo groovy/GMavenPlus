@@ -84,7 +84,7 @@
               File targetDir = new File(project.build.directory)
               if (!targetDir.exists())
                   targetDir.mkdir()
-              new File(targetDir, 'javaVersion.txt').append("Using Java $${SystemUtils.JAVA_VERSION}")
+              new File(targetDir, 'javaVersion.txt').append("Using Java ${SystemUtils.JAVA_VERSION}")
             ]]></script>
           </scripts>
         </configuration>
