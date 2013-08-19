@@ -20,6 +20,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,8 +82,8 @@ public class AbstractGroovydocMojoTest {
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 
-        protected String getGroovyVersion() {
-            return overrideGroovyVersion;
+        protected Version getGroovyVersion() {
+            return Version.parseFromString(overrideGroovyVersion);
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }
