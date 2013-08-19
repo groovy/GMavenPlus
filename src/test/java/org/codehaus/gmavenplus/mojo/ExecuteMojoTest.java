@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.LineReader;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,7 +48,7 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
-        Mockito.doReturn("1.5.0").when(executeMojo).getGroovyVersion();
+        Mockito.doReturn(new Version(1, 5, 0)).when(executeMojo).getGroovyVersion();
     }
 
     @Test

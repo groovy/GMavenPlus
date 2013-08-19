@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,7 @@ public class GenerateStubsMojoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGroovyVersionDoesntSupportAction() throws Exception {
+        Mockito.doReturn(new Version(0)).when(generateStubsMojo).getGroovyVersion();
         Mockito.doReturn(false).when(generateStubsMojo).groovyVersionSupportsAction();
         generateStubsMojo.execute();
         Mockito.verify(generateStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));

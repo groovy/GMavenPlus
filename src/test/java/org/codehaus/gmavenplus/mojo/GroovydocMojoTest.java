@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +63,7 @@ public class GroovydocMojoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGroovyVersionDoesntSupportAction() throws Exception {
+        Mockito.doReturn(new Version(0)).when(groovydocMojo).getGroovyVersion();
         Mockito.doReturn(false).when(groovydocMojo).groovyVersionSupportsAction();
         groovydocMojo.execute();
         Mockito.verify(groovydocMojo, Mockito.never()).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
