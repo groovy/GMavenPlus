@@ -25,6 +25,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
+import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
 import java.util.List;
@@ -113,11 +114,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Gets the version of Groovy used from the dependency information.
+     * Gets the version string of Groovy used from the dependency information.
      *
-     * @return The version Groovy used by the project
+     * @return The version string of Groovy used by the project
      */
-    protected String getGroovyVersion() {
+    protected String getGroovyVersionString() {
         String groovyVersion = null;
 
         /*
@@ -136,6 +137,15 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         }
 
         return groovyVersion;
+    }
+
+    /**
+     * Gets the version of Groovy used from the dependency information.
+     *
+     * @return The version of Groovy used by the project
+     */
+    protected Version getGroovyVersion() {
+        return Version.parseFromString(getGroovyVersionString());
     }
 
     /**

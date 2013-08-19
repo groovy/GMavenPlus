@@ -262,7 +262,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @return <code>true</code> only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
-        return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
+        return getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }

@@ -146,7 +146,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 1, 3)) >= 0) {
+        if (getGroovyVersion().compareTo(new Version(2, 1, 3)) >= 0) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         } else {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, "1.5");
@@ -155,7 +155,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
+        if (getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
             if (isGroovyIndy()) {
                 Map<java.lang.String, java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("indy", true);
@@ -204,7 +204,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
+        return getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }

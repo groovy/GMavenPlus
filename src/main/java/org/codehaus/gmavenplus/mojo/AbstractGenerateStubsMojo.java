@@ -191,7 +191,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
         String bytecode;
-        if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(2, 1, 3)) >= 0) {
+        if (getGroovyVersion().compareTo(new Version(2, 1, 3)) >= 0) {
             bytecode = targetBytecode;
         } else {
             bytecode = "1.5";
@@ -223,7 +223,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : stubSources) {
             getLog().debug("    " + source);
-            if (Version.parseFromString(getGroovyVersion()).compareTo(new Version(1, 8, 3)) >= 0) {
+            if (getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0) {
                 Set<String> extensions;
                 if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
                     extensions = scriptExtensions;
@@ -260,7 +260,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return Version.parseFromString(getGroovyVersion()).compareTo(MIN_GROOVY_VERSION) >= 0;
+        return getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
     /**
