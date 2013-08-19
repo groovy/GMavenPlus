@@ -50,7 +50,7 @@ public class AbstractGroovyMojoTest {
         Mockito.when(testMojo.project.getCompileDependencies()).thenReturn(dependencies);
 
         Assert.assertFalse(testMojo.isGroovyIndy());
-        Assert.assertEquals(GROOVY_VERSION, testMojo.getGroovyVersion());
+        Assert.assertEquals(GROOVY_VERSION, testMojo.getGroovyVersionString());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class AbstractGroovyMojoTest {
         Mockito.when(testMojo.project.getCompileDependencies()).thenReturn(dependencies);
 
         Assert.assertTrue(testMojo.isGroovyIndy());
-        Assert.assertEquals(GROOVY_VERSION, testMojo.getGroovyVersion());
+        Assert.assertEquals(GROOVY_VERSION, testMojo.getGroovyVersionString());
     }
 
     private static class TestGroovyMojo extends AbstractGroovyMojo {
