@@ -447,10 +447,6 @@ mvn gplus:execute
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -462,10 +458,3 @@ mvn gplus:execute
   </dependencies>
 </project>
 +-------------------------------------------------------------------------+
-
-  To compile both the main and test Groovy and Java sources, simply execute the
-  normal compile phase from the default lifecycle:
-
-+---------------------------------------+
-mvn compile
-+---------------------------------------+
