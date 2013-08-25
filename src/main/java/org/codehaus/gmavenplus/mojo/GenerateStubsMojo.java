@@ -49,7 +49,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
             logGroovyVersion("generateStubs");
 
             try {
-                doStubGeneration(getSources(), project.getCompileClasspathElements(), project.getBuild().getOutputDirectory(), stubsOutputDirectory);
+                doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
 
                 resetStubModifiedDates(getStubs());
 

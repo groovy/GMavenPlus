@@ -124,7 +124,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *
      * @param sourcesToCompile The sources to compile
      * @param classpath The classpath to use for compilation
-     * @param mavenBuildOutputDirectory Maven's build output directory
      * @param compileOutputDirectory The directory to write the compiled class files to
      * @throws ClassNotFoundException When a class needed for compilation cannot be found
      * @throws InstantiationException When a class needed for compilation cannot be instantiated
@@ -133,7 +132,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final String mavenBuildOutputDirectory, final File compileOutputDirectory)
+    protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");

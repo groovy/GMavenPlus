@@ -57,9 +57,9 @@ public class GenerateStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testCallsExpectedMethods() throws Exception {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
-        Mockito.doNothing().when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.doNothing().when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
-        Mockito.verify(generateStubsMojo, Mockito.times(1)).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.verify(generateStubsMojo, Mockito.times(1)).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test
@@ -68,14 +68,14 @@ public class GenerateStubsMojoTest {
         Mockito.doReturn(new Version(0)).when(generateStubsMojo).getGroovyVersion();
         Mockito.doReturn(false).when(generateStubsMojo).groovyVersionSupportsAction();
         generateStubsMojo.execute();
-        Mockito.verify(generateStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.verify(generateStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
     }
 
@@ -83,7 +83,7 @@ public class GenerateStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
     }
 
@@ -91,7 +91,7 @@ public class GenerateStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
     }
 
@@ -99,7 +99,7 @@ public class GenerateStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.anyString(), Mockito.any(File.class));
+        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
     }
 

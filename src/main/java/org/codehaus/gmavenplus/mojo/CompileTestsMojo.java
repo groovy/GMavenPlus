@@ -57,7 +57,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 logGroovyVersion("testCompile");
 
                 try {
-                    doCompile(getTestSources(), project.getTestClasspathElements(), project.getBuild().getTestOutputDirectory(), testOutputDirectory);
+                    doCompile(getTestSources(), project.getTestClasspathElements(), testOutputDirectory);
                 } catch (ClassNotFoundException e) {
                     throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
                 } catch (InvocationTargetException e) {

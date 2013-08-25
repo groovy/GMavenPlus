@@ -57,7 +57,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                 logGroovyVersion("testGenerateStubs");
 
                 try {
-                    doStubGeneration(getTestSources(), project.getTestClasspathElements(), project.getBuild().getTestOutputDirectory(), testStubsOutputDirectory);
+                    doStubGeneration(getTestSources(), project.getTestClasspathElements(), testStubsOutputDirectory);
 
                     resetStubModifiedDates(getTestStubs());
 
