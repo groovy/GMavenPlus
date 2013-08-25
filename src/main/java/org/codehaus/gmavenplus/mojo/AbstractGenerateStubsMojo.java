@@ -211,7 +211,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
         getLog().debug("Classpath: ");
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addClasspath", String.class), groovyClassLoader, mavenBuildOutputDirectory);
-        getLog().debug("    " + mavenBuildOutputDirectory);
         if (classpath != null) {
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());

@@ -171,7 +171,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), getClass().getClassLoader());
         getLog().debug("Classpath: ");
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addClasspath", String.class), groovyClassLoader, mavenBuildOutputDirectory);
-        getLog().debug("    " + mavenBuildOutputDirectory);
         if (classpath != null) {
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
