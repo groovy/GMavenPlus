@@ -25,7 +25,9 @@ package org.codehaus.gmavenplus.mojo;  // note that this won't be properly consu
  * The packages are comma separated.
  */
 public class Link {
+    /** Link URL */
     private String href = "";
+    /** Link packages */
     private String packages = "";
 
     /**
@@ -40,10 +42,11 @@ public class Link {
     /**
      * Set the packages attribute.
      *
-     * @param packages the comma separated package prefixs corresponding to this link
+     * @param newPackages the comma separated package prefixs corresponding to this link
+     * @return this object (for fluent invocation)
      */
-    public Link setPackages(final String packages) {
-        this.packages = packages;
+    public Link setPackages(final String newPackages) {
+        this.packages = newPackages;
         return this;
     }
 
@@ -59,10 +62,11 @@ public class Link {
     /**
      * Set the href attribute.
      *
-     * @param hr a <code>String</code> value representing the URL to use for this link
+     * @param newHref a <code>String</code> value representing the URL to use for this link
+     * @return this object (for fluent invocation)
      */
-    public Link setHref(final String hr) {
-        href = hr;
+    public Link setHref(final String newHref) {
+        href = newHref;
         return this;
     }
 

@@ -29,7 +29,9 @@ import java.util.*;
  * @author Keegan Witt
  */
 public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
+    /** Main source directory name */
     public static final String MAIN = "main";
+    /** Test source directory name */
     public static final String TEST = "test";
 
     /**

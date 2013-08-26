@@ -97,10 +97,17 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
         return urls.toArray(new URL[urls.size()]);
     }
 
+    /**
+     * Enum of the various possible classpaths
+     */
     public enum Classpath {
+        /** Compile classpath */
         COMPILE,
+        /** Runtime classpath */
         RUNTIME,
+        /** Test classpath */
         TEST,
+        /** System classpath */
         SYSTEM
     }
 

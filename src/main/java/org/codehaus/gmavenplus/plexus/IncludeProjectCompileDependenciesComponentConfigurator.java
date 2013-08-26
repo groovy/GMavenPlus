@@ -42,6 +42,14 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 public class IncludeProjectCompileDependenciesComponentConfigurator extends AbstractIncludeProjectDependenciesComponentConfigurator {
 //    private static final Log LOG = new SystemStreamLog();
 
+    /**
+     * @param component
+     * @param configuration
+     * @param expressionEvaluator
+     * @param containerRealm
+     * @param listener
+     * @throws ComponentConfigurationException
+     */
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
         addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
@@ -50,6 +58,14 @@ public class IncludeProjectCompileDependenciesComponentConfigurator extends Abst
         converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
     }
 
+    /**
+     * @param component
+     * @param configuration
+     * @param expressionEvaluator
+     * @param containerRealm
+     * @param listener
+     * @throws ComponentConfigurationException
+     */
     @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
