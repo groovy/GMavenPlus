@@ -15,7 +15,7 @@
  */
 
 /*
- * Shamelessly lifted (with minor modifications) from http://stackoverflow.com/questions/2659048/add-maven-build-classpath-to-plugin-execution-classpath
+ * Originally from http://stackoverflow.com/questions/2659048/add-maven-build-classpath-to-plugin-execution-classpath
  */
 
 package org.codehaus.gmavenplus.plexus;
