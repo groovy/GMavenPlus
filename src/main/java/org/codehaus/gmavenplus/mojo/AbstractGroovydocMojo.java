@@ -155,6 +155,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      */
     @SuppressWarnings("unchecked")
     protected void generateGroovydoc(final FileSet[] sourceDirectories, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        if (sourceDirectories == null || sourceDirectories.length == 0) {
+            getLog().info("No source directories specified for Groovydoc generation.  Skipping.");
+            return;
+        }
+
         // get classes we need with reflection
         Class<?> groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
         Class<?> outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");

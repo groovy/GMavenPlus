@@ -101,6 +101,10 @@ public class ExecuteMojo extends AbstractGroovyMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("execute");
+            if (scripts == null || scripts.length == 0) {
+                getLog().info("No scripts specified for execution.  Skipping.");
+                return;
+            }
 
             try {
                 // get classes we need with reflection

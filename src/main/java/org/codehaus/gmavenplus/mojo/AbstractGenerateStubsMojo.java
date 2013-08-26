@@ -178,6 +178,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
      * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+        if (stubSources == null || stubSources.isEmpty()) {
+            getLog().info("No sources specified for stub generation.  Skipping.");
+            return;
+        }
+
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");

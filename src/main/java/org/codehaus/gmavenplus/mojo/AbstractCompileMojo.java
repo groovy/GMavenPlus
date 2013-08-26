@@ -134,6 +134,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     @SuppressWarnings("unchecked")
     protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
+        if (sourcesToCompile == null || sourcesToCompile.isEmpty()) {
+            getLog().info("No sources specified for compilation.  Skipping.");
+            return;
+        }
+
         // get classes we need with reflection
         Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
         Class<?> compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit");
