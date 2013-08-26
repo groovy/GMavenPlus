@@ -170,8 +170,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
 
         // append project classpath to groovyClassLoader and transformLoader
-        ClassLoader parent = ClassLoader.getSystemClassLoader();
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), parent, compilerConfiguration);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), compilationUnitClass.getClassLoader(), compilerConfiguration);
         Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), compilationUnitClass.getClassLoader());
         getLog().debug("Classpath: ");
         if (classpath != null) {
