@@ -42,7 +42,7 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("removeStubs");
 
-        project.getCompileSourceRoots().remove(stubsOutputDirectory);
+        project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
     }
 
 }

@@ -41,6 +41,7 @@ public class RemoveStubsMojoTest {
     private RemoveStubsMojo removeStubsMojo;
     @Mock
     private File stubsDir;
+    private static final String PATH = "FAKE_PATH";
     private MavenProject project;
 
     @Before
@@ -48,18 +49,21 @@ public class RemoveStubsMojoTest {
         project = new MavenProject();
         removeStubsMojo.project = project;
         Mockito.doReturn(new Version(0)).when(removeStubsMojo).getGroovyVersion();
+        Mockito.doReturn(PATH).when(stubsDir).getAbsolutePath();
         removeStubsMojo.stubsOutputDirectory = stubsDir;
     }
 
     @Test
     public void testRemoveSourcePathContainsPath() throws Exception {
         project.addCompileSourceRoot(stubsDir.getAbsolutePath());
+        Assert.assertEquals(1, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
 
     @Test
     public void testRemoveSourcePathNotContainsPath() throws Exception {
+        Assert.assertEquals(0, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
