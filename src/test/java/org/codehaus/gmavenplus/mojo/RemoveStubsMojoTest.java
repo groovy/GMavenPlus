@@ -29,10 +29,8 @@ import org.junit.Test;
  */
 public class RemoveStubsMojoTest {
     private RemoveStubsMojo removeStubsMojo;
-
-    private static final String PATH = "PATH";
-
     private MavenProject project;
+    private static final String PATH = "PATH";
 
     @Before
     public void setup() {
