@@ -118,7 +118,7 @@ mvn compile
   This will modify Maven's source directories to contain both the Java sources
   and the Groovy Stubs.  This might be useful for polyglot builds.
 
-  Alternatively, you can use the GMavenPlus customized lifecycle.  This will
+  Alternatively, you can use the ${project.name} customized lifecycle.  This will
   modify Maven's source directories to contain  both the Java sources and the
   Groovy sources, but not the Groovy stubs.  Note that if you do choose this
   option, there is no mojo that can add the stubs back to Maven's sources,
