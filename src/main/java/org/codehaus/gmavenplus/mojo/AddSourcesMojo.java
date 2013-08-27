@@ -67,7 +67,7 @@ public class AddSourcesMojo extends AbstractGroovySourcesMojo {
      */
     protected void addSourcePath(final String path) {
         if (!project.getCompileSourceRoots().contains(path)) {
-            getLog().debug("Added Source directory: " + path);
+            getLog().debug("Added source directory: " + path);
             project.addCompileSourceRoot(path);
         }
     }
@@ -79,7 +79,7 @@ public class AddSourcesMojo extends AbstractGroovySourcesMojo {
      */
     protected void addTestSourcePath(final String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {
-            getLog().debug("Added Test Source directory: " + path);
+            getLog().debug("Added test source directory: " + path);
             project.addTestCompileSourceRoot(path);
         }
     }
