@@ -17,14 +17,9 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Arrays;
 
 
 /**
@@ -32,33 +27,31 @@ import java.util.Arrays;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class RemoveStubsMojoTest {
     private RemoveStubsMojo removeStubsMojo;
 
     private static final String PATH = "PATH";
 
-    @Mock
     private MavenProject project;
 
     @Before
     public void setup() {
+        project = new MavenProject();
         removeStubsMojo = new RemoveStubsMojo();
         removeStubsMojo.project = project;
     }
 
     @Test
-    public void testAddSourcePathContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
+    public void testRemoveSourcePathContainsPath() {
+        project.addCompileSourceRoot(PATH);
         removeStubsMojo.removeSourcePath(PATH);
-        Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
+        Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
 
     @Test
-    public void testAddSourcePathNotContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        removeStubsMojo.removeSourcePath("OTHER_PATH");
-        Mockito.verify(project, Mockito.times(1)).addCompileSourceRoot(Mockito.anyString());
+    public void testRemoveSourcePathNotContainsPath() {
+        removeStubsMojo.removeSourcePath(PATH);
+        Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
 
 }

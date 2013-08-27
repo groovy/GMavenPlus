@@ -55,9 +55,9 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
      * @param path The test source path to remove from the project's test compile sources
      */
     protected void removeTestSourcePath(final String path) {
-        if (!project.getTestCompileSourceRoots().contains(path)) {
-            getLog().debug("Added Test Source directory: " + path);
-            project.addTestCompileSourceRoot(path);
+        if (project.getTestCompileSourceRoots().contains(path)) {
+            getLog().debug("Removed test source directory: " + path);
+            project.getTestCompileSourceRoots().remove(path);
         }
     }
 
