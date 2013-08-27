@@ -24,7 +24,7 @@ import java.util.*;
 
 
 /**
- * This mojo provides access to the Groovy stub sources.
+ * This mojo provides access to the Groovy sources (including stubs).
  *
  * @author Keegan Witt
  */
