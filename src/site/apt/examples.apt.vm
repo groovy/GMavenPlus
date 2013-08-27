@@ -82,17 +82,6 @@ mvn compile
 +-------------------------------------------------------------------------+
 <project>
   <build>
-    <!-- using our customized lifecycle puts the Groovy sources into Maven's sources.
-         Otherwise the stubs rather than the Groovy sources will be in the sources
-         (although that may be what you want, for example in polyglot builds). -->
-    <packaging>groovy-jar</packaging>
-    <extensions>
-      <extension>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>${project.version}</version>
-      </extension>
-    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
@@ -123,6 +112,97 @@ mvn compile
       <version>${groovyVersion}</version>
     </dependency>
   </dependencies>
+</project>
++-------------------------------------------------------------------------+
+
+  This will modify Maven's source directories to contain both the Java sources
+  and the Groovy Stubs.  This might be useful for polyglot builds.
+
+  Alternatively, you can use the GMavenPlus customized lifecycle.  This will
+  modify Maven's source directories to contain  both the Java sources and the
+  Groovy sources, but not the Groovy stubs.  Note that if you do choose this
+  option, there is no mojo that can add the stubs back to Maven's sources,
+  you'd have to use another plugin
+  like {{{http://mojo.codehaus.org/build-helper-maven-plugin/}Build Helper}}.
+  Additionally, you won't need to specify any executions, as they will be
+  included by default.  To do this, you should add something similar to the
+  following in your <<<pom.xml>>>:
+
++-------------------------------------------------------------------------+
+<project>
+  <packaging>groovy-jar</packaging>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+      </extension>
+    </extensions>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy \>= 1.8.2 should work here -->
+      <version>${groovyVersion}</version>
+    </dependency>
+  </dependencies>
+</project>
++-------------------------------------------------------------------------+
+
+  If using a build extension doesn't work for you for whatever reason, you can
+  still keep just the Groovy sources in Maven's source directories by invoking
+  the source modifying mojos directly.  To do this, you should add something
+  similar to the following in your <<<pom.xml>>>:
+
++-------------------------------------------------------------------------+
+<project>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.codehaus.gmavenplus</groupId>
+      <artifactId>gmavenplus-plugin</artifactId>
+      <version>${project.version}</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generateStubs</goal>
+            <goal>compile</goal>
+            <goal>testGenerateStubs</goal>
+            <goal>testCompile</goal>
+            <goal>addSources</goal>
+            <goal>removeStubs</goal>
+            <goal>removeTestStubs</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+    </plugin>
+  </plugins>
+</build>
+<dependencies>
+  <dependency>
+    <groupId>org.codehaus.groovy</groupId>
+    <artifactId>groovy-all</artifactId>
+    <!-- any version of Groovy \>= 1.8.2 should work here -->
+    <version>${groovyVersion}</version>
+  </dependency>
+</dependencies>
 </project>
 +-------------------------------------------------------------------------+
 
