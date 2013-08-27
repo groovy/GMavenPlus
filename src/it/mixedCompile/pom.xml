@@ -46,15 +46,6 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <executions>
           <execution>
-            <id>compile</id>
-            <goals>
-              <goal>generateStubs</goal>
-              <goal>compile</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-          <execution>
             <id>execute</id>
             <phase>test</phase>
             <goals>
