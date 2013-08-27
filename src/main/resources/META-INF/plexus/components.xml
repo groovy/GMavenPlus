@@ -27,7 +27,8 @@
             <id>default</id>
             <phases>
               <initialize>
-                org.codehaus.gmavenplus:gmavenplus-plugin:addSources
+                org.codehaus.gmavenplus:gmavenplus-plugin:addSources,
+                org.codehaus.gmavenplus:gmavenplus-plugin:addTestSources
               </initialize>
               <generate-sources>
                 org.codehaus.gmavenplus:gmavenplus-plugin:generateStubs

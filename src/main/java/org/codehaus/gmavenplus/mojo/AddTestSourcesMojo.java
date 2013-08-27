@@ -22,39 +22,39 @@ import org.apache.maven.shared.model.fileset.FileSet;
 
 
 /**
- * This mojo adds Groovy sources to the project's sources.
+ * This mojo adds Groovy test sources to the project's test sources.
  *
  * @author Keegan Witt
  *
  * @phase initialize
- * @goal addSources
+ * @goal addTestSources
  * @executionStrategy always
  * @requiresDirectInvocation false
  * @threadSafe
  */
-public class AddSourcesMojo extends AbstractGroovySourcesMojo {
+public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        for (FileSet source : getSourceRoots()) {
-            addSourcePath(source.getDirectory());
+        for (FileSet testSource : getTestSourceRoots()) {
+            addTestSourcePath(testSource.getDirectory());
         }
     }
 
     /**
-     * Adds the specified source path to the project's main compile sources.
+     * Adds the specified test source path to the project's test compile sources.
      *
-     * @param path The source path to add to the project's main compile sources
+     * @param path The test source path to add to the project's test compile sources
      */
-    protected void addSourcePath(final String path) {
-        if (!project.getCompileSourceRoots().contains(path)) {
-            getLog().debug("Added source directory: " + path);
-            project.addCompileSourceRoot(path);
+    protected void addTestSourcePath(final String path) {
+        if (!project.getTestCompileSourceRoots().contains(path)) {
+            getLog().debug("Added test source directory: " + path);
+            project.addTestCompileSourceRoot(path);
         }
     }
 

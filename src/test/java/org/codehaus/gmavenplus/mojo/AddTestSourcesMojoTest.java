@@ -28,13 +28,13 @@ import java.util.Arrays;
 
 
 /**
- * Unit tests for the AddSourcesMojo class.
+ * Unit tests for the AddTestSourcesMojo class.
  *
  * @author Keegan Witt
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AddSourcesMojoTest {
-    private AddSourcesMojo addSourcesMojo;
+public class AddTestSourcesMojoTest {
+    private AddTestSourcesMojo addTestSourcesMojo;
 
     private static final String PATH = "PATH";
 
@@ -43,22 +43,22 @@ public class AddSourcesMojoTest {
 
     @Before
     public void setup() {
-        addSourcesMojo = new AddSourcesMojo();
-        addSourcesMojo.project = project;
+        addTestSourcesMojo = new AddTestSourcesMojo();
+        addTestSourcesMojo.project = project;
     }
 
     @Test
-    public void testAddSourcePathContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourcesMojo.addSourcePath(PATH);
-        Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
+    public void testAddTestSourcePathContainsPath() {
+        Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
+        addTestSourcesMojo.addTestSourcePath(PATH);
+        Mockito.verify(project, Mockito.never()).addTestCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
-    public void testAddSourcePathNotContainsPath() {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourcesMojo.addSourcePath("OTHER_PATH");
-        Mockito.verify(project, Mockito.times(1)).addCompileSourceRoot(Mockito.anyString());
+    public void testAddTestSourcePathNotContainsPath() {
+        Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
+        addTestSourcesMojo.addTestSourcePath("OTHER_PATH");
+        Mockito.verify(project, Mockito.times(1)).addTestCompileSourceRoot(Mockito.anyString());
     }
 
 }
