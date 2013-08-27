@@ -17,9 +17,17 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.File;
 
 
 /**
@@ -27,28 +35,32 @@ import org.junit.Test;
  *
  * @author Keegan Witt
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RemoveStubsMojoTest {
+    @Spy
     private RemoveStubsMojo removeStubsMojo;
+    @Mock
+    private File stubsDir;
     private MavenProject project;
-    private static final String PATH = "PATH";
 
     @Before
     public void setup() {
         project = new MavenProject();
-        removeStubsMojo = new RemoveStubsMojo();
         removeStubsMojo.project = project;
+        Mockito.doReturn(new Version(0)).when(removeStubsMojo).getGroovyVersion();
+        removeStubsMojo.stubsOutputDirectory = stubsDir;
     }
 
     @Test
-    public void testRemoveSourcePathContainsPath() {
-        project.addCompileSourceRoot(PATH);
-        removeStubsMojo.removeSourcePath(PATH);
+    public void testRemoveSourcePathContainsPath() throws Exception {
+        project.addCompileSourceRoot(stubsDir.getAbsolutePath());
+        removeStubsMojo.execute();
         Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
 
     @Test
-    public void testRemoveSourcePathNotContainsPath() {
-        removeStubsMojo.removeSourcePath(PATH);
+    public void testRemoveSourcePathNotContainsPath() throws Exception {
+        removeStubsMojo.execute();
         Assert.assertEquals(0, project.getCompileSourceRoots().size());
     }
 

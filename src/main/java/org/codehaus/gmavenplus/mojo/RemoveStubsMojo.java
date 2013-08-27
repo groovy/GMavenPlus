@@ -19,8 +19,6 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import java.io.File;
-
 
 /**
  * This mojo removes Groovy stubs from the project's sources.
@@ -44,21 +42,7 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         logGroovyVersion("removeStubs");
 
-        for (File stub : getStubs()) {
-            removeSourcePath(stub.getAbsolutePath());
-        }
-    }
-
-    /**
-     * Removes the specified source path from the project's main compile sources.
-     *
-     * @param path The source path to remove from the project's main compile sources
-     */
-    protected void removeSourcePath(final String path) {
-        if (project.getCompileSourceRoots().contains(path)) {
-            getLog().debug("Removed source directory: " + path);
-            project.getCompileSourceRoots().remove(path);
-        }
+        project.getCompileSourceRoots().remove(stubsOutputDirectory);
     }
 
 }

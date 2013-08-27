@@ -17,9 +17,17 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.File;
 
 
 /**
@@ -27,29 +35,33 @@ import org.junit.Test;
  *
  * @author Keegan Witt
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RemoveTestStubsMojoTest {
+    @Spy
     private RemoveTestStubsMojo removeTestStubsMojo;
+    @Mock
+    private File testStubsDir;
     private MavenProject project;
-    private static final String PATH = "PATH";
 
     @Before
     public void setup() {
         project = new MavenProject();
-        removeTestStubsMojo = new RemoveTestStubsMojo();
         removeTestStubsMojo.project = project;
+        Mockito.doReturn(new Version(0)).when(removeTestStubsMojo).getGroovyVersion();
+        removeTestStubsMojo.testStubsOutputDirectory = testStubsDir;
     }
 
     @Test
-    public void testRemoveTestSourcePathContainsPath() {
-        project.addTestCompileSourceRoot(PATH);
-        removeTestStubsMojo.removeTestSourcePath(PATH);
-        Assert.assertEquals(0, project.getCompileSourceRoots().size());
+    public void testRemoveTestSourcePathContainsPath() throws Exception {
+        project.addCompileSourceRoot(testStubsDir.getAbsolutePath());
+        removeTestStubsMojo.execute();
+        Assert.assertEquals(0, project.getTestCompileSourceRoots().size());
     }
 
     @Test
-    public void testRemoveTestSourcePathNotContainsPath() {
-        removeTestStubsMojo.removeTestSourcePath(PATH);
-        Assert.assertEquals(0, project.getCompileSourceRoots().size());
+    public void testRemoveTestSourcePathNotContainsPath() throws Exception {
+        removeTestStubsMojo.execute();
+        Assert.assertEquals(0, project.getTestCompileSourceRoots().size());
     }
 
 }
