@@ -28,6 +28,17 @@ mvn test-compile
 +-------------------------------------------------------------------------+
 <project>
   <build>
+    <!-- using our customized lifecycle puts the Groovy sources into Maven's sources.
+         Otherwise the stubs rather than the Groovy sources will be in the sources
+         (although that may be what you want, for example in polyglot builds). -->
+    <packaging>groovy-jar</packaging>
+    <extensions>
+      <extension>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>

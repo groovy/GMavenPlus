@@ -19,10 +19,6 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.shared.model.fileset.FileSet;
-import org.apache.maven.shared.model.fileset.util.FileSetManager;
-
-import java.io.File;
-import java.util.Arrays;
 
 
 /**
@@ -45,18 +41,12 @@ public class AddSourcesMojo extends AbstractGroovySourcesMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("addSources");
-
-        FileSetManager fileSetManager = new FileSetManager(getLog());
         for (FileSet source : getSourceRoots()) {
-            for (String include : Arrays.asList(fileSetManager.getIncludedFiles(source))) {
-                addSourcePath(project.getBasedir().getAbsolutePath() + File.separator + source.getDirectory() + File.separator + include);
-            }
+            addSourcePath(source.getDirectory());
         }
+
         for (FileSet testSource : getTestSourceRoots()) {
-            for (String include : Arrays.asList(fileSetManager.getIncludedFiles(testSource))) {
-                addTestSourcePath(project.getBasedir().getAbsolutePath() + File.separator + testSource.getDirectory() + File.separator + include);
-            }
+            addTestSourcePath(testSource.getDirectory());
         }
     }
 

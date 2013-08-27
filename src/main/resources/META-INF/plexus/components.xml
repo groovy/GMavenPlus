@@ -17,19 +17,6 @@
       </configuration>
     </component>
 
-    <!-- defines the gmavenplus-plugin packaging and artifact handling -->
-    <component>
-      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-      <role-hint>gmavenplus-plugin</role-hint>
-      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
-      <configuration>
-        <type>gmavenplus-plugin</type>
-        <extension>jar</extension>
-        <language>java</language>
-        <addedToClasspath>true</addedToClasspath>
-      </configuration>
-    </component>
-
     <component>
       <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
       <role-hint>groovy-jar</role-hint>
@@ -54,7 +41,7 @@
                 org.codehaus.gmavenplus:gmavenplus-plugin:compile
               </compile>
               <generate-test-sources>
-                org.codehaus.gmavenplus:gmavenplus-plugin:generateTestStubs
+                org.codehaus.gmavenplus:gmavenplus-plugin:testGenerateStubs
               </generate-test-sources>
               <process-test-resources>
                 org.apache.maven.plugins:maven-resources-plugin:testResources

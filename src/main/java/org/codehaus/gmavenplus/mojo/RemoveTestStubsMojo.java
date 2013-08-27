@@ -40,8 +40,6 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
      * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("removeTestStubs");
-
         project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
     }
 

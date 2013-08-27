@@ -13,7 +13,7 @@
 
   <artifactId>gmavenplus-plugin-it-mixedCompile</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
+  <packaging>groovy-jar</packaging>
   <name>GMavenPlus Plugin Mixed Compile Test</name>
 
   <dependencies>
@@ -32,18 +32,44 @@
   </dependencies>
 
   <build>
+    <!-- this is here to bind the build to our customized lifecycle -->
+    <extensions>
+      <extension>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>@project.version@</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <executions>
           <execution>
+            <id>compile</id>
             <goals>
               <goal>generateStubs</goal>
               <goal>compile</goal>
               <goal>testGenerateStubs</goal>
               <goal>testCompile</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>execute</id>
+            <phase>test</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                <script><![CDATA[
+                  assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "java")
+                  assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "groovy")
+                  assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "java")
+                  assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "groovy")
+                ]]></script>
+              </scripts>
+            </configuration>
           </execution>
         </executions>
         <dependencies>
