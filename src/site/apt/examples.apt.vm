@@ -131,19 +131,22 @@ mvn compile
 +-------------------------------------------------------------------------+
 <project>
   <packaging>groovy-jar</packaging>
+  <properties>
+    <gmavenplusVersion>${project.version}</gmavenplusVersion>
+  </properties>
   <build>
     <extensions>
       <extension>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>${gmavenplusVersion}</version>
       </extension>
     </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>${gmavenplusVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -169,40 +172,40 @@ mvn compile
 
 +-------------------------------------------------------------------------+
 <project>
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.codehaus.gmavenplus</groupId>
-      <artifactId>gmavenplus-plugin</artifactId>
-      <version>${project.version}</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>generateStubs</goal>
-            <goal>compile</goal>
-            <goal>testGenerateStubs</goal>
-            <goal>testCompile</goal>
-            <goal>addSources</goal>
-            <goal>removeStubs</goal>
-            <goal>removeTestStubs</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-compiler-plugin</artifactId>
-    </plugin>
-  </plugins>
-</build>
-<dependencies>
-  <dependency>
-    <groupId>org.codehaus.groovy</groupId>
-    <artifactId>groovy-all</artifactId>
-    <!-- any version of Groovy \>= 1.8.2 should work here -->
-    <version>${groovyVersion}</version>
-  </dependency>
-</dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+              <goal>testGenerateStubs</goal>
+              <goal>testCompile</goal>
+              <goal>addSources</goal>
+              <goal>removeStubs</goal>
+              <goal>removeTestStubs</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy \>= 1.8.2 should work here -->
+      <version>${groovyVersion}</version>
+    </dependency>
+  </dependencies>
 </project>
 +-------------------------------------------------------------------------+
 
