@@ -40,7 +40,7 @@
             <id>default</id>
             <phases>
               <initialize>
-                org.codehaus.gmavenplus:gmavenplus-plugin:addSource
+                org.codehaus.gmavenplus:gmavenplus-plugin:addSources
               </initialize>
               <generate-sources>
                 org.codehaus.gmavenplus:gmavenplus-plugin:generateStubs
@@ -50,6 +50,7 @@
               </process-resources>
               <compile>
                 org.apache.maven.plugins:maven-compiler-plugin:compile,
+                org.codehaus.gmavenplus:gmavenplus-plugin:removeStubs,
                 org.codehaus.gmavenplus:gmavenplus-plugin:compile
               </compile>
               <generate-test-sources>
@@ -60,6 +61,7 @@
               </process-test-resources>
               <test-compile>
                 org.apache.maven.plugins:maven-compiler-plugin:testCompile,
+                org.codehaus.gmavenplus:gmavenplus-plugin:removeTestStubs,
                 org.codehaus.gmavenplus:gmavenplus-plugin:testCompile
               </test-compile>
               <test>

@@ -26,17 +26,17 @@ import java.util.Arrays;
 
 
 /**
- * This mojo adds Groovy sources to the project's sources.
+ * This mojo adds Groovy sources (and test sources) to the project's sources (and test sources).
  *
  * @author Keegan Witt
  *
  * @phase initialize
- * @goal addSource
+ * @goal addSources
  * @executionStrategy always
  * @requiresDirectInvocation false
  * @threadSafe
  */
-public class AddSourceMojo extends AbstractGroovySourcesMojo {
+public class AddSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Executes this mojo.
@@ -45,7 +45,7 @@ public class AddSourceMojo extends AbstractGroovySourcesMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("addSource");
+        logGroovyVersion("addSources");
 
         FileSetManager fileSetManager = new FileSetManager(getLog());
         for (FileSet source : getSourceRoots()) {
@@ -73,9 +73,9 @@ public class AddSourceMojo extends AbstractGroovySourcesMojo {
     }
 
     /**
-     * Adds the specified source path to the project's test compile sources.
+     * Adds the specified test source path to the project's test compile sources.
      *
-     * @param path The source path to add to the project's test compile sources
+     * @param path The test source path to add to the project's test compile sources
      */
     protected void addTestSourcePath(final String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {

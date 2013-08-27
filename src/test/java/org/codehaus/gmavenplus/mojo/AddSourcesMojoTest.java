@@ -28,13 +28,13 @@ import java.util.Arrays;
 
 
 /**
- * Unit tests for the AddSourceMojo class.
+ * Unit tests for the AddSourcesMojo class.
  *
  * @author Keegan Witt
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AddSourceMojoTest {
-    private AddSourceMojo addSourceMojo;
+public class AddSourcesMojoTest {
+    private AddSourcesMojo addSourcesMojo;
 
     private static final String PATH = "PATH";
 
@@ -43,35 +43,35 @@ public class AddSourceMojoTest {
 
     @Before
     public void setup() {
-        addSourceMojo = new AddSourceMojo();
-        addSourceMojo.project = project;
+        addSourcesMojo = new AddSourcesMojo();
+        addSourcesMojo.project = project;
     }
 
     @Test
     public void testAddSourcePathContainsPath() {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourceMojo.addSourcePath(PATH);
+        addSourcesMojo.addSourcePath(PATH);
         Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
     public void testAddSourcePathNotContainsPath() {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourceMojo.addSourcePath("OTHER_PATH");
+        addSourcesMojo.addSourcePath("OTHER_PATH");
         Mockito.verify(project, Mockito.times(1)).addCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
     public void testAddTestSourcePathContainsPath() {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
-        addSourceMojo.addTestSourcePath(PATH);
+        addSourcesMojo.addTestSourcePath(PATH);
         Mockito.verify(project, Mockito.never()).addTestCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
     public void testAddTestSourcePathNotContainsPath() {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getTestCompileSourceRoots();
-        addSourceMojo.addTestSourcePath("OTHER_PATH");
+        addSourcesMojo.addTestSourcePath("OTHER_PATH");
         Mockito.verify(project, Mockito.times(1)).addTestCompileSourceRoot(Mockito.anyString());
     }
 

@@ -24,8 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import org.apache.maven.shared.model.fileset.FileSet;
-import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 
 /**
@@ -33,7 +31,7 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
  *
  * @author Keegan Witt
  */
-public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMojo {
+public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.8.1?
     /*
      * For some reason, the JavaStubCompilationUnit is silently not creating my
@@ -45,20 +43,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
      * The minimum version of Groovy that this mojo supports.
      */
     protected static final Version MIN_GROOVY_VERSION = new Version(1, 8, 2);
-
-    /**
-     * The location for the compiled classes.
-     *
-     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
-     */
-    protected File stubsOutputDirectory;
-
-    /**
-     * The location for the compiled test classes.
-     *
-     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
-     */
-    protected File testStubsOutputDirectory;
 
     /**
      * The encoding of source files.
@@ -126,44 +110,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovySourcesMoj
      * @parameter default-value="0"
      */
     protected int tolerance;
-
-    /**
-     * Gets the set of files of the main stubs.
-     *
-     * @return The set of files of the main stubs
-     */
-    protected Set<File> getStubs() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        FileSet fileSet = new FileSet();
-        fileSet.setDirectory(stubsOutputDirectory.getAbsolutePath());
-        fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
-        for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(stubsOutputDirectory, file));
-        }
-
-        return files;
-    }
-
-    /**
-     * Gets the set of files of the test stubs.
-     *
-     * @return The set of files of the test stubs
-     */
-    protected Set<File> getTestStubs() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        FileSet fileSet = new FileSet();
-        fileSet.setDirectory(testStubsOutputDirectory.getAbsolutePath());
-        fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
-        for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(testStubsOutputDirectory, file));
-        }
-
-        return files;
-    }
 
     /**
      * Performs the stub generation on the specified source files.
