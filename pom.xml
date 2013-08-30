@@ -24,6 +24,7 @@
     <junitVersion>4.11</junitVersion>
     <compilerVersion>3.1</compilerVersion>
     <surefireVersion>2.16</surefireVersion>
+    <coberturaVersion>2.6</coberturaVersion>
     <pluginVersion>3.2</pluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.1.6</groovyVersion>
@@ -275,6 +276,18 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${coberturaVersion}</version>
+        <configuration>
+          <instrumentation>
+            <excludes>
+              <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
+            </excludes>
+          </instrumentation>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.3</version>
@@ -352,7 +365,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>${coberturaVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
