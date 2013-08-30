@@ -15,9 +15,7 @@ Examples
 
   * {{{InvokeDynamic_Compilation}InvokeDynamic Compilation}}
 
-  * {{{Groovydoc_for_Pure_Groovy}Groovydoc for Pure Groovy}}
-
-  * {{{Groovydoc_for_Joint_Projects}Groovydoc for Joint Projects}}
+  * {{{Groovydoc}Groovydoc}}
 
   * {{{Add_Groovydoc_to_Site}Add Groovydoc to Site}}
 
@@ -166,9 +164,9 @@ mvn compile
 +-------------------------------------------------------------------------+
 
   If using a build extension doesn't work for you for whatever reason, you can
-  still keep just the Groovy sources in Maven's source directories by invoking
-  the source modifying mojos directly.  To do this, you should add something
-  similar to the following in your <<<pom.xml>>>:
+  still keep the Groovy sources (without the stubs) in Maven's source
+  directories by invoking the source modifying mojos directly.  To do this, you
+  should add something similar to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
@@ -271,7 +269,7 @@ mvn compile
 +---------------------------------------+
 
 
-* {Groovydoc for Pure Groovy}
+* {Groovydoc}
 
   To generate Groovydoc for mixed Groovy and Java projects manually, you
   only need add the plugin (no need to configure any executions).  To do
@@ -306,45 +304,9 @@ mvn compile
 mvn gplus:groovydoc
 +---------------------------------------+
 
-  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
-
-+-----------------------------------------------------------------------------+
-<pluginGroups>
-  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
-<pluginGroups>
-+-----------------------------------------------------------------------------+
-
-
-* {Groovydoc for Joint Projects}
-
-  To generate Groovydoc for joint Groovy projects manually, you only need
-  add the plugin (no need to configure any executions).  To do this, you
-  should add something similar to the following in your <<<pom.xml>>>:
-
-+-----------------------------------------------------------------------------+
-<project>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>${project.version}</version>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.8.2 should work here -->
-      <version>${groovyVersion}</version>
-    </dependency>
-  </dependencies>
-</project>
-+-----------------------------------------------------------------------------+
-
-  To generate the groovydoc for the main sources, simply execute GMavenPlus's
-  generateStubs and groovydoc goals:
+  If you are doing this for Groovy objects that also use Jav sources, you will
+  also need to execute GMavenPlus's generateStubs goal in addition to the
+  groovydoc goal:
 
 +---------------------------------------+
 mvn gplus:generateStubs gplus:groovydoc

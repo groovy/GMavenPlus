@@ -10,9 +10,9 @@ Usage
 * {Compiling your Groovy sources}
 
   The compilation goals (including those for joint compilation) for the
-  ${project.name} are bound to their respective phases in the build
-  lifecycle. So to compile your sources, you need only to tell maven
-  until which lifecycle to execute. The following will compile your sources:
+  ${project.name} are bound to their respective phases in the build lifecycle.
+  So to compile your sources, you need only tell maven how much of the
+  lifecycle to execute. The following will compile your sources:
 
 +---------------+
 mvn compile
