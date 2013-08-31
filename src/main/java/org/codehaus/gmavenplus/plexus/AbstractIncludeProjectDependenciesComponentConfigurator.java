@@ -32,6 +32,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param classpath The classpath to load into the container realm
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */
@@ -55,6 +56,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param classpath The classpath to load into the container realm
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException When parsing components configuration fails
      */

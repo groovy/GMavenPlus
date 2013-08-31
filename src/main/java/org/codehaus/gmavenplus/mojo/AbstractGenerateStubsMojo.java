@@ -97,7 +97,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *     <dd>Possible Errors</dd>
      *   <dt>3</dt>
      *     <dd>Paranoia</dd>
-     * </ul>
+     * </dl>
      *
      * @parameter default-value="1"
      */

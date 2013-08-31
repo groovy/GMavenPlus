@@ -98,7 +98,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *     <dd>Possible Errors</dd>
      *   <dt>3</dt>
      *     <dd>Paranoia</dd>
-     * </ul>
+     * </dl>
      *
      * @parameter default-value="1"
      */
