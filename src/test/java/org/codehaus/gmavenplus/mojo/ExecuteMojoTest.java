@@ -87,4 +87,16 @@ public class ExecuteMojoTest {
         Assert.assertEquals(line, actualLine);
     }
 
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        Mockito.when(executeMojo.getGroovyVersion()).thenReturn(Version.parseFromString("1.5.0"));
+        Assert.assertTrue(executeMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        Mockito.when(executeMojo.getGroovyVersion()).thenReturn(Version.parseFromString("1.1-rc-3"));
+        Assert.assertFalse(executeMojo.groovyVersionSupportsAction());
+    }
+
 }

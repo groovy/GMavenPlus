@@ -76,9 +76,9 @@ public class AbstractGroovydocMojoTest {
     private class TestMojo extends AbstractGroovydocMojo {
         private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
 
-        private TestMojo() { }
+        protected TestMojo() { }
 
-        private TestMojo(String overrideGroovyVersion) {
+        protected TestMojo(String overrideGroovyVersion) {
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 

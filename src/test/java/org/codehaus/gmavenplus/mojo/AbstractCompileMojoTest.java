@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +65,30 @@ public class AbstractCompileMojoTest {
         Assert.assertEquals(0, testSources.size());
     }
 
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        testMojo = new TestMojo("1.5.0");
+        Assert.assertTrue(testMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        testMojo = new TestMojo("1.1-rc-3");
+        Assert.assertFalse(testMojo.groovyVersionSupportsAction());
+    }
+
     private class TestMojo extends AbstractCompileMojo {
+        private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+
+        protected TestMojo() { }
+
+        protected TestMojo(String overrideGroovyVersion) {
+            this.overrideGroovyVersion = overrideGroovyVersion;
+        }
+
+        protected Version getGroovyVersion() {
+            return Version.parseFromString(overrideGroovyVersion);
+        }
 
         protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
             return null;

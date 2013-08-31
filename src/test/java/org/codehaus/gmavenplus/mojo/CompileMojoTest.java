@@ -19,6 +19,8 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.model.fileset.FileSet;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,6 +95,15 @@ public class CompileMojoTest {
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testGroovyVersionDoesntSupportAction() throws Exception {
+        Mockito.doReturn(new Version(0)).when(compileMojo).getGroovyVersion();
+        Mockito.doReturn(false).when(compileMojo).groovyVersionSupportsAction();
+        compileMojo.execute();
+        Mockito.verify(compileMojo, Mockito.never()).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
 }

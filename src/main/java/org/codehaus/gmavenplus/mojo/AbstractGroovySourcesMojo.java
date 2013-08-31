@@ -40,7 +40,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      *
      * @parameter
      */
-    private FileSet[] sources;
+    protected FileSet[] sources;
 
     /**
      * The Groovy test source files (relative paths).
@@ -48,7 +48,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      *
      * @parameter
      */
-    private FileSet[] testSources;
+    protected FileSet[] testSources;
 
     /**
      * Gets the filesets of the the main sources.

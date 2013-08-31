@@ -30,6 +30,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -121,12 +122,21 @@ public class AbstractGenerateStubsMojoTest {
         Assert.assertFalse(testMojo.groovyVersionSupportsAction());
     }
 
+    @Test
+    public void testResetStubModifiedDates() {
+        File stub = Mockito.mock(File.class);
+        Set<File> stubs = new HashSet<File>();
+        stubs.add(stub);
+        testMojo.resetStubModifiedDates(stubs);
+        Mockito.verify(stub, Mockito.atLeastOnce()).setLastModified(Mockito.anyLong());
+    }
+
     private class TestMojo extends AbstractGenerateStubsMojo {
         private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
 
-        private TestMojo() { }
+        protected TestMojo() { }
 
-        private TestMojo(String overrideGroovyVersion) {
+        protected TestMojo(String overrideGroovyVersion) {
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 
