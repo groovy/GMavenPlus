@@ -20,7 +20,7 @@
     <javaVersion>1.5</javaVersion>
     <minMavenVersion>2.2.1</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <coberturaVersion>2.6</coberturaVersion>
+    <coberturaVersion>2.5.2</coberturaVersion>
     <!-- these are properties so integration tests can use them -->
     <junitVersion>4.11</junitVersion>
     <compilerVersion>3.1</compilerVersion>
