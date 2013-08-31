@@ -283,8 +283,8 @@
           <check />
           <instrumentation>
             <excludes>
-              <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
-              <exclude>org/codehaus/gmavenplus/groovyworkarounds/GroovyDocTemplateInfo.class</exclude>
+              <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>  <!-- excluded because is a generated class -->
+              <exclude>org/codehaus/gmavenplus/groovyworkarounds/GroovyDocTemplateInfo.class</exclude>  <!-- excluded because is copied from and maintained in Groovy project -->
             </excludes>
           </instrumentation>
         </configuration>
