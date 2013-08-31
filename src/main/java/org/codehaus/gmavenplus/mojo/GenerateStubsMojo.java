@@ -25,7 +25,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
- * Generates stubs for the main sources.
+ * Generates stubs for the main Groovy sources and adds them to Maven's sources for the Maven compiler plugin to find.
  * Note that this mojo requires Groovy >= 1.8.2.
  *
  * @author Keegan Witt
