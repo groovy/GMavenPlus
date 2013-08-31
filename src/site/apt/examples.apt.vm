@@ -114,17 +114,18 @@ mvn compile
 +-------------------------------------------------------------------------+
 
   This will modify Maven's source directories to contain both the Java sources
-  and the Groovy Stubs.  This might be useful for polyglot builds.
+  and the Groovy Stubs (which )might be useful for polyglot builds), but not
+  the Groovy sources.
 
   Alternatively, you can use the ${project.name} customized lifecycle.  This will
-  modify Maven's source directories to contain  both the Java sources and the
+  modify Maven's source directories to contain both the Java sources and the
   Groovy sources, but not the Groovy stubs.  Note that if you do choose this
-  option, there is no mojo that can add the stubs back to Maven's sources,
-  you'd have to use another plugin
+  option, ${project.name} can't add the stubs back to Maven's sources.
+  If you need them, you'll have to use another plugin
   like {{{http://mojo.codehaus.org/build-helper-maven-plugin/}Build Helper}}.
-  Additionally, you won't need to specify any executions, as they will be
-  included by default.  To do this, you should add something similar to the
-  following in your <<<pom.xml>>>:
+  Additionally, you won't need to specify any executions, as all compilation
+  mojos are included by default.  To do this, you should add something similar
+  to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>

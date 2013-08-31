@@ -9,7 +9,7 @@ Usage
 
 * {Compiling your Groovy sources}
 
-  The compilation goals (including those for joint compilation) for the
+  The compilation goals (including those for joint compilation) for
   ${project.name} are bound to their respective phases in the build lifecycle.
   So to compile your sources, you need only tell maven how much of the
   lifecycle to execute. The following will compile your sources:
