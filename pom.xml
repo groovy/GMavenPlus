@@ -280,6 +280,7 @@
         <artifactId>cobertura-maven-plugin</artifactId>
         <version>${coberturaVersion}</version>
         <configuration>
+          <check />
           <instrumentation>
             <excludes>
               <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
