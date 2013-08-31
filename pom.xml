@@ -283,6 +283,7 @@
           <instrumentation>
             <excludes>
               <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
+              <exclude>org/codehaus/gmavenplus/groovyworkarounds/GroovyDocTemplateInfo.class</exclude>
             </excludes>
           </instrumentation>
         </configuration>
