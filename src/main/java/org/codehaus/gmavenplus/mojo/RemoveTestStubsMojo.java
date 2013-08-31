@@ -25,7 +25,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author Keegan Witt
  *
- * @phase initialize
+ * @phase test-compile
  * @goal removeTestStubs
  * @executionStrategy always
  * @requiresDirectInvocation false
