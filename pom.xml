@@ -11,7 +11,7 @@
   <groupId>org.codehaus.gmavenplus</groupId>
   <artifactId>gmavenplus-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0-beta-3</version>
+  <version>1.0-beta-4-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -441,7 +441,7 @@
     <url>http://github.com/groovy/GMavenPlus</url>
     <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>
     <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
-    <tag>1.0-beta-3</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
