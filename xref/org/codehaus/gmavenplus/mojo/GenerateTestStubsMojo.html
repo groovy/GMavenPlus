@@ -35,68 +35,66 @@
 <a class="jxr_linenumber" name="25" href="#25">25</a>  
 <a class="jxr_linenumber" name="26" href="#26">26</a>  
 <a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_javadoccomment"> * Generates stubs for the test sources.</em>
-<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment"> * Note that this mojo requires Groovy &gt;= 1.7.0.</em>
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_javadoccomment"> * Generates stubs for the test Groovy sources and adds them to Maven's test sources for the Maven compiler plugin to find.</em>
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment"> * Note that this mojo requires Groovy &gt;= 1.8.2.</em>
 <a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="33" href="#33">33</a>  <em class="jxr_javadoccomment"> * @goal testGenerateStubs</em>
 <a class="jxr_linenumber" name="34" href="#34">34</a>  <em class="jxr_javadoccomment"> * @phase generate-test-sources</em>
-<a class="jxr_linenumber" name="35" href="#35">35</a>  <em class="jxr_javadoccomment"> * @requiresDependencyResolution test</em>
-<a class="jxr_linenumber" name="36" href="#36">36</a>  <em class="jxr_javadoccomment"> * @threadSafe</em>
-<a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="38" href="#38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/GenerateTestStubsMojo.html">GenerateTestStubsMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGenerateStubsMojo.html">AbstractGenerateStubsMojo</a> {
-<a class="jxr_linenumber" name="39" href="#39">39</a>  
-<a class="jxr_linenumber" name="40" href="#40">40</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment">     * Flag to allow test compilation to be skipped.</em>
-<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment">     * @parameter property="maven.test.skip" default-value="false"</em>
-<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="45" href="#45">45</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> skip;
-<a class="jxr_linenumber" name="46" href="#46">46</a>  
-<a class="jxr_linenumber" name="47" href="#47">47</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="48" href="#48">48</a>  <em class="jxr_javadoccomment">     * Executes this mojo.</em>
-<a class="jxr_linenumber" name="49" href="#49">49</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="50" href="#50">50</a>  <em class="jxr_javadoccomment">     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed</em>
-<a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment">     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed</em>
-<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="53" href="#53">53</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException {
-<a class="jxr_linenumber" name="54" href="#54">54</a>          <strong class="jxr_keyword">if</strong> (!skip) {
-<a class="jxr_linenumber" name="55" href="#55">55</a>              <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
-<a class="jxr_linenumber" name="56" href="#56">56</a>                  logGroovyVersion(<span class="jxr_string">"testGenerateStubs"</span>);
-<a class="jxr_linenumber" name="57" href="#57">57</a>  
-<a class="jxr_linenumber" name="58" href="#58">58</a>                  <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="59" href="#59">59</a>                      doStubGeneration(getTestSources(), project.getTestClasspathElements(), project.getBuild().getTestOutputDirectory(), testStubsOutputDirectory);
-<a class="jxr_linenumber" name="60" href="#60">60</a>                      resetStubModifiedDates(getTestStubs());
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <em class="jxr_javadoccomment"> * @configurator include-project-test-dependencies</em>
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <em class="jxr_javadoccomment"> * @requiresDependencyResolution test</em>
+<a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment"> * @threadSafe</em>
+<a class="jxr_linenumber" name="38" href="#38">38</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="39" href="#39">39</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/GenerateTestStubsMojo.html">GenerateTestStubsMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGenerateStubsMojo.html">AbstractGenerateStubsMojo</a> {
+<a class="jxr_linenumber" name="40" href="#40">40</a>  
+<a class="jxr_linenumber" name="41" href="#41">41</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment">     * Flag to allow test compilation to be skipped.</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment">     * @parameter property="maven.test.skip" default-value="false"</em>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="46" href="#46">46</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> skip;
+<a class="jxr_linenumber" name="47" href="#47">47</a>  
+<a class="jxr_linenumber" name="48" href="#48">48</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="49" href="#49">49</a>  <em class="jxr_javadoccomment">     * Executes this mojo.</em>
+<a class="jxr_linenumber" name="50" href="#50">50</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment">     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed</em>
+<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment">     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed</em>
+<a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException {
+<a class="jxr_linenumber" name="55" href="#55">55</a>          <strong class="jxr_keyword">if</strong> (!skip) {
+<a class="jxr_linenumber" name="56" href="#56">56</a>              <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
+<a class="jxr_linenumber" name="57" href="#57">57</a>                  logGroovyVersion(<span class="jxr_string">"testGenerateStubs"</span>);
+<a class="jxr_linenumber" name="58" href="#58">58</a>  
+<a class="jxr_linenumber" name="59" href="#59">59</a>                  <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="60" href="#60">60</a>                      doStubGeneration(getTestSources(), project.getTestClasspathElements(), testStubsOutputDirectory);
 <a class="jxr_linenumber" name="61" href="#61">61</a>  
-<a class="jxr_linenumber" name="62" href="#62">62</a>                      <em class="jxr_comment">// add stubs to project source so the Maven Compiler Plugin can find them</em>
-<a class="jxr_linenumber" name="63" href="#63">63</a>                      project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
-<a class="jxr_linenumber" name="64" href="#64">64</a>  
-<a class="jxr_linenumber" name="65" href="#65">65</a>                      <em class="jxr_comment">// log generated stubs</em>
-<a class="jxr_linenumber" name="66" href="#66">66</a>                      <strong class="jxr_keyword">int</strong> stubCount = getTestStubs().size();
-<a class="jxr_linenumber" name="67" href="#67">67</a>                      getLog().info(<span class="jxr_string">"Generated "</span> + stubCount + <span class="jxr_string">" stubs."</span>);
-<a class="jxr_linenumber" name="68" href="#68">68</a>                  } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
-<a class="jxr_linenumber" name="69" href="#69">69</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?"</span>, e);
-<a class="jxr_linenumber" name="70" href="#70">70</a>                  } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
-<a class="jxr_linenumber" name="71" href="#71">71</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="72" href="#72">72</a>                  } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
-<a class="jxr_linenumber" name="73" href="#73">73</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="74" href="#74">74</a>                  } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
-<a class="jxr_linenumber" name="75" href="#75">75</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="76" href="#76">76</a>                  } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="77" href="#77">77</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Test dependencies weren't resolved."</span>, e);
-<a class="jxr_linenumber" name="78" href="#78">78</a>                  } <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
-<a class="jxr_linenumber" name="79" href="#79">79</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to add project dependencies to classpath."</span>, e);
-<a class="jxr_linenumber" name="80" href="#80">80</a>                  }
-<a class="jxr_linenumber" name="81" href="#81">81</a>              } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="82" href="#82">82</a>                  getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + getGroovyVersion() + <span class="jxr_string">") doesn't support stub generation.  The minimum version of Groovy required is "</span> + MIN_GROOVY_VERSION + <span class="jxr_string">".  Skipping stub generation."</span>);
-<a class="jxr_linenumber" name="83" href="#83">83</a>              }
-<a class="jxr_linenumber" name="84" href="#84">84</a>          } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="85" href="#85">85</a>              getLog().info(<span class="jxr_string">"Skipping generation of test stubs because ${maven.test.skip} was set to true."</span>);
-<a class="jxr_linenumber" name="86" href="#86">86</a>          }
-<a class="jxr_linenumber" name="87" href="#87">87</a>      }
-<a class="jxr_linenumber" name="88" href="#88">88</a>  
-<a class="jxr_linenumber" name="89" href="#89">89</a>  }
+<a class="jxr_linenumber" name="62" href="#62">62</a>                      resetStubModifiedDates(getTestStubs());
+<a class="jxr_linenumber" name="63" href="#63">63</a>  
+<a class="jxr_linenumber" name="64" href="#64">64</a>                      <em class="jxr_comment">// add stubs to project source so the Maven Compiler Plugin can find them</em>
+<a class="jxr_linenumber" name="65" href="#65">65</a>                      project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
+<a class="jxr_linenumber" name="66" href="#66">66</a>                  } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
+<a class="jxr_linenumber" name="67" href="#67">67</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?"</span>, e);
+<a class="jxr_linenumber" name="68" href="#68">68</a>                  } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
+<a class="jxr_linenumber" name="69" href="#69">69</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="70" href="#70">70</a>                  } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
+<a class="jxr_linenumber" name="71" href="#71">71</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="72" href="#72">72</a>                  } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
+<a class="jxr_linenumber" name="73" href="#73">73</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="74" href="#74">74</a>                  } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
+<a class="jxr_linenumber" name="75" href="#75">75</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Test dependencies weren't resolved."</span>, e);
+<a class="jxr_linenumber" name="76" href="#76">76</a>                  } <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
+<a class="jxr_linenumber" name="77" href="#77">77</a>                      <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to add project dependencies to classpath."</span>, e);
+<a class="jxr_linenumber" name="78" href="#78">78</a>                  }
+<a class="jxr_linenumber" name="79" href="#79">79</a>              } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="80" href="#80">80</a>                  getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + getGroovyVersion() + <span class="jxr_string">") doesn't support stub generation.  The minimum version of Groovy required is "</span> + MIN_GROOVY_VERSION + <span class="jxr_string">".  Skipping stub generation."</span>);
+<a class="jxr_linenumber" name="81" href="#81">81</a>              }
+<a class="jxr_linenumber" name="82" href="#82">82</a>          } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="83" href="#83">83</a>              getLog().info(<span class="jxr_string">"Skipping generation of test stubs because ${maven.test.skip} was set to true."</span>);
+<a class="jxr_linenumber" name="84" href="#84">84</a>          }
+<a class="jxr_linenumber" name="85" href="#85">85</a>      }
+<a class="jxr_linenumber" name="86" href="#86">86</a>  
+<a class="jxr_linenumber" name="87" href="#87">87</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

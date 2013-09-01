@@ -106,20 +106,20 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Method findMethod(<span class="keyword">final</span> Class&lt;?&gt; clazz, <span class="keyword">final</span> String name, <span class="keyword">final</span> Class&lt;?&gt;... paramTypes) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;46</td>  <td class="nbHitsCovered"><a title="Line 46: Conditional coverage 100% (2/2).">&nbsp;8</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 46: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (clazz == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;46</td>  <td class="nbHitsCovered"><a title="Line 46: Conditional coverage 100% (2/2).">&nbsp;20</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 46: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (clazz == <span class="keyword">null</span>) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;47</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Class must not be null."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;49</td>  <td class="nbHitsCovered"><a title="Line 49: Conditional coverage 100% (2/2).">&nbsp;7</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 49: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (name == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;49</td>  <td class="nbHitsCovered"><a title="Line 49: Conditional coverage 100% (2/2).">&nbsp;19</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 49: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (name == <span class="keyword">null</span>) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;50</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Method name must not be null."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;52</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;        Class&lt;?&gt; searchType = clazz;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;53</td>  <td class="nbHitsCovered"><a title="Line 53: Conditional coverage 100% (2/2).">&nbsp;8</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 53: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> (searchType != <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;54</td>  <td class="nbHitsUncovered"><a title="Line 54: Conditional coverage 50% (1/2).">&nbsp;7</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 54: Conditional coverage 50% (1/2).">            Method[] methods = searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods();</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;55</td>  <td class="nbHitsCovered"><a title="Line 55: Conditional coverage 100% (2/2).">&nbsp;87</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 55: Conditional coverage 100% (2/2).">            <span class="keyword">for</span> (Method method : methods) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;56</td>  <td class="nbHitsUncovered"><a title="Line 56: Conditional coverage 83% (5/6) [each condition: 100%, 50%, 100%].">&nbsp;85</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 56: Conditional coverage 83% (5/6) [each condition: 100%, 50%, 100%].">                <span class="keyword">if</span> (name.equals(method.getName()) &amp;&amp; (paramTypes == <span class="keyword">null</span> || Arrays.equals(paramTypes, method.getParameterTypes()))) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered">&nbsp;5</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> method;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;52</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        Class&lt;?&gt; searchType = clazz;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;53</td>  <td class="nbHitsCovered"><a title="Line 53: Conditional coverage 100% (2/2).">&nbsp;20</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 53: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> (searchType != <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;54</td>  <td class="nbHitsUncovered"><a title="Line 54: Conditional coverage 50% (1/2).">&nbsp;19</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 54: Conditional coverage 50% (1/2).">            Method[] methods = searchType.isInterface() ? searchType.getMethods() : searchType.getDeclaredMethods();</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;55</td>  <td class="nbHitsCovered"><a title="Line 55: Conditional coverage 100% (2/2).">&nbsp;291</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 55: Conditional coverage 100% (2/2).">            <span class="keyword">for</span> (Method method : methods) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;56</td>  <td class="nbHitsUncovered"><a title="Line 56: Conditional coverage 83% (5/6) [each condition: 100%, 50%, 100%].">&nbsp;289</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 56: Conditional coverage 83% (5/6) [each condition: 100%, 50%, 100%].">                <span class="keyword">if</span> (name.equals(method.getName()) &amp;&amp; (paramTypes == <span class="keyword">null</span> || Arrays.equals(paramTypes, method.getParameterTypes()))) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;57</td>  <td class="nbHitsCovered">&nbsp;17</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> method;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;58</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
@@ -198,16 +198,16 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> Object invokeMethod(<span class="keyword">final</span> Method method, <span class="keyword">final</span> Object target, <span class="keyword">final</span> Object... args) <span class="keyword">throws</span> InvocationTargetException, IllegalAccessException {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered"><a title="Line 104: Conditional coverage 100% (2/2).">&nbsp;6</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 104: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (method == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;104</td>  <td class="nbHitsCovered"><a title="Line 104: Conditional coverage 100% (2/2).">&nbsp;18</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 104: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (method == <span class="keyword">null</span>) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;105</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Method must not be null."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered"><a title="Line 107: Conditional coverage 100% (2/2).">&nbsp;5</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 107: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (target == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered"><a title="Line 107: Conditional coverage 100% (2/2).">&nbsp;17</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 107: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (target == <span class="keyword">null</span>) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Object must not be null."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        method.setAccessible(<span class="keyword">true</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> method.invoke(target, args);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;        method.setAccessible(<span class="keyword">true</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> method.invoke(target, args);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
@@ -424,6 +424,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 8/1/13 12:06 AM.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 9/1/13 12:40 AM.</div>
 </body>
 </html>

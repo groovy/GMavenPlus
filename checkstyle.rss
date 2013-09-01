@@ -8,8 +8,8 @@
     <language>en-us</language>
     <copyright>&#169;2011 - 2013</copyright>
     <item>
-      <title>File: 25,
-             Errors: 478,
+      <title>File: 32,
+             Errors: 660,
              Warnings: 0,
              Infos: 0
       </title>
@@ -27,6 +27,34 @@
             </tr>
           </thead>
           <tbody>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.RemoveStubsMojo.java">org/codehaus/gmavenplus/mojo/RemoveStubsMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectRuntimeDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectRuntimeDependenciesComponentConfigurator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
                           <tr>
                 <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile.java">org/codehaus/gmavenplus/groovyworkarounds/DotGroovyFile.java</a>
@@ -57,6 +85,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.AbstractIncludeProjectDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/AbstractIncludeProjectDependenciesComponentConfigurator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  22
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovydocMojo.java">org/codehaus/gmavenplus/mojo/GroovydocMojo.java</a>
                 </td>
                 <td>
@@ -66,21 +108,7 @@
                   0
                 </td>
                 <td>
-                  11
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.package-info.java">org/codehaus/gmavenplus/mojo/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
+                  12
                 </td>
               </tr>
                           <tr>
@@ -99,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectDependenciesComponentConfigurator.java</a>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.package-info.java">org/codehaus/gmavenplus/mojo/package-info.java</a>
                 </td>
                 <td>
                   0
@@ -108,7 +136,49 @@
                   0
                 </td>
                 <td>
-                  40
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AddTestSourcesMojo.java">org/codehaus/gmavenplus/mojo/AddTestSourcesMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  10
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectTestDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectTestDependenciesComponentConfigurator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AbstractGroovyStubSourcesMojo.java">org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
                 </td>
               </tr>
                           <tr>
@@ -122,7 +192,21 @@
                   0
                 </td>
                 <td>
-                  14
+                  16
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.package-info.java">org/codehaus/gmavenplus/plexus/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
               </tr>
                           <tr>
@@ -141,7 +225,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.package-info.java">org/codehaus/gmavenplus/plexus/package-info.java</a>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.RemoveTestStubsMojo.java">org/codehaus/gmavenplus/mojo/RemoveTestStubsMojo.java</a>
                 </td>
                 <td>
                   0
@@ -150,7 +234,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  8
                 </td>
               </tr>
                           <tr>
@@ -192,21 +276,7 @@
                   0
                 </td>
                 <td>
-                  57
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AddSourceMojo.java">org/codehaus/gmavenplus/mojo/AddSourceMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  13
+                  55
                 </td>
               </tr>
                           <tr>
@@ -234,7 +304,7 @@
                   0
                 </td>
                 <td>
-                  16
+                  18
                 </td>
               </tr>
                           <tr>
@@ -262,7 +332,7 @@
                   0
                 </td>
                 <td>
-                  16
+                  18
                 </td>
               </tr>
                           <tr>
@@ -276,7 +346,7 @@
                   0
                 </td>
                 <td>
-                  21
+                  38
                 </td>
               </tr>
                           <tr>
@@ -290,7 +360,7 @@
                   0
                 </td>
                 <td>
-                  18
+                  20
                 </td>
               </tr>
                           <tr>
@@ -332,7 +402,7 @@
                   0
                 </td>
                 <td>
-                  21
+                  55
                 </td>
               </tr>
                           <tr>
@@ -346,7 +416,7 @@
                   0
                 </td>
                 <td>
-                  45
+                  60
                 </td>
               </tr>
                           <tr>
@@ -360,7 +430,7 @@
                   0
                 </td>
                 <td>
-                  11
+                  12
                 </td>
               </tr>
                           <tr>
@@ -374,7 +444,35 @@
                   0
                 </td>
                 <td>
-                  12
+                  10
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AddSourcesMojo.java">org/codehaus/gmavenplus/mojo/AddSourcesMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectCompileDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectCompileDependenciesComponentConfigurator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  33
                 </td>
               </tr>
                       </tbody>
