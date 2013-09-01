@@ -43,7 +43,9 @@
               if (!targetDir.exists())
                   targetDir.mkdir()
               new File(targetDir, 'helloWorld.txt').append('Hello world!')
-              ]]></script>
+              // the first reference is not filtered by Maven, the second reference is
+              assert "$project.name" == "${project.name}"
+            ]]></script>
           </scripts>
         </configuration>
         <dependencies>
