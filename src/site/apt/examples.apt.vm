@@ -117,11 +117,11 @@ mvn compile
   and the Groovy Stubs (which might be useful for polyglot builds), but not
   the Groovy sources.
 
-  Alternatively, you can use ${project.name} customized lifecycle.  This will
+  Alternatively, you can use ${project.name}'s customized lifecycle.  This will
   modify Maven's source directories to contain both the Java sources and the
   Groovy sources, but not the Groovy stubs.  Note that if you do choose this
   option, ${project.name} can't add the stubs back to Maven's sources.
-  If you need them, you'll have to use another plugin
+  If you need them later in the build, you'll have to use another plugin
   like {{{http://mojo.codehaus.org/build-helper-maven-plugin/}Build Helper}}.
   Additionally, you won't need to specify any executions, as all compilation
   mojos are included by default.  To do this, you should add something similar
@@ -321,6 +321,7 @@ mvn gplus:generateStubs gplus:groovydoc
 <pluginGroups>
 +-----------------------------------------------------------------------------+
 
+
 * {Add Groovydoc to Site}
 
   Note that this mojo is not set up to be used in the \<reporting\> section.
@@ -368,19 +369,32 @@ mvn gplus:generateStubs gplus:groovydoc
 mvn site
 +---------------------------------------+
 
+  Keep in mind that if you can exclude the stub generation goals from the
+  execution if
+
+  * You don't have any Java that Groovy classes use
+
+  * Another execution has already generated the stubs (pretty typical in site lifecycle)
+
+  * You are using ${project.name}'s customized lifecycle
+
+  []
+
 
 * {Execute Scripts}
 
   Note that if you'd like to separate script dependencies from those of your
   project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
   annotations, but you will need a compile dependency on Ivy.  Any plugin
-  dependencies and any project test dependencies are also available for use
-  in your scripts (remember that test scope also includes compile scope).
-  This example demonstrates all three.  Note that you need to escape any dollar
-  signs in your script so Maven doesn't try to filter the values.  Note that
-  you can also add your own properties to use in the script (that can be set from
-  the POM's properties or the command line.  To
-  execute Groovy scripts in your <<<pom.xml>>>, add something similar to the following:
+  dependencies and any project test dependencies are also available for use in
+  your scripts (remember that test scope also includes compile scope).
+  This example demonstrates all three ways of including dependencies.  Note
+  that Maven will try to filter dollar curly references, so you'll need to
+  either make sure the names don't collide or use the dollar without the curly
+  if you don't want that to happen.  Note that you can also add your own
+  properties to use in the script (that can be set from the POM's properties or
+  the command line.  To execute Groovy scripts in build, add something similar
+  to the following in your <<<pom.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <project>
@@ -419,10 +433,9 @@ mvn site
               logger.debug("The local repository is {}.", localRepository)
               logger.debug("The reactor projects are {}.", reactorProjects)
               logger.debug("someProp is {}.", someProp)
-              File targetDir = new File(project.build.directory)
-              if (!targetDir.exists())
-                  targetDir.mkdir()
-              new File(targetDir, 'javaVersion.txt').append("Using Java ${SystemUtils.JAVA_VERSION}")
+              logger.debug("Using Java {}.", SystemUtils.JAVA_VERSION)
+              // the first reference is not filtered by Maven, the second reference is
+              assert "$project.name" == "${project.name}"
             ]]></script>
             <script>src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
@@ -474,12 +487,13 @@ mvn gplus:execute
 * {Working with Older Groovy Versions}
 
   If the mojo you're trying to run doesn't support the version of Groovy you use
-  at runtime, you can override the version used by the plugin to use a version
-  that the mojo does support.  This is not the recommended solution (since
-  there's the possibility of runtime API incompatibilities and in some cases it
+  at runtime (or any other reason you want to use a different version of Groovy
+  for compilation), you can override the version used by the plugin to use a
+  version that the mojo does support.  This is not the recommended solution
+  (since there might be runtime API incompatibilities and in some cases it
   won't even compile).  It's better to just upgrade your Groovy version.
-  However, if this isn't possible, simply add a dependency to the plugin.
-  To do this, you should add something similar to the following in your <<<pom.xml>>>:
+  However, if this isn't possible, simply add a dependency to the plugin. To do
+  this, you should add something similar to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
