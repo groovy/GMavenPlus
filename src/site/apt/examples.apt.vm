@@ -435,7 +435,7 @@ mvn site
               logger.debug("someProp is {}.", someProp)
               logger.debug("Using Java {}.", SystemUtils.JAVA_VERSION)
               // the first reference is not filtered by Maven, the second reference is
-              assert "$project.name" == "${project.name}"
+              assert "\$project.name" == "\${project.name}"
             ]]></script>
             <script>src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
