@@ -114,10 +114,10 @@ mvn compile
 +-------------------------------------------------------------------------+
 
   This will modify Maven's source directories to contain both the Java sources
-  and the Groovy Stubs (which )might be useful for polyglot builds), but not
+  and the Groovy Stubs (which might be useful for polyglot builds), but not
   the Groovy sources.
 
-  Alternatively, you can use the ${project.name} customized lifecycle.  This will
+  Alternatively, you can use ${project.name} customized lifecycle.  This will
   modify Maven's source directories to contain both the Java sources and the
   Groovy sources, but not the Groovy stubs.  Note that if you do choose this
   option, ${project.name} can't add the stubs back to Maven's sources.
@@ -164,8 +164,8 @@ mvn compile
 </project>
 +-------------------------------------------------------------------------+
 
-  If using a build extension doesn't work for you for whatever reason, you can
-  still keep the Groovy sources (without the stubs) in Maven's source
+  If using a lifecycle extension doesn't work for you for whatever reason, you
+  can still keep the Groovy sources (without the stubs) in Maven's source
   directories by invoking the source modifying mojos directly.  To do this, you
   should add something similar to the following in your <<<pom.xml>>>:
 
