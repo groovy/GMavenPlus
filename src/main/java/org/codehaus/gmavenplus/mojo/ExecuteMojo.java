@@ -182,7 +182,7 @@ public class ExecuteMojo extends AbstractGroovyMojo {
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
+        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }
