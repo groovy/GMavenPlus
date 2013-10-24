@@ -42,7 +42,7 @@
             <goals><goal>add-source</goal></goals>
             <configuration>
               <sources>
-                <source>src/main/java2</source>
+                <source>${project.basedir}/src/main/java2</source>
               </sources>
             </configuration>
           </execution>

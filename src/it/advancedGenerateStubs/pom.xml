@@ -43,7 +43,7 @@
         <configuration>
           <sources>
             <source>
-              <directory>src/main/groovy</directory>
+              <directory>${project.basedir}/src/main/groovy</directory>
               <includes>
                 <include>**/*.groovy</include>
                 <include>**/*.gvy</include>
