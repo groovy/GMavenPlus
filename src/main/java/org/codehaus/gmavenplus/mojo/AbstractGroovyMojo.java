@@ -109,7 +109,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected void logGroovyVersion(final String goal) {
         if (getLog().isInfoEnabled()) {
-            getLog().info("Using Groovy " + getGroovyVersion() + " from project compile classpath to perform " + goal + ".");
+            String logMessage = "Using Groovy " + getGroovyVersion();
+            if (isGroovyIndy()) {
+                logMessage += "-indy";
+            }
+            getLog().info(logMessage + " from project compile classpath to perform " + goal + ".");
         }
     }
 

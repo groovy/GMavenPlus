@@ -49,6 +49,7 @@ public class ExecuteMojoTest {
     @Before
     public void setup() {
         Mockito.doReturn(new Version(1, 5, 0)).when(executeMojo).getGroovyVersion();
+        Mockito.doReturn(false).when(executeMojo).isGroovyIndy();
     }
 
     @Test
