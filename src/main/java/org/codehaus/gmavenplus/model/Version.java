@@ -110,7 +110,7 @@ public class Version implements Comparable<Version> {
         if (version == null || version.isEmpty()) {
             throw new IllegalArgumentException("Version must not be null or empty.");
         }
-        String[] split = version.split("[.-]", 4);
+        String[] split = version.split("[._-]", 4);
         try {
             int tagIdx = 3;
             int major = Integer.parseInt(split[0]);
@@ -124,9 +124,7 @@ public class Version implements Comparable<Version> {
                     // version string must not have specified a minor version, leave minor as 0 and append to tag instead
                     tag.append(split[1]);
                     tagIdx = 1;
-                    if (tagIdx != 3) {
-                        tag.append("-");
-                    }
+                    tag.append("-");
                 }
             }
             if (split.length >= 3) {
@@ -136,9 +134,7 @@ public class Version implements Comparable<Version> {
                     // version string must not have specified a revision version, leave revision as 0 and append to tag instead
                     tag.append(split[2]);
                     tagIdx = 2;
-                    if (tagIdx != 3) {
-                        tag.append("-");
-                    }
+                    tag.append("-");
                 }
             }
             if (split.length >= 4) {
@@ -205,19 +201,38 @@ public class Version implements Comparable<Version> {
 
     /**
      * Compares two versions objects.  Note that if the major, minor, and revision are all
+     * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.  Having no tag
+     * is considered a newer version than a version with a tag.
+     */
+    public final int compareTo(final Version version) {
+        return compareTo(version, true);
+    }
+
+    /**
+     * Compares two versions objects.  Note that if the major, minor, and revision are all
      * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
      * @param version The version to compare this version to
+     * @param noTagsAreNewer Whether versions with no tag are considered newer than those that have tags
      * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
-    public final int compareTo(final Version version) {
-        return ComparisonChain.start()
-                .compare(major, version.major)
-                .compare(minor, version.minor)
-                .compare(revision, version.revision)
-                .compare(tag, version.tag, Ordering.natural().nullsLast())
-                .result();
+    public final int compareTo(final Version version, final boolean noTagsAreNewer) {
+        if (noTagsAreNewer) {
+            return ComparisonChain.start()
+                    .compare(major, version.major)
+                    .compare(minor, version.minor)
+                    .compare(revision, version.revision)
+                    .compare(tag, version.tag, Ordering.natural().nullsLast())
+                    .result();
+        } else {
+            return ComparisonChain.start()
+                    .compare(major, version.major)
+                    .compare(minor, version.minor)
+                    .compare(revision, version.revision)
+                    .compare(tag, version.tag, Ordering.natural().nullsFirst())
+                    .result();
+        }
     }
 
     /**

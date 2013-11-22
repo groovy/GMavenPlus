@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.File;
@@ -166,6 +167,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 optimizationOptions.put("int", false);
             } else {
                 getLog().warn("Requested to use InvokeDynamic option but the version of Groovy on the project classpath doesn't support it.  Ignoring invokeDynamic option.");
+            }
+            if (!isJavaSupportIndy()) {
+                throw new IllegalArgumentException("Tried to use to use an indy version of Groovy, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Failing build.");
             }
         }
 

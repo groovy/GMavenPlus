@@ -252,4 +252,31 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
                 || artifact.getArtifactId().equals("groovy-jdk14");
     }
 
+    /**
+     * Determines whether the version of Java executing this mojo supports invokedynamic (is at least 1.7).
+     *
+     * @return <code>true</code> if the running Java supports invokedynamic, <code>false</code> otherwise
+     */
+    protected boolean isJavaSupportIndy() {
+        return getJavaVersion().compareTo(new Version(1, 7), false) >= 0;
+    }
+
+    /**
+     * Gets the version of Java executing this mojo as a Version object.
+     *
+     * @return a Version object of the running Java version
+     */
+    protected Version getJavaVersion() {
+        return Version.parseFromString(getJavaVersionString());
+    }
+
+    /**
+     * Gets the version of Java executing this mojo as a String.
+     *
+     * @return a String of the running Java version
+     */
+    protected String getJavaVersionString() {
+        return System.getProperty("java.version");
+    }
+
 }

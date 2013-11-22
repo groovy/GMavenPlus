@@ -109,6 +109,11 @@ public class VersionTest {
     }
 
     @Test
+    public void testParsingJavaVersion() {
+        Assert.assertTrue(Version.parseFromString("1.7.0_45").compareTo(new Version(1, 7), false) >= 0);
+    }
+
+    @Test
     public void testGettersAndSetters() {
         int num = 1;
         String str = "string";

@@ -20,6 +20,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -69,6 +70,25 @@ public class AbstractGroovyMojoTest {
 
         Assert.assertTrue(testMojo.isGroovyIndy());
         Assert.assertEquals(GROOVY_VERSION, testMojo.getGroovyVersionString());
+    }
+
+    @Test
+    public void testGetJavaVersion() {
+        AbstractGroovyMojo testMojo = new TestGroovyMojo();
+
+        Assert.assertTrue(testMojo.getJavaVersionString() != null && !testMojo.getJavaVersionString().isEmpty());
+        Assert.assertNotNull(testMojo.getJavaVersion());
+    }
+
+    @Test
+    public void testIsJavaSupportIndy() {
+        AbstractGroovyMojo testMojo = Mockito.spy(new TestGroovyMojo());
+        Mockito.when(testMojo.getJavaVersion()).thenReturn(Version.parseFromString("1.7.0_45"));
+        Assert.assertTrue(testMojo.isJavaSupportIndy());
+
+        testMojo = Mockito.spy(new TestGroovyMojo());
+        Mockito.when(testMojo.getJavaVersion()).thenReturn(Version.parseFromString("1.6.0_45"));
+        Assert.assertFalse(testMojo.isJavaSupportIndy());
     }
 
     private static class TestGroovyMojo extends AbstractGroovyMojo {
