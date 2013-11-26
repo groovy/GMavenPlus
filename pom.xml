@@ -27,7 +27,7 @@
     <surefireVersion>2.16</surefireVersion>
     <pluginVersion>3.2</pluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
-    <groovyVersion>2.2.0</groovyVersion>
+    <groovyVersion>2.2.1</groovyVersion>
   </properties>
 
   <dependencies>
