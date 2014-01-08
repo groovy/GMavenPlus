@@ -37,6 +37,7 @@
           <execution>
             <phase>generate-test-sources</phase>
             <goals>
+              <goal>generateStubs</goal>
               <goal>groovydoc</goal>
             </goals>
           </execution>

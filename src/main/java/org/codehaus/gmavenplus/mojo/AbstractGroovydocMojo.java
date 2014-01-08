@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
+import com.google.common.io.Files;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
@@ -217,11 +218,29 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                 linksList,
                 properties
         );
-        getLog().debug("Adding sources to generate Groovydoc for:");
+
+        List<String> javaSources = new ArrayList<String>();
+        List<String> groovySources = new ArrayList<String>();
+        List<String> possibleGroovyStubs = new ArrayList<String>();
         for (FileSet sourceDirectory : sourceDirectories) {
-            getLog().debug("    " + Arrays.toString(fileSetManager.getIncludedFiles(sourceDirectory)));
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
+            List<String> sources = Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory));
+            for (String source : sources) {
+                if (source.endsWith(".java") && !javaSources.contains(source)) {
+                    javaSources.add(source);
+                } else if (!groovySources.contains(source)) {
+                    groovySources.add(source);
+                    possibleGroovyStubs.add(source.replaceFirst("\\." + Files.getFileExtension(source), ".java"));
+                }
+            }
         }
+        javaSources.removeAll(possibleGroovyStubs);
+        List<String> groovydocSources = new ArrayList<String>();
+        groovydocSources.addAll(javaSources);
+        groovydocSources.addAll(groovySources);
+        getLog().debug("Adding sources to generate Groovydoc for:");
+        getLog().debug("    " + groovydocSources);
+
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, groovydocSources);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
