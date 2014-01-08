@@ -217,7 +217,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                 linksList,
                 properties
         );
-        getLog().debug("Adding sources to generate stubs for:");
+        getLog().debug("Adding sources to generate Groovydoc for:");
         for (FileSet sourceDirectory : sourceDirectories) {
             getLog().debug("    " + Arrays.toString(fileSetManager.getIncludedFiles(sourceDirectory)));
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory)));
