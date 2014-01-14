@@ -31,6 +31,7 @@
         <item name="Pure Groovy Compilation" href="examples.html#Pure_Groovy_Compilation" />
         <item name="Joint Compilation" href="examples.html#Joint_Compilation" />
         <item name="InvokeDynamic Compilation" href="examples.html#InvokeDynamic_Compilation" />
+        <item name="Additional Sources" href="examples.html#Additional_Sources" />
         <item name="Groovydoc" href="examples.html#Groovydoc" />
         <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
         <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
