@@ -26,17 +26,8 @@
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
-      <item name="Usage" href="usage.html" />
-      <item name="Examples" href="examples.html" collapse="true">
-        <item name="Pure Groovy Compilation" href="examples.html#Pure_Groovy_Compilation" />
-        <item name="Joint Compilation" href="examples.html#Joint_Compilation" />
-        <item name="InvokeDynamic Compilation" href="examples.html#InvokeDynamic_Compilation" />
-        <item name="Additional Sources" href="examples.html#Additional_Sources" />
-        <item name="Groovydoc" href="examples.html#Groovydoc" />
-        <item name="Add Groovydoc to Site" href="examples.html#Add_Groovydoc_to_Site" />
-        <item name="Execute Scripts" href="examples.html#Execute_Scripts" />
-        <item name="Working with Older Groovy Versions" href="examples.html#Working_with_Older_Groovy_Versions" />
-      </item>
+      <item name="Usage" href="https://github.com/groovy/GMavenPlus/wiki/Usage" target="_top" />
+      <item name="Examples" href="https://github.com/groovy/GMavenPlus/wiki/Examples" />
     </menu>
     <menu ref="reports" />
   </body>
