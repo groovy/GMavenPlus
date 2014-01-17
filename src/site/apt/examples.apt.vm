@@ -279,94 +279,94 @@ mvn compile
   configure GMavenPlus to recognize those sources.  To do this, you should add
   something similar to the following in your <<<pom.xml>>>:
 
-  +-----------------------------------------------------------------------------+
-  <project>
-    <build>
-      <plugins>
-        <plugin>
-          <groupId>org.codehaus.gmavenplus</groupId>
-          <artifactId>gmavenplus-plugin</artifactId>
-          <version>${project.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>compile</goal>
-                <goal>testCompile</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <!-- this example has a structure of
-                 ./
-                 |-- src/
-                     |-- main/
-                         |-- groovy/
-                             |-- Class1.groovy
-                     |-- additional/
-                         |-- groovy/
-                             |-- Class2.groovy
-                         |-- gvy/
-                             |-- Class3.gvy
-                     |-- test/
-                         |-- groovy/
-                             |-- Class1Test.groovy
-                     |-- additional/
-                         |-- groovy/
-                             |-- Class2Test.groovy
-                         |-- gvy/
-                             |-- Class3Test.gvy
-            -->
-            <sources>
-              <source>
-                <directory>${project.basedir}/src/main/groovy</directory>
-                <includes>
-                  <include>**/*.groovy</include>
-                </includes>
-              </source>
-              <source>
-                <directory>${project.basedir}/src/additional</directory>
-                <includes>
-                  <include>groovy/**/*.groovy</include>
-                  <include>gvy/**/*.gvy</include>
-                </includes>
-              </source>
-            </sources>
-            <testSources>
-              <testSource>
-                <directory>${project.basedir}/src/test/groovy</directory>
-                <includes>
-                  <include>**/*.groovy</include>
-                </includes>
-              </testSource>
-              <testSource>
-                <directory>${project.basedir}/src/additionalTest</directory>
-                <includes>
-                  <include>groovy/**/*.groovy</include>
-                  <include>gvy/**/*.gvy</include>
-                </includes>
-              </testSource>
-            </testSources>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-    <dependencies>
-      <dependency>
-        <groupId>org.codehaus.groovy</groupId>
-        <artifactId>groovy-all</artifactId>
-        <!-- any version of Groovy \>= 1.5.0 should work here -->
-        <version>${groovyVersion}</version>
-      </dependency>
-    </dependencies>
-  </project>
-  +-----------------------------------------------------------------------------+
++-----------------------------------------------------------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- this example has a structure of
+               ./
+               |-- src/
+                   |-- main/
+                       |-- groovy/
+                           |-- Class1.groovy
+                   |-- additional/
+                       |-- groovy/
+                           |-- Class2.groovy
+                       |-- gvy/
+                           |-- Class3.gvy
+                   |-- test/
+                       |-- groovy/
+                       |-- Class1Test.groovy
+                   |-- additional/
+                       |-- groovy/
+                           |-- Class2Test.groovy
+                       |-- gvy/
+                           |-- Class3Test.gvy
+          -->
+          <sources>
+            <source>
+              <directory>${project.basedir}/src/main/groovy</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </source>
+            <source>
+              <directory>${project.basedir}/src/additional</directory>
+              <includes>
+                <include>groovy/**/*.groovy</include>
+                <include>gvy/**/*.gvy</include>
+              </includes>
+            </source>
+          </sources>
+          <testSources>
+            <testSource>
+              <directory>${project.basedir}/src/test/groovy</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </testSource>
+            <testSource>
+               <directory>${project.basedir}/src/additionalTest</directory>
+              <includes>
+                <include>groovy/**/*.groovy</include>
+                <include>gvy/**/*.gvy</include>
+              </includes>
+            </testSource>
+          </testSources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <!-- any version of Groovy \>= 1.5.0 should work here -->
+      <version>${groovyVersion}</version>
+    </dependency>
+  </dependencies>
+</project>
++-----------------------------------------------------------------------------+
 
   To compile both the main and test Groovy sources, simply execute the normal
   compile phase from the default lifecycle:
 
-  +---------------------------------------+
-  mvn compile
-  +---------------------------------------+
++---------------------------------------+
+mvn compile
++---------------------------------------+
 
 
 * {Groovydoc}
