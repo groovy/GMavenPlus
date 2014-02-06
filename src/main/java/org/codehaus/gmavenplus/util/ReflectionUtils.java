@@ -128,7 +128,7 @@ public class ReflectionUtils {
             throw new IllegalArgumentException("Method must be static.");
         }
         method.setAccessible(true);
-        return method.invoke(args);
+        return method.invoke(null, args);
     }
 
     /**
