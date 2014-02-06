@@ -33,7 +33,7 @@ public class ReflectionUtilsTest {
         Object test1 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "setStringField", String.class), test1, expectedString);
         Assert.assertEquals(expectedString, ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "getStringField"), test1));
-        Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld"), test1));
+        Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld")));
         Assert.assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumValue(TestClass.ENUM.class, "VALUE"));
         Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "HELLO_WORLD", null)));
         Object test2 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class, String.class), expectedString );
