@@ -627,10 +627,8 @@ mvn gplus:console
 
 * {Groovy Shell}
 
-If you're already using GMavenPlus in your project, no additional
-configuration is needed.  If you're not already using GMavenPlus in your
-project but want to be able to use the shell, you'll need to define the
-version of GMavenPlus and Groovy.  To do this, you should add something
+If want to be able to use the shell, you'll need to define the
+version of GMavenPlus, Groovy, and JLine.  To do this, you should add something
 similar to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
@@ -647,6 +645,14 @@ similar to the following in your <<<pom.xml>>>:
             <artifactId>groovy-all</artifactId>
             <!-- any version of Groovy \>= 1.5.0 should work here -->
             <version>${groovyVersion}</version>
+          </dependency>
+          <dependency>
+            <!-- GMavenPlus can't provide this dependency because JLine made a breaking change that was pulled in 2.2.0-beta-1 with GROOVY-5344 -->
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <!-- if you are using a version of Groovy \< 2.2.0-beta-1, you'll need to use version 1.0 -->
+            <version>2.11</version>
+            <scope>runtime</scope>
           </dependency>
         </dependencies>
       </plugin>
