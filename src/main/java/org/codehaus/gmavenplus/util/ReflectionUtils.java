@@ -206,7 +206,7 @@ public final class ReflectionUtils {
      */
     public static Object getStaticField(final Field field) throws IllegalAccessException {
         if (!Modifier.isStatic(field.getModifiers())) {
-            throw new IllegalArgumentException("Method must be static.");
+            throw new IllegalArgumentException("Field must be static.");
         }
         return getField(field, null);
     }
