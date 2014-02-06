@@ -25,6 +25,8 @@ Examples
 
   * {{{Groovy_Console}Groovy Console}}
 
+  * {{{Groovy_Shell}Groovy Shell}}
+
   * {{{Working_with_Older_Groovy_Versions}Working with Older Groovy Versions}}
 
   []
@@ -620,6 +622,44 @@ GMavenPlus's console goal:
 
 +---------------------------------------+
 mvn gplus:console
++---------------------------------------+
+
+
+* {Groovy Shell}
+
+If you're already using GMavenPlus in your project, no additional
+configuration is needed.  If you're not already using GMavenPlus in your
+project but want to be able to use the shell, you'll need to define the
+version of GMavenPlus and Groovy.  To do this, you should add something
+similar to the following in your <<<pom.xml>>>:
+
++-------------------------------------------------------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <!-- any version of Groovy \>= 1.5.0 should work here -->
+            <version>${groovyVersion}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++-------------------------------------------------------------------------+
+
+To launch a Groovy console bound to the current project, simply execute
+GMavenPlus's shell goal:
+
++---------------------------------------+
+mvn gplus:shell
 +---------------------------------------+
 
 

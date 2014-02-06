@@ -78,6 +78,19 @@
       <version>15.0</version>
       <scope>compile</scope>
     </dependency>
+    <!-- jline and jansi are here for the shell mojo and are needed because groovy jara don't include them -->
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.jansi</groupId>
+      <artifactId>jansi</artifactId>
+      <version>1.11</version>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
