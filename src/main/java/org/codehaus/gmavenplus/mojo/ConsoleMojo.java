@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
  * Launches a Groovy console window bound to the current project.
  *
  * @author Keegan Witt
+ * @since 1.1
  *
  * @goal console
  * @configurator include-project-test-dependencies
@@ -58,7 +59,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "pluginArtifacts", pluginArtifacts);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "localRepository", localRepository);
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "reactorProjects", reactorProjects);
-            Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, bindingClass), binding);
+            Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), bindingClass.getClassLoader(), binding);
             // this is intentionally after the default properties so that the user can override if desired
             for (String key : properties.stringPropertyNames()) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.getProperty(key));
