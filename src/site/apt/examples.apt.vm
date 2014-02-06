@@ -1,5 +1,5 @@
   -------------------------
-  ${project.name} Examples
+  GMavenPlus Examples
   -------------------------
   Keegan Witt
   -------------------------
@@ -7,7 +7,7 @@
 
 Examples
 
-  The following examples describe the various ways ${project.name} can be used.
+  The following examples describe the various ways GMavenPlus can be used.
 
   * {{{Pure_Groovy_Compilation}Pure Groovy Compilation}}
 
@@ -22,6 +22,8 @@ Examples
   * {{{Add_Groovydoc_to_Site}Add Groovydoc to Site}}
 
   * {{{Execute_Scripts}Execute Scripts}}
+
+  * {{{Groovy_Console}Groovy Console}}
 
   * {{{Working_with_Older_Groovy_Versions}Working with Older Groovy Versions}}
 
@@ -119,10 +121,10 @@ mvn compile
   and the Groovy Stubs (which might be useful for polyglot builds), but not
   the Groovy sources.
 
-  Alternatively, you can use ${project.name}'s customized lifecycle.  This will
+  Alternatively, you can use GMavenPlus's customized lifecycle.  This will
   modify Maven's source directories to contain both the Java sources and the
   Groovy sources, but not the Groovy stubs.  Note that if you do choose this
-  option, ${project.name} can't add the stubs back to Maven's sources.
+  option, GMavenPlus can't add the stubs back to Maven's sources.
   If you need them later in the build, you'll have to use another plugin
   like {{{http://mojo.codehaus.org/build-helper-maven-plugin/}Build Helper}}.
   Additionally, you won't need to specify any executions, as all compilation
@@ -475,7 +477,7 @@ mvn site
 
   * Another execution has already generated the stubs (pretty typical in site lifecycle)
 
-  * You are using ${project.name}'s customized lifecycle
+  * You are using GMavenPlus's customized lifecycle
 
   []
 
@@ -581,6 +583,44 @@ mvn gplus:execute
   <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
 <pluginGroups>
 +-----------------------------------------------------------------------------+
+
+
+* {Groovy Console}
+
+If you're already using GMavenPlus in your project, no additional
+configuration is needed.  If you're not already using GMavenPlus in your
+project but want to be able to use the console, you'll need to define the
+version of GMavenPlus and Groovy.  To do this, you should add something
+similar to the following in your <<<pom.xml>>>:
+
++-------------------------------------------------------------------------+
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <!-- any version of Groovy \>= 1.5.0 should work here -->
+            <version>${groovyVersion}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++-------------------------------------------------------------------------+
+
+To launch a Groovy console bound to the current project, simply execute
+GMavenPlus's console goal:
+
++---------------------------------------+
+mvn gplus:console
++---------------------------------------+
 
 
 * {Working with Older Groovy Versions}
