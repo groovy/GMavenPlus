@@ -25,7 +25,7 @@ import java.util.Arrays;
  *
  * @author Keegan Witt
  */
-public final class ReflectionUtils {
+public class ReflectionUtils {
 
     /**
      * Private constructor that should never be called since this is a static utility class.
