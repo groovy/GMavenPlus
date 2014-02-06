@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.File;
