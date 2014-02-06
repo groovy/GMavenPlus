@@ -37,22 +37,6 @@ import java.lang.reflect.InvocationTargetException;
 public class ShellMojo extends AbstractToolsMojo {
 
     /**
-     * Terminal type to use (for <tt>groovysh --terminal</tt>).  Normally auto-detected.
-     * Full class name or one of "unix", "win", "windows", "false", "off" or "none" expected.
-     *
-     * @parameter expression="${terminal}"
-     */
-    protected String terminal;
-
-    /**
-     * Enable or disable use of ANSI colors (for <tt>groovysh --color</tt>).  Normally auto-detected.
-     *
-     * @parameter expression="${color}" default-value="true"
-     *
-     */
-    protected Boolean color;
-
-    /**
      * Executes this mojo.
      *
      * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
