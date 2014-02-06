@@ -18,7 +18,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- TODO: support JDK 1.4?  java.lang.reflect.Method.invoke() seems to expect "Object[] args" in 1.4 but "Object...  args" in 1.5, not sure how to handle -->
     <javaVersion>1.5</javaVersion>
-    <minMavenVersion>2.2.1</minMavenVersion>
+    <minMavenVersion>3.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <coberturaVersion>2.6</coberturaVersion>
     <!-- these are properties so integration tests can use them -->
@@ -163,7 +163,7 @@
   </profiles>
 
   <prerequisites>
-    <maven>${minMavenVersion}</maven>
+    <maven>${mavenVersion}</maven>
   </prerequisites>
 
   <build>
@@ -269,12 +269,8 @@
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
           <pomIncludes>
-            <pomInclude>*/pom.xml</pomInclude>
+            <pomInclude>mavenPlugin/pom.xml</pomInclude>
           </pomIncludes>
-          <pomExcludes>
-            <!-- TODO: remove once stubs include javadoc -->
-            <pomExclude>mavenPlugin/pom.xml</pomExclude>
-          </pomExcludes>
           <settingsFile>src/it/settings.xml</settingsFile>
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
         </configuration>

@@ -17,13 +17,14 @@
 package org.codehaus.gmavenplus
 
 import org.apache.maven.plugin.AbstractMojo
+import org.apache.maven.plugins.annotations.LifecyclePhase
+import org.apache.maven.plugins.annotations.Mojo
 
 
 /**
- * @phase install
- * @goal helloworld
- * @requiresDirectInvocation false
+ * A hello world mojo.
  */
+@Mojo(defaultPhase=LifecyclePhase.INSTALL, name="helloworld", requiresDirectInvocation=false)
 class HelloWorldMojo extends AbstractMojo {
 
     void execute() {
