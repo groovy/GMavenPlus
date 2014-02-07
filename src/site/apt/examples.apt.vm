@@ -624,6 +624,13 @@ GMavenPlus's console goal:
 mvn gplus:console
 +---------------------------------------+
 
+Or you can start a console without having GMavenPlus in your project, as long
+as Groovy is still in your project by running the complete path to the goal
+
++---------------------------------------+
+mvn ${project.groupId}:${project.artifactId}:${project.version}:console
++---------------------------------------+
+
 
 * {Groovy Shell}
 
