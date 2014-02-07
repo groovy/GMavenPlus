@@ -20,8 +20,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
-import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 
 /**
@@ -68,14 +68,24 @@ public class ConsoleMojo extends AbstractToolsMojo {
             // run the console
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
 
-            // TODO: replace the active wait with a passive one
-            while (((JFrame) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "getFrame"), console)).isVisible()) {
-                // do nothing, wait for console window to be closed
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // do nothing, the sleep is only here to not eat as many CPU cycles
+            // wait for console to be closed
+            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+            Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+            Thread consoleThread = null;
+            for (Thread thread : threadArray) {
+                if ("AWT-Shutdown".equals(thread.getName())) {
+                    consoleThread = thread;
+                    break;
                 }
+            }
+            if (consoleThread != null) {
+                try {
+                    consoleThread.join();
+                } catch (InterruptedException e) {
+                    throw new MojoExecutionException("Mojo interrupted while waiting for Console thread to end.", e);
+                }
+            } else {
+                throw new MojoFailureException("Unable to locate Console thread to wait on.");
             }
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
