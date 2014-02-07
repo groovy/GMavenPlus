@@ -625,7 +625,8 @@ mvn gplus:console
 +---------------------------------------+
 
 Or you can start a console without having GMavenPlus in your project, as long
-as Groovy is still in your project by running the complete path to the goal
+as you have a dependency on Groovy in your project by running the complete path
+to the goal:
 
 +---------------------------------------+
 mvn ${project.groupId}:${project.artifactId}:${project.version}:console
@@ -673,6 +674,14 @@ GMavenPlus's shell goal:
 
 +---------------------------------------+
 mvn gplus:shell
++---------------------------------------+
+
+Or you can start a shell without having GMavenPlus in your project, as long
+as you have a dependency on Groovy and JLine in your project by running the
+complete path to the goal:
+
++---------------------------------------+
+mvn ${project.groupId}:${project.artifactId}:${project.version}:console
 +---------------------------------------+
 
 
