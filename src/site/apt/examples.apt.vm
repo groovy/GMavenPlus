@@ -681,7 +681,7 @@ as you have a dependency on Groovy and JLine in your project by running the
 complete path to the goal:
 
 +---------------------------------------+
-mvn ${project.groupId}:${project.artifactId}:${project.version}:console
+mvn ${project.groupId}:${project.artifactId}:${project.version}:shell
 +---------------------------------------+
 
 
