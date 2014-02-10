@@ -540,8 +540,7 @@ mvn site
               // the first reference is not filtered by Maven, the second reference is
               assert "\$project.name" == "\${project.name}"
             ]]></script>
-            <!-- note that Maven properties (https://maven.apache.org/pom.html#Properties) don't currently work in paths on Windows (GMAVENPLUS-8) -->
-            <script>src/main/resources/groovyScripts/someScript.groovy</script>
+            <script>file:///${project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
         </configuration>
         <dependencies>
