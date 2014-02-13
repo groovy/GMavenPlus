@@ -107,27 +107,6 @@
 
   <profiles>
     <profile>
-      <id>skip integration test</id>
-      <activation>
-        <property>
-          <name>maven.it.skip</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <configuration>
-              <skipInstallation>true</skipInstallation>
-              <skipInvocation>true</skipInvocation>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>release-sign-artifacts</id>
       <activation>
         <property>
