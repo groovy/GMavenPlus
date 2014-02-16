@@ -26,6 +26,7 @@ import java.util.List;
  * @author Keegan Witt
  */
 public abstract class AbstractIncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
+    // TODO: enable logging?
 //    private static final Log LOG = new SystemStreamLog();
 
     /**
