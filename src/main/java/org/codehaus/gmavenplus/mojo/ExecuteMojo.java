@@ -159,7 +159,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.8.2 because not all the classes needed were available and
+     * Must be >= 1.5.0 because not all the classes needed were available and
      * functioning correctly in previous versions.
      *
      * @return <code>true</code> only if the version of Groovy supports this mojo.
