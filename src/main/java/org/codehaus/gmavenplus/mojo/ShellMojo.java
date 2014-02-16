@@ -56,8 +56,9 @@ public class ShellMojo extends AbstractToolsMojo {
 
                 // create shell to run
                 Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-                for (String key : properties.stringPropertyNames()) {
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.getProperty(key));
+                for (Object k : properties.keySet()) {
+                    String key = (String) k;
+                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
                 }
                 Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
                 ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);

@@ -86,8 +86,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
                 // create a GroovyShell to run scripts in
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
-                for (String key : properties.stringPropertyNames()) {
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.getProperty(key));
+                for (Object k : properties.keySet()) {
+                    String key = (String) k;
+                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.get(key));
                 }
 
                 // TODO: load configurable (compile, test, runtime, or system) dependencies onto classpath before executing so they can be used in scripts?
