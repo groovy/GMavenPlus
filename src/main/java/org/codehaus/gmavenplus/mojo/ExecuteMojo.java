@@ -34,6 +34,7 @@ import java.util.Properties;
  * Executes Groovy scripts (in the pom or external), bound to the current project.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  *
  * @goal execute
  * @configurator include-project-test-dependencies

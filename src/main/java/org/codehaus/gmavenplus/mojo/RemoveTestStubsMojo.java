@@ -24,6 +24,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * This mojo removes Groovy test stubs from the project's sources.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-3
  *
  * @phase test-compile
  * @goal removeTestStubs

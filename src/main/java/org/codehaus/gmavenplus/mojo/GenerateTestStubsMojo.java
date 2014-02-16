@@ -29,6 +29,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * Note that this mojo requires Groovy >= 1.8.2.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  *
  * @goal testGenerateStubs
  * @phase generate-test-sources

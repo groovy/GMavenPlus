@@ -25,6 +25,7 @@ import org.apache.maven.shared.model.fileset.FileSet;
  * This mojo adds Groovy sources to the project's sources.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  *
  * @phase initialize
  * @goal addSources

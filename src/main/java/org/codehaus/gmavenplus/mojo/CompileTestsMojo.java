@@ -29,6 +29,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic option.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  *
  * @phase test-compile
  * @goal testCompile

@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
  * Note that this mojo requires Groovy >= 1.6.2.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  *
  * @goal groovydoc
  * @configurator include-project-compile-dependencies
