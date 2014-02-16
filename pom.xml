@@ -322,7 +322,7 @@
         <configuration>
           <requirements>
             <jdk>${javaVersion}</jdk>
-            <maven>${minMavenVersion}</maven>
+            <maven>${mavenVersion}</maven>
           </requirements>
         </configuration>
       </plugin>
