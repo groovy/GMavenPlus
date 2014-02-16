@@ -74,6 +74,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("execute");
+
             if (scripts == null || scripts.length == 0) {
                 getLog().info("No scripts specified for execution.  Skipping.");
                 return;
@@ -85,13 +86,6 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
                 // create a GroovyShell to run scripts in
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "settings", settings);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "project", project);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "session", session);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "pluginArtifacts", pluginArtifacts);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "localRepository", localRepository);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "reactorProjects", reactorProjects);
-                // this is intentionally after the default properties so that the user can override if desired
                 for (String key : properties.stringPropertyNames()) {
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.getProperty(key));
                 }

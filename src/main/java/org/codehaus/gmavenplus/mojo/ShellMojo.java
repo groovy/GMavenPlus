@@ -56,13 +56,6 @@ public class ShellMojo extends AbstractToolsMojo {
 
                 // create shell to run
                 Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "settings", settings);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "project", project);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "session", session);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "pluginArtifacts", pluginArtifacts);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "localRepository", localRepository);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "reactorProjects", reactorProjects);
-                // this is intentionally after the default properties so that the user can override if desired
                 for (String key : properties.stringPropertyNames()) {
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.getProperty(key));
                 }

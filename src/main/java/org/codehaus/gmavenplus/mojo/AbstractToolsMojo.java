@@ -47,4 +47,26 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * @parameter
      */
     protected Properties properties = new Properties();
+
+    public void AbstractToolsMojo() {
+        if (settings != null && !properties.containsKey("settings")) {
+            properties.put("settings", settings);
+        }
+        if (project != null && !properties.containsKey("project")) {
+            properties.put("project", project);
+        }
+        if (session != null && !properties.containsKey("session")) {
+            properties.put("session", session);
+        }
+        if (pluginArtifacts != null && !properties.containsKey("pluginArtifacts")) {
+            properties.put("pluginArtifacts", pluginArtifacts);
+        }
+        if (localRepository != null && !properties.containsKey("localRepository")) {
+            properties.put("localRepository", localRepository);
+        }
+        if (reactorProjects != null && !properties.containsKey("reactorProjects")) {
+            properties.put("reactorProjects", reactorProjects);
+        }
+    }
+
 }
