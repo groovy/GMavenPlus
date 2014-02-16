@@ -31,7 +31,7 @@ import java.util.Properties;
 
 
 /**
- * Executes Groovy scripts (in the pom or external).
+ * Executes Groovy scripts (in the pom or external), bound to the current project.
  *
  * @author Keegan Witt
  *
