@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -38,64 +39,84 @@ import java.util.Set;
 public class ConsoleMojo extends AbstractToolsMojo {
 
     /**
+     * The minimum version of Groovy that this mojo supports.
+     */
+    protected static final Version MIN_GROOVY_VERSION = new Version(1, 5, 0);
+
+    /**
      * Executes this mojo.
      *
      * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        logGroovyVersion("console");
+        if (groovyVersionSupportsAction()) {
+            logGroovyVersion("console");
 
-        try {
-            // get classes we need with reflection
-            Class consoleClass = Class.forName("groovy.ui.Console");
-            Class bindingClass = Class.forName("groovy.lang.Binding");
+            try {
+                // get classes we need with reflection
+                Class consoleClass = Class.forName("groovy.ui.Console");
+                Class bindingClass = Class.forName("groovy.lang.Binding");
 
-            // create console to run
-            Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "settings", settings);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "project", project);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "session", session);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "pluginArtifacts", pluginArtifacts);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "localRepository", localRepository);
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "reactorProjects", reactorProjects);
-            // this is intentionally after the default properties so that the user can override if desired
-            for (String key : properties.stringPropertyNames()) {
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.getProperty(key));
-            }
-            Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), bindingClass.getClassLoader(), binding);
-
-            // run the console
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
-
-            // wait for console to be closed
-            Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-            Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-            Thread consoleThread = null;
-            for (Thread thread : threadArray) {
-                if ("AWT-Shutdown".equals(thread.getName())) {
-                    consoleThread = thread;
-                    break;
+                // create console to run
+                Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "settings", settings);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "project", project);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "session", session);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "pluginArtifacts", pluginArtifacts);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "localRepository", localRepository);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "reactorProjects", reactorProjects);
+                // this is intentionally after the default properties so that the user can override if desired
+                for (String key : properties.stringPropertyNames()) {
+                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.getProperty(key));
                 }
-            }
-            if (consoleThread != null) {
-                try {
-                    consoleThread.join();
-                } catch (InterruptedException e) {
-                    throw new MojoExecutionException("Mojo interrupted while waiting for Console thread to end.", e);
+                Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), bindingClass.getClassLoader(), binding);
+
+                // run the console
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
+
+                // wait for console to be closed
+                Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+                Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+                Thread consoleThread = null;
+                for (Thread thread : threadArray) {
+                    if ("AWT-Shutdown".equals(thread.getName())) {
+                        consoleThread = thread;
+                        break;
+                    }
                 }
-            } else {
-                throw new MojoFailureException("Unable to locate Console thread to wait on.");
+                if (consoleThread != null) {
+                    try {
+                        consoleThread.join();
+                    } catch (InterruptedException e) {
+                        throw new MojoExecutionException("Mojo interrupted while waiting for Console thread to end.", e);
+                    }
+                } else {
+                    throw new MojoFailureException("Unable to locate Console thread to wait on.");
+                }
+            } catch (ClassNotFoundException e) {
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+            } catch (InvocationTargetException e) {
+                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+            } catch (IllegalAccessException e) {
+                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            } catch (InstantiationException e) {
+                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             }
-        } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
-        } catch (InvocationTargetException e) {
-            throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-        } catch (IllegalAccessException e) {
-            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-        } catch (InstantiationException e) {
-            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+        } else {
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") script execution.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping script execution.");
         }
+    }
+
+    /**
+     * Determines whether this mojo can be run with the version of Groovy supplied.
+     * Must be >= 1.5.0 because not all the classes needed were available and
+     * functioning correctly in previous versions.
+     *
+     * @return <code>true</code> only if the version of Groovy supports this mojo.
+     */
+    protected boolean groovyVersionSupportsAction() {
+        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }
