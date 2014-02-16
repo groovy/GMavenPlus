@@ -20,7 +20,6 @@ import com.google.common.io.Closer;
 import com.google.common.io.Files;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.model.Scopes;
-import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import java.io.*;
