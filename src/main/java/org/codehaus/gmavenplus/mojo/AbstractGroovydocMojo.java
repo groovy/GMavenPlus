@@ -37,8 +37,8 @@ import org.apache.maven.shared.model.fileset.FileSet;
 public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.6.1?
     /*
-     * For some reason some NPE about a rootDoc occurs with older versions
-     * (note that I used a different constructor and an addSource(File) instead
+     * For some reason some NPE about a rootDoc occurs with older versions.
+     * Note that I used a different constructor and an addSource(File) instead
      * of addSources(List<File>) because that didn't exist back then.
      */
 
