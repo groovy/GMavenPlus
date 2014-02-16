@@ -589,11 +589,11 @@ mvn gplus:execute
 
 * {Groovy Console}
 
-If you're already using GMavenPlus in your project, no additional
-configuration is needed.  If you're not already using GMavenPlus in your
-project but want to be able to use the console, you'll need to define the
-version of GMavenPlus and Groovy.  To do this, you should add something
-similar to the following in your <<<pom.xml>>>:
+  If you're already using GMavenPlus in your project, no additional
+  configuration is needed.  If you're not already using GMavenPlus in your
+  project but want to be able to use the console, you'll need to define the
+  version of GMavenPlus and Groovy.  To do this, you should add something
+  similar to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
@@ -617,16 +617,16 @@ similar to the following in your <<<pom.xml>>>:
 </project>
 +-------------------------------------------------------------------------+
 
-To launch a Groovy console bound to the current project, simply execute
-GMavenPlus's console goal:
+  To launch a Groovy console bound to the current project, simply execute
+  GMavenPlus's console goal:
 
 +---------------------------------------+
 mvn gplus:console
 +---------------------------------------+
 
-Or you can start a console without having GMavenPlus in your project, as long
-as you have a dependency on Groovy in your project by running the complete path
-to the goal:
+  Or you can start a console without having GMavenPlus in your project, as long
+  as you have a dependency on Groovy in your project by running the complete
+  path to the goal:
 
 +---------------------------------------+
 mvn ${project.groupId}:${project.artifactId}:${project.version}:console
@@ -635,9 +635,9 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
 
 * {Groovy Shell}
 
-If want to be able to use the shell, you'll need to define the
-version of GMavenPlus, Groovy, and JLine.  To do this, you should add something
-similar to the following in your <<<pom.xml>>>:
+  If want to be able to use the shell, you'll need to define the
+  version of GMavenPlus, Groovy, and JLine.  To do this, you should add
+  something similar to the following in your <<<pom.xml>>>:
 
 +-------------------------------------------------------------------------+
 <project>
@@ -669,19 +669,11 @@ similar to the following in your <<<pom.xml>>>:
 </project>
 +-------------------------------------------------------------------------+
 
-To launch a Groovy console bound to the current project, simply execute
-GMavenPlus's shell goal:
+  To launch a Groovy console bound to the current project, simply execute
+  GMavenPlus's shell goal:
 
 +---------------------------------------+
 mvn gplus:shell
-+---------------------------------------+
-
-Or you can start a shell without having GMavenPlus in your project, as long
-as you have a dependency on Groovy and JLine in your project by running the
-complete path to the goal:
-
-+---------------------------------------+
-mvn ${project.groupId}:${project.artifactId}:${project.version}:shell
 +---------------------------------------+
 
 
