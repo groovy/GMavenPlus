@@ -86,6 +86,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
                 // create a GroovyShell to run scripts in
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+                initializeProperties();
                 for (Object k : properties.keySet()) {
                     String key = (String) k;
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.get(key));

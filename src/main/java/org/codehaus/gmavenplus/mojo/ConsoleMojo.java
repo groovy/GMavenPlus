@@ -55,6 +55,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
 
                 // create console to run
                 Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+                initializeProperties();
                 for (Object k : properties.keySet()) {
                     String key = (String) k;
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));

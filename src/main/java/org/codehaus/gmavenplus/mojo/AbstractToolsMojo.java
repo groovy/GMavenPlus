@@ -48,7 +48,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      */
     protected Properties properties = new Properties();
 
-    public void AbstractToolsMojo() {
+    protected void initializeProperties() {
         if (settings != null && !properties.containsKey("settings")) {
             properties.put("settings", settings);
         }
