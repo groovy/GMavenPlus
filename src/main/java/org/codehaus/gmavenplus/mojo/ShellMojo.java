@@ -18,7 +18,6 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,11 +35,6 @@ import java.lang.reflect.InvocationTargetException;
  * @threadSafe
  */
 public class ShellMojo extends AbstractToolsMojo {
-
-    /**
-     * The minimum version of Groovy that this mojo supports.
-     */
-    protected static final Version MIN_GROOVY_VERSION = new Version(1, 5, 0);
 
     /**
      * Executes this mojo.
@@ -93,17 +87,6 @@ public class ShellMojo extends AbstractToolsMojo {
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") script execution.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping script execution.");
         }
-    }
-
-    /**
-     * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.5.0 because not all the classes needed were available and
-     * functioning correctly in previous versions.
-     *
-     * @return <code>true</code> only if the version of Groovy supports this mojo.
-     */
-    protected boolean groovyVersionSupportsAction() {
-        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }
