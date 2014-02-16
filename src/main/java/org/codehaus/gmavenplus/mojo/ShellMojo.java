@@ -73,7 +73,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().contains("jline")) {
-                    throw new MojoExecutionException("Unable to get a JLine class from classpath.  Do you have JLine as a plugin dependency in your project?", e);
+                    throw new MojoExecutionException("Unable to get a JLine class from classpath.  Do you have JLine as a plugin dependency in your project?  Use JLine 1.x for Groovy < 2.2.0, or JLine 2.x for Groovy >= 2.2.0.", e);
                 } else {
                     throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
                 }
