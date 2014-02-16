@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import java.util.Properties;
 
+
 /**
  * The base tools mojo, which all tool mojos extend.
  *
