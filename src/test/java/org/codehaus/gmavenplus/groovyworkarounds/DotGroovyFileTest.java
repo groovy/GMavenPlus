@@ -16,11 +16,11 @@
 
 package org.codehaus.gmavenplus.groovyworkarounds;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
