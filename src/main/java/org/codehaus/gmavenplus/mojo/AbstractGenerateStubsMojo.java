@@ -40,11 +40,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
 
     /**
-     * The minimum version of Groovy that this mojo supports.
-     */
-    protected static final Version MIN_GROOVY_VERSION = new Version(1, 8, 2);
-
-    /**
      * The encoding of source files.
      *
      * @parameter default-value="${project.build.sourceEncoding}"
@@ -198,17 +193,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
         // log generated stubs
         getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
-    }
-
-    /**
-     * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.8.2 because not all the classes needed were available and
-     * functioning correctly in previous versions.
-     *
-     * @return <code>true</code> only if the version of Groovy supports this mojo.
-     */
-    protected boolean groovyVersionSupportsAction() {
-        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
     /**

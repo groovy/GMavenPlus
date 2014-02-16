@@ -26,6 +26,7 @@ import java.util.Set;
 
 /**
  * Launches a Groovy console window bound to the current project.
+ * Note that this mojo requires Groovy >= 1.5.0.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -98,7 +99,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping console startup.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");
         }
     }
 

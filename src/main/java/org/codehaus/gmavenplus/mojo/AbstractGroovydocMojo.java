@@ -43,11 +43,6 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      */
 
     /**
-     * The minimum version of Groovy that this mojo supports.
-     */
-    protected static final Version MIN_GROOVY_VERSION = new Version(1, 6, 2);
-
-    /**
      * The location for the generated API docs.
      *
      * @parameter default-value="${project.build.directory}/gapidocs"
@@ -276,17 +271,6 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         } catch (IOException e) {
             getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").");
         }
-    }
-
-    /**
-     * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.6.2 because not all the classes/methods needed were available
-     * and functioning correctly in previous versions.
-     *
-     * @return <code>true</code> only if the version of Groovy supports this mojo
-     */
-    protected boolean groovyVersionSupportsAction() {
-        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }

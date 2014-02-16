@@ -103,6 +103,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected List<MavenProject> reactorProjects;
 
     /**
+     * The minimum version of Groovy that this mojo supports (1.5.0 by default, but other mojos can override).
+     */
+    protected Version minGroovyVersion = new Version(1, 5, 0);
+
+    /**
      * Logs the version of groovy used by this mojo.
      *
      * @param goal The goal to mention in the log statement showing Groovy version
@@ -277,6 +282,15 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected String getJavaVersionString() {
         return System.getProperty("java.version");
+    }
+
+    /**
+     * Determines whether this mojo can be run with the version of Groovy supplied.
+     *
+     * @return <code>true</code> only if the version of Groovy supports this mojo.
+     */
+    protected boolean groovyVersionSupportsAction() {
+        return getGroovyVersion() != null && getGroovyVersion().compareTo(minGroovyVersion) >= 0;
     }
 
 }

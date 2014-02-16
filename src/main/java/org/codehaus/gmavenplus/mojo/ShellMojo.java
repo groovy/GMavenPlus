@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Launches a Groovy shell bound to the current project.
+ * Note that this mojo requires Groovy >= 1.5.0.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -85,7 +86,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping shell startup.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
         }
     }
 

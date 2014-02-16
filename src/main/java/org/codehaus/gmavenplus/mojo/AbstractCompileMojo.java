@@ -34,11 +34,6 @@ import java.util.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
-     * The minimum version of Groovy that this mojo supports.
-     */
-    protected static final Version MIN_GROOVY_VERSION = new Version(1, 5, 0);
-
-    /**
      * The location for the compiled classes.
      *
      * @parameter default-value="${project.build.outputDirectory}"
@@ -203,17 +198,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         // log compiled classes
         List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
         getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
-    }
-
-    /**
-     * Determines whether this mojo can be run with the version of Groovy supplied.
-     * Must be >= 1.5.0 because not all the classes needed were available and
-     * functioning correctly in previous versions.
-     *
-     * @return <code>true</code> only if the version of Groovy supports this mojo.
-     */
-    protected boolean groovyVersionSupportsAction() {
-        return getGroovyVersion() != null && getGroovyVersion().compareTo(MIN_GROOVY_VERSION) >= 0;
     }
 
 }

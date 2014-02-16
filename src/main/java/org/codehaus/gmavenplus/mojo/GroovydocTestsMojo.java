@@ -18,6 +18,8 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.model.Version;
+
 import java.lang.reflect.InvocationTargetException;
 
 
@@ -42,6 +44,7 @@ public class GroovydocTestsMojo extends AbstractGroovydocMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
+        minGroovyVersion = new Version(1, 6, 2);
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("testGroovydoc");
 
@@ -57,7 +60,7 @@ public class GroovydocTestsMojo extends AbstractGroovydocMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping Groovydoc generation.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
         }
     }
 

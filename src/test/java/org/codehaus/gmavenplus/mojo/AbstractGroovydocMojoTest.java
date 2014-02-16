@@ -30,7 +30,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
-import java.util.List;
 
 
 /**
@@ -74,11 +73,14 @@ public class AbstractGroovydocMojoTest {
     }
 
     private class TestMojo extends AbstractGroovydocMojo {
-        private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+        private String overrideGroovyVersion = minGroovyVersion.toString();
 
-        protected TestMojo() { }
+        protected TestMojo() {
+            minGroovyVersion = new Version(1, 6, 2);
+        }
 
         protected TestMojo(String overrideGroovyVersion) {
+            minGroovyVersion = new Version(1, 6, 2);
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 

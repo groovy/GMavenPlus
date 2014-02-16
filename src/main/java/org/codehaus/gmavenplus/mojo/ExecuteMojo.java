@@ -30,6 +30,7 @@ import java.net.URL;
 
 /**
  * Executes Groovy scripts (in the pom or external), bound to the current project.
+ * Note that this mojo requires Groovy >= 1.5.0.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -147,7 +148,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping script execution.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
         }
     }
 

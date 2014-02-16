@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.model.Version;
 
 
 /**
@@ -54,6 +55,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skip) {
+            minGroovyVersion = new Version(1, 8, 2);
             if (groovyVersionSupportsAction()) {
                 logGroovyVersion("testGenerateStubs");
 
@@ -78,7 +80,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                     throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
                 }
             } else {
-                getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");
+                getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
             }
         } else {
             getLog().info("Skipping generation of test stubs because ${maven.test.skip} was set to true.");

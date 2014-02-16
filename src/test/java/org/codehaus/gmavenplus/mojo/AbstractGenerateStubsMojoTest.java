@@ -132,11 +132,14 @@ public class AbstractGenerateStubsMojoTest {
     }
 
     private class TestMojo extends AbstractGenerateStubsMojo {
-        private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+        private String overrideGroovyVersion = minGroovyVersion.toString();
 
-        protected TestMojo() { }
+        protected TestMojo() {
+            minGroovyVersion = new Version(1, 8, 2);
+        }
 
         protected TestMojo(String overrideGroovyVersion) {
+            minGroovyVersion = new Version(1, 8, 2);
             this.overrideGroovyVersion = overrideGroovyVersion;
         }
 

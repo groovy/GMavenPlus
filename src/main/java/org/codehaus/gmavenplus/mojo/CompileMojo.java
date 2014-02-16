@@ -65,7 +65,7 @@ public class CompileMojo extends AbstractCompileMojo {
                 throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping compiling.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
         }
     }
 

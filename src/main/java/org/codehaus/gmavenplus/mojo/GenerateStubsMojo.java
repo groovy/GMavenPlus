@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.model.Version;
 
 
 /**
@@ -46,6 +47,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
+        minGroovyVersion = new Version(1, 8, 2);
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("generateStubs");
 
@@ -70,7 +72,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
                 throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
         }
     }
 

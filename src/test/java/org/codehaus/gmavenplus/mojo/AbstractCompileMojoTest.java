@@ -78,7 +78,7 @@ public class AbstractCompileMojoTest {
     }
 
     private class TestMojo extends AbstractCompileMojo {
-        private String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+        private String overrideGroovyVersion = minGroovyVersion.toString();
 
         protected TestMojo() { }
 
