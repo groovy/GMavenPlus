@@ -76,7 +76,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true.");
             }
         } else {
-            getLog().error("This plugin doesn't support your Groovy version (" + getGroovyVersion() + ").  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping stub generation.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + MIN_GROOVY_VERSION + ".  Skipping compiling.");
         }
     }
 
