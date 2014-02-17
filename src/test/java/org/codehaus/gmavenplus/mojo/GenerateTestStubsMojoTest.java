@@ -29,6 +29,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 
 
@@ -109,6 +110,14 @@ public class GenerateTestStubsMojoTest {
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        generateTestStubsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    @SuppressWarnings("unchecked")
+    public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
+        Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
+        Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
     }
 

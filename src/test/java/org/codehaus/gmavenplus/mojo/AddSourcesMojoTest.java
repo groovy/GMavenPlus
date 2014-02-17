@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.model.fileset.FileSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,16 +49,22 @@ public class AddSourcesMojoTest {
     }
 
     @Test
-    public void testAddSourcePathContainsPath() {
+    public void testAddSourcePathContainsPath() throws Exception {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourcesMojo.addSourcePath(PATH);
+        FileSet fs = new FileSet();
+        fs.setDirectory(PATH);
+        addSourcesMojo.sources = new FileSet[] {fs};
+        addSourcesMojo.execute();
         Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
     }
 
     @Test
-    public void testAddSourcePathNotContainsPath() {
+    public void testAddSourcePathNotContainsPath() throws Exception {
         Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
-        addSourcesMojo.addSourcePath("OTHER_PATH");
+        FileSet fs = new FileSet();
+        fs.setDirectory("OTHER PATH");
+        addSourcesMojo.sources = new FileSet[] {fs};
+        addSourcesMojo.execute();
         Mockito.verify(project, Mockito.times(1)).addCompileSourceRoot(Mockito.anyString());
     }
 
