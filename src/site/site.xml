@@ -15,7 +15,7 @@
       <gitHub>
         <projectId>groovy/gmavenplus</projectId>
         <ribbonOrientation>right</ribbonOrientation>
-        <ribbonColor>gray</ribbonColor>
+        <ribbonColor>red</ribbonColor>
       </gitHub>
       <topBarEnabled>false</topBarEnabled>
       <sideBarEnabled>true</sideBarEnabled>
