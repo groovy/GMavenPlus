@@ -26,8 +26,8 @@
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
-      <item name="Usage" href="https://github.com/groovy/GMavenPlus/wiki/Usage" target="_top" />
-      <item name="Examples" href="https://github.com/groovy/GMavenPlus/wiki/Examples" />
+      <item name="Usage" href="http://docs.codehaus.org/display/GMAVENPLUS/Usage" target="_top" />
+      <item name="Examples" href="http://docs.codehaus.org/display/GMAVENPLUS/Examples" />
     </menu>
     <menu ref="reports" />
   </body>
