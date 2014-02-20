@@ -38,6 +38,19 @@ import java.lang.reflect.InvocationTargetException;
 public class ShellMojo extends AbstractToolsMojo {
 
     /**
+     * Groovy shell verbosity level.  Should be one of:
+     * <ul>
+     *   <li>QUIET</li>
+     *   <li>INFO</li>
+     *   <li>DEBUG</li>
+     *   <li>VERBOSE</li>
+     * </ul>
+     *
+     * @parameter default-value="QUIET"
+     */
+    protected String verbosity;
+
+    /**
      * Executes this mojo.
      *
      * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
@@ -52,6 +65,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 Class shellClass = Class.forName("org.codehaus.groovy.tools.shell.Groovysh");
                 Class bindingClass = Class.forName("groovy.lang.Binding");
                 Class ioClass = Class.forName("org.codehaus.groovy.tools.shell.IO");
+                Class verbosityClass = Class.forName("org.codehaus.groovy.tools.shell.IO$Verbosity");
                 Class loggerClass = Class.forName("org.codehaus.groovy.tools.shell.util.Logger");
 
                 // create shell to run
@@ -62,6 +76,7 @@ public class ShellMojo extends AbstractToolsMojo {
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
                 }
                 Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, "setVerbosity", verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, "forName", String.class), verbosity));
                 ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), bindingClass.getClassLoader(), binding, io);
 
