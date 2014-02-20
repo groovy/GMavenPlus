@@ -62,8 +62,6 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
                 Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), bindingClass.getClassLoader(), binding);
 
-                // TODO: load configurable (compile, test, runtime, or system) dependencies onto classpath before executing so they can be used in console?
-
                 // run the console
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
 

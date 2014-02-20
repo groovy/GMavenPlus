@@ -65,8 +65,6 @@ public class ShellMojo extends AbstractToolsMojo {
                 ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), bindingClass.getClassLoader(), binding, io);
 
-                // TODO: load configurable (compile, test, runtime, or system) dependencies onto classpath before executing so they can be used in shell?
-
                 // run the shell
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(shellClass, "run", String.class), shell, (String) null);
             } catch (ClassNotFoundException e) {
