@@ -21,8 +21,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 
 
-// TODO: Replace mojo annotation with Javadoc tags when stubs include Javadoc tags?
-
 /**
  * A hello world mojo.
  */
