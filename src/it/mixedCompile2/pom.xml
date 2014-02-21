@@ -64,14 +64,6 @@
             </configuration>
           </execution>
         </executions>
-        <dependencies>
-          <!-- this is here as a workaround for Groovy < 1.8.2 having stub generation issues and Groovy < 1.6.2 not supporting groovydoc -->
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>${overrideGroovyVersion}</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
