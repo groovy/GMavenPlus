@@ -115,7 +115,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean invokeDynamic;
 
     /**
-     * A script for tweaking the configuration options.
+     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a> for tweaking the configuration options.
      *
      * @parameter property="configScript"
      */
