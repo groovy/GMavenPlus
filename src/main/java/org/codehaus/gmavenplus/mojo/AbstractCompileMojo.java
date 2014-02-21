@@ -115,6 +115,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean invokeDynamic;
 
     /**
+     * A script for tweaking the configuration options.
+     *
+     * @parameter property="configScript"
+     */
+    protected File configScript;
+
+    /**
      * Performs compilation of compile mojos.
      *
      * @param sourcesToCompile The sources to compile
@@ -141,6 +148,25 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
+        if (configScript != null) {
+            if (getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
+                Class bindingClass = Class.forName("groovy.lang.Binding");
+                Class importCustomizerClass = Class.forName("org.codehaus.groovy.control.customizers.ImportCustomizer");
+                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+
+                Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
+                Object shellCompilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
+                Object importCustomizer = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(importCustomizerClass));
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(importCustomizerClass, "addStaticStar", String.class), importCustomizer, "org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder");
+                List compilationCustomizers = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getCompilationCustomizers"), shellCompilerConfiguration);
+                compilationCustomizers.add(importCustomizer);
+                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell , configScript);
+            } else {
+                getLog().warn("Requested to use configScript, but your Groovy version doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter.");
+            }
+        }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
