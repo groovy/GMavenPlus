@@ -140,7 +140,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         Artifact groovyDependency = getGroovyDependency();
 
         if (groovyDependency == null) {
-            getLog().warn("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
         } else {
             groovyVersion = groovyDependency.getVersion();
         }
@@ -157,7 +157,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         try {
             return Version.parseFromString(getGroovyVersionString());
         } catch (Exception e) {
-            getLog().warn("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
         }
     }
@@ -173,7 +173,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
 
         Artifact groovyDependency = getGroovyDependency();
         if (groovyDependency == null) {
-            getLog().warn("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
         } else if ("indy".equals(groovyDependency.getClassifier())) {
             isGroovyIndy = true;
         }
