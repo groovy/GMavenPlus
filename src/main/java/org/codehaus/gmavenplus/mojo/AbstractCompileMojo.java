@@ -108,7 +108,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected int tolerance;
 
     /**
-     * Allow setting whether to support invokeDynamic (requires Java 7 or greater).
+     * Whether to support invokeDynamic (requires Java 7 or greater).
      *
      * @parameter property="invokeDynamic" default-value="false"
      */
@@ -154,16 +154,21 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-        if (getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0 && invokeDynamic) {
-            if (isGroovyIndy()) {
-                Map<java.lang.String, java.lang.Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
-                optimizationOptions.put("indy", true);
-                optimizationOptions.put("int", false);
+        if (invokeDynamic) {
+            if (getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0) {
+                if (isGroovyIndy()) {
+                    if (isJavaSupportIndy()) {
+                        Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
+                        optimizationOptions.put("indy", true);
+                        optimizationOptions.put("int", false);
+                    } else {
+                        getLog().warn("Tried to use to use an indy version of Groovy, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Ignoring invokeDynamic parameter.");
+                    }
+                } else {
+                    getLog().warn("Requested to use InvokeDynamic, but the version of Groovy on the project classpath doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
+                }
             } else {
-                getLog().warn("Requested to use InvokeDynamic option but the version of Groovy on the project classpath doesn't support it.  Ignoring invokeDynamic option.");
-            }
-            if (!isJavaSupportIndy()) {
-                throw new IllegalArgumentException("Tried to use to use an indy version of Groovy, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Failing build.");
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter.");
             }
         }
 
