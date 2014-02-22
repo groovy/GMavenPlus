@@ -32,6 +32,7 @@ import org.apache.maven.shared.model.fileset.FileSet;
  * The base groovydoc mojo, which all groovydoc mojos extend.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.6.1?
@@ -126,6 +127,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Links to include in the generated groovydoc (key is link href, value is comma-separated packages to use that link).
+     * @since 1.0-beta-2
      *
      * @parameter
      */
@@ -133,6 +135,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Whether to include Java sources in groovydoc generation.
+     * @since 1.0-beta-2
      *
      * @parameter default-value="true"
      */

@@ -24,6 +24,7 @@ import java.util.List;
  *
  * @author Brian Jackson
  * @author Keegan Witt
+ * @since 1.0-beta-3
  */
 public abstract class AbstractIncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
 //    private static final Log LOG = new SystemStreamLog();

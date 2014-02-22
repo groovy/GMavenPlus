@@ -30,6 +30,7 @@ import java.util.*;
  * The base generate stubs mojo, which all generate stubs mojos extend.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
     // TODO: support Groovy 1.5.0 - 1.8.1?
@@ -48,6 +49,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
     /**
      * The file extensions of Groovy source files.
+     * @since 1.0-beta-2
      *
      * @parameter
      */
@@ -62,6 +64,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>1.7</li>
      *   <li>1.8</li>
      * </ul>
+     * @since 1.0-beta-3
      *
      * @parameter default-value="1.5"
      */

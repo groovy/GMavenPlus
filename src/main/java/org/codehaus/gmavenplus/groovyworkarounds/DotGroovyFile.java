@@ -30,6 +30,7 @@ import java.util.Set;
  * into letting us use files that don't end in ".groovy" (as a workaround for <a href="http://jira.codehaus.org/browse/GROOVY-5021">GROOVY-5021</a>).
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public class DotGroovyFile extends File {
     /**

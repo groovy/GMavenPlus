@@ -35,6 +35,7 @@ import java.util.List;
  * The base mojo class, which all other mojos extend.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
 

@@ -24,6 +24,7 @@ import java.util.Arrays;
  * Inspired by Spring's <a href="https://github.com/SpringSource/spring-framework/blob/master/spring-core/src/main/java/org/springframework/util/ReflectionUtils.java">ReflectionUtils</a>.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public class ReflectionUtils {
 

@@ -33,6 +33,7 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
  *
  * @author Brian Jackson
  * @author Keegan Witt
+ * @since 1.0-beta-3
  *
  * @plexus.component role="org.codehaus.plexus.component.configurator.ComponentConfigurator"
  *                   role-hint="include-project-runtime-dependencies"

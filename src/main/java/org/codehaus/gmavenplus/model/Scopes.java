@@ -21,6 +21,7 @@ package org.codehaus.gmavenplus.model;
  * Scope access modifiers supported by Java.
  *
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public enum Scopes {
     /**

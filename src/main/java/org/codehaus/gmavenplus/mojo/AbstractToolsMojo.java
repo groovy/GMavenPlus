@@ -23,6 +23,7 @@ import java.util.Properties;
  * The base tools mojo, which all tool mojos extend.
  *
  * @author Keegan Witt
+ * @since 1.1
  */
 public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
@@ -43,6 +44,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *     <dd>a list of org.apache.maven.project.MavenProject objects currently loaded by the reactor</dd>
      * </dl>
      * These can be overridden.
+     * @since 1.0-beta-3
      *
      * @parameter
      */

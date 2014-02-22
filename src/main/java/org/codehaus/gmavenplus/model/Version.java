@@ -27,6 +27,7 @@ import com.google.common.collect.Ordering;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Keegan Witt
+ * @since 1.0-beta-1
  */
 public class Version implements Comparable<Version> {
     /**

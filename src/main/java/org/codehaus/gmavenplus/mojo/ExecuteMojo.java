@@ -60,6 +60,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
      * The encoding of script files.
+     * @since 1.0-beta-2
      *
      * @parameter default-value="${project.build.sourceEncoding}"
      */
