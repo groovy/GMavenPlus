@@ -206,7 +206,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), transformLoader, new File((String) classpathElement).toURI().toURL());
-                getLog().debug("    " + classpathElement);
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("    " + classpathElement);
+                }
             }
         }
 
@@ -219,7 +221,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
         getLog().debug("Adding Groovy to compile:");
         for (File source : sourcesToCompile) {
-            getLog().debug("    " + source);
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("    " + source);
+            }
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
 

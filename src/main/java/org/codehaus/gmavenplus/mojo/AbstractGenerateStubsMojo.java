@@ -158,14 +158,18 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (classpath != null) {
             for (Object classpathElement : classpath) {
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyClassLoaderClass, "addURL", URL.class), groovyClassLoader, new File((String) classpathElement).toURI().toURL());
-                getLog().debug("    " + classpathElement);
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("    " + classpathElement);
+                }
             }
         }
 
         // add Groovy sources
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : stubSources) {
-            getLog().debug("    " + source);
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("    " + source);
+            }
             if (getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0) {
                 Set<String> extensions;
                 if (scriptExtensions != null && !scriptExtensions.isEmpty()) {

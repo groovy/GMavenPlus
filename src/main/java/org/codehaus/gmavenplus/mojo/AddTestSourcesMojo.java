@@ -54,7 +54,9 @@ public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
      */
     protected void addTestSourcePath(final String path) {
         if (!project.getTestCompileSourceRoots().contains(path)) {
-            getLog().debug("Added test source directory: " + path);
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Added test source directory: " + path);
+            }
             project.addTestCompileSourceRoot(path);
         }
     }
