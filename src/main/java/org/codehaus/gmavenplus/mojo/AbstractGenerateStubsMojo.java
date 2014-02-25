@@ -142,6 +142,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (getGroovyVersion().compareTo(new Version(2, 1, 3)) >= 0) {
             bytecode = targetBytecode;
         } else {
+            // prior to 2.1.3, the only choices were 1.4 or 1.5, but since we don't support 1.4, we can just hard-code to 1.5
             bytecode = "1.5";
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, bytecode);
