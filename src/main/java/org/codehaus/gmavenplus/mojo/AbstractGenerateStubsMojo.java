@@ -64,6 +64,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>1.7</li>
      *   <li>1.8</li>
      * </ul>
+     * Note that prior to Groovy 2.1.3, only 1.4 and 1.5 were supported.
+     * If an invalid selection is made, Groovy will default to VM determined
+     * version.
      * @since 1.0-beta-3
      *
      * @parameter default-value="1.5"
@@ -138,14 +141,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        String bytecode;
-        if (getGroovyVersion().compareTo(new Version(2, 1, 3)) >= 0) {
-            bytecode = targetBytecode;
-        } else {
-            // prior to 2.1.3, the only choices were 1.4 or 1.5, but since we don't support 1.4, we can just hard-code to 1.5
-            bytecode = "1.5";
-        }
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, bytecode);
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
