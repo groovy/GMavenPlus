@@ -44,7 +44,6 @@ public class GenerateStubsMojoTest {
     private GenerateStubsMojo generateStubsMojo;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() throws Exception {
         Mockito.doNothing().when(generateStubsMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(generateStubsMojo).getSources();

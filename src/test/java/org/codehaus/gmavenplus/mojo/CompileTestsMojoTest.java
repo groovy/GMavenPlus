@@ -44,7 +44,6 @@ public class CompileTestsMojoTest {
     private CompileTestsMojo compileTestsMojo;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() throws Exception {
         Mockito.doNothing().when(compileTestsMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(compileTestsMojo).getTestSources();

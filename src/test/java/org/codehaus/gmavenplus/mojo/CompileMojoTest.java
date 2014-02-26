@@ -19,7 +19,6 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,6 @@ public class CompileMojoTest {
     private CompileMojo compileMojo;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() throws Exception {
         Mockito.doNothing().when(compileMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(compileMojo).getSources();

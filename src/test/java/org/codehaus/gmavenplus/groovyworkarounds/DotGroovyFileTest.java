@@ -33,7 +33,6 @@ import java.util.Set;
 public class DotGroovyFileTest {
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGroovyWithCustomExtension() {
         DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
                 new DotGroovyFile("pathname.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[]{"ext"}))),
@@ -48,7 +47,6 @@ public class DotGroovyFileTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGroovyWithDefaultExtensions() {
         DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
                 new DotGroovyFile("pathname.groovy").setScriptExtensions(DotGroovyFile.defaultScriptExtensions()),

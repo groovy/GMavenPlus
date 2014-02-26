@@ -43,7 +43,6 @@ public class GroovydocMojoTest {
     private GroovydocMojo groovydocMojo;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setup() throws Exception {
         Mockito.doNothing().when(groovydocMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(groovydocMojo).getSources();
@@ -52,7 +51,6 @@ public class GroovydocMojoTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testCallsExpectedMethods() throws Exception {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doNothing().when(groovydocMojo).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
@@ -61,7 +59,6 @@ public class GroovydocMojoTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGroovyVersionDoesntSupportAction() throws Exception {
         Mockito.doReturn(new Version(0)).when(groovydocMojo).getGroovyVersion();
         Mockito.doReturn(false).when(groovydocMojo).groovyVersionSupportsAction();
@@ -70,7 +67,6 @@ public class GroovydocMojoTest {
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovydocMojo).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
@@ -78,7 +74,6 @@ public class GroovydocMojoTest {
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(groovydocMojo).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
@@ -86,7 +81,6 @@ public class GroovydocMojoTest {
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovydocMojo).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
@@ -94,7 +88,6 @@ public class GroovydocMojoTest {
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovydocMojo).generateGroovydoc(Mockito.any(FileSet[].class), Mockito.any(File.class));
