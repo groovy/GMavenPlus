@@ -38,4 +38,11 @@ public class TheTest {
         Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
     }
 
+    @Test
+    public void testOverviewSummaryExists() {
+        File generatedGroovydoc = new File("target/gapidocs/overview-summary.html");
+        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
+        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
+    }
+
 }

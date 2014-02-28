@@ -25,8 +25,15 @@ import java.io.File;
 public class SomeClassTest {
 
     @Test
-    public void testSomeMethod() {
+    public void testSomeClassExists() {
         File generatedGroovydoc = new File("target/gapidocs/org/codehaus/gmavenplus/SomeClass.html");
+        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
+        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
+    }
+
+    @Test
+    public void testOverviewSummaryExists() {
+        File generatedGroovydoc = new File("target/gapidocs/overview-summary.html");
         Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
         Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
     }

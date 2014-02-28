@@ -25,7 +25,7 @@ import java.io.File;
 public class TheTest {
 
     @Test
-    public void testYetAnotherMethod() {
+    public void testClassesExist() {
         File generatedGroovydoc1 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Parent.html");
         File generatedGroovydoc2 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Grandchild.html");
         File generatedGroovydoc3 = new File("target/gapidocs/org/codehaus/gmavenplus/java/Child.html");
@@ -35,6 +35,13 @@ public class TheTest {
         Assert.assertTrue(generatedGroovydoc2 + " is empty.", generatedGroovydoc2.length() > 0);
         Assert.assertTrue(generatedGroovydoc3 + " does not exist.", generatedGroovydoc3.exists());
         Assert.assertTrue(generatedGroovydoc3 + " is empty.", generatedGroovydoc3.length() > 0);
+    }
+
+    @Test
+    public void testOverviewSummaryExists() {
+        File generatedGroovydoc = new File("target/gapidocs/overview-summary.html");
+        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
+        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
     }
 
 }

@@ -16,35 +16,98 @@
 
 package org.codehaus.gmavenplus.groovyworkarounds;
 
+import org.codehaus.gmavenplus.model.Version;
+
+
 /**
- * This class was taken directly from the Groovy project because it's just a
- * collection of Strings, but it wasn't available prior to Groovy 1.7 and we
- * need it for Groovydoc generation.
+ * This class was taken mostly from the Groovy project
+ * (<a href="https://github.com/groovy/groovy-core/blob/master/subprojects/groovy-groovydoc/src/main/java/org/codehaus/groovy/tools/groovydoc/gstringTemplates/GroovyDocTemplateInfo.java">GroovyDocTemplateInfo.java</a> and <a href="https://github.com/groovy/groovy-core/blob/master/subprojects/groovy-groovydoc/src/main/java/org/codehaus/groovy/groovydoc/GroovyDoc.java">GroovyDoc.java</a>)
+ * because it wasn't available prior to Groovy 1.7.
  */
-public final class GroovyDocTemplateInfo {
-
-    private GroovyDocTemplateInfo() { }
-
-    private static final String TEMPLATE_BASEDIR = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
+public class GroovyDocTemplateInfo {
     private static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
-    public static final String[] DEFAULT_DOC_TEMPLATES = new String[] {// top level templates
-            TEMPLATE_BASEDIR + "topLevel/index.html",
-            TEMPLATE_BASEDIR + "topLevel/overview-frame.html", // needs all package names
-            TEMPLATE_BASEDIR + "topLevel/allclasses-frame.html", // needs all packages / class names
-            TEMPLATE_BASEDIR + "topLevel/overview-summary.html", // needs all packages
-            TEMPLATE_BASEDIR + "topLevel/help-doc.html",
-            TEMPLATE_BASEDIR + "topLevel/index-all.html",
-            TEMPLATE_BASEDIR + "topLevel/deprecated-list.html",
-            TEMPLATE_BASEDIR + "topLevel/stylesheet.css", // copy default one, may override later
-            TEMPLATE_BASEDIR + "topLevel/inherit.gif",
-            DOCGEN_BASEDIR + "groovy.ico",
-    };
-    public static final String[] DEFAULT_PACKAGE_TEMPLATES = new String[] {// package level templates
-            TEMPLATE_BASEDIR + "packageLevel/package-frame.html",
-            TEMPLATE_BASEDIR + "packageLevel/package-summary.html"
-    };
-    public static final String[] DEFAULT_CLASS_TEMPLATES = new String[] {// class level templates
-            TEMPLATE_BASEDIR + "classLevel/classDocName.html"
-    };
+    private Version groovyVersion;
+    private String templateBaseDir;
+
+    public GroovyDocTemplateInfo(Version version) {
+        groovyVersion = version;
+        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+            templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
+        } else {
+            templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstring-templates/";
+        }
+    }
+
+    public String[] defaultDocTemplates() {
+        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+            return new String[] {
+                    templateBaseDir + "topLevel/index.html",
+                    templateBaseDir + "topLevel/overview-frame.html",
+                    templateBaseDir + "topLevel/allclasses-frame.html",
+                    templateBaseDir + "topLevel/overview-summary.html",
+                    templateBaseDir + "topLevel/help-doc.html",
+                    templateBaseDir + "topLevel/index-all.html",
+                    templateBaseDir + "topLevel/deprecated-list.html",
+                    templateBaseDir + "topLevel/stylesheet.css",
+                    templateBaseDir + "topLevel/inherit.gif",
+                    DOCGEN_BASEDIR + "groovy.ico"
+            };
+        } else if (groovyVersion.compareTo(new Version(1, 6, 0)) >= 0) {
+            return new String[] {
+                    templateBaseDir + "top-level/index.html",
+                    templateBaseDir + "top-level/overview-frame.html",
+                    templateBaseDir + "top-level/allclasses-frame.html",
+                    templateBaseDir + "top-level/overview-summary.html",
+                    templateBaseDir + "top-level/help-doc.html",
+                    templateBaseDir + "top-level/index-all.html",
+                    templateBaseDir + "top-level/deprecated-list.html",
+                    templateBaseDir + "top-level/stylesheet.css",
+                    templateBaseDir + "top-level/inherit.gif"
+            };
+        } else if (groovyVersion.compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+            return new String[] {
+                    templateBaseDir + "top-level/index.html",
+                    templateBaseDir + "top-level/overview-frame.html",
+                    templateBaseDir + "top-level/allclasses-frame.html",
+                    templateBaseDir + "top-level/overview-summary.html",
+                    templateBaseDir + "top-level/stylesheet.css",
+                    templateBaseDir + "top-level/inherit.gif"
+            };
+        } else {
+            return new String[] {
+                    templateBaseDir + "top-level/index.html",
+                    templateBaseDir + "top-level/overview-frame.html",
+                    templateBaseDir + "top-level/allclasses-frame.html",
+                    templateBaseDir + "top-level/overview-summary.html",
+                    templateBaseDir + "top-level/stylesheet.css"
+            };
+        }
+    }
+
+    public String[] defaultPackageTemplates() {
+        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+            return new String[] {
+                    templateBaseDir + "packageLevel/package-frame.html",
+                    templateBaseDir + "packageLevel/package-summary.html"
+            };
+        } else {
+            return new String[] {
+                    templateBaseDir + "package-level/package-frame.html",
+                    templateBaseDir + "package-level/package-summary.html"
+            };
+        }
+    }
+
+    public String[] defaultClassTemplates() {
+        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+            return new String[] {
+                    templateBaseDir + "classLevel/classDocName.html"
+            };
+        } else {
+            return new String[] {
+                    templateBaseDir + "class-level/classDocName.html"
+            };
+        }
+    }
 
 }

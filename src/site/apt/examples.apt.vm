@@ -394,7 +394,7 @@ mvn compile
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.6.2 should work here -->
+      <!-- any version of Groovy \>= 1.5.0 (except 1.6 RC 1) should work here -->
       <version>${groovyVersion}</version>
     </dependency>
   </dependencies>

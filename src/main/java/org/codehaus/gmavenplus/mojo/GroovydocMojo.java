@@ -25,7 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Generates Groovydoc for the main sources
- * Note that this mojo requires Groovy >= 1.6.2.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -44,7 +43,6 @@ public class GroovydocMojo extends AbstractGroovydocMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        minGroovyVersion = new Version(1, 6, 2);
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("groovydoc");
 
