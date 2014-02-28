@@ -210,6 +210,16 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             }
         }
 
+        if (groovyDependency == null && project.getTestDependencies() != null) {
+            for (Object dep : project.getTestDependencies()) {
+                Dependency dependency = (Dependency) dep;
+                if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                    groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
+                    break;
+                }
+            }
+        }
+
         return groovyDependency;
     }
 
