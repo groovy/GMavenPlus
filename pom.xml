@@ -19,13 +19,13 @@
     <javaVersion>1.5</javaVersion>
     <minMavenVersion>3.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <coberturaVersion>2.6</coberturaVersion>
-    <javadocVersion>2.9.1</javadocVersion>
+    <coberturaPluginVersion>2.6</coberturaPluginVersion>
+    <javadocPluginVersion>2.9.1</javadocPluginVersion>
     <!-- these are properties so integration tests can use them -->
+    <compilerPluginVersion>3.1</compilerPluginVersion>
+    <surefirePluginVersion>2.16</surefirePluginVersion>
+    <pluginPluginVersion>3.2</pluginPluginVersion>
     <junitVersion>4.11</junitVersion>
-    <compilerVersion>3.1</compilerVersion>
-    <surefireVersion>2.16</surefireVersion>
-    <pluginVersion>3.2</pluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.2.2</groovyVersion>
   </properties>
@@ -182,7 +182,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${compilerVersion}</version>
+        <version>${compilerPluginVersion}</version>
         <configuration>
           <source>${javaVersion}</source>
           <target>${javaVersion}</target>
@@ -208,7 +208,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${pluginVersion}</version>
+        <version>${pluginPluginVersion}</version>
         <executions>
           <execution>
             <id>generate-helpmojo</id>
@@ -227,12 +227,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefireVersion}</version>
+        <version>${surefirePluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${coberturaVersion}</version>
+        <version>${coberturaPluginVersion}</version>
         <configuration>
           <check />
           <instrumentation>
@@ -287,7 +287,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${javadocVersion}</version>
+        <version>${javadocPluginVersion}</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -344,7 +344,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${pluginVersion}</version>
+        <version>${pluginPluginVersion}</version>
         <configuration>
           <requirements>
             <jdk>${javaVersion}</jdk>
@@ -360,7 +360,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${javadocVersion}</version>
+        <version>${javadocPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -370,12 +370,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${surefireVersion}</version>
+        <version>${surefirePluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${coberturaVersion}</version>
+        <version>${coberturaPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
