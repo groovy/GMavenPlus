@@ -170,7 +170,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (getLog().isDebugEnabled()) {
                 getLog().debug("    " + source);
             }
-            if (getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0) {
+            if (getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0 && (getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-1")) < 0 || getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-3")) > 0)) {
                 Set<String> extensions;
                 if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
                     extensions = scriptExtensions;
