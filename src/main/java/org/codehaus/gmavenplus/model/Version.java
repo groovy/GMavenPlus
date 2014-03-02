@@ -204,6 +204,8 @@ public class Version implements Comparable<Version> {
      * Compares two versions objects.  Note that if the major, minor, and revision are all
      * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.  Having no tag
      * is considered a newer version than a version with a tag.
+     *
+     * @param version The version to compare this version to
      */
     public final int compareTo(final Version version) {
         return compareTo(version, true);
@@ -219,19 +221,20 @@ public class Version implements Comparable<Version> {
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
+        // "beta" is replaced with " beta" to make sure RCs are considered newer than betas (by moving beta to back of order)
         if (noTagsAreNewer) {
             return ComparisonChain.start()
                     .compare(major, version.major)
                     .compare(minor, version.minor)
                     .compare(revision, version.revision)
-                    .compare(tag, version.tag, Ordering.natural().nullsLast())
+                    .compare(tag != null ? tag.replace("beta", " beta") : tag, version.tag != null ? version.tag.replace("beta", " beta") : version.tag, Ordering.natural().nullsLast())
                     .result();
         } else {
             return ComparisonChain.start()
                     .compare(major, version.major)
                     .compare(minor, version.minor)
                     .compare(revision, version.revision)
-                    .compare(tag, version.tag, Ordering.natural().nullsFirst())
+                    .compare(tag != null ? tag.replace("beta", " beta") : tag, version.tag != null ? version.tag.replace("beta", " beta") : version.tag, Ordering.natural().nullsFirst())
                     .result();
         }
     }

@@ -197,18 +197,23 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(getGroovyVersion());
         Object groovyDocTool;
         List linksList = new ArrayList();
-        if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
-            Class<?> linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument");
-            if (links != null) {
+        if (links != null && links.size() > 0) {
+            Class<?> linkArgumentClass = null;
+            if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+                linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument");
+            } else if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
+                linkArgumentClass = Class.forName("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
+            }
+            if (linkArgumentClass != null) {
                 for (Link link : links) {
                     Object linkArgument = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(linkArgumentClass));
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setHref", String.class), linkArgument, link.getHref());
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setPackages", String.class), linkArgument, link.getPackages());
                     linksList.add(linkArgument);
                 }
+            } else {
+                getLog().warn("Requested to use Groovydoc links, but your Groovy version doesn't support it (must be 1.5.2 or newer).  Ignoring links parameter.");
             }
-        } else if (links != null && links.size() > 0) {
-            getLog().warn("Requested to use Groovydoc links, but your Groovy version doesn't support it (must be 1.5.2 or newer).  Ignoring links parameter.");
         }
         if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) < 0) {
             getLog().warn("Your Groovy version doesn't support Groovydoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope).  You need Groovy 1.6-RC-2 or newer to support this.  Ignoring properties.");

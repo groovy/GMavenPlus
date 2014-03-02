@@ -35,6 +35,13 @@ public class VersionTest {
     }
 
     @Test
+    public void testCompareWithTwoTagsDifferentStart() {
+        Version v1 = Version.parseFromString("1.0.0-beta-1");
+        Version v2 = Version.parseFromString("1.0.0-RC-2");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
+    @Test
     public void testCompareWithSnapshotTag() {
         Version v1 = Version.parseFromString("1.0-SNAPSHOT");
         Version v2 = Version.parseFromString("1.0");
@@ -61,25 +68,25 @@ public class VersionTest {
 
     @Test
     public void testSort() {
-        Version v1 = Version.parseFromString("1.0.0-beta-2");
-        Version v2 = Version.parseFromString("1.0.0-beta-1");
+        Version v1 = Version.parseFromString("1.0.0-beta-1");
+        Version v2 = Version.parseFromString("1.0.0-beta-2");
         List<Version> versions = new ArrayList<Version>();
         versions.add(v1);
         versions.add(v2);
         Collections.sort(versions);
-        Assert.assertEquals(v2, versions.get(0));
-        Assert.assertEquals(v1, versions.get(1));
+        Assert.assertEquals(v1, versions.get(0));
+        Assert.assertEquals(v2, versions.get(1));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNegatives() {
-        Version version = new Version(-1);
+        new Version(-1);
     }
 
     @Test
     public void testNotEqualsWithNonVersion() {
         Version version = new Version(0);
-        Assert.assertFalse(version.equals(""));
+        Assert.assertFalse(version.toString().equals(""));
     }
 
     @Test(expected = IllegalArgumentException.class)
