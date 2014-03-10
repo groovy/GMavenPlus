@@ -55,7 +55,8 @@ mvn test-compile
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
-        <!-- if including source jars, use the no-fork goals.  Otherwise both the Groovy sources and Java stub sources will get included in your jar -->
+        <!-- if including source jars, use the no-fork goals
+             otherwise both the Groovy sources and Java stub sources will get included in your jar -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
