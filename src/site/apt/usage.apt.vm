@@ -40,6 +40,8 @@ mvn test-compile
         <executions>
           <execution>
             <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
               <goal>generateStubs</goal>
               <goal>compile</goal>
               <goal>testGenerateStubs</goal>
