@@ -55,11 +55,4 @@ public class AddStubSourcesMojoTest {
         Mockito.verify(project).addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
     }
 
-    @Test
-    public void testNotAddsStubsToSourcesOldGroovy() throws Exception {
-        Mockito.when(mojo.groovyVersionSupportsAction()).thenReturn(false);
-        mojo.execute();
-        Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
-    }
-
 }

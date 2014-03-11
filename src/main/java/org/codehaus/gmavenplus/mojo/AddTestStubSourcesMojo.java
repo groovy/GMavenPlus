@@ -39,13 +39,10 @@ public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
      * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (groovyVersionSupportsAction()) {
-            logGroovyVersion("addTestStubsSources");
-
-            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
-        } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub sources.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping adding stub sources.");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Added test stub directory " + testStubsOutputDirectory.getAbsolutePath() + " to project test sources.");
         }
+        project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
     }
 
 }
