@@ -33,29 +33,18 @@ import org.apache.maven.plugin.MojoFailureException;
 public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
-     * Flag to allow test compilation to be skipped.
-     *
-     * @parameter property="maven.test.skip" default-value="false"
-     */
-    protected boolean skip;
-
-    /**
      * Executes this mojo.
      *
      * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (!skip) {
-            if (groovyVersionSupportsAction()) {
-                logGroovyVersion("addTestStubsSources");
+        if (groovyVersionSupportsAction()) {
+            logGroovyVersion("addTestStubsSources");
 
-                project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
-            } else {
-                getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub sources.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping adding stub sources.");
-            }
+            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
         } else {
-            getLog().info("Skipping generation of test stubs because ${maven.test.skip} was set to true.");
+            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub sources.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping adding stub sources.");
         }
     }
 

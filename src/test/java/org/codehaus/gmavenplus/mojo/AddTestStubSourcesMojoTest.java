@@ -62,12 +62,4 @@ public class AddTestStubSourcesMojoTest {
         Mockito.verify(project, Mockito.never()).addTestCompileSourceRoot(Mockito.anyString());
     }
 
-    @Test
-    public void testNotAddsTestStubsToSourcesSkipped() throws Exception {
-        Mockito.when(mojo.groovyVersionSupportsAction()).thenReturn(true);
-        mojo.skip = true;
-        mojo.execute();
-        Mockito.verify(project, Mockito.never()).addTestCompileSourceRoot(Mockito.anyString());
-    }
-
 }
