@@ -112,14 +112,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected int tolerance;
 
     /**
-     * Whether to support invokeDynamic (requires Java 7 or greater).
+     * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
      *
      * @parameter property="invokeDynamic" default-value="false"
      */
     protected boolean invokeDynamic;
 
     /**
-     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a> for tweaking the configuration options.
+     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a> for tweaking the configuration options
+     * (requires Groovy 2.1.0-beta-1 or greater).
      *
      * @parameter property="configScript"
      */
