@@ -16,31 +16,48 @@
 
   <dependencyManagement>
     <dependencies>
-        <dependency>
-          <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
-          <version>@groovyVersion@</version>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>@junitVersion@</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>ch.qos.logback</groupId>
-          <artifactId>logback-classic</artifactId>
-          <version>1.0.13</version>
-          <scope>compile</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.ivy</groupId>
-          <artifactId>ivy</artifactId>
-          <version>2.3.0</version>
-          <scope>compile</scope>
-        </dependency>
-      </dependencies>
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>@groovyVersion@</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>@junitVersion@</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.0.13</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ivy</groupId>
+        <artifactId>ivy</artifactId>
+        <version>2.3.0</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>@mavenVersion@</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugin-tools</groupId>
+        <artifactId>maven-plugin-annotations</artifactId>
+        <version>3.2</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>3.0.16</version>
+      </dependency>
+    </dependencies>
   </dependencyManagement>
 
   <build>
