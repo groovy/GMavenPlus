@@ -462,8 +462,8 @@
   <mailingLists>
     <mailingList>
       <name>User List</name>
-      <subscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</unsubscribe>
+      <subscribe>http://xircles.codehaus.org/manage_email/user@gmavenplus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/user@gmavenplus.codehaus.org</unsubscribe>
       <post>user@gmavenplus.codehaus.org</post>
       <archive>http://gmavenplus.56682.x6.nabble.com/user-gmavenplus-codehaus-org-f5.html</archive>
       <otherArchives>
@@ -472,8 +472,8 @@
     </mailingList>
     <mailingList>
       <name>Dev List</name>
-      <subscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</unsubscribe>
+      <subscribe>http://xircles.codehaus.org/manage_email/dev@gmavenplus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/dev@gmavenplus.codehaus.org</unsubscribe>
       <post>dev@gmavenplus.codehaus.org</post>
       <archive>http://gmavenplus.56682.x6.nabble.com/dev-gmavenplus-codehaus-org-f1.html</archive>
       <otherArchives>
@@ -482,15 +482,15 @@
     </mailingList>
     <mailingList>
       <name>Announcement List</name>
-      <subscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</unsubscribe>
+      <subscribe>http://xircles.codehaus.org/manage_email/announce@gmavenplus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/announce@gmavenplus.codehaus.org</unsubscribe>
       <post>announce@gmavenplus.codehaus.org</post>
       <archive>http://gmavenplus.56682.x6.nabble.com/announce-gmavenplus-codehaus-org-f4.html</archive>
     </mailingList>
     <mailingList>
       <name>SCM List</name>
-      <subscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/projects/gmavenplus/lists</unsubscribe>
+      <subscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</subscribe>
+      <unsubscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</unsubscribe>
       <!--<post>scm@gmavenplus.codehaus.org</post>-->
       <archive>http://gmavenplus.56682.x6.nabble.com/scm-gmavenplus-codehaus-org-f9.html</archive>
       <otherArchives>
