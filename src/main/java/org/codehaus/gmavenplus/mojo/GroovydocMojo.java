@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * Generates Groovydoc for the main sources
+ * Generates Groovydoc for the main sources.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1

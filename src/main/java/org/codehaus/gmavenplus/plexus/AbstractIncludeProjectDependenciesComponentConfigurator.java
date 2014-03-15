@@ -101,7 +101,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
     }
 
     /**
-     * Enum of the various possible classpaths
+     * Enum of the various possible classpaths.
      */
     public enum Classpath {
         /** Compile classpath. */

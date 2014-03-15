@@ -108,7 +108,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     protected String stylesheetEncoding;
 
     /**
-     * The scope to generate Groovydoc for, should be one of:
+     * The scope to generate Groovydoc for. Should be one of:
      * <ul>
      *   <li>"public"</li>
      *   <li>"protected"</li>
