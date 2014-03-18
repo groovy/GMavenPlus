@@ -7,7 +7,7 @@
 <body>
 <div id="overview"><a href="../../../../../testapidocs/org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2013 Keegan Witt</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * Copyright 2013 the original author or authors.</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * You may not use this file except in compliance with the License.</em>
@@ -44,7 +44,7 @@
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  @RunWith(MockitoJUnitRunner.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">AbstractGroovyStubSourcesMojoTest</a> {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a> testMojo;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a> testMojo;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      @Mock
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> File stubsOutputDirectory;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      @Mock
@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      @Before
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>();
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          Mockito.when(stubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          Mockito.when(testStubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo.stubsOutputDirectory = stubsOutputDirectory;
@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          Assert.assertEquals(0, testMojo.getStubs().size());
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a> <strong class="jxr_keyword">extends</strong> AbstractGroovyStubSourcesMojo {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a> <strong class="jxr_keyword">extends</strong> AbstractGroovyStubSourcesMojo {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException { }
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      }
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  

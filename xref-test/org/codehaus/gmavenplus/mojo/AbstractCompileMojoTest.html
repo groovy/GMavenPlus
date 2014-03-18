@@ -49,14 +49,14 @@
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  @RunWith(MockitoJUnitRunner.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractCompileMojoTest.html">AbstractCompileMojoTest</a> {
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a> testMojo;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a> testMojo;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      @Mock
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> MavenProject project;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Before
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>();
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>();
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>      }
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      @Test
@@ -75,22 +75,22 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      @Test
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGroovyVersionSupportsActionTrue() {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>(<span class="jxr_string">"1.5.0"</span>);
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>(<span class="jxr_string">"1.5.0"</span>);
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          Assert.assertTrue(testMojo.groovyVersionSupportsAction());
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      @Test
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGroovyVersionSupportsActionFalse() {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>(<span class="jxr_string">"1.1-rc-3"</span>);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>(<span class="jxr_string">"1.1-rc-3"</span>);
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          Assert.assertFalse(testMojo.groovyVersionSupportsAction());
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a> <strong class="jxr_keyword">extends</strong> AbstractCompileMojo {
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">private</strong> String overrideGroovyVersion = MIN_GROOVY_VERSION.toString();
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a> <strong class="jxr_keyword">extends</strong> AbstractCompileMojo {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">private</strong> String overrideGroovyVersion = minGroovyVersion.toString();
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">protected</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>() { }
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">protected</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>() { }
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">protected</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyStubSourcesMojoTest.html">TestMojo</a>(String overrideGroovyVersion) {
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">protected</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>(String overrideGroovyVersion) {
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              <strong class="jxr_keyword">this</strong>.overrideGroovyVersion = overrideGroovyVersion;
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          }
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  
