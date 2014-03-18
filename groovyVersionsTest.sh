@@ -15,4 +15,4 @@ for groovyVersion in ${groovyVersions[*]}; do
     fi
 done
 git checkout pom.xml
-mvn clean > /dev/null
+mvn -B clean > /dev/null
