@@ -206,6 +206,8 @@ public class Version implements Comparable<Version> {
      * is considered a newer version than a version with a tag.
      *
      * @param version The version to compare this version to
+     * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
+     *         this version, or <code>-1</code> if the version is lower than this version.
      */
     public final int compareTo(final Version version) {
         return compareTo(version, true);
