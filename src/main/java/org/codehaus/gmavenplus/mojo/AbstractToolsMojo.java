@@ -28,20 +28,23 @@ import java.util.Properties;
 public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
-     * Properties to make available in scripts.  By default it will include
+     * Properties to make available in scripts as variables using the property
+     * name.  By default will include
      * <dl>
      *   <dt>settings</dt>
-     *     <dd>a org.apache.maven.settings.Settings object of the current Maven settings</dd>
+     *     <dd>A org.apache.maven.settings.Settings object of the current Maven settings.</dd>
      *   <dt>project</dt>
-     *     <dd>a org.apache.maven.project.Project object of the current Maven project</dd>
+     *     <dd>A org.apache.maven.project.Project object of the current Maven project.</dd>
      *   <dt>session</dt>
-     *     <dd>a org.apache.maven.execution.MavenSession object of the current Maven session</dd>
-     *   <dt>pluginArtifacts</dt>
-     *     <dd>a list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts</dd>
+     *     <dd>A org.apache.maven.execution.MavenSession object of the current Maven session.</dd>
      *   <dt>localRepository</dt>
-     *     <dd>a org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository</dd>
+     *     <dd>A org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository.</dd>
      *   <dt>reactorProjects</dt>
-     *     <dd>a list of org.apache.maven.project.MavenProject objects currently loaded by the reactor</dd>
+     *     <dd>A list of org.apache.maven.project.MavenProject objects currently loaded by the reactor.</dd>
+     *   <dt>pluginArtifacts</dt>
+     *     <dd>A list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts.</dd>
+     *   <dt>log</dt>
+     *     <dd>A org.apache.maven.plugin.logging.Log object of Maven's log.</dd>
      * </dl>
      * These can be overridden.
      * @since 1.0-beta-3
@@ -60,14 +63,17 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         if (session != null && !properties.containsKey("session")) {
             properties.put("session", session);
         }
-        if (pluginArtifacts != null && !properties.containsKey("pluginArtifacts")) {
-            properties.put("pluginArtifacts", pluginArtifacts);
-        }
         if (localRepository != null && !properties.containsKey("localRepository")) {
             properties.put("localRepository", localRepository);
         }
         if (reactorProjects != null && !properties.containsKey("reactorProjects")) {
             properties.put("reactorProjects", reactorProjects);
+        }
+        if (pluginArtifacts != null && !properties.containsKey("pluginArtifacts")) {
+            properties.put("pluginArtifacts", pluginArtifacts);
+        }
+        if (!properties.containsKey("reactorProjects")) {
+            properties.put("log", getLog());
         }
     }
 
