@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -81,7 +82,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 return;
             }
 
+            final SecurityManager sm = System.getSecurityManager();
             try {
+                System.setSecurityManager(new NoExitSecurityManager());
                 // get classes we need with reflection
                 Class<?> groovyShellClass = Class.forName("groovy.lang.GroovyShell");
 
@@ -141,6 +144,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            } finally {
+                System.setSecurityManager(sm);
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");

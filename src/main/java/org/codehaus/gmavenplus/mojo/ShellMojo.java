@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -60,7 +61,9 @@ public class ShellMojo extends AbstractToolsMojo {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("shell");
 
+            final SecurityManager sm = System.getSecurityManager();
             try {
+                System.setSecurityManager(new NoExitSecurityManager());
                 // get classes we need with reflection
                 Class shellClass = Class.forName("org.codehaus.groovy.tools.shell.Groovysh");
                 Class bindingClass = Class.forName("groovy.lang.Binding");
@@ -94,6 +97,8 @@ public class ShellMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             } catch (InstantiationException e) {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+            } finally {
+                System.setSecurityManager(sm);
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
