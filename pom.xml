@@ -436,6 +436,7 @@
         <version>3.0.1</version>
       </plugin>
       <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.5 -->
+      <!-- TODO: re-enable FindBugs -->
       <!--<plugin>-->
         <!--<groupId>org.codehaus.mojo</groupId>-->
         <!--<artifactId>findbugs-maven-plugin</artifactId>-->
