@@ -49,6 +49,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
+    /** Cached Groovy dependency. */
+    private static Artifact groovyDependency = null;
+
     /**
      * The Maven project this plugin is being used on.
      *
@@ -188,34 +191,34 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return The Groovy dependency used by the project
      */
     protected Artifact getGroovyDependency() {
-        Artifact groovyDependency = null;
-
-        if (pluginArtifacts != null) {
-            for (Object art : pluginArtifacts) {
-                Artifact artifact = (Artifact) art;
-                if (isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar")) {
-                    groovyDependency = artifact;
-                    break;
+        if (groovyDependency == null) {
+            if (pluginArtifacts != null) {
+                for (Object art : pluginArtifacts) {
+                    Artifact artifact = (Artifact) art;
+                    if (isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar")) {
+                        groovyDependency = artifact;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (groovyDependency == null && project.getCompileDependencies() != null) {
-            for (Object dep : project.getCompileDependencies()) {
-                Dependency dependency = (Dependency) dep;
-                if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
-                    groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
-                    break;
+            if (groovyDependency == null && project.getCompileDependencies() != null) {
+                for (Object dep : project.getCompileDependencies()) {
+                    Dependency dependency = (Dependency) dep;
+                    if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                        groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
+                        break;
+                    }
                 }
             }
-        }
 
-        if (groovyDependency == null && project.getTestDependencies() != null) {
-            for (Object dep : project.getTestDependencies()) {
-                Dependency dependency = (Dependency) dep;
-                if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
-                    groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
-                    break;
+            if (groovyDependency == null && project.getTestDependencies() != null) {
+                for (Object dep : project.getTestDependencies()) {
+                    Dependency dependency = (Dependency) dep;
+                    if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                        groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
+                        break;
+                    }
                 }
             }
         }

@@ -16,15 +16,19 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ReflectionUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +40,18 @@ import java.util.List;
  */
 public class AbstractGroovyMojoTest {
     private static final String GROOVY_VERSION = "2.0.5";
+    private AbstractGroovyMojo testMojo;
+
+    @Before
+    public void setup() throws Exception {
+        testMojo = Mockito.spy(new TestGroovyMojo());
+        Field groovyDependency = ReflectionUtils.findField(AbstractGroovyMojo.class, "groovyDependency", Artifact.class);
+        groovyDependency.setAccessible(true);
+        groovyDependency.set(null, null);
+    }
 
     @Test
     public void testIsGroovyIndy() {
-        AbstractGroovyMojo testMojo = new TestGroovyMojo();
         testMojo.project = Mockito.mock(MavenProject.class);
         Dependency groovyDependency = new Dependency();
         groovyDependency.setGroupId("org.codehaus.groovy");
@@ -56,7 +68,6 @@ public class AbstractGroovyMojoTest {
 
     @Test
     public void testIsGroovyNotIndy() {
-        AbstractGroovyMojo testMojo = new TestGroovyMojo();
         testMojo.project = Mockito.mock(MavenProject.class);
         Dependency groovyDependency = new Dependency();
         groovyDependency.setGroupId("org.codehaus.groovy");
@@ -74,19 +85,18 @@ public class AbstractGroovyMojoTest {
 
     @Test
     public void testGetJavaVersion() {
-        AbstractGroovyMojo testMojo = new TestGroovyMojo();
-
         Assert.assertTrue(testMojo.getJavaVersionString() != null && !testMojo.getJavaVersionString().isEmpty());
         Assert.assertNotNull(testMojo.getJavaVersion());
     }
 
     @Test
     public void testIsJavaSupportIndy() {
-        AbstractGroovyMojo testMojo = Mockito.spy(new TestGroovyMojo());
         Mockito.when(testMojo.getJavaVersion()).thenReturn(Version.parseFromString("1.7.0_45"));
         Assert.assertTrue(testMojo.isJavaSupportIndy());
+    }
 
-        testMojo = Mockito.spy(new TestGroovyMojo());
+    @Test
+    public void testIsJavaSupportIndyNo() {
         Mockito.when(testMojo.getJavaVersion()).thenReturn(Version.parseFromString("1.6.0_45"));
         Assert.assertFalse(testMojo.isJavaSupportIndy());
     }
