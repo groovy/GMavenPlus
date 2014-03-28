@@ -48,6 +48,6 @@ public class NoExitSecurityManager extends SecurityManager {
      * Always throws {@link SecurityException}.
      */
     public void checkExit(final int code) {
-        throw new SecurityException("Use of System.exit() if forbidden!");
+        throw new SecurityException("Use of System.exit() is forbidden!");
     }
 }
