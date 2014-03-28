@@ -79,10 +79,24 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <!-- this is for the shell mojo (needed because groovy jars don't include) -->
+      <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
       <version>1.11</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.9.3</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <!-- this is to support use of @grab (Groovy jars don't include) -->
+      <groupId>org.apache.ivy</groupId>
+      <artifactId>ivy</artifactId>
+      <version>2.3.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

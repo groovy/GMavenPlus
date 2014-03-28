@@ -16,6 +16,9 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.codehaus.gmavenplus.util.ReflectionUtils;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 
@@ -45,6 +48,8 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *     <dd>A list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts.</dd>
      *   <dt>log</dt>
      *     <dd>A org.apache.maven.plugin.logging.Log object of Maven's log.</dd>
+     *   <dt>ant</dt>
+     *     <dd>A groovy.util.AntBuilder object.</dd>
      * </dl>
      * These can be overridden.
      * @since 1.0-beta-3
@@ -75,6 +80,24 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         if (!properties.containsKey("reactorProjects")) {
             properties.put("log", getLog());
         }
+        if (!properties.containsKey("ant")) {
+            try {
+                Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(Class.forName("groovy.util.AntBuilder")));
+                properties.put("ant", antBuilder);
+            } catch (InvocationTargetException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (IllegalAccessException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (InstantiationException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (ClassNotFoundException e) {
+                logUnableToInitializeAntBuilder(e);
+            }
+        }
+    }
+
+    private void logUnableToInitializeAntBuilder(Throwable e) {
+        getLog().error("Unable to initialize 'ant' with a new AntBuilder object.  Is Ant a dependency?", e);
     }
 
 }

@@ -26,11 +26,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
-    <dependency>
-      <!-- this is only needed because the script uses it -->
-      <groupId>org.apache.ivy</groupId>
-      <artifactId>ivy</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -66,7 +61,7 @@
               import org.apache.commons.lang.SystemUtils
               import org.slf4j.Logger
               import org.slf4j.LoggerFactory
-              Logger logger = LoggerFactory.getLogger("chapters.introduction.HelloWorld1")
+              Logger logger = LoggerFactory.getLogger(getClass().getName())
               logger.debug("This session's goals are {}.", session.goals)
               assert session.goals.size() == 2
               logger.debug("The settings are {}.", settings)

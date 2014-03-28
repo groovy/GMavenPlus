@@ -489,9 +489,9 @@ mvn site
 
   Note that if you'd like to separate script dependencies from those of your
   project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
-  annotations, but you will need a compile dependency on Ivy.  Any plugin
-  dependencies and any project test dependencies are also available for use in
-  your scripts (remember that test scope also includes compile scope).
+  annotation instead of making them plugin dependencies if you prefer.  Any
+  plugin dependencies and any project test dependencies are also available for
+  use in your scripts (remember that test scope also includes compile scope).
   This example demonstrates all three ways of including dependencies.  Note
   that Maven will try to filter dollar curly references, so you'll need to
   either make sure the names don't collide or use the dollar without the curly
@@ -550,12 +550,7 @@ mvn site
             <artifactId>groovy-all</artifactId>
             <!-- any version of Groovy \>= 1.5.0 should work here -->
             <version>${groovyVersion}</version>
-          </dependency>
-          <dependency>
-            <!-- this is only needed because the script uses it -->
-            <groupId>org.apache.ivy</groupId>
-            <artifactId>ivy</artifactId>
-            <version>2.2.0</version>
+            <scope>runtime</scope>
           </dependency>
         </dependencies>
       </plugin>
@@ -563,7 +558,7 @@ mvn site
   </build>
   <dependencies>
     <dependency>
-      <!-- this is only needed because the script uses it -->
+      <!-- this is here for both the script and the project to use -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.0.13</version>
@@ -610,6 +605,7 @@ mvn gplus:execute
             <artifactId>groovy-all</artifactId>
             <!-- any version of Groovy \>= 1.5.0 should work here -->
             <version>${groovyVersion}</version>
+            <scope>runtime</scope>
           </dependency>
         </dependencies>
       </plugin>
@@ -654,6 +650,7 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
             <artifactId>groovy-all</artifactId>
             <!-- any version of Groovy \>= 1.5.0 should work here -->
             <version>${groovyVersion}</version>
+            <scope>runtime</scope>
           </dependency>
           <dependency>
             <!-- GMavenPlus can't provide this dependency because JLine made a breaking change that was pulled in 2.2.0-beta-1 with GROOVY-5344 -->
