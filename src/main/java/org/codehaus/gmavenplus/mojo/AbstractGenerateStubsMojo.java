@@ -131,9 +131,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
 
         // get classes we need with reflection
-        Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
-        Class<?> javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
-        Class<?> groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
+        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
+        Class javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
+        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));

@@ -159,11 +159,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         }
 
         // get classes we need with reflection
-        Class<?> groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
-        Class<?> outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
-        Class<?> fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
-        Class<?> resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
-        Class<?> classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
+        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
+        Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
+        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
+        Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
 
         // set up Groovydoc options
         Properties properties = new Properties();
@@ -198,7 +198,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         Object groovyDocTool;
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
-            Class<?> linkArgumentClass = null;
+            Class linkArgumentClass = null;
             if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
                 linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument");
             } else if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {

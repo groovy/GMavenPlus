@@ -86,7 +86,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
             try {
                 System.setSecurityManager(new NoExitSecurityManager());
                 // get classes we need with reflection
-                Class<?> groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
 
                 // create a GroovyShell to run scripts in
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
