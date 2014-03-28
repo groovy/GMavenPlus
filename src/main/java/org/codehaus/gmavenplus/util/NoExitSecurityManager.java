@@ -29,8 +29,6 @@ public class NoExitSecurityManager extends SecurityManager {
     private final SecurityManager parent;
 
     public NoExitSecurityManager(final SecurityManager parent) {
-        assert parent != null;
-
         this.parent = parent;
     }
 
