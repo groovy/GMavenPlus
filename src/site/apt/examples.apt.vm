@@ -520,7 +520,7 @@ mvn site
           <properties>
             <property>
               <name>someProp</name>
-              <value>${someProp}</value>
+              <value>${dollar}{someProp}</value>
             </property>
           </properties>
           <scripts>
@@ -542,7 +542,7 @@ mvn site
               logger.debug("someProp is {}.", someProp)
               logger.debug("Using Java {}.", SystemUtils.JAVA_VERSION)
               // the first reference is not filtered by Maven, the second reference is
-              assert "${dollar}{project.name}" == "${dollar}{project.name}"
+              assert "${dollar}project.name" == "${dollar}{project.name}"
             ]]></script>
             <script>file:///${dollar}{project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
@@ -709,7 +709,7 @@ mvn gplus:shell
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <!-- it's probably safest to use a version that's as close to the runtime version as possible, while still being compatible with the mojo -->
-            <version>${someMojoCompatibleGroovyVersion}</version>
+            <version>${dollar}{someMojoCompatibleGroovyVersion}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -719,7 +719,7 @@ mvn gplus:shell
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>${someOldGroovyVersion}</version>
+      <version>${dollar}{someOldGroovyVersion}</version>
     </dependency>
   </dependencies>
 </project>
