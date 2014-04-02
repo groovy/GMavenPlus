@@ -81,7 +81,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, "setVerbosity", verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, "forName", String.class), verbosity));
                 ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);
-                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), bindingClass.getClassLoader(), binding, io);
+                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
 
                 // run the shell
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(shellClass, "run", String.class), shell, (String) null);

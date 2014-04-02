@@ -63,7 +63,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                     String key = (String) k;
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
                 }
-                Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), bindingClass.getClassLoader(), binding);
+                Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
 
                 // run the console
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);

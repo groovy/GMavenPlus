@@ -16,12 +16,10 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -50,7 +48,7 @@ public class CompileMojo extends AbstractCompileMojo {
             logGroovyVersion("compile");
 
             try {
-                doCompile(getSources(), project.getCompileClasspathElements(), outputDirectory);
+                doCompile(getSources(), outputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
@@ -59,10 +57,6 @@ public class CompileMojo extends AbstractCompileMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project dependencies to classpath.", e);
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");

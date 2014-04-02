@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -30,7 +29,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
-import java.util.List;
 import java.util.Set;
 
 
@@ -88,10 +86,6 @@ public class AbstractCompileMojoTest {
 
         protected Version getGroovyVersion() {
             return Version.parseFromString(overrideGroovyVersion);
-        }
-
-        protected List getProjectClasspathElements() throws DependencyResolutionRequiredException {
-            return null;
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }
