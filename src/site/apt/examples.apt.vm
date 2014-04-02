@@ -44,8 +44,8 @@ Examples
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -89,8 +89,8 @@ mvn compile
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -144,16 +144,16 @@ mvn compile
   <build>
     <extensions>
       <extension>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>${gmavenplusVersion}</version>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
+        <version>${dollar}{gmavenplusVersion}</version>
       </extension>
     </extensions>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>${gmavenplusVersion}</version>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
+        <version>${dollar}{gmavenplusVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -182,8 +182,8 @@ mvn compile
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -241,8 +241,8 @@ mvn compile
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -290,8 +290,8 @@ mvn compile
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -324,13 +324,13 @@ mvn compile
           -->
           <sources>
             <source>
-              <directory>${project.basedir}/src/main/groovy</directory>
+              <directory>${dollar}{project.basedir}/src/main/groovy</directory>
               <includes>
                 <include>**/*.groovy</include>
               </includes>
             </source>
             <source>
-              <directory>${project.basedir}/src/additional</directory>
+              <directory>${dollar}{project.basedir}/src/additional</directory>
               <includes>
                 <include>groovy/**/*.groovy</include>
                 <include>gvy/**/*.gvy</include>
@@ -339,13 +339,13 @@ mvn compile
           </sources>
           <testSources>
             <testSource>
-              <directory>${project.basedir}/src/test/groovy</directory>
+              <directory>${dollar}{project.basedir}/src/test/groovy</directory>
               <includes>
                 <include>**/*.groovy</include>
               </includes>
             </testSource>
             <testSource>
-               <directory>${project.basedir}/src/additionalTest</directory>
+               <directory>${dollar}{project.basedir}/src/additionalTest</directory>
               <includes>
                 <include>groovy/**/*.groovy</include>
                 <include>gvy/**/*.gvy</include>
@@ -386,8 +386,8 @@ mvn compile
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
       </plugin>
     </plugins>
@@ -422,7 +422,7 @@ mvn gplus:generateStubs gplus:groovydoc
 
 +-----------------------------------------------------------------------------+
 <pluginGroups>
-  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
+  <pluginGroup>${project.groupId}</pluginGroup>
 <pluginGroups>
 +-----------------------------------------------------------------------------+
 
@@ -439,8 +439,8 @@ mvn gplus:generateStubs gplus:groovydoc
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -506,8 +506,8 @@ mvn site
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
@@ -544,7 +544,7 @@ mvn site
               // the first reference is not filtered by Maven, the second reference is
               assert "${dollar}{project.name}" == "${dollar}{project.name}"
             ]]></script>
-            <script>file:///${project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
+            <script>file:///${dollar}{project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>
         </configuration>
         <dependencies>
@@ -581,7 +581,7 @@ mvn gplus:execute
 
 +-----------------------------------------------------------------------------+
 <pluginGroups>
-  <pluginGroup>org.codehaus.gmavenplus</pluginGroup>
+  <pluginGroup>${project.groupId}</pluginGroup>
 <pluginGroups>
 +-----------------------------------------------------------------------------+
 
@@ -599,8 +599,8 @@ mvn gplus:execute
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <dependencies>
           <dependency>
@@ -644,8 +644,8 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <dependencies>
           <dependency>
@@ -694,8 +694,8 @@ mvn gplus:shell
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>
