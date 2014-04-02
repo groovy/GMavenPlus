@@ -76,6 +76,10 @@
               assert mojoExecution != null
               logger.debug("The plugin descriptor is {}.", mojoExecution.mojoDescriptor)
               assert mojoExecution.mojoDescriptor != null
+              logger.debug("The Ant builder is {}.", ant)
+              assert ant != null
+              logger.debug("The log is {}.", log)
+              assert log != null
               logger.debug("someProp is {}.", someProp)
               assert someProp == "someValue"
               logger.debug("cliProp is {}.", cliProp)
