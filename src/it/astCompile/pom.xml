@@ -11,11 +11,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gmavenplus-plugin-it-basicCompile</artifactId>
+  <artifactId>gmavenplus-plugin-it-astCompile</artifactId>
   <version>testing</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Basic Compile Test</name>
-  <description>The simplest compile use case</description>
+  <name>GMavenPlus Plugin AST Compile Test</name>
+  <description>A test of an AST transformation.</description>
 
   <dependencies>
     <dependency>
