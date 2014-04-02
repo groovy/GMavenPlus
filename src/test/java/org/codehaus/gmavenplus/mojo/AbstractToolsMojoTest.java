@@ -17,12 +17,11 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.settings.Settings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,54 +50,42 @@ public class AbstractToolsMojoTest {
     @Mock
     private MavenSession session;
     @Mock
-    private Settings settings;
-    @Mock
     private List<Artifact> pluginArtifacts;
     @Mock
-    private ArtifactRepository localRepository;
-    @Mock
-    private List<MavenProject> reactorProjects;
+    private MojoExecution mojoExecution;
 
     @Before
     public void init() {
         testMojo = new TestMojo();
         testMojo.project = project;
         testMojo.session= session;
-        testMojo.settings = settings;
         testMojo.pluginArtifacts = pluginArtifacts;
-        testMojo.localRepository = localRepository;
-        testMojo.reactorProjects = reactorProjects;
+        testMojo.mojoExecution = mojoExecution;
     }
 
     @Test
     public void testInitializeProperties() {
         testMojo.initializeProperties();
 
-        Assert.assertNotNull(testMojo.properties.get("settings"));
         Assert.assertNotNull(testMojo.properties.get("project"));
         Assert.assertNotNull(testMojo.properties.get("session"));
         Assert.assertNotNull(testMojo.properties.get("pluginArtifacts"));
-        Assert.assertNotNull(testMojo.properties.get("localRepository"));
-        Assert.assertNotNull(testMojo.properties.get("reactorProjects"));
+        Assert.assertNotNull(testMojo.properties.get("mojoExecution"));
     }
 
     @Test
     public void testInitializePropertiesNull() {
         testMojo.project = null;
         testMojo.session= null;
-        testMojo.settings = null;
         testMojo.pluginArtifacts = null;
-        testMojo.localRepository = null;
-        testMojo.reactorProjects = null;
+        testMojo.mojoExecution = mojoExecution;
 
         testMojo.initializeProperties();
 
-        Mockito.verify(properties, Mockito.never()).put(Mockito.eq("settings"), Mockito.any(Settings.class));
         Mockito.verify(properties, Mockito.never()).put(Mockito.eq("project"), Mockito.any(MavenProject.class));
         Mockito.verify(properties, Mockito.never()).put(Mockito.eq("session"), Mockito.any(MavenSession.class));
         Mockito.verify(properties, Mockito.never()).put(Mockito.eq("pluginArtifacts"), Mockito.anyListOf(Artifact.class));
-        Mockito.verify(properties, Mockito.never()).put(Mockito.eq("localRepository"), Mockito.any(ArtifactRepository.class));
-        Mockito.verify(properties, Mockito.never()).put(Mockito.eq("reactorProjects"), Mockito.anyListOf(MavenProject.class));
+        Mockito.verify(properties, Mockito.never()).put(Mockito.eq("mojoExecution"), Mockito.any(MojoExecution.class));
     }
 
     @Test
@@ -108,12 +95,10 @@ public class AbstractToolsMojoTest {
         testMojo.initializeProperties();
         testMojo.initializeProperties();
 
-        Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("settings"), Mockito.any(Settings.class));
         Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("project"), Mockito.any(MavenProject.class));
         Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("session"), Mockito.any(MavenSession.class));
         Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("pluginArtifacts"), Mockito.anyListOf(Artifact.class));
-        Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("localRepository"), Mockito.any(ArtifactRepository.class));
-        Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("reactorProjects"), Mockito.anyListOf(MavenProject.class));
+        Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("mojoExecution"), Mockito.anyListOf(MojoExecution.class));
     }
 
     private class TestMojo extends AbstractToolsMojo {

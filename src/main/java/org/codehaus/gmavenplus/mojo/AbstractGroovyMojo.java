@@ -18,13 +18,12 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.settings.Settings;
 import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
@@ -71,15 +70,6 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected MavenSession session;
 
     /**
-     * The Maven Settings.
-     *
-     * @parameter property="settings"
-     * @required
-     * @readonly
-     */
-    protected Settings settings;
-
-    /**
      * The plugin dependencies.
      *
      * @parameter property="plugin.artifacts"
@@ -89,22 +79,13 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected List<Artifact> pluginArtifacts;
 
     /**
-     * The local repository.
+     * The plugin's mojo execution.
      *
-     * @parameter property="localRepository"
+     * @parameter property="mojoExecution"
      * @required
      * @readonly
      */
-    protected ArtifactRepository localRepository;
-
-    /**
-     * The reactor projects.
-     *
-     * @parameter property="reactorProjects"
-     * @required
-     * @readonly
-     */
-    protected List<MavenProject> reactorProjects;
+    protected MojoExecution mojoExecution;
 
     /**
      * The minimum version of Groovy that this mojo supports (1.5.0 by default, but other mojos can override).

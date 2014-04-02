@@ -64,14 +64,18 @@
               Logger logger = LoggerFactory.getLogger(getClass().getName())
               logger.debug("This session's goals are {}.", session.goals)
               assert session.goals.size() == 2
-              logger.debug("The settings are {}.", settings)
-              assert settings != null
+              logger.debug("The settings are {}.", session.settings)
+              assert session.settings != null
+              logger.debug("The local repository is {}.", session.localRepository)
+              assert session.localRepository != null
+              logger.debug("The reactor projects are {}.", session.projects)
+              assert session.projects.size() > 0
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
               assert pluginArtifacts.size() > 0
-              logger.debug("The local repository is {}.", localRepository)
-              assert localRepository != null
-              logger.debug("The reactor projects are {}.", reactorProjects)
-              assert reactorProjects.size() > 0
+              logger.debug("The mojo execution is {}.", mojoExecution)
+              assert mojoExecution != null
+              logger.debug("The plugin descriptor is {}.", mojoExecution.mojoDescriptor)
+              assert mojoExecution.mojoDescriptor != null
               logger.debug("someProp is {}.", someProp)
               assert someProp == "someValue"
               logger.debug("cliProp is {}.", cliProp)

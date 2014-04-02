@@ -1,3 +1,4 @@
+#set($dollar = '$')
   -------------------------
   GMavenPlus Examples
   -------------------------
@@ -531,15 +532,17 @@ mvn site
               import org.slf4j.Logger
               import org.slf4j.LoggerFactory
               Logger logger = LoggerFactory.getLogger("chapters.introduction.HelloWorld1")
+              logger.debug("The settings are {}.", session.settings)
               logger.debug("This session's goals are {}.", session.goals)
-              logger.debug("The settings are {}.", settings)
+              logger.debug("The local repository is {}.", session.localRepository)
+              logger.debug("The reactor projects are {}.", session.projects)
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
-              logger.debug("The local repository is {}.", localRepository)
-              logger.debug("The reactor projects are {}.", reactorProjects)
+              logger.debug("The mojo execution is {}.", mojoExecution)
+              logger.debug("The plugin descriptor is {}.", mojoExecution.mojoDescriptor)
               logger.debug("someProp is {}.", someProp)
               logger.debug("Using Java {}.", SystemUtils.JAVA_VERSION)
               // the first reference is not filtered by Maven, the second reference is
-              assert "\$project.name" == "\${project.name}"
+              assert "${dollar}{project.name}" == "${dollar}{project.name}"
             ]]></script>
             <script>file:///${project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
           </scripts>

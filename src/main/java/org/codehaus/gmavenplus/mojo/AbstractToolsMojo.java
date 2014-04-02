@@ -34,18 +34,14 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * Properties to make available in scripts as variables using the property
      * name.  By default will include
      * <dl>
-     *   <dt>settings</dt>
-     *     <dd>A org.apache.maven.settings.Settings object of the current Maven settings.</dd>
      *   <dt>project</dt>
      *     <dd>A org.apache.maven.project.Project object of the current Maven project.</dd>
      *   <dt>session</dt>
      *     <dd>A org.apache.maven.execution.MavenSession object of the current Maven session.</dd>
-     *   <dt>localRepository</dt>
-     *     <dd>A org.apache.maven.artifact.repository.ArtifactRepository object of Maven's local repository.</dd>
-     *   <dt>reactorProjects</dt>
-     *     <dd>A list of org.apache.maven.project.MavenProject objects currently loaded by the reactor.</dd>
      *   <dt>pluginArtifacts</dt>
      *     <dd>A list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts.</dd>
+     *   <dt>mojoExecution</dt>
+     *     <dd>A org.apache.maven.plugin.MojoExecution object of this plugin's mojo execution.</dd>
      *   <dt>log</dt>
      *     <dd>A org.apache.maven.plugin.logging.Log object of Maven's log.</dd>
      *   <dt>ant</dt>
@@ -59,25 +55,19 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected Properties properties = new Properties();
 
     protected void initializeProperties() {
-        if (settings != null && !properties.containsKey("settings")) {
-            properties.put("settings", settings);
-        }
         if (project != null && !properties.containsKey("project")) {
             properties.put("project", project);
         }
         if (session != null && !properties.containsKey("session")) {
             properties.put("session", session);
         }
-        if (localRepository != null && !properties.containsKey("localRepository")) {
-            properties.put("localRepository", localRepository);
-        }
-        if (reactorProjects != null && !properties.containsKey("reactorProjects")) {
-            properties.put("reactorProjects", reactorProjects);
-        }
         if (pluginArtifacts != null && !properties.containsKey("pluginArtifacts")) {
             properties.put("pluginArtifacts", pluginArtifacts);
         }
-        if (!properties.containsKey("reactorProjects")) {
+        if (mojoExecution != null && !properties.containsKey("mojoExecution")) {
+            properties.put("mojoExecution", mojoExecution);
+        }
+        if (!properties.containsKey("log")) {
             properties.put("log", getLog());
         }
         if (!properties.containsKey("ant")) {
