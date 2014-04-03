@@ -54,6 +54,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      */
     protected Properties properties = new Properties();
 
+    /**
+     * Initializes the properties field.
+     */
     protected void initializeProperties() {
         if (project != null && !properties.containsKey("project")) {
             properties.put("project", project);
@@ -86,6 +89,10 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         }
     }
 
+    /**
+     * Logs errors that caused the 'ant' object to not be populated.
+     * @param e the exception causing the failure
+     */
     private void logUnableToInitializeAntBuilder(Throwable e) {
         getLog().error("Unable to initialize 'ant' with a new AntBuilder object.  Is Ant a dependency?", e);
     }
