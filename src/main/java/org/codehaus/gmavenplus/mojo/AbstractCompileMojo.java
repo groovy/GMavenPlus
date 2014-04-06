@@ -21,6 +21,7 @@ import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.util.List;
 import java.util.Map;
@@ -131,32 +132,40 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Performs compilation of compile mojos.
      *
      * @param sourcesToCompile The sources to compile
+     * @param classpath The classpath to use for compilation
      * @param compileOutputDirectory The directory to write the compiled class files to
      * @throws ClassNotFoundException When a class needed for compilation cannot be found
      * @throws InstantiationException When a class needed for compilation cannot be instantiated
      * @throws IllegalAccessException When a method needed for compilation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for compilation cannot be completed
+     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected synchronized void doCompile(final Set<File> sourcesToCompile, final File compileOutputDirectory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final File compileOutputDirectory)
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sourcesToCompile == null || sourcesToCompile.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
 
+        // create an isolated ClassLoader with all the appropriate project dependencies in it
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Project classpath: " + classpath);
+        }
+        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
+
         // get classes we need with reflection
-        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
-        Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit");
-        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
+        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration", true, isolatedClassLoader);
+        Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit", true, isolatedClassLoader);
+        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
-                Class bindingClass = Class.forName("groovy.lang.Binding");
-                Class importCustomizerClass = Class.forName("org.codehaus.groovy.control.customizers.ImportCustomizer");
-                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+                Class bindingClass = Class.forName("groovy.lang.Binding", true, isolatedClassLoader);
+                Class importCustomizerClass = Class.forName("org.codehaus.groovy.control.customizers.ImportCustomizer", true, isolatedClassLoader);
+                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell", true, isolatedClassLoader);
 
                 Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
@@ -198,10 +207,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
 
-        // append plugin classpath (including project classpath) to groovyClassLoader and transformLoader
-        ClassLoader pluginClassLoader = Thread.currentThread().getContextClassLoader();
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), pluginClassLoader, compilerConfiguration);
-        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), pluginClassLoader);
+        // create groovyClassLoader and transformLoader
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
+        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), isolatedClassLoader);
 
         // add Groovy sources
         Object compilationUnit;

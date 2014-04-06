@@ -27,6 +27,10 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,14 +42,10 @@ import java.util.List;
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
 
-    /**
-     * The pattern defining Groovy files.
-     */
+    /** The pattern defining Groovy files. */
     protected static final String GROOVY_SOURCES_PATTERN = "**" + File.separator + "*.groovy";
 
-    /**
-     * The pattern defining Java stub files.
-     */
+    /** The pattern defining Java stub files. */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
     /** Cached Groovy dependency. */
@@ -88,9 +88,13 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected MojoExecution mojoExecution;
 
     /**
-     * The minimum version of Groovy that this mojo supports (1.5.0 by default, but other mojos can override).
+     * The minimum version of Groovy that this mojo supports (1.5.0 by
+     * default, but other mojos can override).
      */
     protected Version minGroovyVersion = new Version(1, 5, 0);
+
+    /** Whether to use the plugin's classloader as a parent classloader. */
+    protected boolean usePluginClassLoader = false;
 
     /**
      * Logs the version of groovy used by this mojo.
@@ -103,8 +107,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             if (isGroovyIndy()) {
                 logMessage += "-indy";
             }
-            getLog().info(logMessage + " from project compile classpath to perform " + goal + ".");
-        }
+                        getLog().info(logMessage + " from project compile classpath to perform " + goal + ".");
+                    }
     }
 
     /**
@@ -173,10 +177,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected Artifact getGroovyDependency() {
         if (groovyDependency == null) {
-            if (pluginArtifacts != null) {
+            if (usePluginClassLoader && pluginArtifacts != null) {
                 for (Object art : pluginArtifacts) {
                     Artifact artifact = (Artifact) art;
-                    if (isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar")) {
+                    if (isGroovyJar(artifact)) {
                         groovyDependency = artifact;
                         break;
                     }
@@ -186,7 +190,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             if (groovyDependency == null && project.getCompileDependencies() != null) {
                 for (Object dep : project.getCompileDependencies()) {
                     Dependency dependency = (Dependency) dep;
-                    if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                    if (isGroovyJar(dependency)) {
                         groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
                         break;
                     }
@@ -196,7 +200,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             if (groovyDependency == null && project.getTestDependencies() != null) {
                 for (Object dep : project.getTestDependencies()) {
                     Dependency dependency = (Dependency) dep;
-                    if (isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar")) {
+                    if (isGroovyJar(dependency)) {
                         groovyDependency = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), VersionRange.createFromVersion(dependency.getVersion()), dependency.getScope(), dependency.getType(), dependency.getClassifier() != null ? dependency.getClassifier() : "", null);
                         break;
                     }
@@ -205,6 +209,16 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         }
 
         return groovyDependency;
+    }
+
+    /**
+     * Whether the dependency is a Groovy jar.
+     *
+     * @param dependency The dependency to inspect
+     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
+     */
+    protected boolean isGroovyJar(Dependency dependency) {
+        return isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar");
     }
 
     /**
@@ -229,22 +243,31 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
                                     || dependency.getArtifactId().equals("groovy-jdk14");
     }
 
+    /**
+     * Whether the artifact is a Groovy jar.
+     *
+     * @param artifact The artifact to inspect
+     * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
+     */
+    protected boolean isGroovyJar(Artifact artifact) {
+        return isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar");
+    }
 
     /**
-     * Whether the groupId of the dependency is Groovy's groupId.
+     * Whether the groupId of the artifact is Groovy's groupId.
      *
-     * @param artifact The dependency to inspect
-     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
+     * @param artifact The artifact to inspect
+     * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyGroupId(final Artifact artifact) {
         return artifact.getGroupId().equals("org.codehaus.groovy") || artifact.getGroupId().equals("groovy");
     }
 
     /**
-     * Whether the artifactId of the dependency is Groovy's artifactId.
+     * Whether the artifactId of the artifact is Groovy's artifactId.
      *
-     * @param artifact The dependency to inspect
-     * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
+     * @param artifact The artifact to inspect
+     * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyArtifactId(final Artifact artifact) {
         return artifact.getArtifactId().equals("groovy-all") || artifact.getArtifactId().equals("groovy-all-minimal")
@@ -286,6 +309,23 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected boolean groovyVersionSupportsAction() {
         return getGroovyVersion() != null && getGroovyVersion().compareTo(minGroovyVersion) >= 0;
+    }
+
+    /**
+     * Creates a new ClassLoader with the specified classpath.
+     *
+     * @param classpath the classpath (a list of file path Strings) to include in the new loader
+     * @return the new ClassLoader
+     * @throws MalformedURLException
+     */
+    protected ClassLoader createNewClassLoader(List classpath) throws MalformedURLException {
+        List<URL> urlsList = new ArrayList<URL>();
+        for (Object classPathObject : classpath) {
+            String path = (String) classPathObject;
+            urlsList.add(new File(path).toURI().toURL());
+        }
+        URL[] urlsArray = urlsList.toArray(new URL[urlsList.size()]);
+        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());
     }
 
 }

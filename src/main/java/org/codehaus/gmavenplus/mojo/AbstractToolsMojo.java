@@ -24,6 +24,9 @@ import java.util.Properties;
 
 /**
  * The base tools mojo, which all tool mojos extend.
+ * Note that it references the plugin classloader to pull in dependencies
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
+ * and Jansi for Groovysh)).
  *
  * @author Keegan Witt
  * @since 1.1

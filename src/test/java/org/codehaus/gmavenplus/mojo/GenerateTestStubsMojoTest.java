@@ -29,6 +29,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 
 
@@ -56,9 +57,9 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testCallsExpectedMethods() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        Mockito.doNothing().when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doNothing().when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
-        Mockito.verify(generateTestStubsMojo, Mockito.times(1)).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.verify(generateTestStubsMojo, Mockito.times(1)).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test
@@ -67,7 +68,7 @@ public class GenerateTestStubsMojoTest {
         Mockito.doReturn(new Version(0)).when(generateTestStubsMojo).getGroovyVersion();
         Mockito.doReturn(false).when(generateTestStubsMojo).groovyVersionSupportsAction();
         generateTestStubsMojo.execute();
-        Mockito.verify(generateTestStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.verify(generateTestStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test
@@ -76,14 +77,14 @@ public class GenerateTestStubsMojoTest {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
         generateTestStubsMojo.skip = true;
         generateTestStubsMojo.execute();
-        Mockito.verify(generateTestStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.verify(generateTestStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -91,7 +92,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -99,7 +100,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -107,7 +108,15 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("unchecked")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        generateTestStubsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    @SuppressWarnings("unchecked")
+    public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
+        Mockito.doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
+        Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateTestStubsMojo.execute();
     }
 

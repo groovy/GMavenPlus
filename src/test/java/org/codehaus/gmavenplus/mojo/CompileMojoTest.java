@@ -29,6 +29,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 
 
@@ -54,36 +55,43 @@ public class CompileMojoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testCallsExpectedMethods() throws Exception {
-        Mockito.doNothing().when(compileMojo).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doNothing().when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
-        Mockito.verify(compileMojo, Mockito.times(1)).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.verify(compileMojo, Mockito.times(1)).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
-        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
-        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new InvocationTargetException(Mockito.mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
-        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
     @SuppressWarnings("unchecked")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
-        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        compileMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    @SuppressWarnings("unchecked")
+    public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
+        Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
     }
 
@@ -93,7 +101,7 @@ public class CompileMojoTest {
         Mockito.doReturn(new Version(0)).when(compileMojo).getGroovyVersion();
         Mockito.doReturn(false).when(compileMojo).groovyVersionSupportsAction();
         compileMojo.execute();
-        Mockito.verify(compileMojo, Mockito.never()).doCompile(Mockito.anySet(), Mockito.any(File.class));
+        Mockito.verify(compileMojo, Mockito.never()).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
     }
 
 }

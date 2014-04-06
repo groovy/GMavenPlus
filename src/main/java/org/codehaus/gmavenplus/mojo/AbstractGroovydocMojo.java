@@ -18,15 +18,20 @@ package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
 import com.google.common.io.Files;
+import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
-import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
+import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import org.apache.maven.shared.model.fileset.FileSet;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -140,14 +145,16 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * Generates the groovydoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate groovydoc for
+     * @param classpath The classpath to use for compilation
      * @param outputDirectory The directory to save the generated groovydoc in
      * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found
      * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated
      * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
+     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected void generateGroovydoc(final FileSet[] sourceDirectories, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected void generateGroovydoc(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (sourceDirectories == null || sourceDirectories.length == 0) {
             getLog().info("No source directories specified for Groovydoc generation.  Skipping.");
             return;
@@ -158,12 +165,19 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
+        // create an isolated ClassLoader with all the appropriate project dependencies in it
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Project classpath: " + classpath);
+        }
+        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
+
+
         // get classes we need with reflection
-        Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
-        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool");
-        Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
-        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager");
-        Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool", true, isolatedClassLoader);
+        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool", true, isolatedClassLoader);
+        Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool", true, isolatedClassLoader);
+        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager", true, isolatedClassLoader);
+        Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager", true, isolatedClassLoader);
 
         // set up Groovydoc options
         Properties properties = new Properties();
@@ -200,9 +214,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         if (links != null && links.size() > 0) {
             Class linkArgumentClass = null;
             if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
-                linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument");
+                linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument", true, isolatedClassLoader);
             } else if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
-                linkArgumentClass = Class.forName("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
+                linkArgumentClass = Class.forName("org.codehaus.groovy.ant.Groovydoc$LinkArgument", true, isolatedClassLoader);
             }
             if (linkArgumentClass != null) {
                 for (Link link : links) {

@@ -20,7 +20,10 @@ import java.util.List;
 
 
 /**
- * A custom ComponentConfigurator which adds the project's classpath elements.
+ * A custom ComponentConfigurator which adds the project's classpath elements
+ * to the plugin's ClassRealm.
+ * Note that there are two method signatures for addDependenciesToClassRealm,
+ * since different versions of Maven have different expectations.
  *
  * @author Brian Jackson
  * @author Keegan Witt
@@ -46,7 +49,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
             throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }
 
-        // Add the project dependencies to the ClassRealm
+        // add the project dependencies to the ClassRealm
         final URL[] urls = buildURLs(classpathElements);
         for (URL url : urls) {
             containerRealm.addURL(url);
@@ -70,7 +73,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
             throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }
 
-        // Add the project dependencies to the ClassRealm
+        // add the project dependencies to the ClassRealm
         final URL[] urls = buildURLs(classpathElements);
         for (URL url : urls) {
             containerRealm.addConstituent(url);
@@ -89,7 +92,9 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
         for (Object element : classpathElements) {
             try {
                 final URL url = new File((String) element).toURI().toURL();
-                urls.add(url);
+                if (!urls.contains(url)) {
+                    urls.add(url);
+                }
                 // commented out because debug seems to be on all the time
 //                LOG.debug("Added to project class loader: " + url);
             } catch (MalformedURLException e) {

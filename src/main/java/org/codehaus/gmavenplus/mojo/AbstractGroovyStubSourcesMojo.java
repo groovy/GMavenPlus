@@ -20,7 +20,9 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -30,6 +32,7 @@ import java.util.*;
  * @since 1.0-beta-3
  */
 public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySourcesMojo {
+
     /**
      * The location for the compiled classes.
      *

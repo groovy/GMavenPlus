@@ -16,10 +16,12 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 
 
 /**
@@ -31,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @phase test-compile
  * @goal testCompile
- * @configurator include-project-test-dependencies
  * @requiresDependencyResolution test
  * @threadSafe
  */
@@ -56,7 +57,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 logGroovyVersion("testCompile");
 
                 try {
-                    doCompile(getTestSources(), testOutputDirectory);
+                    doCompile(getTestSources(), project.getTestClasspathElements(), testOutputDirectory);
                 } catch (ClassNotFoundException e) {
                     throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
                 } catch (InvocationTargetException e) {
@@ -65,6 +66,10 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                     throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
                 } catch (IllegalAccessException e) {
                     throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+                } catch (DependencyResolutionRequiredException e) {
+                    throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+                } catch (MalformedURLException e) {
+                    throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
                 }
             } else {
                 getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true.");

@@ -28,8 +28,6 @@ Examples
 
   * {{{Groovy_Shell}Groovy Shell}}
 
-  * {{{Working_with_Older_Groovy_Versions}Working with Older Groovy Versions}}
-
   []
 
 
@@ -676,51 +674,3 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
 +---------------------------------------+
 mvn gplus:shell
 +---------------------------------------+
-
-
-* {Working with Older Groovy Versions}
-
-  If the mojo you're trying to run doesn't support the version of Groovy you use
-  at runtime (or any other reason you want to use a different version of Groovy
-  for compilation), you can override the version used by the plugin to use a
-  version that the mojo does support.  This is not the recommended solution
-  (since there might be runtime API incompatibilities and in some cases it
-  won't even compile).  It's better to just upgrade your Groovy version.
-  However, if this isn't possible, simply add a dependency to the plugin. To do
-  this, you should add something similar to the following in your <<<pom.xml>>>:
-
-+-------------------------------------------------------------------------+
-<project>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>${project.artifactId}</artifactId>
-        <version>${project.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <!-- your goals here -->
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <!-- it's probably safest to use a version that's as close to the runtime version as possible, while still being compatible with the mojo -->
-            <version>${dollar}{someMojoCompatibleGroovyVersion}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${dollar}{someOldGroovyVersion}</version>
-    </dependency>
-  </dependencies>
-</project>
-+-------------------------------------------------------------------------+

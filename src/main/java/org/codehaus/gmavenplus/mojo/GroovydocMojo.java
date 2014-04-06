@@ -16,10 +16,12 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 
 
 /**
@@ -29,7 +31,6 @@ import java.lang.reflect.InvocationTargetException;
  * @since 1.0-beta-1
  *
  * @goal groovydoc
- * @configurator include-project-compile-dependencies
  * @requiresDependencyResolution compile
  * @threadSafe
  */
@@ -46,7 +47,7 @@ public class GroovydocMojo extends AbstractGroovydocMojo {
             logGroovyVersion("groovydoc");
 
             try {
-                generateGroovydoc(getSourceRoots(groovydocJavaSources), groovydocOutputDirectory);
+                generateGroovydoc(getSourceRoots(groovydocJavaSources), project.getCompileClasspathElements(), groovydocOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
@@ -55,6 +56,10 @@ public class GroovydocMojo extends AbstractGroovydocMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project compile dependencies to classpath.", e);
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");

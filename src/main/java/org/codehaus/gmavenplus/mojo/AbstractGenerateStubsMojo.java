@@ -22,7 +22,9 @@ import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -117,22 +119,30 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources the sources to perform stub generation on
+     * @param classpath The classpath to use for compilation
      * @param outputDirectory the directory to write the stub files to
      * @throws ClassNotFoundException When a class needed for stub generation cannot be found
      * @throws InstantiationException When a class needed for stub generation cannot be instantiated
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
      */
-    protected synchronized void doStubGeneration(final Set<File> stubSources, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation.  Skipping.");
             return;
         }
 
+        // create an isolated ClassLoader with all the appropriate project dependencies in it
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Project classpath: " + classpath);
+        }
+        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
+
         // get classes we need with reflection
-        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
-        Class javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
-        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader");
+        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration", true, isolatedClassLoader);
+        Class javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit", true, isolatedClassLoader);
+        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
 
         // set up compile options
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
@@ -149,8 +159,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         options.put("keepStubs", Boolean.TRUE);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
 
-        // append plugin classpath (including project classpath) to groovyClassLoader
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), Thread.currentThread().getContextClassLoader(), compilerConfiguration);
+        // create groovyClassLoader isolated classloader (with project classpath)
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
 
         // add Groovy sources

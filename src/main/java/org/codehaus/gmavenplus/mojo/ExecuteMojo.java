@@ -17,10 +17,11 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
-import org.codehaus.gmavenplus.util.NoExitSecurityManager;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
+import org.codehaus.gmavenplus.util.ReflectionUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,6 +33,9 @@ import java.net.URL;
 /**
  * Executes Groovy scripts (in the pom or external), bound to the current project.
  * Note that this mojo requires Groovy >= 1.5.0.
+ * Note that it references the plugin classloader to pull in dependencies
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
+ * and Jansi for Groovysh)).
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -74,6 +78,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
+        usePluginClassLoader = true;
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("execute");
 
