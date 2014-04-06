@@ -11,11 +11,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gmavenplus-plugin-it-cleanClasspathCompile</artifactId>
+  <artifactId>gmavenplus-plugin-it-cleanClasspathGroovydoc</artifactId>
   <version>testing</version>
   <packaging>jar</packaging>
-  <name>GMavenPlus Plugin Clean Classpath Compile Test</name>
-  <description>The simplest compile use case where it would fail if the classpath were polluted with the plugin classpath</description>
+  <name>GMavenPlus Plugin Clean Classpath Groovydoc Test</name>
+  <description>The simplest Groovydoc use case where it would fail if the classpath were polluted with the plugin classpath</description>
 
   <dependencies>
     <dependency>
@@ -31,9 +31,15 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <executions>
           <execution>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
+              <goal>groovydoc</goal>
+            </goals>
+          </execution>
+          <execution>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>testGroovydoc</goal>
             </goals>
           </execution>
         </executions>
