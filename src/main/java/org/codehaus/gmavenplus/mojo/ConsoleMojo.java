@@ -92,10 +92,10 @@ public class ConsoleMojo extends AbstractToolsMojo {
                     throw new MojoFailureException("Unable to locate Console thread to wait on.");
                 }
             } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?", e);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().equals("org/apache/ivy/core/report/ResolveReport")) {
-                    throw new MojoExecutionException("Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console.  Either change your Groovy version or add Ivy as a plugin dependency.", e);
+                    throw new MojoExecutionException("Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console.  Either change your Groovy version or add Ivy as a project or plugin dependency.", e);
                 } else {
                     throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
                 }
