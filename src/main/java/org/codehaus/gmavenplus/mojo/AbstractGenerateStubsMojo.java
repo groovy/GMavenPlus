@@ -134,9 +134,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
 
         // create an isolated ClassLoader with all the appropriate project dependencies in it
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Project classpath: " + classpath);
-        }
         ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
 
         // get classes we need with reflection

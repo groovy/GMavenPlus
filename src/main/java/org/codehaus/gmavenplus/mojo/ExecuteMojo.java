@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import com.google.common.io.Closer;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
@@ -81,6 +82,14 @@ public class ExecuteMojo extends AbstractToolsMojo {
         usePluginClassLoader = true;
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("execute");
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project test classpath", e);
+                }
+            }
 
             if (scripts == null || scripts.length == 0) {
                 getLog().info("No scripts specified for execution.  Skipping.");

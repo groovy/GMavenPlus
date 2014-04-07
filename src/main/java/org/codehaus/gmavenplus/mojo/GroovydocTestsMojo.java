@@ -45,6 +45,14 @@ public class GroovydocTestsMojo extends AbstractGroovydocMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("testGroovydoc");
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project test classpath", e);
+                }
+            }
 
             try {
                 generateGroovydoc(getTestSourceRoots(groovydocJavaSources), project.getTestClasspathElements(), testGroovydocOutputDirectory);

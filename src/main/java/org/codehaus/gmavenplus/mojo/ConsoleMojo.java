@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
@@ -52,6 +53,14 @@ public class ConsoleMojo extends AbstractToolsMojo {
         usePluginClassLoader = true;
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("console");
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project test classpath", e);
+                }
+            }
 
             final SecurityManager sm = System.getSecurityManager();
             try {

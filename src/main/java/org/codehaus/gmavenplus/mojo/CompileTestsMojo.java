@@ -55,6 +55,14 @@ public class CompileTestsMojo extends AbstractCompileMojo {
         if (groovyVersionSupportsAction()) {
             if (!skip) {
                 logGroovyVersion("testCompile");
+                logPluginClasspath();
+                if (getLog().isDebugEnabled()) {
+                    try {
+                        getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                    } catch (DependencyResolutionRequiredException e) {
+                        getLog().warn("Unable to log project test classpath", e);
+                    }
+                }
 
                 try {
                     doCompile(getTestSources(), project.getTestClasspathElements(), testOutputDirectory);

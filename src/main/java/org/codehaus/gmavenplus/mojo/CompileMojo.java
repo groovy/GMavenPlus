@@ -47,6 +47,14 @@ public class CompileMojo extends AbstractCompileMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (groovyVersionSupportsAction()) {
             logGroovyVersion("compile");
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project compile classpath", e);
+                }
+            }
 
             try {
                 doCompile(getSources(), project.getCompileClasspathElements(), outputDirectory);

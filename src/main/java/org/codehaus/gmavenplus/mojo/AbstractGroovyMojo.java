@@ -114,6 +114,19 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
+     * Logs the plugin classpath.
+     */
+    protected void logPluginClasspath() {
+        if (getLog().isDebugEnabled()) {
+            StringBuilder sb = new StringBuilder();
+            for (Artifact artifact : pluginArtifacts) {
+                sb.append(artifact.getFile());
+            }
+            getLog().debug("Plugin classpath:\n" + sb.toString());
+        }
+    }
+
+    /**
      * Gets the version string of Groovy used from the dependency information.
      *
      * @return The version string of Groovy used by the project
