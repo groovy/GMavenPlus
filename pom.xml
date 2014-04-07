@@ -86,6 +86,14 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <!-- this is to support use of Groovysh (Groovy jars don't include) -->
+      <!-- this will work for all Groovy >= 2.2.0-beta-1, users of older versions will need to pull in 1.0 as a runtime dependency -->
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>2.11</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>

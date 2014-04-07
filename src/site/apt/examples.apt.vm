@@ -653,14 +653,13 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
             <version>${groovyVersion}</version>
             <scope>runtime</scope>
           </dependency>
-          <dependency>
-            <!-- GMavenPlus can't provide this dependency because JLine made a breaking change that was pulled in 2.2.0-beta-1 with GROOVY-5344 -->
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
-            <!-- if you are using a version of Groovy \< 2.2.0-beta-1, you'll need to use version 1.0 -->
-            <version>2.11</version>
-            <scope>runtime</scope>
-          </dependency>
+          <!-- if you are using a version of Groovy \< 2.2.0-beta-1, you'll need to uncomment below -->
+          <!--<dependency>-->
+            <!--<groupId>jline</groupId>-->
+            <!--<artifactId>jline</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<scope>runtime</scope>-->
+          <!--</dependency>-->
         </dependencies>
       </plugin>
     </plugins>
