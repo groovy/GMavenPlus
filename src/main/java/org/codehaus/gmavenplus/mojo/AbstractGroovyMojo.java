@@ -51,6 +51,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /** Cached Groovy dependency. */
     private static Artifact groovyDependency = null;
 
+    // note that all supported parameter expressions can be found here: https://git-wip-us.apache.org/repos/asf?p=maven.git;a=blob;f=maven-core/src/main/java/org/apache/maven/plugin/PluginParameterExpressionEvaluator.java;hb=HEAD
+
     /**
      * The Maven project this plugin is being used on.
      *
