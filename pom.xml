@@ -16,8 +16,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <!-- TODO: support Java 5 -->
-    <javaVersion>1.6</javaVersion>  <!-- using 6 instead of 5 since Guava requires 6 -->
+    <javaVersion>1.5</javaVersion>
     <minMavenVersion>3.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <coberturaPluginVersion>2.6</coberturaPluginVersion>
@@ -71,12 +70,6 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-classworlds</artifactId>
       <version>2.5.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>16.0.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -444,7 +437,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.0.1</version>
       </plugin>
-      <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.6 -->
+      <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.5 -->
       <!-- TODO: re-enable FindBugs -->
       <!--<plugin>-->
         <!--<groupId>org.codehaus.mojo</groupId>-->

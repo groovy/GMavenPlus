@@ -16,10 +16,11 @@
 
 package org.codehaus.gmavenplus.groovyworkarounds;
 
-import com.google.common.io.Files;
+import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,8 +108,8 @@ public class DotGroovyFile extends File {
      * @return Filename with forced <tt>.groovy</tt> extension
      */
     public String getName() {
-        if (scriptExtensions != null && !scriptExtensions.isEmpty() && scriptExtensions.contains(Files.getFileExtension(super.getAbsolutePath()))) {
-            return Files.getNameWithoutExtension(super.getName()) + ".groovy";
+        if (scriptExtensions != null && !scriptExtensions.isEmpty() && scriptExtensions.contains(FileUtils.getFileExtension(super.getAbsolutePath()))) {
+            return FileUtils.getNameWithoutExtension(super.getName()) + ".groovy";
         } else {
             return super.getName();
         }

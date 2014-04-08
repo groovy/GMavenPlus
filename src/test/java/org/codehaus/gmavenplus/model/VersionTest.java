@@ -136,8 +136,10 @@ public class VersionTest {
     }
 
     @Test
-    public void testHashCode() {
-        Assert.assertNotNull(new Version(0).hashCode());
+    public void testHashCodeSame() {
+        Version one = new Version(1, 2, 3);
+        Version two = new Version(1, 2, 3);
+        Assert.assertEquals(one.hashCode(), two.hashCode());
     }
 
 }

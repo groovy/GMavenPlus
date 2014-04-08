@@ -16,8 +16,8 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import com.google.common.io.LineReader;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -60,9 +60,8 @@ public class ExecuteMojoTest {
 
         executeMojo.execute();
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        LineReader lineReader = new LineReader(reader);
-        String actualLine = lineReader.readLine();
-        reader.close();
+        String actualLine = reader.readLine();
+        FileUtils.closeQuietly(reader);
 
         Assert.assertEquals(line, actualLine);
     }
@@ -79,9 +78,8 @@ public class ExecuteMojoTest {
             executeMojo.execute();
         } finally {
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            LineReader lineReader = new LineReader(reader);
-            actualLine = lineReader.readLine();
-            reader.close();
+            actualLine = reader.readLine();
+            FileUtils.closeQuietly(reader);
             file.delete();
         }
 

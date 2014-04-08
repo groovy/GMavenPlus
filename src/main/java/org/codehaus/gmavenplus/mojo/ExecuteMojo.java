@@ -16,10 +16,10 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import com.google.common.io.Closer;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
@@ -113,17 +113,16 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 // run the scripts
                 int scriptNum = 1;
                 for (String script : scripts) {
-                    Closer closer = Closer.create();
                     try {
+                        BufferedReader reader = null;
                         try {
                             URL url = new URL(script);
                             // it's a URL to a script
                             getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                            BufferedReader reader;
                             if (sourceEncoding != null) {
-                                reader = closer.register(new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding)));
+                                reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
                             } else {
-                                reader = closer.register(new BufferedReader(new InputStreamReader(url.openStream())));
+                                reader = new BufferedReader(new InputStreamReader(url.openStream()));
                             }
                             StringBuilder scriptSource = new StringBuilder();
                             String line;
@@ -136,10 +135,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
                         } catch (MalformedURLException e) {
                             // it's not a URL to a script, treat as a script body
                             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
-                        } catch (Throwable throwable) {
-                            throw closer.rethrow(throwable);
                         } finally {
-                            closer.close();
+                            FileUtils.closeQuietly(reader);
                         }
                     } catch (IOException ioe) {
                         if (continueExecuting) {

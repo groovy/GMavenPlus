@@ -16,9 +16,7 @@
 
 package org.codehaus.gmavenplus.model;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
+import java.util.Arrays;
 
 
 /**
@@ -159,7 +157,7 @@ public class Version implements Comparable<Version> {
      * @see java.lang.Object#hashCode()
      */
     public final int hashCode() {
-        return Objects.hashCode(major, minor, revision, tag);
+        return Arrays.hashCode(new Object[] {major, minor, revision, tag});
     }
 
     /**
@@ -175,7 +173,7 @@ public class Version implements Comparable<Version> {
             return major == other.major
                     && minor == other.minor
                     && revision == other.revision
-                    && Objects.equal(tag, other.tag);
+                    && (tag == other.tag || (tag != null && tag.equals(other.tag)));
         } else {
             return false;
         }
@@ -224,20 +222,28 @@ public class Version implements Comparable<Version> {
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
         // "beta" is replaced with " beta" to make sure RCs are considered newer than betas (by moving beta to back of order)
+        int mine = (1000000 * major) + (1000 * minor) + (revision);
+        int theirs = (1000000 * version.major) + (1000 * version.minor) + (version.revision);
         if (noTagsAreNewer) {
-            return ComparisonChain.start()
-                    .compare(major, version.major)
-                    .compare(minor, version.minor)
-                    .compare(revision, version.revision)
-                    .compare(tag != null ? tag.replace("beta", " beta") : tag, version.tag != null ? version.tag.replace("beta", " beta") : version.tag, Ordering.natural().nullsLast())
-                    .result();
+            if (mine == theirs && tag != null && version.tag != null) {
+                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
+            } else if (mine == theirs && tag == null && version.tag != null) {
+                return 1;
+            } else if (mine == theirs && tag != null && version.tag == null) {
+                return -1;
+            } else {
+                return mine - theirs;
+            }
         } else {
-            return ComparisonChain.start()
-                    .compare(major, version.major)
-                    .compare(minor, version.minor)
-                    .compare(revision, version.revision)
-                    .compare(tag != null ? tag.replace("beta", " beta") : tag, version.tag != null ? version.tag.replace("beta", " beta") : version.tag, Ordering.natural().nullsFirst())
-                    .result();
+            if (mine == theirs && tag != null && version.tag != null) {
+                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
+            } else if (mine == theirs && tag == null && version.tag != null) {
+                return -1;
+            } else if (mine == theirs && tag != null && version.tag == null) {
+                return 1;
+            } else {
+                return mine - theirs;
+            }
         }
     }
 
