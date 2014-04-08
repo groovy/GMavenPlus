@@ -20,7 +20,6 @@ import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
 import java.net.URI;
-import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
