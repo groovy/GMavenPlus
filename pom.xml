@@ -23,7 +23,7 @@
     <javadocPluginVersion>2.9.1</javadocPluginVersion>
     <!-- these are properties so integration tests can use them -->
     <compilerPluginVersion>3.1</compilerPluginVersion>
-    <surefirePluginVersion>2.16</surefirePluginVersion>
+    <surefirePluginVersion>2.17</surefirePluginVersion>
     <pluginPluginVersion>3.2</pluginPluginVersion>
     <junitVersion>4.11</junitVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
@@ -47,12 +47,7 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${mavenVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-registry</artifactId>
-      <version>${mavenVersion}</version>
-      <scope>runtime</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -71,6 +66,12 @@
       <artifactId>plexus-classworlds</artifactId>
       <version>2.5.1</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-registry</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
