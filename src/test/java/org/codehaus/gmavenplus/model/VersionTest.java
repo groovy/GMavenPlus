@@ -70,12 +70,24 @@ public class VersionTest {
     public void testSort() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-beta-2");
+        Version v3 = Version.parseFromString("1.0.0");
+        Version v4 = Version.parseFromString("1.0.1");
+        Version v5 = Version.parseFromString("1.1.0");
+        Version v6 = Version.parseFromString("2.0.0");
         List<Version> versions = new ArrayList<Version>();
         versions.add(v1);
         versions.add(v2);
+        versions.add(v3);
+        versions.add(v4);
+        versions.add(v5);
+        versions.add(v6);
         Collections.sort(versions);
         Assert.assertEquals(v1, versions.get(0));
         Assert.assertEquals(v2, versions.get(1));
+        Assert.assertEquals(v3, versions.get(2));
+        Assert.assertEquals(v4, versions.get(3));
+        Assert.assertEquals(v5, versions.get(4));
+        Assert.assertEquals(v6, versions.get(5));
     }
 
     @Test(expected = IllegalArgumentException.class)

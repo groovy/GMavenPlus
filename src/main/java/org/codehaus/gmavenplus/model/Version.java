@@ -168,15 +168,16 @@ public class Version implements Comparable<Version> {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public final boolean equals(final Object obj) {
-        if (obj instanceof Version) {
-            final Version other = (Version) obj;
-            return major == other.major
-                    && minor == other.minor
-                    && revision == other.revision
-                    && (tag == other.tag || (tag != null && tag.equals(other.tag)));
-        } else {
+        if (obj == null) {
             return false;
         }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        return this.compareTo((Version) obj) == 0;
     }
 
     /**
@@ -222,27 +223,32 @@ public class Version implements Comparable<Version> {
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
         // "beta" is replaced with " beta" to make sure RCs are considered newer than betas (by moving beta to back of order)
-        int mine = (1000000 * major) + (1000 * minor) + (revision);
-        int theirs = (1000000 * version.major) + (1000 * version.minor) + (version.revision);
+        int comp = Integer.compare(major, version.major);
+        if (comp == 0) {
+            comp = Integer.compare(minor, version.minor);
+        }
+        if (comp == 0) {
+            comp = Integer.compare(revision, version.revision);
+        }
         if (noTagsAreNewer) {
-            if (mine == theirs && tag != null && version.tag != null) {
+            if (comp == 0 && tag != null && version.tag != null) {
                 return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
-            } else if (mine == theirs && tag == null && version.tag != null) {
+            } else if (comp == 0 && tag == null && version.tag != null) {
                 return 1;
-            } else if (mine == theirs && tag != null && version.tag == null) {
+            } else if (comp == 0 && tag != null && version.tag == null) {
                 return -1;
             } else {
-                return mine - theirs;
+                return comp;
             }
         } else {
-            if (mine == theirs && tag != null && version.tag != null) {
+            if (comp == 0 && tag != null && version.tag != null) {
                 return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
-            } else if (mine == theirs && tag == null && version.tag != null) {
+            } else if (comp == 0 && tag == null && version.tag != null) {
                 return -1;
-            } else if (mine == theirs && tag != null && version.tag == null) {
+            } else if (comp == 0 && tag != null && version.tag == null) {
                 return 1;
             } else {
-                return mine - theirs;
+                return comp;
             }
         }
     }
