@@ -16,6 +16,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- TODO: support Java 5 -->
     <javaVersion>1.6</javaVersion>  <!-- using 6 instead of 5 since Guava requires 6 -->
     <minMavenVersion>3.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
@@ -443,7 +444,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.0.1</version>
       </plugin>
-      <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.5 -->
+      <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.6 -->
       <!-- TODO: re-enable FindBugs -->
       <!--<plugin>-->
         <!--<groupId>org.codehaus.mojo</groupId>-->
