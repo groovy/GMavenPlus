@@ -230,26 +230,14 @@ public class Version implements Comparable<Version> {
         if (comp == 0) {
             comp = Integer.compare(revision, version.revision);
         }
-        if (noTagsAreNewer) {
-            if (comp == 0 && tag != null && version.tag != null) {
-                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
-            } else if (comp == 0 && tag == null && version.tag != null) {
-                return 1;
-            } else if (comp == 0 && tag != null && version.tag == null) {
-                return -1;
-            } else {
-                return comp;
-            }
+        if (comp == 0 && tag != null && version.tag != null) {
+            return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
+        } else if (comp == 0 && tag == null && version.tag != null) {
+            return noTagsAreNewer ? 1 : -1;
+        } else if (comp == 0 && tag != null && version.tag == null) {
+            return noTagsAreNewer ? -1 : 1;
         } else {
-            if (comp == 0 && tag != null && version.tag != null) {
-                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
-            } else if (comp == 0 && tag == null && version.tag != null) {
-                return -1;
-            } else if (comp == 0 && tag != null && version.tag == null) {
-                return 1;
-            } else {
-                return comp;
-            }
+            return comp;
         }
     }
 
