@@ -232,7 +232,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @param dependency The dependency to inspect
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
-    protected boolean isGroovyJar(Dependency dependency) {
+    protected boolean isGroovyJar(final Dependency dependency) {
         return isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar");
     }
 
@@ -264,7 +264,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @param artifact The artifact to inspect
      * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
-    protected boolean isGroovyJar(Artifact artifact) {
+    protected boolean isGroovyJar(final Artifact artifact) {
         return isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar");
     }
 
@@ -331,9 +331,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      *
      * @param classpath the classpath (a list of file path Strings) to include in the new loader
      * @return the new ClassLoader
-     * @throws MalformedURLException
+     * @throws MalformedURLException When a classpath element provides a malformed URL
      */
-    protected ClassLoader createNewClassLoader(List classpath) throws MalformedURLException {
+    protected ClassLoader createNewClassLoader(final List classpath) throws MalformedURLException {
         List<URL> urlsList = new ArrayList<URL>();
         for (Object classPathObject : classpath) {
             String path = (String) classPathObject;

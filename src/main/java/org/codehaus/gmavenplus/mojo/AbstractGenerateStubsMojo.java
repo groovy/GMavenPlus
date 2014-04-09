@@ -125,7 +125,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws InstantiationException When a class needed for stub generation cannot be instantiated
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
-     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
+     * @throws MalformedURLException When a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {

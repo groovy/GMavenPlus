@@ -26,16 +26,31 @@ import java.security.Permission;
  * @since 1.2
  */
 public class NoExitSecurityManager extends SecurityManager {
+    /** The parent SecurityManager. **/
     private final SecurityManager parent;
 
+    /**
+     * Construct a new NoExitSecurityManager from the parent.
+     *
+     * @param parent the parent to set
+     */
     public NoExitSecurityManager(final SecurityManager parent) {
         this.parent = parent;
     }
 
+    /**
+     * Construct a new NoExitSecurityManager, using the System SecurityManager
+     * as the parent.
+     */
     public NoExitSecurityManager() {
         this(System.getSecurityManager());
     }
 
+    /**
+     * Check the given Permission.
+     *
+     * @param perm the Permission to check.
+     */
     public void checkPermission(final Permission perm) {
         if (parent != null) {
             parent.checkPermission(perm);
@@ -44,6 +59,8 @@ public class NoExitSecurityManager extends SecurityManager {
 
     /**
      * Always throws {@link SecurityException}.
+     *
+     * @param code the exit code that is completely ignored
      */
     public void checkExit(final int code) {
         throw new SecurityException("Use of System.exit() is forbidden!");

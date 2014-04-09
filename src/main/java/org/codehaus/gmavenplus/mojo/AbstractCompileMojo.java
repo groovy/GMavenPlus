@@ -138,7 +138,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws InstantiationException When a class needed for compilation cannot be instantiated
      * @throws IllegalAccessException When a method needed for compilation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for compilation cannot be completed
-     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
+     * @throws MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
     protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final File compileOutputDirectory)

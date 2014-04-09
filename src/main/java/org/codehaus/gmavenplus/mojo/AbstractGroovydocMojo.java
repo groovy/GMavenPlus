@@ -150,7 +150,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated
      * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
-     * @throws java.net.MalformedURLException When a classpath element provides a malformed URL
+     * @throws MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
     protected void generateGroovydoc(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {

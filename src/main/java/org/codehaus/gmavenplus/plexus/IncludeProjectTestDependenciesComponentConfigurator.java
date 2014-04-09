@@ -44,12 +44,12 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
 //    private static final Log LOG = new SystemStreamLog();
 
     /**
-     * @param component
-     * @param configuration
-     * @param expressionEvaluator
-     * @param containerRealm
-     * @param listener
-     * @throws ComponentConfigurationException
+     * @param component the Component to configure
+     * @param configuration the Configuration to use to configure the component
+     * @param expressionEvaluator the ExpressionEvaluator
+     * @param containerRealm the Classrealm to use to configure the component
+     * @param listener the component's Listener
+     * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
@@ -60,12 +60,12 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
     }
 
     /**
-     * @param component
-     * @param configuration
-     * @param expressionEvaluator
-     * @param containerRealm
-     * @param listener
-     * @throws ComponentConfigurationException
+     * @param component the Component to configure
+     * @param configuration the Configuration to use to configure the component
+     * @param expressionEvaluator the ExpressionEvaluator
+     * @param containerRealm the Classrealm to use to configure the component
+     * @param listener the component's Listener
+     * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
     @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,

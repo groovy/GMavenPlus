@@ -28,7 +28,10 @@ import java.io.*;
  */
 public class FileUtils {
 
-    private FileUtils() {}
+    /**
+     * Private constructor that should never be called since this is a static utility class.
+     */
+    private FileUtils() { }
 
     /**
      * Returns the file extension without the '.' for the given filename, or the empty string if the file has
@@ -37,7 +40,7 @@ public class FileUtils {
      * @param file the file to get the extension from
      * @return the file extension
      */
-    public static String getFileExtension(String file) {
+    public static String getFileExtension(final String file) {
         String fileName = new File(file).getName();
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
@@ -49,7 +52,7 @@ public class FileUtils {
      * @param file the name of the file remove the extension from
      * @return the file name without its path or extension
      */
-    public static String getNameWithoutExtension(String file) {
+    public static String getNameWithoutExtension(final String file) {
         String fileName = new File(file).getName();
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
@@ -60,7 +63,7 @@ public class FileUtils {
      *
      * @param inputStream the InputStream to close
      */
-    public static void closeQuietly(InputStream inputStream) {
+    public static void closeQuietly(final InputStream inputStream) {
         if (inputStream != null) {
             try {
                 inputStream.close();
@@ -75,7 +78,7 @@ public class FileUtils {
      *
      * @param outputStream the OutputStream to close
      */
-    public static void closeQuietly(OutputStream outputStream) {
+    public static void closeQuietly(final OutputStream outputStream) {
         if (outputStream != null) {
             try {
                 outputStream.close();
@@ -90,7 +93,7 @@ public class FileUtils {
      *
      * @param reader the Reader to close
      */
-    public static void closeQuietly(Reader reader) {
+    public static void closeQuietly(final Reader reader) {
         if (reader != null) {
             try {
                 reader.close();
@@ -105,7 +108,7 @@ public class FileUtils {
      *
      * @param writer the Writer to close
      */
-    public static void closeQuietly(Writer writer) {
+    public static void closeQuietly(final Writer writer) {
         if (writer != null) {
             try {
                 writer.close();
