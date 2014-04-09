@@ -107,22 +107,25 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Groovy compiler error tolerance
-     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
+     * (the number of non-fatal errors (per unit) that should be tolerated
+     * before compilation is aborted).
      *
      * @parameter default-value="0"
      */
     protected int tolerance;
 
     /**
-     * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
+     * Whether to support invokeDynamic (requires Java 7 or greater and Groovy
+     * indy 2.0.0-beta-3 or greater).
      *
      * @parameter property="invokeDynamic" default-value="false"
      */
     protected boolean invokeDynamic;
 
     /**
-     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a> for tweaking the configuration options
-     * (requires Groovy 2.1.0-beta-1 or greater).
+     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a>
+     * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
+     * or greater).
      *
      * @parameter property="configScript"
      */
@@ -131,9 +134,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Performs compilation of compile mojos.
      *
-     * @param sourcesToCompile The sources to compile
-     * @param classpath The classpath to use for compilation
-     * @param compileOutputDirectory The directory to write the compiled class files to
+     * @param sources the sources to compile
+     * @param classpath the classpath to use for compilation
+     * @param compileOutputDirectory the directory to write the compiled class files to
      * @throws ClassNotFoundException When a class needed for compilation cannot be found
      * @throws InstantiationException When a class needed for compilation cannot be instantiated
      * @throws IllegalAccessException When a method needed for compilation cannot be accessed
@@ -141,9 +144,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws MalformedURLException When a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected synchronized void doCompile(final Set<File> sourcesToCompile, final List classpath, final File compileOutputDirectory)
+    protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
-        if (sourcesToCompile == null || sourcesToCompile.isEmpty()) {
+        if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
@@ -156,7 +159,69 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit", true, isolatedClassLoader);
         Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
 
-        // set up compile options
+        // setup compile options
+        Object compilerConfiguration = setupCompilerConfiguration(compileOutputDirectory, isolatedClassLoader, compilerConfigurationClass);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
+        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), isolatedClassLoader);
+
+        // add Groovy sources
+        Object compilationUnit = setupCompilationUnit(sources, compilerConfigurationClass, compilationUnitClass, groovyClassLoaderClass, compilerConfiguration, groovyClassLoader, transformLoader);
+
+        // compile the classes
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "compile"), compilationUnit);
+
+        // log compiled classes
+        List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
+        getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
+    }
+
+    /**
+     * Sets up the CompilationUnit to use for compilation.
+     *
+     * @param sources the sources to compile
+     * @param compilerConfigurationClass the CompilerConfiguration class
+     * @param compilationUnitClass the CompilationUnit class
+     * @param groovyClassLoaderClass the GroovyClassLoader class
+     * @param compilerConfiguration the CompilerConfiguration
+     * @param groovyClassLoader the GroovyClassLoader
+     * @param transformLoader the GroovyClassLoader to use for transformation
+     * @return the CompilationUnit
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        Object compilationUnit;
+        if (getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
+            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
+        } else {
+            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
+        }
+        getLog().debug("Adding Groovy to compile:");
+        for (File source : sources) {
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("    " + source);
+            }
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
+        }
+
+        return compilationUnit;
+    }
+
+    /**
+     * Sets up the CompilationConfiguration to use for compilation.
+     *
+     * @param compileOutputDirectory the directory to write the compiled classes to
+     * @param isolatedClassLoader the ClassLoader to use to load the LinkArgument class
+     * @param compilerConfigurationClass the CompilerConfiguration class
+     * @return the CompilerConfiguration
+     * @throws ClassNotFoundException When a class needed for stub generation cannot be found
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    @SuppressWarnings("unchecked")
+    private Object setupCompilerConfiguration(final File compileOutputDirectory, final ClassLoader isolatedClassLoader, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
@@ -204,31 +269,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
 
-        // create groovyClassLoader and transformLoader
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
-        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), isolatedClassLoader);
-
-        // add Groovy sources
-        Object compilationUnit;
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
-            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
-        } else {
-            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
-        }
-        getLog().debug("Adding Groovy to compile:");
-        for (File source : sourcesToCompile) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + source);
-            }
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
-        }
-
-        // compile the classes
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "compile"), compilationUnit);
-
-        // log compiled classes
-        List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
-        getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
+        return compilerConfiguration;
     }
 
 }

@@ -29,13 +29,15 @@ import java.util.Arrays;
 public class ReflectionUtils {
 
     /**
-     * Private constructor that should never be called since this is a static utility class.
+     * Private constructor that should never be called since this is a static
+     * utility class.
      */
     private ReflectionUtils() { }
 
     /**
-     * Attempt to find a {@link Method} on the supplied class with the supplied name
-     * and parameter types. Searches all superclasses up to <code>Object</code>.
+     * Attempt to find a {@link Method} on the supplied class with the supplied
+     * name and parameter types. Searches all superclasses up to
+     * <code>Object</code>.
      *
      * @param clazz      The class to introspect
      * @param name       The name of the method
@@ -64,12 +66,12 @@ public class ReflectionUtils {
     }
 
     /**
-     * Attempt to find a {@link Constructor} on the supplied class with the supplied
-     * parameter types. Searches all superclasses up to <code>Object</code>.
+     * Attempt to find a {@link Constructor} on the supplied class with the
+     * supplied parameter types. Searches all superclasses up to
+     * <code>Object</code>.
      *
-     * @param clazz      The class to introspect
-     * @param paramTypes The parameter types of the method
-     *                   (may be <code>null</code> to indicate any signature)
+     * @param clazz The class to introspect
+     * @param paramTypes The parameter types of the method (may be <code>null</code> to indicate any signature)
      * @return The Constructor object
      */
     public static Constructor findConstructor(final Class<?> clazz, final Class<?>... paramTypes) {
@@ -90,9 +92,9 @@ public class ReflectionUtils {
     }
 
     /**
-     * Invoke the specified {@link Method} against the supplied target object with the
-     * supplied arguments. The target object can be <code>null</code> when invoking a
-     * static {@link Method}.
+     * Invoke the specified {@link Method} against the supplied target object
+     * with the supplied arguments. The target object can be <code>null</code>
+     * when invoking a static {@link Method}.
      *
      * @param method The method to invoke
      * @param target The target object to invoke the method on
@@ -151,9 +153,9 @@ public class ReflectionUtils {
     }
 
     /**
-     * Attempt to find a {@link Field field} on the supplied {@link Class} with the
-     * supplied <code>name</code> and/or {@link Class type}. Searches all superclasses
-     * up to {@link Object}.
+     * Attempt to find a {@link Field field} on the supplied {@link Class} with
+     * the supplied <code>name</code> and/or {@link Class type}. Searches all
+     * superclasses up to {@link Object}.
      *
      * @param clazz The class to introspect
      * @param name The name of the field (may be <code>null</code> if type is specified)
@@ -181,10 +183,10 @@ public class ReflectionUtils {
     }
 
     /**
-     * Get the field represented by the supplied {@link Field field object} on the
-     * specified {@link Object target object}. In accordance with {@link Field#get(Object)}
-     * semantics, the returned value is automatically wrapped if the underlying field
-     * has a primitive type.
+     * Get the field represented by the supplied {@link Field field object} on
+     * the specified {@link Object target object}. In accordance with
+     * {@link Field#get(Object)} semantics, the returned value is automatically
+     * wrapped if the underlying field has a primitive type.
      * @param field The field to get
      * @param target The target object from which to get the field
      * @return The field's current value
@@ -196,10 +198,10 @@ public class ReflectionUtils {
     }
 
     /**
-     * Get the field represented by the supplied {@link Field field object} on the
-     * specified {@link Object target object}. In accordance with {@link Field#get(Object)}
-     * semantics, the returned value is automatically wrapped if the underlying field
-     * has a primitive type.
+     * Get the field represented by the supplied {@link Field field object} on
+     * the specified {@link Object target object}. In accordance with
+     * {@link Field#get(Object)} semantics, the returned value is automatically
+     * wrapped if the underlying field has a primitive type.
      *
      * @param field The field to get
      * @return The field's current value

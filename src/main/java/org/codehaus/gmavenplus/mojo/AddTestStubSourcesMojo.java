@@ -21,8 +21,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
- * Adds Groovy test stubs directory back to Maven's list of test source directories.
- * Normally, you won't need to use this mojo.
+ * Adds Groovy test stubs directory back to Maven's list of test source
+ * directories.  Normally, you won't need to use this mojo.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -35,8 +35,8 @@ public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
     /**
      * Executes this mojo.
      *
-     * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (getLog().isDebugEnabled()) {

@@ -108,8 +108,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance
-     * (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
+     * Groovy compiler error tolerance (the number of non-fatal errors
+     * (per unit) that should be tolerated before compilation is aborted).
      *
      * @parameter default-value="0"
      */
@@ -141,7 +141,32 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         Class javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit", true, isolatedClassLoader);
         Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
 
-        // set up compile options
+        // setup stub generation options
+        Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
+        Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
+
+        // add Groovy sources
+        addGroovySources(stubSources, compilerConfigurationClass, javaStubCompilationUnitClass, compilerConfiguration, javaStubCompilationUnit);
+
+        // generate the stubs
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
+
+        // log generated stubs
+        getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
+    }
+
+    /**
+     * Sets up the CompilerConfiguration to use for stub generation.
+     *
+     * @param outputDirectory the directory to write the stub files to
+     * @param compilerConfigurationClass the CompilerConfiguration class
+     * @return the CompilerConfiguration to use for stub generation
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
@@ -156,11 +181,21 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         options.put("keepStubs", Boolean.TRUE);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
 
-        // create groovyClassLoader isolated classloader (with project classpath)
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
-        Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
+        return compilerConfiguration;
+    }
 
-        // add Groovy sources
+    /**
+     * Adds the Groovy sources to the CompilationUnit.
+     *
+     * @param stubSources the sources to perform stub generation on
+     * @param compilerConfigurationClass the CompilerConfiguration class
+     * @param javaStubCompilationUnitClass the JavaStubCompilationUnit class
+     * @param compilerConfiguration the CompilerConfiguration to use for stub generation
+     * @param javaStubCompilationUnit the JavaStubCompilationUnit to use for stub generation
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private void addGroovySources(final Set<File> stubSources, final Class compilerConfigurationClass, final Class javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : stubSources) {
             if (getLog().isDebugEnabled()) {
@@ -187,12 +222,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
             }
         }
-
-        // generate the stubs
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
-
-        // log generated stubs
-        getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
     }
 
     /**

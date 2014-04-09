@@ -99,54 +99,15 @@ public class ExecuteMojo extends AbstractToolsMojo {
             final SecurityManager sm = System.getSecurityManager();
             try {
                 System.setSecurityManager(new NoExitSecurityManager());
+
                 // get classes we need with reflection
                 Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
 
                 // create a GroovyShell to run scripts in
-                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
-                initializeProperties();
-                for (Object k : properties.keySet()) {
-                    String key = (String) k;
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.get(key));
-                }
+                Object shell = setupShell(groovyShellClass);
 
                 // run the scripts
-                int scriptNum = 1;
-                for (String script : scripts) {
-                    try {
-                        BufferedReader reader = null;
-                        try {
-                            URL url = new URL(script);
-                            // it's a URL to a script
-                            getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                            if (sourceEncoding != null) {
-                                reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
-                            } else {
-                                reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                            }
-                            StringBuilder scriptSource = new StringBuilder();
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                scriptSource.append(line).append("\n");
-                            }
-                            if (!scriptSource.toString().isEmpty()) {
-                                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, scriptSource.toString());
-                            }
-                        } catch (MalformedURLException e) {
-                            // it's not a URL to a script, treat as a script body
-                            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
-                        } finally {
-                            FileUtils.closeQuietly(reader);
-                        }
-                    } catch (IOException ioe) {
-                        if (continueExecuting) {
-                            getLog().error("An Exception occurred while executing script " + scriptNum + ".  Continuing to execute remaining scripts.", ioe);
-                        } else {
-                            throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", ioe);
-                        }
-                    }
-                    scriptNum++;
-                }
+                executeScripts(groovyShellClass, shell);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?", e);
             } catch (InvocationTargetException e) {
@@ -160,6 +121,73 @@ public class ExecuteMojo extends AbstractToolsMojo {
             }
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
+        }
+    }
+
+    /**
+     * Creates the GroovyShell shell to use to execute scripts.
+     *
+     * @param groovyShellClass the GroovyShell class
+     * @return the GroovyShell shell to use to execute scripts
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+        initializeProperties();
+        for (Object k : properties.keySet()) {
+            String key = (String) k;
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.get(key));
+        }
+
+        return shell;
+    }
+
+    /**
+     * Executes the scripts using the GroovyShell.
+     *
+     * @param groovyShellClass the GroovyShell class
+     * @param shell the shell to use for script execution
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
+        int scriptNum = 1;
+        for (String script : scripts) {
+            try {
+                BufferedReader reader = null;
+                try {
+                    URL url = new URL(script);
+                    // it's a URL to a script
+                    getLog().info("Fetching Groovy script from " + url.toString() + ".");
+                    if (sourceEncoding != null) {
+                        reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
+                    } else {
+                        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    }
+                    StringBuilder scriptSource = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        scriptSource.append(line).append("\n");
+                    }
+                    if (!scriptSource.toString().isEmpty()) {
+                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, scriptSource.toString());
+                    }
+                } catch (MalformedURLException e) {
+                    // it's not a URL to a script, treat as a script body
+                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                } finally {
+                    FileUtils.closeQuietly(reader);
+                }
+            } catch (IOException ioe) {
+                if (continueExecuting) {
+                    getLog().error("An Exception occurred while executing script " + scriptNum + ".  Continuing to execute remaining scripts.", ioe);
+                } else {
+                    throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", ioe);
+                }
+            }
+            scriptNum++;
         }
     }
 

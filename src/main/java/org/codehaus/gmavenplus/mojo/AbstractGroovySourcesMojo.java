@@ -82,7 +82,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of files of the the main sources (not including Java sources).
+     * Gets the set of files of the the main sources (not including Java
+     * sources).
      *
      * @return The set of files of the the main sources.
      */
@@ -129,7 +130,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of included files from the specified source files or source directory (if sources are null).
+     * Gets the set of included files from the specified source files or source
+     * directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
      * @param defaultSourceDirectory The source directory to fall back on if sources are null
@@ -150,14 +152,15 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of included filesets from the specified source files or source directory (if sources are null).
+     * Gets the set of included filesets from the specified source files or
+     * source directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
      * @param defaultSubDirectory The source subdirectory to fall back on if sources are null
      * @param includeJavaSources Whether to include Java sources
      * @return The included filesets from the specified sources
      */
-    protected FileSet[] getFilesets(final FileSet[] fromSources, final String defaultSubDirectory, boolean includeJavaSources) {
+    protected FileSet[] getFilesets(final FileSet[] fromSources, final String defaultSubDirectory, final boolean includeJavaSources) {
         FileSet[] result;
         FileSet[] groovyFileSets;
 

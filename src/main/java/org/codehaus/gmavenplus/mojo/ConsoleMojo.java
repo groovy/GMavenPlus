@@ -46,8 +46,8 @@ public class ConsoleMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         usePluginClassLoader = true;
@@ -65,18 +65,13 @@ public class ConsoleMojo extends AbstractToolsMojo {
             final SecurityManager sm = System.getSecurityManager();
             try {
                 System.setSecurityManager(new NoExitSecurityManager());
+
                 // get classes we need with reflection
                 Class consoleClass = Class.forName("groovy.ui.Console");
                 Class bindingClass = Class.forName("groovy.lang.Binding");
 
                 // create console to run
-                Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-                initializeProperties();
-                for (Object k : properties.keySet()) {
-                    String key = (String) k;
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
-                }
-                Object console = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
+                Object console = createConsole(consoleClass, bindingClass);
 
                 // run the console
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
@@ -118,6 +113,27 @@ public class ConsoleMojo extends AbstractToolsMojo {
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");
         }
+    }
+
+    /**
+     * Instantiates a Groovy Console.
+     *
+     * @param consoleClass the Console class
+     * @param bindingClass the Binding class
+     * @return the instantiated Console
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private Object createConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+        initializeProperties();
+        for (Object k : properties.keySet()) {
+            String key = (String) k;
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
+        }
+
+        return ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
     }
 
 }

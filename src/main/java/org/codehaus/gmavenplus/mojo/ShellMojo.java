@@ -58,8 +58,8 @@ public class ShellMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws org.apache.maven.plugin.MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws org.apache.maven.plugin.MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         usePluginClassLoader = true;
@@ -77,6 +77,7 @@ public class ShellMojo extends AbstractToolsMojo {
             final SecurityManager sm = System.getSecurityManager();
             try {
                 System.setSecurityManager(new NoExitSecurityManager());
+
                 // get classes we need with reflection
                 Class shellClass = Class.forName("org.codehaus.groovy.tools.shell.Groovysh");
                 Class bindingClass = Class.forName("groovy.lang.Binding");
@@ -85,16 +86,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 Class loggerClass = Class.forName("org.codehaus.groovy.tools.shell.util.Logger");
 
                 // create shell to run
-                Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-                initializeProperties();
-                for (Object k : properties.keySet()) {
-                    String key = (String) k;
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
-                }
-                Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, "setVerbosity", verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, "forName", String.class), verbosity));
-                ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);
-                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
+                Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
 
                 // run the shell
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(shellClass, "run", String.class), shell, (String) null);
@@ -116,6 +108,33 @@ public class ShellMojo extends AbstractToolsMojo {
         } else {
             getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
         }
+    }
+
+    /**
+     * Creates the Groovysh to run.
+     *
+     * @param shellClass the Groovysh class
+     * @param bindingClass the Binding class
+     * @param ioClass the IO class
+     * @param verbosityClass the Verbosity
+     * @param loggerClass the Logger class
+     * @return the Groovysh shell to run
+     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     */
+    private Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+        initializeProperties();
+        for (Object k : properties.keySet()) {
+            String key = (String) k;
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
+        }
+        Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, "setVerbosity", verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, "forName", String.class), verbosity));
+        ReflectionUtils.findField(loggerClass, "io", ioClass).set(null, io);
+
+        return ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
     }
 
 }

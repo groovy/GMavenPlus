@@ -141,12 +141,12 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
          * And for some reason InvokerHelper.getVersion() was returning an empty
          * String for 1.5.0, so I decided to just get it from the dependency itself.
          */
-        Artifact groovyDependency = getGroovyDependency();
+        Artifact dependency = getGroovyDependency();
 
-        if (groovyDependency == null) {
+        if (dependency == null) {
             getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
         } else {
-            groovyVersion = groovyDependency.getVersion();
+            groovyVersion = dependency.getVersion();
         }
 
         return groovyVersion;
@@ -175,10 +175,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected boolean isGroovyIndy() {
         boolean isGroovyIndy = false;
 
-        Artifact groovyDependency = getGroovyDependency();
-        if (groovyDependency == null) {
+        Artifact dependency = getGroovyDependency();
+        if (dependency == null) {
             getLog().error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
-        } else if ("indy".equals(groovyDependency.getClassifier())) {
+        } else if ("indy".equals(dependency.getClassifier())) {
             isGroovyIndy = true;
         }
 

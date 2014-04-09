@@ -200,9 +200,10 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Compares two versions objects.  Note that if the major, minor, and revision are all
-     * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.  Having no tag
-     * is considered a newer version than a version with a tag.
+     * Compares two versions objects.  Note that if the major, minor, and
+     * revision are all the same, tags are compared with
+     * {@link java.lang.String#compareTo(String) String.compareTo()}.  Having
+     * no tag is considered a newer version than a version with a tag.
      *
      * @param version The version to compare this version to
      * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
@@ -213,8 +214,9 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Compares two versions objects.  Note that if the major, minor, and revision are all
-     * the same, tags are compared with {@link java.lang.String#compareTo(String) String.compareTo()}.
+     * Compares two versions objects.  Note that if the major, minor, and
+     * revision are all the same, tags are compared with
+     * {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
      * @param version The version to compare this version to
      * @param noTagsAreNewer Whether versions with no tag are considered newer than those that have tags

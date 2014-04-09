@@ -26,7 +26,8 @@ import java.net.MalformedURLException;
 
 
 /**
- * Generates stubs for the test Groovy sources and adds them to Maven's test sources for the Maven compiler plugin to find.
+ * Generates stubs for the test Groovy sources and adds them to Maven's test
+ * sources for the Maven compiler plugin to find.
  * Note that this mojo requires Groovy >= 1.8.2.
  *
  * @author Keegan Witt

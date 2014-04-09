@@ -29,12 +29,14 @@ import java.io.*;
 public class FileUtils {
 
     /**
-     * Private constructor that should never be called since this is a static utility class.
+     * Private constructor that should never be called since this is a static
+     * utility class.
      */
     private FileUtils() { }
 
     /**
-     * Returns the file extension without the '.' for the given filename, or the empty string if the file has
+     * Returns the file extension without the '.' for the given filename, or
+     * the empty string if the file has
      * no extension.
      *
      * @param file the file to get the extension from
