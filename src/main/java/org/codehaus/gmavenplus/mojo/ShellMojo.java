@@ -123,7 +123,7 @@ public class ShellMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
         initializeProperties();
         for (Object k : properties.keySet()) {

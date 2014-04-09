@@ -166,7 +166,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
@@ -195,7 +195,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private void addGroovySources(final Set<File> stubSources, final Class compilerConfigurationClass, final Class javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
+    protected void addGroovySources(final Set<File> stubSources, final Class compilerConfigurationClass, final Class javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : stubSources) {
             if (getLog().isDebugEnabled()) {

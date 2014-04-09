@@ -190,7 +190,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
         if (getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
             compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
@@ -221,7 +221,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
     @SuppressWarnings("unchecked")
-    private Object setupCompilerConfiguration(final File compileOutputDirectory, final ClassLoader isolatedClassLoader, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    protected Object setupCompilerConfiguration(final File compileOutputDirectory, final ClassLoader isolatedClassLoader, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {

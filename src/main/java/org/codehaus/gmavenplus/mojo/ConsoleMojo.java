@@ -125,7 +125,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object createConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object createConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
         initializeProperties();
         for (Object k : properties.keySet()) {

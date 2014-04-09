@@ -133,7 +133,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
         initializeProperties();
         for (Object k : properties.keySet()) {
@@ -152,7 +152,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
+    protected void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
         int scriptNum = 1;
         for (String script : scripts) {
             try {

@@ -211,7 +211,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      *
      * @return the documentation properties
      */
-    private Properties setupProperties() {
+    protected Properties setupProperties() {
         Properties properties = new Properties();
         properties.setProperty("windowTitle", windowTitle);
         properties.setProperty("docTitle", docTitle);
@@ -248,7 +248,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
     @SuppressWarnings("unchecked")
-    private List setupLinks(final ClassLoader isolatedClassLoader) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected List setupLinks(final ClassLoader isolatedClassLoader) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
         if (this.links != null && this.links.size() > 0) {
             Class linkArgumentClass = null;
@@ -287,7 +287,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
         if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
@@ -334,7 +334,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param fileSetManager the FileSetmanager to use to get the included files
      * @return the groovy sources
      */
-    private List<String> setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
+    protected List<String> setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
         List<String> javaSources = new ArrayList<String>();
         List<String> groovySources = new ArrayList<String>();
         List<String> possibleGroovyStubs = new ArrayList<String>();
@@ -369,7 +369,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
      */
-    private void generateGroovydoc(final File outputDirectory, final Class groovyDocToolClass, final Class outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
+    protected void generateGroovydoc(final File outputDirectory, final Class groovyDocToolClass, final Class outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding sources to generate Groovydoc for:");
         if (getLog().isDebugEnabled()) {
             getLog().debug("    " + groovydocSources);
@@ -389,7 +389,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      *
      * @param outputDirectory The output directory to copy the stylesheet to
      */
-    private void copyStylesheet(final File outputDirectory) {
+    protected void copyStylesheet(final File outputDirectory) {
         getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
         try {
             BufferedReader bufferedReader = null;

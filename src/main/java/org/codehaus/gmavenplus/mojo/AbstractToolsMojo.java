@@ -96,7 +96,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * Logs errors that caused the 'ant' object to not be populated.
      * @param e the exception causing the failure
      */
-    private void logUnableToInitializeAntBuilder(final Throwable e) {
+    protected void logUnableToInitializeAntBuilder(final Throwable e) {
         getLog().error("Unable to initialize 'ant' with a new AntBuilder object.  Is Ant a dependency?", e);
     }
 
