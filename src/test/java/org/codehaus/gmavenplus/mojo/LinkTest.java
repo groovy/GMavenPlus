@@ -30,8 +30,8 @@ public class LinkTest {
         String packages = "PACKAGES";
         String href = "HREF";
         Link link = new Link();
-        Assert.assertTrue(link.getPackages().isEmpty());
-        Assert.assertTrue(link.getHref().isEmpty());
+        Assert.assertTrue(link.getPackages().length() == 0);
+        Assert.assertTrue(link.getHref().length() == 0);
         link.setPackages(packages);
         link.setHref(href);
         Assert.assertEquals(packages, link.getPackages());

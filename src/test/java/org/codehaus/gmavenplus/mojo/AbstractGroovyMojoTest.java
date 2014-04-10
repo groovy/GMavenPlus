@@ -85,7 +85,7 @@ public class AbstractGroovyMojoTest {
 
     @Test
     public void testGetJavaVersion() {
-        Assert.assertTrue(testMojo.getJavaVersionString() != null && !testMojo.getJavaVersionString().isEmpty());
+        Assert.assertTrue(testMojo.getJavaVersionString() != null && testMojo.getJavaVersionString().length() != 0);
         Assert.assertNotNull(testMojo.getJavaVersion());
     }
 

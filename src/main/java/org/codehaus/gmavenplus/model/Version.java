@@ -62,9 +62,9 @@ public class Version implements Comparable<Version> {
         major = newMajor;
         minor = newMinor;
         revision = newRevision;
-        if (newTag == null || !newTag.isEmpty()) {
+        if (newTag == null || newTag.length() != 0) {
             tag = newTag;
-        } else if (newTag.isEmpty()) {
+        } else if (newTag.length() == 0) {
             tag = null;
         }
     }
@@ -106,7 +106,7 @@ public class Version implements Comparable<Version> {
      * @return The version parsed from the string
      */
     public static Version parseFromString(final String version) {
-        if (version == null || version.isEmpty()) {
+        if (version == null || version.length() == 0) {
             throw new IllegalArgumentException("Version must not be null or empty.");
         }
         String[] split = version.split("[._-]", 4);
@@ -225,12 +225,12 @@ public class Version implements Comparable<Version> {
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
         // "beta" is replaced with " beta" to make sure RCs are considered newer than betas (by moving beta to back of order)
-        int comp = Integer.compare(major, version.major);
+        int comp = major < version.major ? -1 : (major == version.major ? 0 : 1);
         if (comp == 0) {
-            comp = Integer.compare(minor, version.minor);
+            comp = minor < version.minor ? -1 : (minor == version.minor ? 0 : 1);
         }
         if (comp == 0) {
-            comp = Integer.compare(revision, version.revision);
+            comp = revision < version.revision ? -1 : (revision == version.revision ? 0 : 1);
         }
         if (comp == 0 && tag != null && version.tag != null) {
             return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));

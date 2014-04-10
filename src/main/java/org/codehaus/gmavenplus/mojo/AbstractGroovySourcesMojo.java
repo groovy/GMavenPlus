@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
+import org.codehaus.gmavenplus.util.JDK5Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -196,7 +197,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
                 }
             }
             FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[javaFileSets.size()]);
-            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
+            result = JDK5Utils.Arrays_copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
             System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
         } else {
             result = groovyFileSets;

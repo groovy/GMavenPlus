@@ -171,7 +171,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                     while ((line = reader.readLine()) != null) {
                         scriptSource.append(line).append("\n");
                     }
-                    if (!scriptSource.toString().isEmpty()) {
+                    if (scriptSource.toString().length() != 0) {
                         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, scriptSource.toString());
                     }
                 } catch (MalformedURLException e) {
