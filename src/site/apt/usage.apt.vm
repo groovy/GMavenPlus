@@ -58,7 +58,8 @@ mvn test-compile
       </plugin>
       <plugin>
         <!-- if including source jars, use the no-fork goals
-             otherwise both the Groovy sources and Java stub sources will get included in your jar -->
+             otherwise both the Groovy sources and Java stub sources will get
+             included in your jar -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
@@ -78,8 +79,10 @@ mvn test-compile
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <!-- any version of Groovy \>= 1.8.2 should work here -->
-      <!-- exclude org.fusesource.jansi:jansi if using Groovy 1.7.1, as mentioned here http://groovy.329449.n5.nabble.com/jansi-dependency-in-1-7-1-td372491.html -->
       <version>${groovyVersion}</version>
+      <!-- exclude org.fusesource.jansi:jansi if using Groovy 1.7.1, as
+      mentioned here
+      http://groovy.329449.n5.nabble.com/jansi-dependency-in-1-7-1-td372491.html -->
     </dependency>
   </dependencies>
 </project>

@@ -410,7 +410,8 @@ mvn gplus:groovydoc
 mvn gplus:generateStubs gplus:groovydoc
 +---------------------------------------+
 
-  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
+  To make this easy to invoke (like above), you may want to add the plugin
+  group to your <<<settings.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <pluginGroups>
@@ -569,7 +570,8 @@ mvn site
 mvn gplus:execute
 +---------------------------------------+
 
-  To make this easy to invoke (like above), you may want to add the plugin group to your <<<settings.xml>>>:
+  To make this easy to invoke (like above), you may want to add the plugin
+  group to your <<<settings.xml>>>:
 
 +-----------------------------------------------------------------------------+
 <pluginGroups>
