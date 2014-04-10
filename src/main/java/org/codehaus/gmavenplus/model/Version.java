@@ -59,13 +59,13 @@ public class Version implements Comparable<Version> {
             throw new IllegalArgumentException("Major must be >= 0 and minor >= 0 and revision >= 0.");
         }
 
-        this.major = newMajor;
-        this.minor = newMinor;
-        this.revision = newRevision;
+        major = newMajor;
+        minor = newMinor;
+        revision = newRevision;
         if (newTag == null || !newTag.isEmpty()) {
-            this.tag = newTag;
+            tag = newTag;
         } else if (newTag.isEmpty()) {
-            this.tag = null;
+            tag = null;
         }
     }
 
@@ -177,7 +177,7 @@ public class Version implements Comparable<Version> {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        return this.compareTo((Version) obj) == 0;
+        return compareTo((Version) obj) == 0;
     }
 
     /**
@@ -259,7 +259,7 @@ public class Version implements Comparable<Version> {
      * @return This object (for fluent invocation)
      */
     public Version setMajor(final int newMajor) {
-        this.major = newMajor;
+        major = newMajor;
         return this;
     }
 
@@ -279,7 +279,7 @@ public class Version implements Comparable<Version> {
      * @return This object (for fluent invocation)
      */
     public Version setMinor(final int newMinor) {
-        this.minor = newMinor;
+        minor = newMinor;
         return this;
     }
 
@@ -299,7 +299,7 @@ public class Version implements Comparable<Version> {
      * @return This object (for fluent invocation)
      */
     public Version setRevision(final int newRevision) {
-        this.revision = newRevision;
+        revision = newRevision;
         return this;
     }
 
@@ -319,7 +319,7 @@ public class Version implements Comparable<Version> {
      * @return This object (for fluent invocation)
      */
     public Version setTag(final String newTag) {
-        this.tag = newTag;
+        tag = newTag;
         return this;
     }
 

@@ -47,7 +47,7 @@ public class Link {
      * @return this object (for fluent invocation)
      */
     public Link setPackages(final String newPackages) {
-        this.packages = newPackages;
+        packages = newPackages;
         return this;
     }
 

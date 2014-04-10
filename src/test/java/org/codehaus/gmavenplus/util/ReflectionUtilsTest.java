@@ -131,16 +131,16 @@ public class ReflectionUtilsTest {
 
         public TestClass() { }
 
-        public TestClass(String stringField) {
-            this.stringField = stringField;
+        public TestClass(String newStringField) {
+            stringField = newStringField;
         }
 
         public String getStringField() {
             return stringField;
         }
 
-        public void setStringField(String stringField) {
-            this.stringField = stringField;
+        public void setStringField(String newStringField) {
+            stringField = newStringField;
         }
 
         public static String helloWorld() {

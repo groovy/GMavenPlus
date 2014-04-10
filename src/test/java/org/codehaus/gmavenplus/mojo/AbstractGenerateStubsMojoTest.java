@@ -138,9 +138,9 @@ public class AbstractGenerateStubsMojoTest {
             minGroovyVersion = new Version(1, 8, 2);
         }
 
-        protected TestMojo(String overrideGroovyVersion) {
+        protected TestMojo(String newOverrideGroovyVersion) {
             minGroovyVersion = new Version(1, 8, 2);
-            this.overrideGroovyVersion = overrideGroovyVersion;
+            overrideGroovyVersion = newOverrideGroovyVersion;
         }
 
         protected Version getGroovyVersion() {

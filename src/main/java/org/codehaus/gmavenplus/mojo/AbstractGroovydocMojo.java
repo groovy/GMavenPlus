@@ -24,7 +24,14 @@ import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -250,7 +257,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     @SuppressWarnings("unchecked")
     protected List setupLinks(final ClassLoader isolatedClassLoader) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
-        if (this.links != null && this.links.size() > 0) {
+        if (links != null && links.size() > 0) {
             Class linkArgumentClass = null;
             if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
                 linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument", true, isolatedClassLoader);
@@ -258,7 +265,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                 linkArgumentClass = Class.forName("org.codehaus.groovy.ant.Groovydoc$LinkArgument", true, isolatedClassLoader);
             }
             if (linkArgumentClass != null) {
-                for (Link link : this.links) {
+                for (Link link : links) {
                     Object linkArgument = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(linkArgumentClass));
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setHref", String.class), linkArgument, link.getHref());
                     ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(linkArgumentClass, "setPackages", String.class), linkArgument, link.getPackages());

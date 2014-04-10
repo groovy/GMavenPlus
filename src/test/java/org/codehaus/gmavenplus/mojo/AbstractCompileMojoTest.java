@@ -80,8 +80,8 @@ public class AbstractCompileMojoTest {
 
         protected TestMojo() { }
 
-        protected TestMojo(String overrideGroovyVersion) {
-            this.overrideGroovyVersion = overrideGroovyVersion;
+        protected TestMojo(String newOverrideGroovyVersion) {
+            overrideGroovyVersion = newOverrideGroovyVersion;
         }
 
         protected Version getGroovyVersion() {

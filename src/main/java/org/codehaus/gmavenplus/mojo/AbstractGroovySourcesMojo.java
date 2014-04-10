@@ -20,7 +20,11 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -207,7 +211,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param newSources the sources to set
      */
     public void setSources(final FileSet[] newSources) {
-        this.sources = newSources;
+        sources = newSources;
     }
 
     /**
@@ -216,7 +220,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param newTestSources the test sources to set
      */
     public void setTestSources(final FileSet[] newTestSources) {
-        this.testSources = newTestSources;
+        testSources = newTestSources;
     }
 
 }

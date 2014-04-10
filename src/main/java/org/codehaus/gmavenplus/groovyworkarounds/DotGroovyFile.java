@@ -130,7 +130,7 @@ public class DotGroovyFile extends File {
      * @return This object (for fluent invocation)
      */
     public DotGroovyFile setScriptExtensions(final Set<String> newScriptExtensions) {
-        this.scriptExtensions = newScriptExtensions;
+        scriptExtensions = newScriptExtensions;
         return this;
     }
 
