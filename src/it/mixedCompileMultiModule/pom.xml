@@ -37,6 +37,7 @@
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin-it-mixedCompileMultiModule-groovyModule</artifactId>
         <version>${project.version}</version>
+        <type>groovy-jar</type>
       </dependency>
       <dependency>
         <groupId>org.codehaus.gmavenplus</groupId>

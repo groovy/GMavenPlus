@@ -140,18 +140,12 @@ mvn compile
     <gmavenplusVersion>${project.version}</gmavenplusVersion>
   </properties>
   <build>
-    <extensions>
-      <extension>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>${project.artifactId}</artifactId>
-        <version>${dollar}{gmavenplusVersion}</version>
-      </extension>
-    </extensions>
     <plugins>
       <plugin>
         <groupId>${project.groupId}</groupId>
         <artifactId>${project.artifactId}</artifactId>
         <version>${dollar}{gmavenplusVersion}</version>
+        <extensions>true</extensions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -533,7 +527,7 @@ mvn site
               logger.debug("The settings are {}.", session.settings)
               logger.debug("This session's goals are {}.", session.goals)
               logger.debug("The local repository is {}.", session.localRepository)
-              logger.debug("The reactor projects are {}.", session.projects)
+              logger.debug("The reactor projects are {}.", session.sortedProjects)
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
               logger.debug("The mojo execution is {}.", mojoExecution)
               logger.debug("The plugin descriptor is {}.", mojoExecution.mojoDescriptor)

@@ -32,18 +32,11 @@
   </dependencies>
 
   <build>
-    <!-- this is here to bind the build to our customized lifecycle -->
-    <extensions>
-      <extension>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>@project.version@</version>
-      </extension>
-    </extensions>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
+        <extensions>true</extensions>
         <executions>
           <execution>
             <id>execute</id>

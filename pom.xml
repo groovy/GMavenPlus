@@ -17,7 +17,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <javaVersion>1.5</javaVersion>
-    <minMavenVersion>3.0</minMavenVersion>
     <mavenVersion>2.2.1</mavenVersion>
     <coberturaPluginVersion>2.6</coberturaPluginVersion>
     <javadocPluginVersion>2.9.1</javadocPluginVersion>
@@ -199,7 +198,7 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[${minMavenVersion},)</version>
+                  <version>[${mavenVersion},)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
                   <version>[${javaVersion},)</version>

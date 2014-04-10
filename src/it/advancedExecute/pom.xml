@@ -63,13 +63,13 @@
               import org.slf4j.LoggerFactory
               Logger logger = LoggerFactory.getLogger(getClass().getName())
               logger.debug("This session's goals are {}.", session.goals)
-              assert session.goals.size() == 2
+              assert session.goals.size() == 1
               logger.debug("The settings are {}.", session.settings)
               assert session.settings != null
               logger.debug("The local repository is {}.", session.localRepository)
               assert session.localRepository != null
-              logger.debug("The reactor projects are {}.", session.projects)
-              assert session.projects.size() > 0
+              logger.debug("The reactor projects are {}.", session.sortedProjects)
+              assert session.sortedProjects.size() > 0
               logger.debug("The plugin artifacts are {}.", pluginArtifacts)
               assert pluginArtifacts.size() > 0
               logger.debug("The mojo execution is {}.", mojoExecution)
