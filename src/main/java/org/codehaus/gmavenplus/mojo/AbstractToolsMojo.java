@@ -58,6 +58,13 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected Properties properties = new Properties();
 
     /**
+     * Whether to allow System.exit() to be used.
+     *
+     * @parameter default-value="false"
+     */
+    protected boolean allowSystemExits;
+
+    /**
      * Initializes the properties field.
      */
     protected void initializeProperties() {

@@ -76,7 +76,9 @@ public class ShellMojo extends AbstractToolsMojo {
 
             final SecurityManager sm = System.getSecurityManager();
             try {
-                System.setSecurityManager(new NoExitSecurityManager());
+                if (!allowSystemExits) {
+                    System.setSecurityManager(new NoExitSecurityManager());
+                }
 
                 // get classes we need with reflection
                 Class shellClass = Class.forName("org.codehaus.groovy.tools.shell.Groovysh");

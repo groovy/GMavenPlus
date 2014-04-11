@@ -64,7 +64,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
 
             final SecurityManager sm = System.getSecurityManager();
             try {
-                System.setSecurityManager(new NoExitSecurityManager());
+                if (!allowSystemExits) {
+                    System.setSecurityManager(new NoExitSecurityManager());
+                }
 
                 // get classes we need with reflection
                 Class consoleClass = Class.forName("groovy.ui.Console");
