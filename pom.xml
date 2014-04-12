@@ -285,6 +285,8 @@
               <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
               <!-- excluded because is copied from and maintained in Groovy project -->
               <exclude>org/codehaus/gmavenplus/groovyworkarounds/GroovyDocTemplateInfo.class</exclude>
+              <!-- excluded because is copied from and maintained in JDK -->
+              <exclude>org/codehaus/gmavenplus/util/JDK5Utils.class</exclude>
             </excludes>
           </instrumentation>
         </configuration>
