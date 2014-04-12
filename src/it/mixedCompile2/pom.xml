@@ -40,10 +40,14 @@
           <execution>
             <id>compile</id>
             <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
               <goal>generateStubs</goal>
               <goal>compile</goal>
               <goal>testGenerateStubs</goal>
               <goal>testCompile</goal>
+              <goal>removeStubs</goal>
+              <goal>removeTestStubs</goal>
             </goals>
           </execution>
           <execution>
@@ -56,9 +60,9 @@
               <scripts>
                 <script><![CDATA[
                   assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "java")
-                  assert project.getCompileSourceRoots().toString().contains(File.separator + "generated-sources" + File.separator + "groovy-stubs" + File.separator + "main")
+                  assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "groovy")
                   assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "java")
-                  assert project.getTestCompileSourceRoots().toString().contains(File.separator + "generated-sources" + File.separator + "groovy-stubs" + File.separator + "test")
+                  assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "groovy")
                 ]]></script>
               </scripts>
             </configuration>

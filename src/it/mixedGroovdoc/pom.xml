@@ -38,12 +38,21 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <executions>
           <execution>
+            <id>groovydoc</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>generateStubs</goal>
-              <goal>testGenerateStubs</goal>
               <goal>groovydoc</goal>
+              <goal>testGenerateStubs</goal>
               <goal>testGroovydoc</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>removeStubs</id>
+            <phase>test</phase>
+            <goals>
+              <goal>removeStubs</goal>
+              <goal>removeTestStubs</goal>
             </goals>
           </execution>
         </executions>

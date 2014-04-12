@@ -21,7 +21,6 @@
         <version>testing</version>
         <executions>
           <execution>
-            <id>1</id>
             <phase>install</phase>
             <goals>
               <goal>helloworld</goal>
