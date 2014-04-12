@@ -135,6 +135,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
         // create an isolated ClassLoader with all the appropriate project dependencies in it
         ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
+        Thread.currentThread().setContextClassLoader(isolatedClassLoader);
 
         // get classes we need with reflection
         Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration", true, isolatedClassLoader);

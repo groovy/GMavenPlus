@@ -175,6 +175,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
         // create an isolated ClassLoader with all the appropriate project dependencies in it
         ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
+        Thread.currentThread().setContextClassLoader(isolatedClassLoader);
 
         // get classes we need with reflection
         Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool", true, isolatedClassLoader);
