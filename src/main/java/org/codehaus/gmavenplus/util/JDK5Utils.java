@@ -28,6 +28,12 @@ import java.lang.reflect.Array;
 public class JDK5Utils {
 
     /**
+     * Private constructor that should never be called since this is a static
+     * utility class.
+     */
+    private JDK5Utils() { }
+
+    /**
      * Copies the specified array, truncating or padding with nulls (if necessary)
      * so the copy has the specified length.  For all indices that are
      * valid in both the original array and the copy, the two arrays will
@@ -45,7 +51,7 @@ public class JDK5Utils {
      * @throws NullPointerException if <tt>original</tt> is null
      */
     @SuppressWarnings("unchecked")
-    public static <T> T[] Arrays_copyOf(T[] original, int newLength) {
+    public static <T> T[] Arrays_copyOf(final T[] original, final int newLength) {
         return (T[]) Arrays_copyOf(original, newLength, original.getClass());
     }
 
@@ -71,12 +77,9 @@ public class JDK5Utils {
      *     an array of class <tt>newType</tt>
      */
     @SuppressWarnings("unchecked")
-    public static <T,U> T[] Arrays_copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
-        T[] copy = ((Object)newType == (Object)Object[].class)
-                ? (T[]) new Object[newLength]
-                : (T[]) Array.newInstance(newType.getComponentType(), newLength);
-        System.arraycopy(original, 0, copy, 0,
-                Math.min(original.length, newLength));
+    public static <T, U> T[] Arrays_copyOf(final U[] original, final int newLength, final Class<? extends T[]> newType) {
+        T[] copy = ((Object) newType == (Object) Object[].class) ? (T[]) new Object[newLength] : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
         return copy;
     }
 
