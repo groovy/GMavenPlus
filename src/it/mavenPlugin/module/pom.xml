@@ -10,7 +10,6 @@
   </parent>
 
   <artifactId>gmavenplus-plugin-it-mavenPlugin-Module</artifactId>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Maven Plugin Test Mojo Test</name>
 
   <build>

@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-basicGenerateStubs</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Basic Generate Stubs Test</name>
   <description>The simplest generate stubs use case</description>
 

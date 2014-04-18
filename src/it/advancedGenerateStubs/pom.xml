@@ -12,7 +12,6 @@
   </parent>
 
   <artifactId>gmavenplus-plugin-it-advancedGenerateStubs</artifactId>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Generate Stubs Test</name>
   <description>The kitchen sink of stub generation use cases</description>
 

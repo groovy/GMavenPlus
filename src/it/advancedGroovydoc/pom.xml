@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-advancedGroovydoc</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Groovydoc Test</name>
   <description>The kitchen sink of Groovydoc use cases</description>
 

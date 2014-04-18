@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-astCompile</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin AST Compile Test</name>
   <description>A test of an AST transformation.</description>
 

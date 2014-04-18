@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-mixedCompileMultiModule-groovyModule2</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Mixed Compile MultiModule Test Groovy Module 2</name>
 
   <dependencies>

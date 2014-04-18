@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-mixedGroovydoc2</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Mixed Groovydoc 2 Test</name>
 
   <dependencies>

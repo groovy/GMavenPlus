@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-mixedCompileMultiModule-javaModule</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Mixed Compile MultiModule Test Java Module</name>
 
   <dependencies>
@@ -32,7 +31,6 @@
     <dependency>
       <groupId>org.codehaus.gmavenplus</groupId>
       <artifactId>gmavenplus-plugin-it-mixedCompileMultiModule-groovyModule</artifactId>
-      <type>groovy-jar</type>
     </dependency>
   </dependencies>
 

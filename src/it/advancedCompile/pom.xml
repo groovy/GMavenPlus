@@ -12,7 +12,6 @@
   </parent>
 
   <artifactId>gmavenplus-plugin-it-advancedCompile</artifactId>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Advanced Compile Test</name>
   <description>The kitchen sink of compile use cases</description>
 

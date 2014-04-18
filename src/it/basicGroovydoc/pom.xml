@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-basicGroovydoc</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Basic Groovydoc Test</name>
   <description>The simplest Groovydoc use case</description>
 

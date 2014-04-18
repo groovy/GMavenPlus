@@ -13,7 +13,6 @@
 
   <artifactId>gmavenplus-plugin-it-cleanClasspathCompile</artifactId>
   <version>testing</version>
-  <packaging>jar</packaging>
   <name>GMavenPlus Plugin Clean Classpath Compile Test</name>
   <description>The simplest compile use case where it would fail if the classpath were polluted with the plugin classpath</description>
 

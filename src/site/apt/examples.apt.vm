@@ -128,48 +128,6 @@ mvn compile
   (for example for polyglot builds), don't call those goals until after you are
   are done using the stubs.
 
-  Alternatively, you can use GMavenPlus's customized lifecycle.  This will
-  modify Maven's source directories to contain both the Java sources and the
-  Groovy sources, but not the Groovy stubs.  Note that if you do choose this
-  option, GMavenPlus can't add the stubs back to Maven's sources.
-  If you need them later in the build for some other plugin, you'll have to use
-  the <<<addStubSources>>>/<<<addTestStubSources>>> goals or
-  {{{http://mojo.codehaus.org/build-helper-maven-plugin/}Build Helper}}.
-  Additionally, you won't need to specify any executions, as all compilation
-  mojos are included by default.  To do this, you should add something similar
-  to the following in your <<<pom.xml>>>:
-
-+-------------------------------------------------------------------------+
-<project>
-  <packaging>groovy-jar</packaging>
-  <properties>
-    <gmavenplusVersion>${project.version}</gmavenplusVersion>
-  </properties>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>${project.artifactId}</artifactId>
-        <version>${dollar}{gmavenplusVersion}</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.8.2 should work here -->
-      <version>${groovyVersion}</version>
-    </dependency>
-  </dependencies>
-</project>
-+-------------------------------------------------------------------------+
-
   To compile both the main and test Groovy and Java sources, simply execute the
   normal compile phase from the default lifecycle:
 
@@ -434,8 +392,6 @@ mvn site
   * You don't have any Java that Groovy classes use
 
   * Another execution has already generated the stubs (typical in site lifecycle)
-
-  * You are using GMavenPlus's customized lifecycle
 
   []
 
