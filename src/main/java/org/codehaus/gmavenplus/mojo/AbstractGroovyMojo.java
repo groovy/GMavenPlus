@@ -109,8 +109,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             if (isGroovyIndy()) {
                 logMessage += "-indy";
             }
-                        getLog().info(logMessage + " from project compile classpath to perform " + goal + ".");
-                    }
+            getLog().info(logMessage + " from project compile classpath to perform " + goal + ".");
+        }
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyJar(final Dependency dependency) {
-        return isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && dependency.getType().equals("jar");
+        return isGroovyGroupId(dependency) && isGroovyArtifactId(dependency) && "jar".equals(dependency.getType());
     }
 
     /**
@@ -243,7 +243,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyGroupId(final Dependency dependency) {
-        return dependency.getGroupId().equals("org.codehaus.groovy") || dependency.getGroupId().equals("groovy");
+        return "org.codehaus.groovy".equals(dependency.getGroupId()) || "groovy".equals(dependency.getGroupId());
     }
 
     /**
@@ -253,9 +253,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the dependency's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyArtifactId(final Dependency dependency) {
-        return dependency.getArtifactId().equals("groovy-all") || dependency.getArtifactId().equals("groovy-all-minimal")
-                                    || dependency.getArtifactId().equals("groovy") || dependency.getArtifactId().equals("groovy-all-jdk14")
-                                    || dependency.getArtifactId().equals("groovy-jdk14");
+        return "groovy-all".equals(dependency.getArtifactId()) || "groovy-all-minimal".equals(dependency.getArtifactId())
+                || "groovy".equals(dependency.getArtifactId()) || "groovy-all-jdk14".equals(dependency.getArtifactId())
+                || "groovy-jdk14".equals(dependency.getArtifactId());
     }
 
     /**
@@ -265,7 +265,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyJar(final Artifact artifact) {
-        return isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && artifact.getType().equals("jar");
+        return isGroovyGroupId(artifact) && isGroovyArtifactId(artifact) && "jar".equals(artifact.getType());
     }
 
     /**
@@ -275,7 +275,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyGroupId(final Artifact artifact) {
-        return artifact.getGroupId().equals("org.codehaus.groovy") || artifact.getGroupId().equals("groovy");
+        return "org.codehaus.groovy".equals(artifact.getGroupId()) || "groovy".equals(artifact.getGroupId());
     }
 
     /**
@@ -285,9 +285,9 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the artifact's groupId is a Groovy groupId, <code>false</code> otherwise
      */
     protected boolean isGroovyArtifactId(final Artifact artifact) {
-        return artifact.getArtifactId().equals("groovy-all") || artifact.getArtifactId().equals("groovy-all-minimal")
-                || artifact.getArtifactId().equals("groovy") || artifact.getArtifactId().equals("groovy-all-jdk14")
-                || artifact.getArtifactId().equals("groovy-jdk14");
+        return "groovy-all".equals(artifact.getArtifactId()) || "groovy-all-minimal".equals(artifact.getArtifactId())
+                || "groovy".equals(artifact.getArtifactId()) || "groovy-all-jdk14".equals(artifact.getArtifactId())
+                || "groovy-jdk14".equals(artifact.getArtifactId());
     }
 
     /**
