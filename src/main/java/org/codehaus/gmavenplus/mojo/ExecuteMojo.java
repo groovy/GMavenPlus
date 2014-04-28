@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
@@ -79,9 +80,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        usePluginClassLoader = true;
+        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+
         if (groovyVersionSupportsAction()) {
-            logGroovyVersion("execute");
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
             logPluginClasspath();
             if (getLog().isDebugEnabled()) {
                 try {
@@ -103,7 +105,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell");
+                Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
                 // create a GroovyShell to run scripts in
                 Object shell = setupShell(groovyShellClass);
@@ -122,7 +124,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 System.setSecurityManager(sm);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
         }
     }
 
@@ -131,9 +133,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
      *
      * @param groovyShellClass the GroovyShell class
      * @return the GroovyShell shell to use to execute scripts
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
+     * @throws InstantiationException when a class needed for script execution cannot be instantiated
+     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      */
     protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
@@ -151,8 +154,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
      *
      * @param groovyShellClass the GroovyShell class
      * @param shell the shell to use for script execution
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
         int scriptNum = 1;

@@ -43,34 +43,20 @@ public class GroovydocTestsMojo extends AbstractGroovydocMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (groovyVersionSupportsAction()) {
-            logGroovyVersion("testGroovydoc");
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project test classpath", e);
-                }
-            }
-
-            try {
-                doGroovydocGeneration(getTestSourceRoots(groovydocJavaSources), project.getTestClasspathElements(), testGroovydocOutputDirectory);
-            } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
-            } catch (InvocationTargetException e) {
-                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-            } catch (InstantiationException e) {
-                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
-            }
-        } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
+        try {
+            doGroovydocGeneration(getTestSourceRoots(groovydocJavaSources), project.getTestClasspathElements(), testGroovydocOutputDirectory);
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+        } catch (InvocationTargetException e) {
+            throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+        } catch (MalformedURLException e) {
+            throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
         }
     }
 

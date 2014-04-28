@@ -46,7 +46,7 @@ public class JDK5Utils {
      * @param original the array to be copied
      * @param newLength the length of the copy to be returned
      * @return a copy of the original array, truncated or padded with nulls
-     *     to obtain the specified length
+     *         to obtain the specified length
      * @throws NegativeArraySizeException if <tt>newLength</tt> is negative
      * @throws NullPointerException if <tt>original</tt> is null
      */
@@ -69,7 +69,7 @@ public class JDK5Utils {
      * @param newLength the length of the copy to be returned
      * @param newType the class of the copy to be returned
      * @return a copy of the original array, truncated or padded with nulls
-     *     to obtain the specified length
+     *         to obtain the specified length
      * @throws NegativeArraySizeException if <tt>newLength</tt> is negative
      * @throws NullPointerException if <tt>original</tt> is null
      * @throws ArrayStoreException if an element copied from

@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
@@ -62,9 +63,10 @@ public class ShellMojo extends AbstractToolsMojo {
      * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        usePluginClassLoader = true;
+        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+
         if (groovyVersionSupportsAction()) {
-            logGroovyVersion("shell");
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
             logPluginClasspath();
             if (getLog().isDebugEnabled()) {
                 try {
@@ -81,11 +83,11 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class shellClass = Class.forName("org.codehaus.groovy.tools.shell.Groovysh");
-                Class bindingClass = Class.forName("groovy.lang.Binding");
-                Class ioClass = Class.forName("org.codehaus.groovy.tools.shell.IO");
-                Class verbosityClass = Class.forName("org.codehaus.groovy.tools.shell.IO$Verbosity");
-                Class loggerClass = Class.forName("org.codehaus.groovy.tools.shell.util.Logger");
+                Class shellClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.Groovysh");
+                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
+                Class ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
+                Class verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
+                Class loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
 
                 // create shell to run
                 Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
@@ -108,7 +110,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 System.setSecurityManager(sm);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
         }
     }
 
@@ -121,9 +123,9 @@ public class ShellMojo extends AbstractToolsMojo {
      * @param verbosityClass the Verbosity
      * @param loggerClass the Logger class
      * @return the Groovysh shell to run
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));

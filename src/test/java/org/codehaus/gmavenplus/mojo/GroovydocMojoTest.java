@@ -20,6 +20,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,10 +47,11 @@ public class GroovydocMojoTest {
 
     @Before
     public void setup() throws Exception {
-        Mockito.doNothing().when(groovydocMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(groovydocMojo).getSources();
         groovydocMojo.project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Mockito.mock(File.class)).when(groovydocMojo.project).getBasedir();
+        groovydocMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 5, 0)).when(groovydocMojo.classWrangler).getGroovyVersion();
     }
 
     @Test
@@ -57,14 +60,15 @@ public class GroovydocMojoTest {
         Mockito.doNothing().when(groovydocMojo).doGroovydocGeneration(Mockito.any(FileSet[].class), Mockito.anyList(), Mockito.any(File.class));
         groovydocMojo.execute();
         Mockito.verify(groovydocMojo, Mockito.times(1)).doGroovydocGeneration(Mockito.any(FileSet[].class), Mockito.anyList(), Mockito.any(File.class));
+        groovydocMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 5, 0)).when(groovydocMojo.classWrangler).getGroovyVersion();
     }
 
     @Test
     public void testGroovyVersionDoesntSupportAction() throws Exception {
-        Mockito.doReturn(new Version(0)).when(groovydocMojo).getGroovyVersion();
         Mockito.doReturn(false).when(groovydocMojo).groovyVersionSupportsAction();
         groovydocMojo.execute();
-        Mockito.verify(groovydocMojo, Mockito.never()).doGroovydocGeneration(Mockito.any(FileSet[].class), Mockito.anyList(), Mockito.any(File.class));
+        Mockito.verify(groovydocMojo, Mockito.never()).logPluginClasspath();
     }
 
     @Test (expected = MojoExecutionException.class)
@@ -101,6 +105,18 @@ public class GroovydocMojoTest {
         Mockito.doReturn(true).when(groovydocMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovydocMojo).doGroovydocGeneration(Mockito.any(FileSet[].class), Mockito.anyList(), Mockito.any(File.class));
         groovydocMojo.execute();
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        Mockito.doReturn(Version.parseFromString("1.5.0")).when(groovydocMojo.classWrangler).getGroovyVersion();
+        Assert.assertTrue(groovydocMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        Mockito.doReturn(Version.parseFromString("1.0")).when(groovydocMojo.classWrangler).getGroovyVersion();
+        Assert.assertFalse(groovydocMojo.groovyVersionSupportsAction());
     }
 
 }

@@ -16,8 +16,10 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
@@ -121,30 +123,43 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @param stubSources the sources to perform stub generation on
      * @param classpath The classpath to use for compilation
      * @param outputDirectory the directory to write the stub files to
-     * @throws ClassNotFoundException When a class needed for stub generation cannot be found
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
-     * @throws MalformedURLException When a classpath element provides a malformed URL
+     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+        classWrangler = new ClassWrangler(classpath, getLog());
+
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation.  Skipping.");
             return;
         }
 
-        // create an isolated ClassLoader with all the appropriate project dependencies in it
-        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
-        Thread.currentThread().setContextClassLoader(isolatedClassLoader);
+        if (groovyVersionSupportsAction()) {
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project compile classpath", e);
+                }
+            }
+        } else {
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
+            return;
+        }
 
         // get classes we need with reflection
-        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration", true, isolatedClassLoader);
-        Class javaStubCompilationUnitClass = Class.forName("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit", true, isolatedClassLoader);
-        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
+        Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+        Class javaStubCompilationUnitClass = classWrangler.getClass("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
+        Class groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
 
         // setup stub generation options
         Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
         Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
 
         // add Groovy sources
@@ -163,9 +178,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @param outputDirectory the directory to write the stub files to
      * @param compilerConfigurationClass the CompilerConfiguration class
      * @return the CompilerConfiguration to use for stub generation
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
@@ -193,8 +208,8 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @param javaStubCompilationUnitClass the JavaStubCompilationUnit class
      * @param compilerConfiguration the CompilerConfiguration to use for stub generation
      * @param javaStubCompilationUnit the JavaStubCompilationUnit to use for stub generation
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void addGroovySources(final Set<File> stubSources, final Class compilerConfigurationClass, final Class javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding Groovy to generate stubs for:");
@@ -202,7 +217,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (getLog().isDebugEnabled()) {
                 getLog().debug("    " + source);
             }
-            if (getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0 && (getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-1")) < 0 || getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-3")) > 0)) {
+            if (classWrangler.getGroovyVersion().compareTo(new Version(1, 8, 3)) >= 0 && (classWrangler.getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-1")) < 0 || classWrangler.getGroovyVersion().compareTo(new Version(1, 9, 0, "beta-3")) > 0)) {
                 Set<String> extensions;
                 if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
                     extensions = scriptExtensions;

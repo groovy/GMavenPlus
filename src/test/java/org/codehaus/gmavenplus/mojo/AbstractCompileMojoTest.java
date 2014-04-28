@@ -21,11 +21,13 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
@@ -78,14 +80,15 @@ public class AbstractCompileMojoTest {
     private class TestMojo extends AbstractCompileMojo {
         private String overrideGroovyVersion = minGroovyVersion.toString();
 
-        protected TestMojo() { }
+        protected TestMojo() {
+            classWrangler = Mockito.mock(ClassWrangler.class);
+            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+        }
 
         protected TestMojo(String newOverrideGroovyVersion) {
             overrideGroovyVersion = newOverrideGroovyVersion;
-        }
-
-        protected Version getGroovyVersion() {
-            return Version.parseFromString(overrideGroovyVersion);
+            classWrangler = Mockito.mock(ClassWrangler.class);
+            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }

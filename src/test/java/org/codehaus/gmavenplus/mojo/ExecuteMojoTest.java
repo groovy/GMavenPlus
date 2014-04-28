@@ -16,7 +16,10 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +28,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
@@ -40,7 +42,6 @@ import java.io.FileReader;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ExecuteMojoTest {
-    @Spy
     private ExecuteMojo executeMojo;
 
     @Rule
@@ -48,8 +49,11 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
-        Mockito.doReturn(new Version(1, 5, 0)).when(executeMojo).getGroovyVersion();
-        Mockito.doReturn(false).when(executeMojo).isGroovyIndy();
+        executeMojo = new ExecuteMojo();
+        executeMojo.mojoExecution = Mockito.mock(MojoExecution.class);
+        MojoDescriptor mockMojoDescriptor = Mockito.mock(MojoDescriptor.class);
+        Mockito.doReturn(mockMojoDescriptor).when(executeMojo.mojoExecution).getMojoDescriptor();
+        Mockito.doReturn("execute").when(mockMojoDescriptor).getGoal();
     }
 
     @Test
@@ -88,13 +92,15 @@ public class ExecuteMojoTest {
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
-        Mockito.when(executeMojo.getGroovyVersion()).thenReturn(Version.parseFromString("1.5.0"));
+        executeMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(Version.parseFromString("1.5.0")).when(executeMojo.classWrangler).getGroovyVersion();
         Assert.assertTrue(executeMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
-        Mockito.when(executeMojo.getGroovyVersion()).thenReturn(Version.parseFromString("1.1-rc-3"));
+        executeMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(Version.parseFromString("1.0")).when(executeMojo.classWrangler).getGroovyVersion();
         Assert.assertFalse(executeMojo.groovyVersionSupportsAction());
     }
 

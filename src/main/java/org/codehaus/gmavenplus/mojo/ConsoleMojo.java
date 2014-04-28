@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
@@ -50,9 +51,10 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        usePluginClassLoader = true;
+        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+
         if (groovyVersionSupportsAction()) {
-            logGroovyVersion("console");
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
             logPluginClasspath();
             if (getLog().isDebugEnabled()) {
                 try {
@@ -69,8 +71,8 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class consoleClass = Class.forName("groovy.ui.Console");
-                Class bindingClass = Class.forName("groovy.lang.Binding");
+                Class consoleClass = classWrangler.getClass("groovy.ui.Console");
+                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
 
                 // create console to run
                 Object console = createConsole(consoleClass, bindingClass);
@@ -113,7 +115,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 System.setSecurityManager(sm);
             }
         } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");
         }
     }
 
@@ -123,9 +125,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @param consoleClass the Console class
      * @param bindingClass the Binding class
      * @return the instantiated Console
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object createConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));

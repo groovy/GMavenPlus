@@ -47,7 +47,7 @@ public class AbstractGroovySourcesMojoTest {
     @Before
     public void setup() {
         testMojo = new TestMojo();
-        Mockito.when(project.getBasedir()).thenReturn(basedir);
+        Mockito.doReturn(basedir).when(project).getBasedir();
         testMojo.project = project;
     }
 

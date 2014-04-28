@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
@@ -35,7 +34,6 @@ import java.io.File;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddStubSourcesMojoTest {
-    @Spy
     private AddStubSourcesMojo mojo;
     @Mock
     private MavenProject project;
@@ -44,7 +42,7 @@ public class AddStubSourcesMojoTest {
 
     @Before
     public void setup() {
-        Mockito.when(mojo.groovyVersionSupportsAction()).thenReturn(true);
+        mojo = new AddStubSourcesMojo();
         mojo.project = project;
         mojo.stubsOutputDirectory = stubsOutputDirectory;
     }

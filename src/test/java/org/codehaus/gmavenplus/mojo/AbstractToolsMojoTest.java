@@ -22,6 +22,7 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,14 +54,18 @@ public class AbstractToolsMojoTest {
     private List<Artifact> pluginArtifacts;
     @Mock
     private MojoExecution mojoExecution;
+    @Mock
+    private ClassWrangler classWrangler;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
         testMojo = new TestMojo();
         testMojo.project = project;
         testMojo.session= session;
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
+        testMojo.classWrangler = classWrangler;
+        Mockito.doReturn(groovy.util.AntBuilder.class).when(classWrangler).getClass(Mockito.anyString());
     }
 
     @Test

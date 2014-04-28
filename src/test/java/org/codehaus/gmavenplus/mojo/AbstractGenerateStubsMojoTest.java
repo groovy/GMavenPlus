@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,15 +137,15 @@ public class AbstractGenerateStubsMojoTest {
 
         protected TestMojo() {
             minGroovyVersion = new Version(1, 8, 2);
+            classWrangler = Mockito.mock(ClassWrangler.class);
+            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         protected TestMojo(String newOverrideGroovyVersion) {
             minGroovyVersion = new Version(1, 8, 2);
             overrideGroovyVersion = newOverrideGroovyVersion;
-        }
-
-        protected Version getGroovyVersion() {
-            return Version.parseFromString(overrideGroovyVersion);
+            classWrangler = Mockito.mock(ClassWrangler.class);
+            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }

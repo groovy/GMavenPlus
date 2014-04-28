@@ -17,7 +17,6 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
-import org.codehaus.gmavenplus.model.Version;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +47,6 @@ public class RemoveStubsMojoTest {
     public void setup() {
         project = new MavenProject();
         removeStubsMojo.project = project;
-        Mockito.doReturn(new Version(0)).when(removeStubsMojo).getGroovyVersion();
         Mockito.doReturn(PATH).when(stubsDir).getAbsolutePath();
         removeStubsMojo.stubsOutputDirectory = stubsDir;
     }

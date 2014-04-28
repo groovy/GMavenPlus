@@ -16,7 +16,9 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
@@ -137,33 +139,45 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @param sources the sources to compile
      * @param classpath the classpath to use for compilation
      * @param compileOutputDirectory the directory to write the compiled class files to
-     * @throws ClassNotFoundException When a class needed for compilation cannot be found
-     * @throws InstantiationException When a class needed for compilation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for compilation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for compilation cannot be completed
-     * @throws MalformedURLException When a classpath element provides a malformed URL
+     * @throws ClassNotFoundException when a class needed for compilation cannot be found
+     * @throws InstantiationException when a class needed for compilation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for compilation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
+     * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
+        classWrangler = new ClassWrangler(classpath, getLog());
+
         if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
-
-        // create an isolated ClassLoader with all the appropriate project dependencies in it
-        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
-        Thread.currentThread().setContextClassLoader(isolatedClassLoader);
+        if (groovyVersionSupportsAction()) {
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project compile classpath", e);
+                }
+            }
+        } else {
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
+            return;
+        }
 
         // get classes we need with reflection
-        Class compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration", true, isolatedClassLoader);
-        Class compilationUnitClass = Class.forName("org.codehaus.groovy.control.CompilationUnit", true, isolatedClassLoader);
-        Class groovyClassLoaderClass = Class.forName("groovy.lang.GroovyClassLoader", true, isolatedClassLoader);
+        Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+        Class compilationUnitClass = classWrangler.getClass("org.codehaus.groovy.control.CompilationUnit");
+        Class groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
 
         // setup compile options
-        Object compilerConfiguration = setupCompilerConfiguration(compileOutputDirectory, isolatedClassLoader, compilerConfigurationClass);
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), isolatedClassLoader, compilerConfiguration);
-        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), isolatedClassLoader);
+        Object compilerConfiguration = setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
+        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
+        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), classWrangler.getClassLoader());
 
         // add Groovy sources
         Object compilationUnit = setupCompilationUnit(sources, compilerConfigurationClass, compilationUnitClass, groovyClassLoaderClass, compilerConfiguration, groovyClassLoader, transformLoader);
@@ -187,13 +201,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @param groovyClassLoader the GroovyClassLoader
      * @param transformLoader the GroovyClassLoader to use for transformation
      * @return the CompilationUnit
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
             compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         } else {
             compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
@@ -213,22 +227,21 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Sets up the CompilationConfiguration to use for compilation.
      *
      * @param compileOutputDirectory the directory to write the compiled classes to
-     * @param isolatedClassLoader the ClassLoader to use to load the LinkArgument class
      * @param compilerConfigurationClass the CompilerConfiguration class
      * @return the CompilerConfiguration
-     * @throws ClassNotFoundException When a class needed for stub generation cannot be found
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     @SuppressWarnings("unchecked")
-    protected Object setupCompilerConfiguration(final File compileOutputDirectory, final ClassLoader isolatedClassLoader, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         if (configScript != null) {
-            if (getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
-                Class bindingClass = Class.forName("groovy.lang.Binding", true, isolatedClassLoader);
-                Class importCustomizerClass = Class.forName("org.codehaus.groovy.control.customizers.ImportCustomizer", true, isolatedClassLoader);
-                Class groovyShellClass = Class.forName("groovy.lang.GroovyShell", true, isolatedClassLoader);
+            if (classWrangler.getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
+                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
+                Class importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
+                Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
                 Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
@@ -253,8 +266,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
         if (invokeDynamic) {
-            if (getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0) {
-                if (isGroovyIndy()) {
+            if (classWrangler.getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0) {
+                if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                         optimizationOptions.put("indy", true);

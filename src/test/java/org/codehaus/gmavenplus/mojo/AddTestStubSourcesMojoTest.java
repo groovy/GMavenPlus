@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
@@ -35,7 +34,6 @@ import java.io.File;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTestStubSourcesMojoTest {
-    @Spy
     private AddTestStubSourcesMojo mojo;
     @Mock
     private MavenProject project;
@@ -44,13 +42,13 @@ public class AddTestStubSourcesMojoTest {
 
     @Before
     public void setup() {
+        mojo = new AddTestStubSourcesMojo();
         mojo.project = project;
         mojo.testStubsOutputDirectory = testStubsOutputDirectory;
     }
 
     @Test
     public void testAddsTestStubsToSources() throws Exception {
-        Mockito.when(mojo.groovyVersionSupportsAction()).thenReturn(true);
         mojo.execute();
         Mockito.verify(project).addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
     }

@@ -48,39 +48,26 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         minGroovyVersion = new Version(1, 8, 2);
-        if (groovyVersionSupportsAction()) {
-            logGroovyVersion("generateStubs");
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project compile classpath", e);
-                }
-            }
 
-            try {
-                doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
+        try {
+            doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
 
-                resetStubModifiedDates(getStubs());
+            resetStubModifiedDates(getStubs());
 
-                // add stubs to project source so the Maven Compiler Plugin can find them
-                project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
-            } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
-            } catch (InvocationTargetException e) {
-                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-            } catch (InstantiationException e) {
-                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project compile dependencies to classpath.", e);
-            }
-        } else {
-            getLog().error("Your Groovy version (" + getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
+            // add stubs to project source so the Maven Compiler Plugin can find them
+            project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+        } catch (InvocationTargetException e) {
+            throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException("Compile dependencies weren't resolved.", e);
+        } catch (MalformedURLException e) {
+            throw new MojoExecutionException("Unable to add project compile dependencies to classpath.", e);
         }
     }
 

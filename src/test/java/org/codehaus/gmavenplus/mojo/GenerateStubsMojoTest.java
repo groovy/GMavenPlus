@@ -20,6 +20,8 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,13 +46,14 @@ public class GenerateStubsMojoTest {
     private GenerateStubsMojo generateStubsMojo;
 
     @Before
-    public void setup() throws Exception {
-        Mockito.doNothing().when(generateStubsMojo).logGroovyVersion(Mockito.anyString());
+    public void setup() {
         Mockito.doReturn(new HashSet<File>()).when(generateStubsMojo).getSources();
         Mockito.doReturn(new HashSet<File>()).when(generateStubsMojo).getStubs();
         generateStubsMojo.project = Mockito.mock(MavenProject.class);
         generateStubsMojo.stubsOutputDirectory = Mockito.mock(File.class);
         Mockito.doReturn(Mockito.mock(Build.class)).when(generateStubsMojo.project).getBuild();
+        generateStubsMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 8, 2)).when(generateStubsMojo.classWrangler).getGroovyVersion();
     }
 
     @Test
@@ -65,10 +68,9 @@ public class GenerateStubsMojoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGroovyVersionDoesntSupportAction() throws Exception {
-        Mockito.doReturn(new Version(0)).when(generateStubsMojo).getGroovyVersion();
         Mockito.doReturn(false).when(generateStubsMojo).groovyVersionSupportsAction();
         generateStubsMojo.execute();
-        Mockito.verify(generateStubsMojo, Mockito.never()).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        Mockito.verify(generateStubsMojo, Mockito.never()).logPluginClasspath();
     }
 
     @Test (expected = MojoExecutionException.class)
@@ -109,6 +111,18 @@ public class GenerateStubsMojoTest {
         Mockito.doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
         Mockito.doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         generateStubsMojo.execute();
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        Mockito.doReturn(Version.parseFromString("1.5.0")).when(generateStubsMojo.classWrangler).getGroovyVersion();
+        Assert.assertTrue(generateStubsMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        Mockito.doReturn(Version.parseFromString("1.0")).when(generateStubsMojo.classWrangler).getGroovyVersion();
+        Assert.assertFalse(generateStubsMojo.groovyVersionSupportsAction());
     }
 
 }

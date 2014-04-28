@@ -104,8 +104,8 @@ public class ReflectionUtils {
      * @param target The target object to invoke the method on
      * @param args The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException When unable to access the specified method because access modifiers prevent it
-     * @throws java.lang.reflect.InvocationTargetException When a reflection invocation fails
+     * @throws IllegalAccessException when unable to access the specified method because access modifiers prevent it
+     * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeMethod(final Method method, final Object target, final Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
@@ -124,8 +124,8 @@ public class ReflectionUtils {
      * @param method The method to invoke
      * @param args The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException When unable to access the specified method because access modifiers prevent it
-     * @throws java.lang.reflect.InvocationTargetException When a reflection invocation fails
+     * @throws IllegalAccessException when unable to access the specified method because access modifiers prevent it
+     * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeStaticMethod(final Method method, final Object... args) throws InvocationTargetException, IllegalAccessException {
         if (method == null) {
@@ -144,9 +144,9 @@ public class ReflectionUtils {
      * @param constructor The method to invoke
      * @param args The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException When unable to access the specified constructor because access modifiers prevent it
-     * @throws java.lang.reflect.InvocationTargetException When a reflection invocation fails
-     * @throws InstantiationException When an instantiation fails
+     * @throws IllegalAccessException when unable to access the specified constructor because access modifiers prevent it
+     * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
+     * @throws InstantiationException when an instantiation fails
      */
     public static Object invokeConstructor(final Constructor constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (constructor == null) {
@@ -194,7 +194,7 @@ public class ReflectionUtils {
      * @param field The field to get
      * @param target The target object from which to get the field
      * @return The field's current value
-     * @throws IllegalAccessException When unable to access the specified field because access modifiers prevent it
+     * @throws IllegalAccessException when unable to access the specified field because access modifiers prevent it
      */
     public static Object getField(final Field field, final Object target) throws IllegalAccessException {
         field.setAccessible(true);
@@ -209,7 +209,7 @@ public class ReflectionUtils {
      *
      * @param field The field to get
      * @return The field's current value
-     * @throws IllegalAccessException When unable to access the specified field because access modifiers prevent it
+     * @throws IllegalAccessException when unable to access the specified field because access modifiers prevent it
      */
     public static Object getStaticField(final Field field) throws IllegalAccessException {
         if (!Modifier.isStatic(field.getModifiers())) {

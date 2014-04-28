@@ -16,11 +16,13 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
@@ -155,34 +157,46 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param sourceDirectories The source directories to generate groovydoc for
      * @param classpath The classpath to use for compilation
      * @param outputDirectory The directory to save the generated groovydoc in
-     * @throws ClassNotFoundException When a class needed for groovydoc generation cannot be found
-     * @throws InstantiationException When a class needed for groovydoc generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for groovydoc generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for groovydoc generation cannot be completed
-     * @throws MalformedURLException When a classpath element provides a malformed URL
+     * @throws ClassNotFoundException when a class needed for groovydoc generation cannot be found
+     * @throws InstantiationException when a class needed for groovydoc generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for groovydoc generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for groovydoc generation cannot be completed
+     * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
     protected void doGroovydocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+        classWrangler = new ClassWrangler(classpath, getLog());
+
         if (sourceDirectories == null || sourceDirectories.length == 0) {
             getLog().info("No source directories specified for Groovydoc generation.  Skipping.");
             return;
         }
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-1")) == 0) {
+        if (groovyVersionSupportsAction()) {
+            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+            logPluginClasspath();
+            if (getLog().isDebugEnabled()) {
+                try {
+                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project compile classpath", e);
+                }
+            }
+        } else {
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
+            return;
+        }
+        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-1")) == 0) {
             // Groovy 1.6-RC-1 is excluded because of its dependency on org.apache.tools.ant.types.Path for constructing GroovyDocTool
             getLog().warn("Groovy 1.6-RC-1 is blacklisted from the supported Groovydoc versions because of its dependency on Ant.  Skipping Groovydoc generation.");
             return;
         }
 
-        // create an isolated ClassLoader with all the appropriate project dependencies in it
-        ClassLoader isolatedClassLoader = createNewClassLoader(classpath);
-        Thread.currentThread().setContextClassLoader(isolatedClassLoader);
-
         // get classes we need with reflection
-        Class groovyDocToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.GroovyDocTool", true, isolatedClassLoader);
-        Class outputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.OutputTool", true, isolatedClassLoader);
-        Class fileOutputToolClass = Class.forName("org.codehaus.groovy.tools.groovydoc.FileOutputTool", true, isolatedClassLoader);
-        Class resourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ResourceManager", true, isolatedClassLoader);
-        Class classpathResourceManagerClass = Class.forName("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager", true, isolatedClassLoader);
+        Class groovyDocToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
+        Class outputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.OutputTool");
+        Class fileOutputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
+        Class resourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ResourceManager");
+        Class classpathResourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
 
         // set up Groovydoc options
         Properties docProperties = setupProperties();
@@ -193,9 +207,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         for (FileSet sourceDirectory : sourceDirectories) {
             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
         }
-        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(getGroovyVersion());
-        List groovydocLinks = setupLinks(isolatedClassLoader);
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) < 0) {
+        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
+        List groovydocLinks = setupLinks();
+        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) < 0) {
             getLog().warn("Your Groovy version doesn't support Groovydoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope).  You need Groovy 1.6-RC-2 or newer to support this.  Ignoring properties.");
         }
 
@@ -248,22 +262,21 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     /**
      * Sets up the Groovydoc links.
      *
-     * @param isolatedClassLoader the ClassLoader to use to load the LinkArgument class
      * @return the Groovydoc links
-     * @throws ClassNotFoundException When a class needed for stub generation cannot be found
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     @SuppressWarnings("unchecked")
-    protected List setupLinks(final ClassLoader isolatedClassLoader) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected List setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
             Class linkArgumentClass = null;
-            if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
-                linkArgumentClass = Class.forName("org.codehaus.groovy.tools.groovydoc.LinkArgument", true, isolatedClassLoader);
-            } else if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
-                linkArgumentClass = Class.forName("org.codehaus.groovy.ant.Groovydoc$LinkArgument", true, isolatedClassLoader);
+            if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+                linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
+            } else if (classWrangler.getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
+                linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
             }
             if (linkArgumentClass != null) {
                 for (Link link : links) {
@@ -291,13 +304,13 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param groovyDocTemplateInfo the GroovyDocTemplateInfo for the GroovyDocTool
      * @param groovydocLinks the Groovydoc links
      * @return the GroovyDocTool to use in Groovydoc generation
-     * @throws InstantiationException When a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     sourceDirectories.toArray(new String[sourceDirectories.size()]),
@@ -307,7 +320,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     groovydocLinks,
                     docProperties
             );
-        } else if (getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
+        } else if (classWrangler.getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),
                     classpathResourceManager,
                     sourceDirectories.get(0),
@@ -374,15 +387,15 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param fileOutputTool the FileOutputTool to use for Groovydoc generation
      * @param groovydocSources the sources to
      * @param groovyDocTool the GroovyDocTool to use for Groovydoc generation
-     * @throws IllegalAccessException When a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException When a reflection invocation needed for stub generation cannot be completed
+     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void generateGroovydoc(final File outputDirectory, final Class groovyDocToolClass, final Class outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding sources to generate Groovydoc for:");
         if (getLog().isDebugEnabled()) {
             getLog().debug("    " + groovydocSources);
         }
-        if (getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, groovydocSources);
         } else {
             for (String groovydocSource : groovydocSources) {

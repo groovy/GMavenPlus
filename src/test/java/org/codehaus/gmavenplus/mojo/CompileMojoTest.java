@@ -20,6 +20,8 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +47,12 @@ public class CompileMojoTest {
 
     @Before
     public void setup() throws Exception {
-        Mockito.doNothing().when(compileMojo).logGroovyVersion(Mockito.anyString());
         Mockito.doReturn(new HashSet<File>()).when(compileMojo).getSources();
         compileMojo.project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Mockito.mock(Build.class)).when(compileMojo.project).getBuild();
         Mockito.doReturn(true).when(compileMojo).groovyVersionSupportsAction();
+        compileMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 5, 0)).when(compileMojo.classWrangler).getGroovyVersion();
     }
 
     @Test
@@ -57,7 +60,7 @@ public class CompileMojoTest {
     public void testCallsExpectedMethods() throws Exception {
         Mockito.doNothing().when(compileMojo).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
         compileMojo.execute();
-        Mockito.verify(compileMojo, Mockito.times(1)).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        Mockito.verify(compileMojo, Mockito.never()).logPluginClasspath();
     }
 
     @Test (expected = MojoExecutionException.class)
@@ -98,10 +101,25 @@ public class CompileMojoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGroovyVersionDoesntSupportAction() throws Exception {
-        Mockito.doReturn(new Version(0)).when(compileMojo).getGroovyVersion();
         Mockito.doReturn(false).when(compileMojo).groovyVersionSupportsAction();
         compileMojo.execute();
-        Mockito.verify(compileMojo, Mockito.never()).doCompile(Mockito.anySet(), Mockito.anyList(), Mockito.any(File.class));
+        Mockito.verify(compileMojo, Mockito.never()).logPluginClasspath();
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionTrue() {
+        compileMojo = new CompileMojo();
+        compileMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 5, 0)).when(compileMojo.classWrangler).getGroovyVersion();
+        Assert.assertTrue(compileMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testGroovyVersionSupportsActionFalse() {
+        compileMojo = new CompileMojo();
+        compileMojo.classWrangler = Mockito.mock(ClassWrangler.class);
+        Mockito.doReturn(new Version(1, 0)).when(compileMojo.classWrangler).getGroovyVersion();
+        Assert.assertFalse(compileMojo.groovyVersionSupportsAction());
     }
 
 }

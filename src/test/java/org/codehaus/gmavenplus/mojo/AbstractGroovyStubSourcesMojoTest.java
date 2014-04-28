@@ -46,8 +46,8 @@ public class AbstractGroovyStubSourcesMojoTest {
     @Before
     public void setup() {
         testMojo = new TestMojo();
-        Mockito.when(stubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
-        Mockito.when(testStubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
+        Mockito.doReturn(PATH).when(stubsOutputDirectory).getAbsolutePath();
+        Mockito.doReturn(PATH).when(testStubsOutputDirectory).getAbsolutePath();
         testMojo.stubsOutputDirectory = stubsOutputDirectory;
         testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
     }

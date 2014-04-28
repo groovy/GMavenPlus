@@ -85,7 +85,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         }
         if (!properties.containsKey("ant")) {
             try {
-                Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(Class.forName("groovy.util.AntBuilder")));
+                Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 properties.put("ant", antBuilder);
             } catch (InvocationTargetException e) {
                 logUnableToInitializeAntBuilder(e);
