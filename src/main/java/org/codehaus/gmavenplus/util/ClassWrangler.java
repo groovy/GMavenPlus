@@ -171,11 +171,7 @@ public class ClassWrangler {
      */
     public void logGroovyVersion(final String goal) {
         if (pluginLog.isInfoEnabled()) {
-            String logMessage = "Using Groovy " + getGroovyVersion();
-            if (isGroovyIndy()) {
-                logMessage += "-indy";
-            }
-            pluginLog.info(logMessage + " from project compile classpath to perform " + goal + ".");
+            pluginLog.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
         }
     }
 
