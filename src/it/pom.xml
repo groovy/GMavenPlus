@@ -20,7 +20,6 @@
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy-all</artifactId>
         <version>@groovyVersion@</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -32,19 +31,16 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>1.0.13</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
         <version>@mavenVersion@</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
         <artifactId>maven-plugin-annotations</artifactId>
         <version>3.2</version>
-        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
