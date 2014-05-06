@@ -14,6 +14,13 @@ for groovyVersion in ${groovyVersions[*]}; do
         echo "Groovy ${groovyVersion} was successful."
         rm groovy-${groovyVersion}.log
     fi
+    mvn -B -Dinvoker.streamLogs=true -Pindy invoker:run &> groovy-${groovyVersion}-indy.log
+    if [[ $? -ne 0 ]]; then
+        echo "Groovy ${groovyVersion}-indy caused failures."
+    else
+        echo "Groovy ${groovyVersion}-indy was successful."
+        rm groovy-${groovyVersion}-indy.log
+    fi
 done
 git checkout pom.xml
 mvn -B clean > /dev/null

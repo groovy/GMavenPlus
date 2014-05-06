@@ -17,10 +17,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
@@ -29,6 +25,31 @@
       <artifactId>logback-classic</artifactId>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>indy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>non-indy</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
