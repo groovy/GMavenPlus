@@ -526,7 +526,6 @@
       <name>SCM List</name>
       <subscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</unsubscribe>
-      <!--<post>scm@gmavenplus.codehaus.org</post>-->
       <archive>http://gmavenplus.56682.x6.nabble.com/scm-gmavenplus-codehaus-org-f9.html</archive>
       <otherArchives>
         <otherArchive>http://markmail.org/search/list:org.codehaus.gmavenplus#query:%20list%3Aorg.codehaus.gmavenplus.scm</otherArchive>
