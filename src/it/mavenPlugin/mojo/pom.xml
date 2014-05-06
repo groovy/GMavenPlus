@@ -15,11 +15,11 @@
   <name>GMavenPlus Plugin Maven Plugin Test Mojo</name>
 
   <properties>
-    <mavenVersion>3.1.1</mavenVersion>
+    <mavenVersion>3.2.1</mavenVersion>
   </properties>
 
   <prerequisites>
-    <maven>3.0</maven>
+    <maven>3.2</maven>
   </prerequisites>
 
   <dependencies>
