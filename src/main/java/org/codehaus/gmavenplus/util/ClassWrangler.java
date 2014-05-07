@@ -48,12 +48,12 @@ public class ClassWrangler {
     /**
      * Creates a new ClassWrangler using the specified ClassLoader.
      *
-     * @param classLoader the ClassLoader to use to create classes
+     * @param parentClassLoader the ClassLoader to use to create classes
      * @param log the Maven log to use for logging
      */
-    public ClassWrangler(final ClassLoader classLoader, final Log log) {
+    public ClassWrangler(final ClassLoader parentClassLoader, final Log log) {
         pluginLog = log;
-        this.classLoader = classLoader;
+        this.classLoader = parentClassLoader;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ClassWrangler {
      *
      * @param classpath the classpath to load the new ClassLoader with
      * @param log the Maven log to use for logging
-     * @throws MalformedURLException
+     * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     public ClassWrangler(final List classpath, final Log log) throws MalformedURLException {
         pluginLog = log;
