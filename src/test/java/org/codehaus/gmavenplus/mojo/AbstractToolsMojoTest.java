@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import groovy.util.AntBuilder;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
@@ -65,7 +66,7 @@ public class AbstractToolsMojoTest {
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
         testMojo.classWrangler = classWrangler;
-        Mockito.doReturn(groovy.util.AntBuilder.class).when(classWrangler).getClass(Mockito.anyString());
+        Mockito.doReturn(AntBuilder.class).when(classWrangler).getClass(Mockito.anyString());
     }
 
     @Test

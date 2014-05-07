@@ -85,7 +85,7 @@
       <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.9.3</version>
+      <version>1.9.4</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -148,6 +148,13 @@
           <classifier>indy</classifier>
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+          <version>${groovyVersion}</version>
+          <classifier>indy</classifier>
+          <scope>test</scope>
+        </dependency>
       </dependencies>
       <build>
         <plugins>
@@ -165,10 +172,21 @@
     </profile>
     <profile>
       <id>non-indy</id>
+      <activation>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
+      </activation>
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-all</artifactId>
+          <version>${groovyVersion}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
         </dependency>
