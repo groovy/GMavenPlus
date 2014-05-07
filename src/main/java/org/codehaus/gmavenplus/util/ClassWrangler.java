@@ -43,17 +43,17 @@ public class ClassWrangler {
     protected ClassLoader classLoader;
 
     /** Plugin log. */
-    protected Log pluginLog;
+    protected Log log;
 
     /**
      * Creates a new ClassWrangler using the specified ClassLoader.
      *
-     * @param parentClassLoader the ClassLoader to use to create classes
-     * @param log the Maven log to use for logging
+     * @param classLoaderForLoading the ClassLoader to use to load classes
+     * @param pluginLog the Maven log to use for logging
      */
-    public ClassWrangler(final ClassLoader parentClassLoader, final Log log) {
-        pluginLog = log;
-        this.classLoader = parentClassLoader;
+    public ClassWrangler(final ClassLoader classLoaderForLoading, final Log pluginLog) {
+        log = pluginLog;
+        classLoader = classLoaderForLoading;
     }
 
     /**
@@ -61,11 +61,11 @@ public class ClassWrangler {
      * items from the specified classpath.
      *
      * @param classpath the classpath to load the new ClassLoader with
-     * @param log the Maven log to use for logging
-     * @throws MalformedURLException when a classpath element provides a malformed URL
+     * @param pluginLog the Maven log to use for logging
+     * @throws MalformedURLException
      */
-    public ClassWrangler(final List classpath, final Log log) throws MalformedURLException {
-        pluginLog = log;
+    public ClassWrangler(final List classpath, final Log pluginLog) throws MalformedURLException {
+        log = pluginLog;
         // create an isolated ClassLoader with all the appropriate project dependencies in it
         classLoader = createNewClassLoader(classpath);
         Thread.currentThread().setContextClassLoader(classLoader);
@@ -110,7 +110,7 @@ public class ClassWrangler {
         try {
             return Version.parseFromString(getGroovyVersionString().replace("-indy", ""));
         } catch (Exception e) {
-            pluginLog.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
         }
     }
@@ -141,7 +141,7 @@ public class ClassWrangler {
 
             return groovyJar;
         } catch (ClassNotFoundException e) {
-            pluginLog.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
         }
     }
@@ -170,8 +170,8 @@ public class ClassWrangler {
      * @param goal The goal to mention in the log statement showing Groovy version
      */
     public void logGroovyVersion(final String goal) {
-        if (pluginLog.isInfoEnabled()) {
-            pluginLog.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
+        if (log.isInfoEnabled()) {
+            log.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
         }
     }
 
