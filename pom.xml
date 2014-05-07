@@ -173,6 +173,7 @@
     <profile>
       <id>non-indy</id>
       <activation>
+        <!-- in Maven 3 activeByDefault only activates profile when no other profiles are active, so using file as a workaround -->
         <file>
           <exists>pom.xml</exists>
         </file>
