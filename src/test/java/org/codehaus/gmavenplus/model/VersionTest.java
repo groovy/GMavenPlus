@@ -35,9 +35,16 @@ public class VersionTest {
     }
 
     @Test
-    public void testCompareWithTwoTagsDifferentStart() {
+    public void testCompareWithTwoTagsDifferentStartUppercase() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-RC-2");
+        Assert.assertTrue(v1.compareTo(v2) < 0);
+    }
+
+    @Test
+    public void testCompareWithTwoTagsDifferentStartLowercase() {
+        Version v1 = Version.parseFromString("1.0.0-beta-1");
+        Version v2 = Version.parseFromString("1.0.0-rc-2");
         Assert.assertTrue(v1.compareTo(v2) < 0);
     }
 
