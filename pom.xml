@@ -171,13 +171,7 @@
       </build>
     </profile>
     <profile>
-      <id>non-indy</id>
-      <activation>
-        <!-- in Maven 3 activeByDefault only activates profile when no other profiles are active, so using file as a workaround -->
-        <file>
-          <exists>pom.xml</exists>
-        </file>
-      </activation>
+      <id>nonindy</id>
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
@@ -192,6 +186,68 @@
           <scope>test</scope>
         </dependency>
       </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <profiles>
+                <profile>nonindy</profile>
+              </profiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>pre2.3-indy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <version>${groovyVersion}</version>
+          <classifier>indy</classifier>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <profiles>
+                <profile>pre2.3-indy</profile>
+              </profiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>pre2.3-nonindy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <version>${groovyVersion}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <configuration>
+              <profiles>
+                <profile>pre2.3-nonindy</profile>
+              </profiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>release-sign-artifacts</id>

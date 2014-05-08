@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <javaVersion>1.5</javaVersion>
+    <javaVersion>@javaVersion@</javaVersion>
   </properties>
 
   <dependencyManagement>
@@ -25,7 +25,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.0.13</version>
+        <version>1.1.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -35,12 +35,12 @@
       <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
         <artifactId>maven-plugin-annotations</artifactId>
-        <version>3.2</version>
+        <version>3.3</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.0.16</version>
+        <version>3.0.17</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -53,23 +53,20 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>@groovyVersion@</version>
             <classifier>indy</classifier>
+            <version>@groovyVersion@</version>
           </dependency>
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-ant</artifactId>
-            <version>@groovyVersion@</version>
             <classifier>indy</classifier>
+            <version>@groovyVersion@</version>
           </dependency>
         </dependencies>
       </dependencyManagement>
     </profile>
     <profile>
-      <id>non-indy</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+      <id>nonindy</id>
       <dependencyManagement>
         <dependencies>
           <dependency>
@@ -80,6 +77,31 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-ant</artifactId>
+            <version>@groovyVersion@</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+    <profile>
+      <id>pre2.3-indy</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <classifier>indy</classifier>
+            <version>@groovyVersion@</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+    <profile>
+      <id>pre2.3-nonindy</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
             <version>@groovyVersion@</version>
           </dependency>
         </dependencies>

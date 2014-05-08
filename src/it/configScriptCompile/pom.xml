@@ -32,13 +32,38 @@
           <artifactId>groovy-all</artifactId>
           <classifier>indy</classifier>
         </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
       </dependencies>
     </profile>
     <profile>
-      <id>non-indy</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+      <id>nonindy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>pre2.3-indy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>pre2.3-nonindy</id>
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>

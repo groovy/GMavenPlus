@@ -34,14 +34,14 @@
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
-                <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
+                <version>@groovyVersion@</version>
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-ant</artifactId>
-                <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
+                <version>@groovyVersion@</version>
               </dependency>
             </dependencies>
           </plugin>
@@ -49,10 +49,7 @@
       </build>
     </profile>
     <profile>
-      <id>non-indy</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+      <id>nonindy</id>
       <build>
         <plugins>
           <plugin>
@@ -67,6 +64,43 @@
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-ant</artifactId>
+                <version>@groovyVersion@</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>pre2.3-indy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <classifier>indy</classifier>
+                <version>@groovyVersion@</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>pre2.3-nonindy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.gmavenplus</groupId>
+            <artifactId>gmavenplus-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
             </dependencies>
