@@ -40,7 +40,9 @@
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
-      <item name="Usage" href="http://docs.codehaus.org/display/GMAVENPLUS/Usage" target="_top" />
+      <!--<item name="Usage" href="usage.html" />-->
+      <item name="Usage" href="http://docs.codehaus.org/display/GMAVENPLUS/Usage" />
+      <!--<item name="Examples" href="examples.html" />-->
       <item name="Examples" href="http://docs.codehaus.org/display/GMAVENPLUS/Examples" />
     </menu>
     <menu ref="reports" />
