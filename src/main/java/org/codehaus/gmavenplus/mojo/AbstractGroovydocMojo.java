@@ -50,6 +50,12 @@ import java.util.Properties;
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
+    private static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
+
+    private static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
+
+    private static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
+
     /**
      * The location for the generated API docs.
      *
@@ -185,7 +191,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
             return;
         }
-        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-1")) == 0) {
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC1) == 0) {
             // Groovy 1.6-RC-1 is excluded because of its dependency on org.apache.tools.ant.types.Path for constructing GroovyDocTool
             getLog().warn("Groovy 1.6-RC-1 is blacklisted from the supported Groovydoc versions because of its dependency on Ant.  Skipping Groovydoc generation.");
             return;
@@ -209,7 +215,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         }
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
         List groovydocLinks = setupLinks();
-        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) < 0) {
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC2) < 0) {
             getLog().warn("Your Groovy version doesn't support Groovydoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope).  You need Groovy 1.6-RC-2 or newer to support this.  Ignoring properties.");
         }
 
@@ -273,9 +279,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
             Class linkArgumentClass = null;
-            if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC2) >= 0) {
                 linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
-            } else if (classWrangler.getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
+            } else if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_5_2) >= 0) {
                 linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
             }
             if (linkArgumentClass != null) {
@@ -310,7 +316,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      */
     protected Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
-        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC2) >= 0) {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     sourceDirectories.toArray(new String[sourceDirectories.size()]),
@@ -320,7 +326,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     groovydocLinks,
                     docProperties
             );
-        } else if (classWrangler.getGroovyVersion().compareTo(new Version(1, 5, 2)) >= 0) {
+        } else if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_5_2) >= 0) {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),
                     classpathResourceManager,
                     sourceDirectories.get(0),
@@ -395,7 +401,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         if (getLog().isDebugEnabled()) {
             getLog().debug("    " + groovydocSources);
         }
-        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC2) >= 0) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, groovydocSources);
         } else {
             for (String groovydocSource : groovydocSources) {

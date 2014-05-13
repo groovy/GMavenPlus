@@ -40,6 +40,8 @@ import java.net.MalformedURLException;
  */
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
 
+    private static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+
     /**
      * Executes this mojo.
      *
@@ -47,7 +49,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        minGroovyVersion = new Version(1, 8, 2);
+        minGroovyVersion = GROOVY_1_8_2;
 
         try {
             doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);

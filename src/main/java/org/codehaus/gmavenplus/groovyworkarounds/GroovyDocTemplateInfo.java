@@ -26,12 +26,15 @@ import org.codehaus.gmavenplus.model.Version;
  */
 public class GroovyDocTemplateInfo {
     private static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
+    private static final Version GROOVY_1_6_2 = new Version(1, 6, 2);
+    private static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
+    private static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
     private Version groovyVersion;
     private String templateBaseDir;
 
     public GroovyDocTemplateInfo(Version version) {
         groovyVersion = version;
-        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
             templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
         } else {
             templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstring-templates/";
@@ -39,7 +42,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultDocTemplates() {
-        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
             return new String[] {
                     templateBaseDir + "topLevel/index.html",
                     templateBaseDir + "topLevel/overview-frame.html",
@@ -52,7 +55,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "topLevel/inherit.gif",
                     DOCGEN_BASEDIR + "groovy.ico"
             };
-        } else if (groovyVersion.compareTo(new Version(1, 6, 0)) >= 0) {
+        } else if (groovyVersion.compareTo(GROOVY_1_6_0) >= 0) {
             return new String[] {
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
@@ -64,7 +67,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "top-level/stylesheet.css",
                     templateBaseDir + "top-level/inherit.gif"
             };
-        } else if (groovyVersion.compareTo(new Version(1, 6, 0, "RC-2")) >= 0) {
+        } else if (groovyVersion.compareTo(GROOVY_1_6_0_RC2) >= 0) {
             return new String[] {
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
@@ -85,7 +88,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultPackageTemplates() {
-        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
             return new String[] {
                     templateBaseDir + "packageLevel/package-frame.html",
                     templateBaseDir + "packageLevel/package-summary.html"
@@ -99,7 +102,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultClassTemplates() {
-        if (groovyVersion.compareTo(new Version(1, 6, 2)) >= 0) {
+        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
             return new String[] {
                     templateBaseDir + "classLevel/classDocName.html"
             };

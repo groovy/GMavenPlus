@@ -37,6 +37,11 @@ import java.util.Set;
  * @since 1.0-beta-1
  */
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
+    private static final Version GROOVY_2_1_0_BETA3 = new Version(2, 1, 0, "beta-3");
+
+    private static final Version GROOVY_2_1_0_BETA1 = new Version(2, 1, 0, "beta-1");
+
+    private static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
 
     /**
      * The location for the compiled classes.
@@ -207,7 +212,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      */
     protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
-        if (classWrangler.getGroovyVersion().compareTo(new Version(1, 6, 0)) >= 0) {
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0) >= 0) {
             compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         } else {
             compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
@@ -238,7 +243,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
         if (configScript != null) {
-            if (classWrangler.getGroovyVersion().compareTo(new Version(2, 1, 0, "beta-1")) >= 0) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_0_BETA1) >= 0) {
                 Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
                 Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
@@ -266,7 +271,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
         if (invokeDynamic) {
-            if (classWrangler.getGroovyVersion().compareTo(new Version(2, 0, 0, "beta-3")) >= 0) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_0_BETA3) >= 0) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);

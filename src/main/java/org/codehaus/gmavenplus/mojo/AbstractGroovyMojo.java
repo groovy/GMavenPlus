@@ -42,6 +42,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /** The pattern defining Java stub files. */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
+    private static final Version JAVA_1_7 = new Version(1, 7);
+
+    private static final Version GROOVY_1_5_0 = new Version(1, 5, 0);
+
     /** The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions. */
     protected ClassWrangler classWrangler;
 
@@ -87,7 +91,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * The minimum version of Groovy that this mojo supports (1.5.0 by
      * default, but other mojos can override).
      */
-    protected Version minGroovyVersion = new Version(1, 5, 0);
+    protected Version minGroovyVersion = GROOVY_1_5_0;
 
 
     /**
@@ -116,7 +120,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> if the running Java supports invokedynamic, <code>false</code> otherwise
      */
     protected boolean isJavaSupportIndy() {
-        return getJavaVersion().compareTo(new Version(1, 7), false) >= 0;
+        return getJavaVersion().compareTo(JAVA_1_7, false) >= 0;
     }
 
     /**
