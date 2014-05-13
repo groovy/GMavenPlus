@@ -50,11 +50,11 @@ import java.util.Properties;
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
-    private static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
+    protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
 
-    private static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
+    protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
 
-    private static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
+    protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
 
     /**
      * The location for the generated API docs.

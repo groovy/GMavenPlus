@@ -25,12 +25,12 @@ import org.codehaus.gmavenplus.model.Version;
  * because it wasn't available prior to Groovy 1.7.
  */
 public class GroovyDocTemplateInfo {
-    private static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
-    private static final Version GROOVY_1_6_2 = new Version(1, 6, 2);
-    private static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
-    private static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
-    private Version groovyVersion;
-    private String templateBaseDir;
+    protected static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
+    protected static final Version GROOVY_1_6_2 = new Version(1, 6, 2);
+    protected static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
+    protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
+    protected Version groovyVersion;
+    protected String templateBaseDir;
 
     public GroovyDocTemplateInfo(Version version) {
         groovyVersion = version;

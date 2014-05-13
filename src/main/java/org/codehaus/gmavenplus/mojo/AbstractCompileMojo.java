@@ -37,11 +37,11 @@ import java.util.Set;
  * @since 1.0-beta-1
  */
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
-    private static final Version GROOVY_2_1_0_BETA3 = new Version(2, 1, 0, "beta-3");
+    protected static final Version GROOVY_2_1_0_BETA3 = new Version(2, 1, 0, "beta-3");
 
-    private static final Version GROOVY_2_1_0_BETA1 = new Version(2, 1, 0, "beta-1");
+    protected static final Version GROOVY_2_1_0_BETA1 = new Version(2, 1, 0, "beta-1");
 
-    private static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
+    protected static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
 
     /**
      * The location for the compiled classes.
