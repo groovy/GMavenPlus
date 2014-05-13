@@ -21,7 +21,7 @@ for i in ${!groovyVersions[*]}; do
     fi
     if [[ "${i}" -gt "65" ]]; then
         if [[ "${i}" -lt "101" ]]; then
-            mvn -B -P pre2.3-indy  -Dinvoker.streamLogs=true invoker:run &> groovy-${groovyVersion}-indy.log
+            mvn -B -P pre2.3-indy -Dinvoker.streamLogs=true invoker:run &> groovy-${groovyVersion}-indy.log
         else
             mvn -B -P indy -Dinvoker.streamLogs=true invoker:run &> groovy-${groovyVersion}-indy.log
         fi
