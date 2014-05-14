@@ -128,7 +128,6 @@
           <configuration>
             <source>${javaVersion}</source>
             <target>${javaVersion}</target>
-            <encoding>${project.build.sourceEncoding}</encoding>
           </configuration>
         </plugin>
         <plugin>
