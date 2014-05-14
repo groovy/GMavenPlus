@@ -374,7 +374,7 @@
         <executions>
           <execution>
             <id>sniffClasses</id>
-            <phase>test</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>check</goal>
             </goals>
