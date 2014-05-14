@@ -266,7 +266,6 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
@@ -374,7 +373,6 @@
         <executions>
           <execution>
             <id>sniffClasses</id>
-            <phase>process-classes</phase>
             <goals>
               <goal>check</goal>
             </goals>
@@ -386,6 +384,7 @@
             <artifactId>java15</artifactId>
             <version>1.0</version>
           </signature>
+          <ignoreDependencies>false</ignoreDependencies>
         </configuration>
       </plugin>
       <plugin>
