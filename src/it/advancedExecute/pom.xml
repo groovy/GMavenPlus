@@ -146,30 +146,25 @@
                   @Grab(group='org.apache.commons', module='commons-lang3', version='3.3.2')
               ])
               import org.apache.commons.lang3.SystemUtils
-              import org.slf4j.Logger
-              import org.slf4j.LoggerFactory
-              Logger logger = LoggerFactory.getLogger(getClass().getName())
-              logger.debug("This session's goals are {}.", session.goals)
+              log.debug("This session's goals are " + session.goals)
               assert session.goals.size() == 1
-              logger.debug("The settings are {}.", session.settings)
+              log.debug("The settings are " + session.settings)
               assert session.settings != null
-              logger.debug("The local repository is {}.", session.localRepository)
+              log.debug("The local repository is " + session.localRepository)
               assert session.localRepository != null
-              logger.debug("The reactor projects are {}.", session.sortedProjects)
+              log.debug("The reactor projects are " + session.sortedProjects)
               assert session.sortedProjects.size() > 0
-              logger.debug("The plugin artifacts are {}.", pluginArtifacts)
+              log.debug("The plugin artifacts are " + pluginArtifacts)
               assert pluginArtifacts.size() > 0
-              logger.debug("The mojo execution is {}.", mojoExecution)
+              log.debug("The mojo execution is " + mojoExecution)
               assert mojoExecution != null
-              logger.debug("The plugin descriptor is {}.", mojoExecution.mojoDescriptor)
+              log.debug("The plugin descriptor is " + mojoExecution.mojoDescriptor)
               assert mojoExecution.mojoDescriptor != null
-              logger.debug("The Ant builder is {}.", ant)
+              log.debug("The Ant builder is " + ant)
               assert ant != null
-              logger.debug("The log is {}.", log)
-              assert log != null
-              logger.debug("someProp is {}.", someProp)
+              log.debug("someProp is " + someProp)
               assert someProp == "someValue"
-              logger.debug("cliProp is {}.", cliProp)
+              log.debug("cliProp is " + cliProp)
               assert cliProp == "someOtherValue"
               File targetDir = new File(project.build.directory)
               if (!targetDir.exists())
