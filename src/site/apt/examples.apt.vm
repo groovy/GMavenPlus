@@ -448,6 +448,7 @@ mvn site
               log.debug("The plugin descriptor is " + mojoExecution.mojoDescriptor)
               log.debug("someProp is " + someProp)
               log.debug("Using Java " + SystemUtils.JAVA_VERSION)
+              assert ant.project.baseDir == project.basedir
               // the first reference is not filtered by Maven, the second reference is
               assert "${dollar}project.name" == "${dollar}{project.name}"
             ]]></script>
