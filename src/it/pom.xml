@@ -11,7 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <javaVersion>@javaVersion@</javaVersion>
+    <commonsLang3Version>3.3.2</commonsLang3Version>
   </properties>
 
   <dependencyManagement>
@@ -30,7 +30,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
-        <version>@mavenVersion@</version>
+        <version>@testMavenVersion@</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
@@ -126,8 +126,8 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>@compilerPluginVersion@</version>
           <configuration>
-            <source>${javaVersion}</source>
-            <target>${javaVersion}</target>
+            <source>@testJavaVersion@</source>
+            <target>@testJavaVersion@</target>
           </configuration>
         </plugin>
         <plugin>

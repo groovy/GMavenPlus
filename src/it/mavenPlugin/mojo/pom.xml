@@ -14,12 +14,8 @@
   <packaging>maven-plugin</packaging>
   <name>GMavenPlus Plugin Maven Plugin Test Mojo</name>
 
-  <properties>
-    <mavenVersion>3.2.1</mavenVersion>
-  </properties>
-
   <prerequisites>
-    <maven>3.2</maven>
+    <maven>@testMavenVersion@</maven>
   </prerequisites>
 
   <dependencies>
