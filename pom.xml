@@ -585,8 +585,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.0.1</version>
       </plugin>
-      <!-- commented out temporarily because not playing well with Java 8, not sure why since targeting 1.5 -->
-      <!-- TODO: re-enable FindBugs -->
+      <!-- TODO: re-enable FindBugs (issues with JDK 8 are supposed to be fixed next release)-->
       <!--<plugin>-->
         <!--<groupId>org.codehaus.mojo</groupId>-->
         <!--<artifactId>findbugs-maven-plugin</artifactId>-->
