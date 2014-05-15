@@ -18,7 +18,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <javaVersion>1.5</javaVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <!-- these are properties so integration tests can use them; versions only used for integration tests are controlled in it root -->
+    <!-- these are properties so integration tests can use them; versions only used for integration tests are controlled in IT root -->
     <testJavaVersion>1.7</testJavaVersion>
     <testMavenVersion>3.2.1</testMavenVersion>
     <coberturaPluginVersion>2.6</coberturaPluginVersion>
