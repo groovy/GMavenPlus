@@ -32,6 +32,7 @@ for i in ${!groovyVersions[*]}; do
             rm groovy-${groovyVersion}-indy.log
         fi
     fi
+    sleep 2s  # sleep to prevent "sed: cannot rename <filename>: Device or resource busy"
 done
 git checkout pom.xml
 mvn -B clean > /dev/null
