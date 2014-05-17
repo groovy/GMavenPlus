@@ -80,6 +80,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 // run the console
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
 
+                // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
+                bindAntBuilder(consoleClass, bindingClass, console);
+
                 // wait for console to be closed
                 Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
                 Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
@@ -116,6 +119,16 @@ public class ConsoleMojo extends AbstractToolsMojo {
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");
+        }
+    }
+
+    protected void bindAntBuilder(Class consoleClass, Class bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        if (properties.containsKey("ant")) {
+            Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
+            Object shell = ReflectionUtils.getField(ReflectionUtils.findField(consoleClass, "shell", groovyShellClass), console);
+            Object binding = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "getContext"), shell);
+            Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
         }
     }
 
