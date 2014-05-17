@@ -269,10 +269,10 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * Sets up the Groovydoc links.
      *
      * @return the Groovydoc links
-     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws ClassNotFoundException when a class needed for setting up Groovydoc links cannot be found
+     * @throws InstantiationException when a class needed for setting up Groovydoc links cannot be instantiated
+     * @throws IllegalAccessException when a method needed for setting up Groovydoc links cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up Groovydoc links cannot be completed
      */
     @SuppressWarnings("unchecked")
     protected List setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -310,9 +310,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param groovyDocTemplateInfo the GroovyDocTemplateInfo for the GroovyDocTool
      * @param groovydocLinks the Groovydoc links
      * @return the GroovyDocTool to use in Groovydoc generation
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for setting up Groovydoc tool cannot be instantiated
+     * @throws IllegalAccessException when a method needed for setting up Groovydoc tool cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up Groovydoc tool cannot be completed
      */
     protected Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
@@ -393,8 +393,8 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @param fileOutputTool the FileOutputTool to use for Groovydoc generation
      * @param groovydocSources the sources to
      * @param groovyDocTool the GroovyDocTool to use for Groovydoc generation
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws IllegalAccessException when a method needed for Groovydoc generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for Groovydoc generation cannot be completed
      */
     protected void generateGroovydoc(final File outputDirectory, final Class groovyDocToolClass, final Class outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding sources to generate Groovydoc for:");

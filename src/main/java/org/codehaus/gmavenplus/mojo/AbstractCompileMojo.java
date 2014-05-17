@@ -206,9 +206,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @param groovyClassLoader the GroovyClassLoader
      * @param transformLoader the GroovyClassLoader to use for transformation
      * @return the CompilationUnit
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for setting up compilation unit cannot be instantiated
+     * @throws IllegalAccessException when a method needed for setting up compilation unit cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up compilation unit cannot be completed
      */
     protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
@@ -234,10 +234,10 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @param compileOutputDirectory the directory to write the compiled classes to
      * @param compilerConfigurationClass the CompilerConfiguration class
      * @return the CompilerConfiguration
-     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws ClassNotFoundException when a class needed for setting up CompilerConfiguration cannot be found
+     * @throws InstantiationException when a class needed for setting up CompilerConfiguration cannot be instantiated
+     * @throws IllegalAccessException when a method needed for setting up CompilerConfiguration cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up CompilerConfiguration cannot be completed
      */
     @SuppressWarnings("unchecked")
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {

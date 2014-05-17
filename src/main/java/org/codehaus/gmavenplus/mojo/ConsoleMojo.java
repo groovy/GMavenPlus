@@ -75,7 +75,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
 
                 // create console to run
-                Object console = createConsole(consoleClass, bindingClass);
+                Object console = setupConsole(consoleClass, bindingClass);
 
                 // run the console
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
@@ -138,11 +138,11 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @param consoleClass the Console class
      * @param bindingClass the Binding class
      * @return the instantiated Console
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for creating a console cannot be instantiated
+     * @throws IllegalAccessException when a method needed for creating a console cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed
      */
-    protected Object createConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
         initializeProperties();
         for (Object k : properties.keySet()) {

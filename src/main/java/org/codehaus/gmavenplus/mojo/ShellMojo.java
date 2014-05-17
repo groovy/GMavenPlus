@@ -123,9 +123,9 @@ public class ShellMojo extends AbstractToolsMojo {
      * @param verbosityClass the Verbosity
      * @param loggerClass the Logger class
      * @return the Groovysh shell to run
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws InstantiationException when a class needed for setting up a shell cannot be instantiated
+     * @throws IllegalAccessException when a method needed for setting up a shell cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed
      */
     protected Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));

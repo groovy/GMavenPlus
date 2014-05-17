@@ -153,8 +153,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
      *
      * @param groovyShellClass the GroovyShell class
      * @param shell the shell to use for script execution
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
+     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      * @throws MojoExecutionException when an error occurs during script execution
      */
     protected void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
