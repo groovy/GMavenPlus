@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">package</strong> org.codehaus.gmavenplus.groovyworkarounds;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> com.google.common.io.Files;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.codehaus.gmavenplus.util.FileUtils;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.net.URI;
@@ -115,8 +115,8 @@
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">     * @return Filename with forced &lt;tt&gt;.groovy&lt;/tt&gt; extension</em>
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">public</strong> String getName() {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">if</strong> (scriptExtensions != <strong class="jxr_keyword">null</strong> &amp;&amp; !scriptExtensions.isEmpty() &amp;&amp; scriptExtensions.contains(Files.getFileExtension(<strong class="jxr_keyword">super</strong>.getAbsolutePath()))) {
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             <strong class="jxr_keyword">return</strong> Files.getNameWithoutExtension(<strong class="jxr_keyword">super</strong>.getName()) + <span class="jxr_string">".groovy"</span>;
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">if</strong> (scriptExtensions != <strong class="jxr_keyword">null</strong> &amp;&amp; !scriptExtensions.isEmpty() &amp;&amp; scriptExtensions.contains(FileUtils.getFileExtension(<strong class="jxr_keyword">super</strong>.getAbsolutePath()))) {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>             <strong class="jxr_keyword">return</strong> FileUtils.getNameWithoutExtension(<strong class="jxr_keyword">super</strong>.getName()) + <span class="jxr_string">".groovy"</span>;
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">super</strong>.getName();
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         }
@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> <em class="jxr_javadoccomment">     * @return This object (for fluent invocation)</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/groovyworkarounds/DotGroovyFile.html">DotGroovyFile</a> setScriptExtensions(<strong class="jxr_keyword">final</strong> Set&lt;String&gt; newScriptExtensions) {
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">this</strong>.scriptExtensions = newScriptExtensions;
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         scriptExtensions = newScriptExtensions;
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     }
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> 

@@ -54,8 +54,8 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      @Before
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() {
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          testMojo = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojoTest.html">TestMojo</a>();
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          Mockito.when(stubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          Mockito.when(testStubsOutputDirectory.getAbsolutePath()).thenReturn(PATH);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          Mockito.doReturn(PATH).when(stubsOutputDirectory).getAbsolutePath();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          Mockito.doReturn(PATH).when(testStubsOutputDirectory).getAbsolutePath();
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo.stubsOutputDirectory = stubsOutputDirectory;
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }

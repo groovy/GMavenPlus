@@ -38,8 +38,8 @@
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>          String packages = <span class="jxr_string">"PACKAGES"</span>;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          String href = <span class="jxr_string">"HREF"</span>;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          Link link = <strong class="jxr_keyword">new</strong> Link();
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          Assert.assertTrue(link.getPackages().isEmpty());
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          Assert.assertTrue(link.getHref().isEmpty());
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>          Assert.assertTrue(link.getPackages().length() == 0);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          Assert.assertTrue(link.getHref().length() == 0);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>          link.setPackages(packages);
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          link.setHref(href);
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          Assert.assertEquals(packages, link.getPackages());
