@@ -24,6 +24,7 @@ import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 import java.util.Set;
 
 
@@ -128,7 +129,11 @@ public class ConsoleMojo extends AbstractToolsMojo {
             Object shell = ReflectionUtils.getField(ReflectionUtils.findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "getContext"), shell);
             Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
+            if (bindPropertiesToSeparateVariables) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
+            } else {
+                properties.put("ant", antBuilder);
+            }
         }
     }
 
@@ -145,9 +150,12 @@ public class ConsoleMojo extends AbstractToolsMojo {
     protected Object setupConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
         initializeProperties();
-        for (Object k : properties.keySet()) {
-            String key = (String) k;
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
+        if (bindPropertiesToSeparateVariables) {
+            for (Object k : properties.keySet()) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
+            }
+        } else {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
         }
 
         return ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);

@@ -140,9 +140,12 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
         initializeProperties();
-        for (Object k : properties.keySet()) {
-            String key = (String) k;
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, key, properties.get(key));
+        if (bindPropertiesToSeparateVariables) {
+            for (Object k : properties.keySet()) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, k, properties.get(k));
+            }
+        } else {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "properties", properties);
         }
 
         return shell;

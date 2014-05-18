@@ -130,9 +130,12 @@ public class ShellMojo extends AbstractToolsMojo {
     protected Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
         initializeProperties();
-        for (Object k : properties.keySet()) {
-            String key = (String) k;
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, key, properties.get(key));
+        if (bindPropertiesToSeparateVariables) {
+            for (Object k : properties.keySet()) {
+                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
+            }
+        } else {
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
         }
         Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, "setVerbosity", verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, "forName", String.class), verbosity));

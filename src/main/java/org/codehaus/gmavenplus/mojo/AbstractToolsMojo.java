@@ -65,6 +65,14 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected boolean allowSystemExits;
 
     /**
+     * Whether to bind each property to a separate variable (otherwise binds
+     * properties to a single 'properties' variable).
+     *
+     * @parameter default-value="true"
+     */
+    protected boolean bindPropertiesToSeparateVariables;
+
+    /**
      * Initializes the properties field.
      */
     protected void initializeProperties() {
