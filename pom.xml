@@ -611,13 +611,6 @@
     </plugins>
   </reporting>
 
-  <distributionManagement>
-    <site>
-      <id>github-project-site</id>
-      <url>gitsite:git@github.com/groovy/GMavenPlus.git</url>
-    </site>
-  </distributionManagement>
-
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy into Maven projects.</description>
   <inceptionYear>2011</inceptionYear>
