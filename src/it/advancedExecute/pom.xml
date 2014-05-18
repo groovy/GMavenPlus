@@ -147,7 +147,7 @@
               ])
               import org.apache.commons.lang3.SystemUtils
               log.debug("This session's goals are " + session.goals)
-              assert session.goals.size() == 1
+              assert session.goals.size() == 2
               log.debug("The settings are " + session.settings)
               assert session.settings != null
               log.debug("The local repository is " + session.localRepository)
