@@ -50,10 +50,13 @@ import java.util.Properties;
  */
 public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
 
+    /** Groovy 1.6.0 RC-2 version. */
     protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
 
+    /** Groovy 1.6.0 RC-1 version. */
     protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
 
+    /** Groovy 1.5.2 version. */
     protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
 
     /**

@@ -42,8 +42,10 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /** The pattern defining Java stub files. */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
+    /** Java 1.7 version. */
     protected static final Version JAVA_1_7 = new Version(1, 7);
 
+    /** Groovy 1.5.0 version. */
     protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);
 
     /** The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions. */

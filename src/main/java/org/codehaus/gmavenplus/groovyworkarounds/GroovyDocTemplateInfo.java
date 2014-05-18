@@ -25,13 +25,30 @@ import org.codehaus.gmavenplus.model.Version;
  * because it wasn't available prior to Groovy 1.7.
  */
 public class GroovyDocTemplateInfo {
+    /** Base directory of document generation classes. */
     protected static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
+
+    /** Groovy 1.6.2 version. */
     protected static final Version GROOVY_1_6_2 = new Version(1, 6, 2);
+
+    /** Groovy 1.6.0 version. */
     protected static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
+
+    /** Groovy 1.6.0 RC-2 version. */
     protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
+
+    /** The version of Groovy whose locations to use for Groovydoc templates. */
     protected Version groovyVersion;
+
+    /** Base directory of templates. */
     protected String templateBaseDir;
 
+    /**
+     * Constructs a new GroovyDocTemplateInfo using the specified Groovy version
+     * to determine templates location.
+     *
+     * @param version the version of Groovy whose locations to use for templates
+     */
     public GroovyDocTemplateInfo(Version version) {
         groovyVersion = version;
         if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {

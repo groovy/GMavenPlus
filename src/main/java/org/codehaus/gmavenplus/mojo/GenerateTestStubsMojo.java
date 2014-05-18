@@ -40,6 +40,7 @@ import java.net.MalformedURLException;
  */
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 
+    /** Groovv 1.8.2 version. */
     protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
 
     /**

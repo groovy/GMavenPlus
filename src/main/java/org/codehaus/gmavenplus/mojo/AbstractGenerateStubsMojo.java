@@ -45,10 +45,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * versions.
      */
 
+    /** Groovy 2.9.0 beta-1 version. */
     protected static final Version GROOVY_1_9_0_BETA1 = new Version(1, 9, 0, "beta-1");
 
+    /** Groovy 1.9.0 beta-3 version. */
     protected static final Version GROOVY_1_9_0_BETA3 = new Version(1, 9, 0, "beta-3");
 
+    /** Groovy 1.8.3 version. */
     protected static final Version GROOVY_1_8_3 = new Version(1, 8, 3);
 
     /**
