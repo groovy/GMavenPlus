@@ -173,7 +173,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
-    protected void doGroovydocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+    protected synchronized void doGroovydocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
         if (sourceDirectories == null || sourceDirectories.length == 0) {

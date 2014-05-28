@@ -39,7 +39,6 @@ import java.lang.reflect.InvocationTargetException;
  * @goal shell
  * @configurator include-project-test-dependencies
  * @requiresDependencyResolution test
- * @threadSafe
  */
 public class ShellMojo extends AbstractToolsMojo {
 

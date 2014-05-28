@@ -41,7 +41,6 @@ import java.util.Set;
  * @goal console
  * @configurator include-project-test-dependencies
  * @requiresDependencyResolution test
- * @threadSafe
  */
 public class ConsoleMojo extends AbstractToolsMojo {
 
