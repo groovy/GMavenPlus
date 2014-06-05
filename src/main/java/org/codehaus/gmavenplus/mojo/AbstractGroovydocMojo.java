@@ -126,7 +126,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     /**
      * The encoding of stylesheetFile.
      *
-     * @parameter default-value="UTF-8"
+     * @parameter default-value="${project.build.sourceEncoding}
      */
     protected String stylesheetEncoding;
 
@@ -425,14 +425,22 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
             BufferedReader bufferedReader = null;
             BufferedWriter bufferedWriter = null;
             try {
-                bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
+                if (stylesheetEncoding != null) {
+                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
+                } else {
+                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile)));
+                }
                 StringBuilder css = new StringBuilder();
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     css.append(line).append("\n");
                 }
                 File outfile = new File(outputDirectory, "stylesheet.css");
-                bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
+                if (stylesheetEncoding != null) {
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
+                } else {
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile)));
+                }
                 bufferedWriter.write(css.toString());
             } finally {
                 FileUtils.closeQuietly(bufferedReader);
