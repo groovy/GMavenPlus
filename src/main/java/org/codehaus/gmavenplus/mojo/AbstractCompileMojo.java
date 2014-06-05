@@ -80,7 +80,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * If an invalid selection is made, Groovy will default to VM determined
      * version.
      *
-     * @parameter default-value="1.5"
+     * @parameter property="maven.compiler.target" default-value="1.5"
      */
     protected String targetBytecode;
 
