@@ -135,7 +135,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a>
      * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
-     * or greater).
+     * or greater).  Note that its encoding must match your source encoding.
      *
      * @parameter property="configScript"
      */
