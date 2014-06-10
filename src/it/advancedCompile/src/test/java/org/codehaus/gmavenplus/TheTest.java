@@ -34,10 +34,4 @@ public class TheTest {
         Assert.assertEquals("Hello, world.", someOtherClass.someMethod());
     }
 
-    @Test
-    public void testAnnotation() throws Exception {
-        Class getClass = Class.forName("org.codehaus.gmavenplus.Get");
-        Assert.assertNotNull(getClass);
-    }
-
 }

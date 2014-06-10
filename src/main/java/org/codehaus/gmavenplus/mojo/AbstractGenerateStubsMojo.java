@@ -70,6 +70,24 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected Set<String> scriptExtensions;
 
     /**
+     * The Groovy compiler bytecode compatibility.  One of
+     * <ul>
+     *   <li>1.4</li>
+     *   <li>1.5</li>
+     *   <li>1.6</li>
+     *   <li>1.7</li>
+     *   <li>1.8</li>
+     * </ul>
+     * Note that prior to Groovy 2.1.3, only 1.4 and 1.5 were supported.
+     * If an invalid selection is made, Groovy will default to VM determined
+     * version.
+     * @since 1.0-beta-3
+     *
+     * @parameter property="maven.compiler.target" default-value="1.5"
+     */
+    protected String targetBytecode;
+
+    /**
      * Whether Groovy compiler should be set to debug.
      *
      * @parameter default-value="false"
@@ -179,6 +197,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
+        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         if (sourceEncoding != null) {
             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
