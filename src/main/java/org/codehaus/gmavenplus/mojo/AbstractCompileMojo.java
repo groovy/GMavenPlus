@@ -76,7 +76,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>1.7</li>
      *   <li>1.8</li>
      * </ul>
-     * Note that prior to Groovy 2.1.3, only 1.4 and 1.5 were supported.
+     * Using 1.6 or 1.7 requires Groovy >= 2.1.3, and using 1.8 requires Groovy >= 2.3.3.
      * If an invalid selection is made, Groovy will default to VM determined
      * version.
      *
