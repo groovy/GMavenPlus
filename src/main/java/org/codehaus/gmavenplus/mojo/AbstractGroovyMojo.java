@@ -95,7 +95,6 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected Version minGroovyVersion = GROOVY_1_5_0;
 
-
     /**
      * Flag to allow test compilation to be skipped.
      *
