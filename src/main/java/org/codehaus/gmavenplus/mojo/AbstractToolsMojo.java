@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +33,15 @@ import java.util.Properties;
  * @since 1.1
  */
 public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
+
+    /**
+     * Maven ProjectHelper to use in properties.
+     *
+     * @component
+     * @readonly
+     *
+     */
+    protected MavenProjectHelper projectHelper;
 
     /**
      * Properties to make available in scripts as variables using the property
@@ -92,6 +102,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         }
         if (!properties.containsKey("log")) {
             properties.put("log", getLog());
+        }
+        if (!properties.containsKey("projectHelper")) {
+            properties.put("projectHelper", projectHelper);
         }
         if (!properties.containsKey("ant")) {
             try {

@@ -162,6 +162,8 @@
               assert mojoExecution.mojoDescriptor != null
               log.debug("The Ant builder is " + ant)
               assert ant != null
+              log.debug("The project helper is " + projectHelper)
+              assert projectHelper != null
               log.debug("someProp is " + someProp)
               assert someProp == "someValue"
               log.debug("cliProp is " + cliProp)
