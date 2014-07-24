@@ -36,6 +36,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Maven ProjectHelper to use in properties.
+     * @since 1.3
      *
      * @component
      * @readonly
