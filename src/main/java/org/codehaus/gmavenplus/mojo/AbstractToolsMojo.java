@@ -104,7 +104,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         if (!properties.containsKey("log")) {
             properties.put("log", getLog());
         }
-        if (!properties.containsKey("projectHelper")) {
+        if (projectHelper != null && !properties.containsKey("projectHelper")) {
             properties.put("projectHelper", projectHelper);
         }
         if (!properties.containsKey("ant")) {
