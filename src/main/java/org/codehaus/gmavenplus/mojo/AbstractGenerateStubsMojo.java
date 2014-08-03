@@ -80,7 +80,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * </ul>
      * Using 1.6 or 1.7 requires Groovy >= 2.1.3, and using 1.8 requires Groovy >= 2.3.3.
      * If an invalid selection is made, Groovy will default to VM determined
-     * version.
+     * version (1.4 or 1.5).
      * @since 1.0-beta-3
      *
      * @parameter property="maven.compiler.target" default-value="1.5"
