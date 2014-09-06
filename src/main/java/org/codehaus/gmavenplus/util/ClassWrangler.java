@@ -108,7 +108,7 @@ public class ClassWrangler {
      */
     public Version getGroovyVersion() {
         try {
-            return Version.parseFromString(getGroovyVersionString().replace("-indy", ""));
+            return Version.parseFromString(getGroovyVersionString().replace("-indy", "").replace("-grooid", ""));
         } catch (Exception e) {
             log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
