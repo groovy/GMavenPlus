@@ -1,4 +1,15 @@
+# Maven
 target
-.idea
 
+# Eclipse
+.settings
+*.classpath
+*.project
+bin
+
+# Jetbrains
 *.iml
+*.ipr
+*.iws
+.idea
+out
