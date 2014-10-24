@@ -25,6 +25,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
 
+/*
+ * The mojo doesn't match the goal name, but it was decided it was better
+ * to avoid breaking existing builds than to correct the discrepancy
+ * (http://jira.codehaus.org/browse/GMAVENPLUS-33)
+ */
+
 /**
  * Generates stubs for the test Groovy sources and adds them to Maven's test
  * sources for the Maven compiler plugin to find.

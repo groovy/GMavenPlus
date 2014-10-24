@@ -24,6 +24,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
 
+/*
+ * The mojo doesn't match the goal name, but it was decided it was better
+ * to avoid breaking existing builds than to correct the discrepancy
+ * (http://jira.codehaus.org/browse/GMAVENPLUS-33)
+ */
+
 /**
  * Compiles the test sources.
  * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy
