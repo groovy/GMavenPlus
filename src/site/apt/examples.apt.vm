@@ -16,6 +16,8 @@ Examples
 
   * {{{InvokeDynamic_Compilation}InvokeDynamic Compilation}}
 
+  * {{{Android_Compilation}Android Compilation}}
+
   * {{{Additional_Sources}Additional Sources}}
 
   * {{{Groovydoc}Groovydoc}}
@@ -176,6 +178,76 @@ mvn compile
       <!-- any indy version of Groovy \>= 2.0.0-beta-3 should work here -->
       <version>${groovyVersion}</version>
       <classifier>indy</classifier>
+    </dependency>
+  </dependencies>
+</project>
++-----------------------------------------------------------------------------+
+
+  To compile both the main and test Groovy sources, simply execute the normal
+  compile phase from the default lifecycle:
+
++---------------------------------------+
+mvn compile
++---------------------------------------+
+
+
+* {Android Compilation}
+
+  To compile Groovy for use in Android, you need to include the Groovy jar that
+  supports it.  Everything else is the same as the normal compilation usages.
+  To do this, you should add something similar to the following in your
+  <<<pom.xml>>>:
+
++-----------------------------------------------------------------------------+
+<project>
+  <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <artifactId>android-maven-plugin</artifactId>
+        <version>3.8.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <sdk>
+            <platform>21</platform>
+            <!-- assumes ANDROID_HOME environment variable is set and SDK matching this version is installed there -->
+          </sdk>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.android</groupId>
+      <artifactId>android</artifactId>
+      <version>4.1.1.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy</artifactId>
+      <version>${groovyVersion}</version>
+      <classifier>grooid</classifier>
     </dependency>
   </dependencies>
 </project>
