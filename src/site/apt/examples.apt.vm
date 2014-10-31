@@ -50,6 +50,8 @@ Examples
         <executions>
           <execution>
             <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
               <goal>compile</goal>
               <goal>testCompile</goal>
             </goals>
