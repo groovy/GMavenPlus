@@ -28,7 +28,7 @@
     <pluginPluginVersion>3.2</pluginPluginVersion>
     <junitVersion>4.11</junitVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
-    <groovyVersion>2.3.8</groovyVersion>
+    <groovyVersion>2.3.9</groovyVersion>
   </properties>
 
   <dependencies>
