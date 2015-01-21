@@ -24,7 +24,6 @@ import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Properties;
 import java.util.Set;
 
 
