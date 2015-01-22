@@ -58,34 +58,47 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGroovyJar() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          Mockito.doReturn(<span class="jxr_string">"some/path/Groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          Assert.assertEquals(<span class="jxr_string">"Groovy-all-1.5.0.jar"</span>, classWrangler.getGroovyJar());
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          Assert.assertEquals(<span class="jxr_string">"groovy-all-1.5.0.jar"</span>, classWrangler.getGroovyJar());
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      }
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      @Test
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGroovyVersionString() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          Mockito.doReturn(<span class="jxr_string">"some/path/Groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          Assert.assertEquals(<span class="jxr_string">"1.5.0"</span>, classWrangler.getGroovyVersionString());
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Test
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsGroovyIndyTrue() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          Mockito.doReturn(<span class="jxr_string">"some/path/Groovy-all-1.5.0-indy.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-1.5.0-indy.jar"</span>).when(classWrangler).getJarPath();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          Assert.assertTrue(classWrangler.isGroovyIndy());
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      @Test
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIsGroovyIndyFalse() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Mockito.doReturn(<span class="jxr_string">"some/path/Groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-1.5.0.jar"</span>).when(classWrangler).getJarPath();
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          Assert.assertFalse(classWrangler.isGroovyIndy());
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      }
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  }
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      @Test
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGroovyVersionWithIndy() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-2.4.0-indy.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          Assert.assertEquals(<span class="jxr_string">"2.4.0"</span>, classWrangler.getGroovyVersion().toString());
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      @Test
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetGroovyVersionWithGrooid() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          ClassWrangler classWrangler = Mockito.spy(<strong class="jxr_keyword">new</strong> ClassWrangler(Mockito.mock(ClassLoader.<strong class="jxr_keyword">class</strong>), Mockito.mock(Log.<strong class="jxr_keyword">class</strong>)));
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          Mockito.doReturn(<span class="jxr_string">"some/path/groovy-all-2.4.0-grooid.jar"</span>).when(classWrangler).getJarPath();
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          Assert.assertEquals(<span class="jxr_string">"2.4.0"</span>, classWrangler.getGroovyVersion().toString());
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2014. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2015. All rights reserved.</div>
 </body>
 </html>

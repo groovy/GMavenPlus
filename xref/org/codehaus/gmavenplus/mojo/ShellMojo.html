@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * Note that this mojo requires Groovy &gt;= 1.5.0.</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * Note that it references the plugin ClassLoader to pull in dependencies</em>
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * and Jansi for Groovysh)).</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * and Jansi for Groovysh).</em>
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * @since 1.1</em>
@@ -47,114 +47,113 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * @goal shell</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * @configurator include-project-test-dependencies</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * @requiresDependencyResolution test</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * @threadSafe</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/ShellMojo.html">ShellMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojo.html">AbstractToolsMojo</a> {
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">     * Groovy shell verbosity level.  Should be one of:</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;QUIET&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;INFO&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;DEBUG&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;VERBOSE&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     * @parameter default-value="QUIET"</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">protected</strong> String verbosity;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment">     * Executes this mojo.</em>
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          classWrangler = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(Thread.currentThread().getContextClassLoader(), getLog());
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>              classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>              logPluginClasspath();
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>                  <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>                      getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getTestClasspathElements());
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>                      getLog().warn(<span class="jxr_string">"Unable to log project test classpath"</span>, e);
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>                  }
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>              }
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>              <strong class="jxr_keyword">final</strong> SecurityManager sm = System.getSecurityManager();
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>                  <strong class="jxr_keyword">if</strong> (!allowSystemExits) {
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>                      System.setSecurityManager(<strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/NoExitSecurityManager.html">NoExitSecurityManager</a>());
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>                  }
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>  
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  <em class="jxr_comment">// get classes we need with reflection</em>
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  Class shellClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.Groovysh"</span>);
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  Class bindingClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.Binding"</span>);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>                  Class ioClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.IO"</span>);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>                  Class verbosityClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.IO$Verbosity"</span>);
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>                  Class loggerClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.util.Logger"</span>);
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>                  <em class="jxr_comment">// create shell to run</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>                  Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>  
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>                  <em class="jxr_comment">// run the shell</em>
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>                  ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(shellClass, <span class="jxr_string">"run"</span>, String.<strong class="jxr_keyword">class</strong>), shell, (String) <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>              } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?"</span>, e);
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>              } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>                 <strong class="jxr_keyword">if</strong> (e.getCause() instanceof NoClassDefFoundError &amp;&amp; e.getCause().getMessage() != <strong class="jxr_keyword">null</strong> &amp;&amp; e.getCause().getMessage().contains(<span class="jxr_string">"jline"</span>)) {
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a JLine class from classpath.  This might be because of a JLine version mismatch.  If you are using Groovy &lt; 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin."</span>, e);
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>                 }
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>                 System.setSecurityManager(sm);
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>             }
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersion() + <span class="jxr_string">") doesn't support running a shell.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping shell startup."</span>);
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>         }
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     }
-<a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment">     * Creates the Groovysh to run.</em>
-<a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_javadoccomment">     * @param shellClass the Groovysh class</em>
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">     * @param bindingClass the Binding class</em>
-<a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">     * @param ioClass the IO class</em>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">     * @param verbosityClass the Verbosity</em>
-<a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     * @param loggerClass the Logger class</em>
-<a class="jxr_linenumber" name="L125" href="#L125">125</a> <em class="jxr_javadoccomment">     * @return the Groovysh shell to run</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for setting up a shell cannot be instantiated</em>
-<a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for setting up a shell cannot be accessed</em>
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed</em>
-<a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">protected</strong> Object setupShell(<strong class="jxr_keyword">final</strong> Class shellClass, <strong class="jxr_keyword">final</strong> Class bindingClass, <strong class="jxr_keyword">final</strong> Class ioClass, <strong class="jxr_keyword">final</strong> Class verbosityClass, <strong class="jxr_keyword">final</strong> Class loggerClass) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException {
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>         initializeProperties();
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             <strong class="jxr_keyword">for</strong> (Object k : properties.keySet()) {
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, k, properties.get(k));
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>             }
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"properties"</span>, properties);
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>         }
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>         Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, <span class="jxr_string">"setVerbosity"</span>, verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, <span class="jxr_string">"forName"</span>, String.<strong class="jxr_keyword">class</strong>), verbosity));
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>         ReflectionUtils.findField(loggerClass, <span class="jxr_string">"io"</span>, ioClass).set(<strong class="jxr_keyword">null</strong>, io);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         <strong class="jxr_keyword">return</strong> ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.<strong class="jxr_keyword">class</strong>, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> 
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> }
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/ShellMojo.html">ShellMojo</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/AbstractToolsMojo.html">AbstractToolsMojo</a> {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">     * Groovy shell verbosity level.  Should be one of:</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;QUIET&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;INFO&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;DEBUG&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">     *   &lt;li&gt;VERBOSE&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment">     * @parameter default-value="QUIET"</em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">protected</strong> String verbosity;
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment">     * Executes this mojo.</em>
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment">     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed</em>
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed</em>
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          classWrangler = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(Thread.currentThread().getContextClassLoader(), getLog());
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>              classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              logPluginClasspath();
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                  <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>                      getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getTestClasspathElements());
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>                  } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>                      getLog().warn(<span class="jxr_string">"Unable to log project test classpath"</span>, e);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>                  }
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              }
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>  
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">final</strong> SecurityManager sm = System.getSecurityManager();
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>              <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>                  <strong class="jxr_keyword">if</strong> (!allowSystemExits) {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>                      System.setSecurityManager(<strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/NoExitSecurityManager.html">NoExitSecurityManager</a>());
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>                  }
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>  
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>                  <em class="jxr_comment">// get classes we need with reflection</em>
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>                  Class shellClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.Groovysh"</span>);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>                  Class bindingClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.Binding"</span>);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>                  Class ioClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.IO"</span>);
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>                  Class verbosityClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.IO$Verbosity"</span>);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>                  Class loggerClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.tools.shell.util.Logger"</span>);
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>                  <em class="jxr_comment">// create shell to run</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>                  Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>                  <em class="jxr_comment">// run the shell</em>
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>                  ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(shellClass, <span class="jxr_string">"run"</span>, String.<strong class="jxr_keyword">class</strong>), shell, (String) <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>              } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>                  <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?"</span>, e);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  <strong class="jxr_keyword">if</strong> (e.getCause() instanceof NoClassDefFoundError &amp;&amp; e.getCause().getMessage() != <strong class="jxr_keyword">null</strong> &amp;&amp; e.getCause().getMessage().contains(<span class="jxr_string">"jline"</span>)) {
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a JLine class from classpath.  This might be because of a JLine version mismatch.  If you are using Groovy &lt; 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin."</span>, e);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>                 }
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>             } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>                 System.setSecurityManager(sm);
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>             }
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersion() + <span class="jxr_string">") doesn't support running a shell.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping shell startup."</span>);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         }
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>     }
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> 
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     * Creates the Groovysh to run.</em>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment">     * @param shellClass the Groovysh class</em>
+<a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_javadoccomment">     * @param bindingClass the Binding class</em>
+<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">     * @param ioClass the IO class</em>
+<a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">     * @param verbosityClass the Verbosity</em>
+<a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">     * @param loggerClass the Logger class</em>
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     * @return the Groovysh shell to run</em>
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for setting up a shell cannot be instantiated</em>
+<a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for setting up a shell cannot be accessed</em>
+<a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed</em>
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">protected</strong> Object setupShell(<strong class="jxr_keyword">final</strong> Class shellClass, <strong class="jxr_keyword">final</strong> Class bindingClass, <strong class="jxr_keyword">final</strong> Class ioClass, <strong class="jxr_keyword">final</strong> Class verbosityClass, <strong class="jxr_keyword">final</strong> Class loggerClass) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         initializeProperties();
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>             <strong class="jxr_keyword">for</strong> (Object k : properties.keySet()) {
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, k, properties.get(k));
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>             }
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"properties"</span>, properties);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         Object io = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ioClass));
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(ioClass, <span class="jxr_string">"setVerbosity"</span>, verbosityClass), io, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(verbosityClass, <span class="jxr_string">"forName"</span>, String.<strong class="jxr_keyword">class</strong>), verbosity));
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         ReflectionUtils.findField(loggerClass, <span class="jxr_string">"io"</span>, ioClass).set(<strong class="jxr_keyword">null</strong>, io);
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> 
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">return</strong> ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(shellClass, ClassLoader.<strong class="jxr_keyword">class</strong>, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>     }
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> 
+<a class="jxr_linenumber" name="L146" href="#L146">146</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2014. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2015. All rights reserved.</div>
 </body>
 </html>
