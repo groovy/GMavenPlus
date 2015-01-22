@@ -36,19 +36,29 @@ import java.util.List;
  */
 public abstract class AbstractGroovyMojo extends AbstractMojo {
 
-    /** The pattern defining Groovy files. */
+    /**
+     * The pattern defining Groovy files.
+     */
     protected static final String GROOVY_SOURCES_PATTERN = "**" + File.separator + "*.groovy";
 
-    /** The pattern defining Java stub files. */
+    /**
+     * The pattern defining Java stub files.
+     */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
 
-    /** Java 1.7 version. */
+    /**
+     * Java 1.7 version.
+     */
     protected static final Version JAVA_1_7 = new Version(1, 7);
 
-    /** Groovy 1.5.0 version. */
+    /**
+     * Groovy 1.5.0 version.
+     */
     protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);
 
-    /** The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions. */
+    /**
+     * The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions.
+     */
     protected ClassWrangler classWrangler;
 
     // note that all supported parameter expressions can be found here: https://git-wip-us.apache.org/repos/asf?p=maven.git;a=blob;f=maven-core/src/main/java/org/apache/maven/plugin/PluginParameterExpressionEvaluator.java;hb=HEAD

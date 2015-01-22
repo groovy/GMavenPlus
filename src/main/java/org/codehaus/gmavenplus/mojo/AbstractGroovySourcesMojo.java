@@ -35,10 +35,15 @@ import java.util.Set;
  * @since 1.0-beta-2
  */
 public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
-    /** Main source directory name. */
+
+    /**
+     * Main source directory name.
+     */
     public static final String MAIN = "main";
 
-    /** Test source directory name. */
+    /**
+     * Test source directory name.
+     */
     public static final String TEST = "test";
 
     /**

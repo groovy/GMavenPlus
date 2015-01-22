@@ -28,18 +28,22 @@ import java.util.Arrays;
  * @since 1.0-beta-1
  */
 public class Version implements Comparable<Version> {
+
     /**
      * The version major number.
      */
     private int major;
+
     /**
      * The version minor number.
      */
     private int minor;
+
     /**
      * The version revision.
      */
     private int revision;
+
     /**
      * The version tag.
      */

@@ -33,6 +33,7 @@ import java.util.Set;
  * @since 1.0-beta-1
  */
 public class DotGroovyFile extends File {
+
     /**
      * The file extensions to consider as Groovy files.
      */

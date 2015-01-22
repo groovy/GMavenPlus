@@ -26,9 +26,15 @@ package org.codehaus.gmavenplus.mojo;
  * The packages are comma separated.
  */
 public class Link {
-    /** Link URL. */
+
+    /**
+     * Link URL.
+     */
     private String href = "";
-    /** Link packages. */
+
+    /**
+     * Link packages.
+     */
     private String packages = "";
 
     /**

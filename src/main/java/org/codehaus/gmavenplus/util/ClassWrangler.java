@@ -36,13 +36,19 @@ import java.util.List;
  */
 public class ClassWrangler {
 
-    /** Cached Groovy version. */
+    /**
+     * Cached Groovy version.
+     */
     protected String groovyVersion = null;
 
-    /** ClassLoader to use for class wrangling. */
+    /**
+     * ClassLoader to use for class wrangling.
+     */
     protected ClassLoader classLoader;
 
-    /** Plugin log. */
+    /**
+     * Plugin log.
+     */
     protected Log log;
 
     /**

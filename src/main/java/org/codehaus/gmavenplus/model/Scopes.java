@@ -24,18 +24,22 @@ package org.codehaus.gmavenplus.model;
  * @since 1.0-beta-1
  */
 public enum Scopes {
+
     /**
      * The public scope.
      */
     PUBLIC,
+
     /**
      * The protected scope.
      */
     PROTECTED,
+
     /**
      * The package scope.
      */
     PACKAGE,
+
     /**
      * The private scope.
      */

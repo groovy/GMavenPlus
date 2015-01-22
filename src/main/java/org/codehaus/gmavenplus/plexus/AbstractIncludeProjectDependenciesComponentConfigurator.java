@@ -30,6 +30,7 @@ import java.util.List;
  * @since 1.0-beta-3
  */
 public abstract class AbstractIncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {
+
 //    private static final Log LOG = new SystemStreamLog();
 
     /**
@@ -109,13 +110,25 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * Enum of the various possible classpaths.
      */
     public enum Classpath {
-        /** Compile classpath. */
+
+        /**
+         * Compile classpath.
+         */
         COMPILE,
-        /** Runtime classpath. */
+
+        /**
+         * Runtime classpath.
+         */
         RUNTIME,
-        /** Test classpath. */
+
+        /**
+         * Test classpath.
+         */
         TEST,
-        /** System classpath. */
+
+        /**
+         * System classpath.
+         */
         SYSTEM
     }
 
