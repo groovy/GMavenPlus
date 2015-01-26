@@ -395,7 +395,7 @@ mvn compile
 mvn gplus:groovydoc
 +---------------------------------------+
 
-  If you are doing this for Groovy objects that also use Jav sources, you will
+  If you are doing this for Groovy objects that also use Java sources, you will
   also need to execute GMavenPlus's <<<generateStubs>>> goal in addition to the
   <<<groovydoc>>> goal:
 
