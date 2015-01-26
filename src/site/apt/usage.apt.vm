@@ -62,6 +62,8 @@ mvn test-compile
              included in your jar -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <!-- source plugin \> = 2.1 is required to use the no-fork goals -->
+        <version>2.4</version>
         <executions>
           <execution>
             <id>attach-sources</id>
