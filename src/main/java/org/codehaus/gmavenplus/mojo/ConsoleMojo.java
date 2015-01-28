@@ -114,7 +114,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
             } catch (InstantiationException e) {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } finally {
-                System.setSecurityManager(sm);
+                if (!allowSystemExits) {
+                    System.setSecurityManager(sm);
+                }
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support running a console.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping console startup.");

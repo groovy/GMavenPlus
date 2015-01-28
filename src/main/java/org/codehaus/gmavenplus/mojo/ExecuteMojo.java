@@ -131,7 +131,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             } finally {
-                System.setSecurityManager(sm);
+                if (!allowSystemExits) {
+                    System.setSecurityManager(sm);
+                }
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
