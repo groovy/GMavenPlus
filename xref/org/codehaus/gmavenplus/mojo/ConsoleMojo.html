@@ -122,52 +122,54 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>             } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
 <a class="jxr_linenumber" name="L116" href="#L116">116</a>             } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>                 System.setSecurityManager(sm);
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>             }
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersion() + <span class="jxr_string">") doesn't support running a console.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping console startup."</span>);
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         }
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>     }
-<a class="jxr_linenumber" name="L123" href="#L123">123</a> 
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> bindAntBuilder(Class consoleClass, Class bindingClass, Object console) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">if</strong> (properties.containsKey(<span class="jxr_string">"ant"</span>)) {
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>             Class groovyShellClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.GroovyShell"</span>);
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>             Object shell = ReflectionUtils.getField(ReflectionUtils.findField(consoleClass, <span class="jxr_string">"shell"</span>, groovyShellClass), console);
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>             Object binding = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, <span class="jxr_string">"getContext"</span>), shell);
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass(<span class="jxr_string">"groovy.util.AntBuilder"</span>)));
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>             <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"ant"</span>, antBuilder);
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>                 properties.put(<span class="jxr_string">"ant"</span>, antBuilder);
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>             }
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         }
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     }
-<a class="jxr_linenumber" name="L137" href="#L137">137</a> 
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * Instantiates a Groovy Console.</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * @param consoleClass the Console class</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * @param bindingClass the Binding class</em>
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * @return the instantiated Console</em>
-<a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for creating a console cannot be instantiated</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for creating a console cannot be accessed</em>
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">protected</strong> Object setupConsole(<strong class="jxr_keyword">final</strong> Class consoleClass, <strong class="jxr_keyword">final</strong> Class bindingClass) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException {
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         initializeProperties();
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">for</strong> (Object k : properties.keySet()) {
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, k, properties.get(k));
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>             }
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"properties"</span>, properties);
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>         }
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">return</strong> ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.<strong class="jxr_keyword">class</strong>, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a> 
-<a class="jxr_linenumber" name="L162" href="#L162">162</a> }
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>                 <strong class="jxr_keyword">if</strong> (!allowSystemExits) {
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>                     System.setSecurityManager(sm);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>                 }
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>             }
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersion() + <span class="jxr_string">") doesn't support running a console.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping console startup."</span>);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         }
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>     }
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> 
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> bindAntBuilder(Class consoleClass, Class bindingClass, Object console) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">if</strong> (properties.containsKey(<span class="jxr_string">"ant"</span>)) {
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>             Class groovyShellClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.GroovyShell"</span>);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             Object shell = ReflectionUtils.getField(ReflectionUtils.findField(consoleClass, <span class="jxr_string">"shell"</span>, groovyShellClass), console);
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>             Object binding = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, <span class="jxr_string">"getContext"</span>), shell);
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>             Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass(<span class="jxr_string">"groovy.util.AntBuilder"</span>)));
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>             <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"ant"</span>, antBuilder);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>             } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>                 properties.put(<span class="jxr_string">"ant"</span>, antBuilder);
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>             }
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         }
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>     }
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> 
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * Instantiates a Groovy Console.</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * @param consoleClass the Console class</em>
+<a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * @param bindingClass the Binding class</em>
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * @return the instantiated Console</em>
+<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for creating a console cannot be instantiated</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for creating a console cannot be accessed</em>
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed</em>
+<a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">protected</strong> Object setupConsole(<strong class="jxr_keyword">final</strong> Class consoleClass, <strong class="jxr_keyword">final</strong> Class bindingClass) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException {
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         initializeProperties();
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">if</strong> (bindPropertiesToSeparateVariables) {
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>             <strong class="jxr_keyword">for</strong> (Object k : properties.keySet()) {
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, k, properties.get(k));
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>             }
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"properties"</span>, properties);
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         }
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> 
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <strong class="jxr_keyword">return</strong> ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.<strong class="jxr_keyword">class</strong>, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>     }
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> 
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2015. All rights reserved.</div>
