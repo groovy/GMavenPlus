@@ -9,6 +9,6 @@ ${project.name}
 
 * Introduction
 
-  ${project.name} is a rewrite of {{{http://docs.codehaus.org/display/GMAVEN/Home}GMaven}}, a {{{http://maven.apache.org/}Maven}} plugin that allows you to integrate {{{http://groovy.codehaus.org/}Groovy}} into your Maven projects.\
-  Basic usage can be found on the {{{http://docs.codehaus.org/display/GMAVENPLUS/Usage}usage}} page, with additional usages on the {{{http://docs.codehaus.org/display/GMAVENPLUS/Examples}examples}} page.
-  For more information, consult the {{{http://docs.codehaus.org/display/GMAVENPLUS/Home}wiki}}.
+  ${project.name} is a rewrite of {{{https://github.com/groovy/gmaven}GMaven}}, a {{{http://maven.apache.org/}Maven}} plugin that allows you to integrate {{{http://groovy-lang.org/}Groovy}} into your Maven projects.\
+  Basic usage can be found on the {{{https://github.com/groovy/GMavenPlus/wiki/Usage}usage}} page, with additional usages on the {{{https://github.com/groovy/GMavenPlus/wiki/Examples}examples}} page.
+  For more information, consult the {{{https://github.com/groovy/GMavenPlus/wiki}wiki}}.

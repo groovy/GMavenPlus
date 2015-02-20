@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * This class exists solely to trick
- * <a href="http://groovy.codehaus.org/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29">JavaStubCompilationUnit.addSource(java.io.File)</a>
+ * <a href="http://docs.groovy-lang.org/docs/latest/html/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29">JavaStubCompilationUnit.addSource(java.io.File)</a>
  * into letting us use files that don't end in ".groovy" (as a workaround for <a href="http://jira.codehaus.org/browse/GROOVY-5021">GROOVY-5021</a>).
  *
  * @author Keegan Witt

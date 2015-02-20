@@ -620,47 +620,9 @@
     </license>
   </licenses>
   <issueManagement>
-    <system>Jira</system>
-    <url>http://jira.codehaus.org/browse/GMAVENPLUS</url>
+    <system>GitHub Issues</system>
+    <url>http://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
-  <mailingLists>
-    <mailingList>
-      <name>User List</name>
-      <subscribe>http://xircles.codehaus.org/manage_email/user@gmavenplus.codehaus.org</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/manage_email/user@gmavenplus.codehaus.org</unsubscribe>
-      <post>user@gmavenplus.codehaus.org</post>
-      <archive>http://gmavenplus.56682.x6.nabble.com/user-gmavenplus-codehaus-org-f5.html</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/search/list:org.codehaus.gmavenplus#query:%20list%3Aorg.codehaus.gmavenplus.user</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>Dev List</name>
-      <subscribe>http://xircles.codehaus.org/manage_email/dev@gmavenplus.codehaus.org</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/manage_email/dev@gmavenplus.codehaus.org</unsubscribe>
-      <post>dev@gmavenplus.codehaus.org</post>
-      <archive>http://gmavenplus.56682.x6.nabble.com/dev-gmavenplus-codehaus-org-f1.html</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/search/list:org.codehaus.gmavenplus#query:%20list%3Aorg.codehaus.gmavenplus.dev</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>Announcement List</name>
-      <subscribe>http://xircles.codehaus.org/manage_email/announce@gmavenplus.codehaus.org</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/manage_email/announce@gmavenplus.codehaus.org</unsubscribe>
-      <post>announce@gmavenplus.codehaus.org</post>
-      <archive>http://gmavenplus.56682.x6.nabble.com/announce-gmavenplus-codehaus-org-f4.html</archive>
-    </mailingList>
-    <mailingList>
-      <name>SCM List</name>
-      <subscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</subscribe>
-      <unsubscribe>http://xircles.codehaus.org/manage_email/scm@gmavenplus.codehaus.org</unsubscribe>
-      <archive>http://gmavenplus.56682.x6.nabble.com/scm-gmavenplus-codehaus-org-f9.html</archive>
-      <otherArchives>
-        <otherArchive>http://markmail.org/search/list:org.codehaus.gmavenplus#query:%20list%3Aorg.codehaus.gmavenplus.scm</otherArchive>
-      </otherArchives>
-    </mailingList>
-  </mailingLists>
   <scm>
     <url>http://github.com/groovy/GMavenPlus</url>
     <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>

@@ -140,7 +140,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean invokeDynamic;
 
     /**
-     * A <a href="http://groovy.codehaus.org/Advanced+compiler+configuration">script</a>
+     * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a>
      * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
      * or greater).  Note that its encoding must match your source encoding.
      *

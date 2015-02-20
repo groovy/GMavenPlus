@@ -145,7 +145,7 @@ mvn compile
   To take advantage of
   {{{http://docs.oracle.com/javase/7/docs/technotes/guides/vm/multiple-language-support.html#invokedynamic}invokedynamic}},
   you need to include the Groovy jar that
-  {{{http://groovy.codehaus.org/InvokeDynamic+support}supports it}} and set
+  {{{http://groovy-lang.org/indy.html}supports it}} and set
   the configuration option.  If you only include the Groovy indy jar without
   setting the configuration option only Groovy's classes will take advantage
   of invokedynamic, your classes will not.  To do this, you should add
@@ -473,7 +473,7 @@ mvn site
 * {Execute Scripts}
 
   Note that if you'd like to separate script dependencies from those of your
-  project, you can use Groovy's {{{http://groovy.codehaus.org/Grape}@Grab}}
+  project, you can use Groovy's {{{http://groovy-lang.org/grape.html}@Grab}}
   annotation instead of making them plugin dependencies if you prefer.  Any
   plugin dependencies and any project test dependencies are also available for
   use in your scripts (remember that test scope also includes compile scope).
