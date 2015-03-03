@@ -16,17 +16,15 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <javaVersion>1.5</javaVersion>
     <mavenVersion>2.2.1</mavenVersion>
-    <!-- these are properties so integration tests can use them; versions only used for integration tests are controlled in IT root -->
-    <testJavaVersion>1.7</testJavaVersion>
-    <testMavenVersion>3.2.1</testMavenVersion>
     <coberturaPluginVersion>2.6</coberturaPluginVersion>
     <javadocPluginVersion>2.9.1</javadocPluginVersion>
+    <!-- these are properties so integration tests can use them -->
+    <javaVersion>1.5</javaVersion>
     <compilerPluginVersion>3.1</compilerPluginVersion>
+    <junitVersion>4.12</junitVersion>
     <surefirePluginVersion>2.17</surefirePluginVersion>
     <pluginPluginVersion>3.2</pluginPluginVersion>
-    <junitVersion>4.12</junitVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.4.1</groovyVersion>
   </properties>
@@ -80,7 +78,7 @@
       <!-- this will work for all Groovy >= 2.2.0-beta-1; users of older versions will need to pull in 1.0 as a runtime dependency -->
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
-      <version>2.12</version>
+      <version>2.12.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -298,10 +296,10 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[${testMavenVersion},)</version>
+                  <version>[3.0.1,)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[${testJavaVersion},)</version>
+                  <version>[1.8,)</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -519,7 +517,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.5</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -529,7 +527,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.7</version>
+        <version>2.8</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -564,7 +562,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.3</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -574,7 +572,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.12</version>
+        <version>2.13</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
