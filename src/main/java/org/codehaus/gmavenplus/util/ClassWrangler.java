@@ -20,6 +20,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -29,7 +30,7 @@ import java.util.List;
 
 
 /**
- * The base compile mojo, which all compile mojos extend.
+ * Handles getting Groovy classes and version from the specified classpath.
  *
  * @author Keegan Witt
  * @since 1.2
@@ -40,6 +41,11 @@ public class ClassWrangler {
      * Cached Groovy version.
      */
     protected String groovyVersion = null;
+
+    /**
+     * Cached whether Groovy supports invokedynamic (indy jar).
+     */
+    protected Boolean isIndy = null;
 
     /**
      * ClassLoader to use for class wrangling.
@@ -78,29 +84,63 @@ public class ClassWrangler {
     }
 
     /**
-     * Gets the version string of Groovy used from the dependency information.
+     * Gets the version string of Groovy used from classpath.
      *
      * @return The version string of Groovy used by the project
      */
     public String getGroovyVersionString() {
-        /*
-         * You can call InvokerHelper.getVersion() for versions 1.0 - 1.8.x but
-         * not for 1.9+.
-         * You can call GroovySystem.getVersion() for versions 1.6.6+.
-         * And for some reason InvokerHelper.getVersion() was returning an empty
-         * String for 1.5.0, so I decided to just get it from the jar itself.
-         */
         if (groovyVersion == null) {
-            String jar = getGroovyJar();
-            int idx = Integer.MAX_VALUE;
-            for (int i = 0; i < 9; i++) {
-                int newIdx = jar.indexOf("-" + i);
-                if (newIdx >= 0 && newIdx < idx) {
-                    idx = newIdx;
+            // this method should work for all Groovy versions >= 1.6.6
+            try {
+                Class groovySystemClass = getClass("groovy.lang.GroovySystem");
+                String ver = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(groovySystemClass, "getVersion"));
+                if (ver != null && ver.length() > 0) {
+                    groovyVersion = ver;
+                }
+            } catch (ClassNotFoundException e) {
+                // do nothing, will try another way
+            } catch (IllegalAccessException e) {
+                // do nothing, will try another way
+            } catch (InvocationTargetException e) {
+                // do nothing, will try another way
+            } catch (IllegalArgumentException e) {
+                // do nothing, will try another way
+            }
+
+            // this should work for Groovy versions < 1.6.6 (technically can work up to 1.9.0)
+            if (groovyVersion == null) {
+                log.info("Unable to get Groovy version from GroovySystem, trying InvokerHelper.");
+                try {
+                    Class invokerHelperClass = getClass("org.codehaus.groovy.runtime.InvokerHelper");
+                    String ver = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(invokerHelperClass, "getVersion"));
+                    if (ver != null && ver.length() > 0) {
+                        groovyVersion = ver;
+                    }
+                } catch (ClassNotFoundException e) {
+                    // do nothing, will try another way
+                } catch (IllegalAccessException e) {
+                    // do nothing, will try another way
+                } catch (InvocationTargetException e) {
+                    // do nothing, will try another way
+                } catch (IllegalArgumentException e) {
+                    // do nothing, will try another way
                 }
             }
-            if (idx < Integer.MAX_VALUE) {
-                groovyVersion = jar.substring(idx + 1, jar.length() - 4);
+
+            // this handles the circumstances in which neither the GroovySystem or InvokerHelper methods worked (GAE with versions older than  1.6.6 is one example, see https://jira.codehaus.org/browse/GROOVY-3884).  One case this can't handle properly is uber jars that include Groovy.
+            if (groovyVersion == null) {
+                log.warn("Unable to get Groovy version from InvokerHelper or GroovySystem, trying jar name.");
+                String jar = getGroovyJar();
+                int idx = Integer.MAX_VALUE;
+                for (int i = 0; i < 9; i++) {
+                    int newIdx = jar.indexOf("-" + i);
+                    if (newIdx >= 0 && newIdx < idx) {
+                        idx = newIdx;
+                    }
+                }
+                if (idx < Integer.MAX_VALUE) {
+                    groovyVersion = jar.substring(idx + 1, jar.length() - 4).replace("-indy", "").replace("-grooid", "");
+                }
             }
         }
 
@@ -108,13 +148,13 @@ public class ClassWrangler {
     }
 
     /**
-     * Gets the version of Groovy used from the dependency information.
+     * Gets the version of Groovy used from the classpath.
      *
      * @return The version of Groovy used by the project
      */
     public Version getGroovyVersion() {
         try {
-            return Version.parseFromString(getGroovyVersionString().replace("-indy", "").replace("-grooid", ""));
+            return Version.parseFromString(getGroovyVersionString());
         } catch (Exception e) {
             log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
@@ -122,13 +162,22 @@ public class ClassWrangler {
     }
 
     /**
-     * Gets the version of Groovy used from the dependency information.
+     * Gets whether the version of Groovy on the classpath supports invokedynamic.
      *
-     * @return <code>true</code> if the version of Groovy uses InvokeDynamic,
+     * @return <code>true</code> if the version of Groovy uses invokedynamic,
      *         <code>false</code> if not or Groovy dependency cannot be found.
      */
     public boolean isGroovyIndy() {
-        return getGroovyVersionString().contains("-indy");
+        if (isIndy == null) {
+            try {
+                getClass("org.codehaus.groovy.vmplugin.v7.IndyInterface");
+                isIndy = true;
+            } catch (ClassNotFoundException e) {
+                isIndy = false;
+            }
+        }
+
+        return isIndy;
     }
 
     /**
