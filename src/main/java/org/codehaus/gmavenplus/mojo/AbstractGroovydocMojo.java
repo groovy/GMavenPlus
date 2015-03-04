@@ -197,7 +197,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
             return;
         }
         if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC1) == 0) {
@@ -225,7 +225,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
         List groovydocLinks = setupLinks();
         if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC2) < 0) {
-            getLog().warn("Your Groovy version doesn't support Groovydoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope).  You need Groovy 1.6-RC-2 or newer to support this.  Ignoring properties.");
+            getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support Groovydoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope).  You need Groovy 1.6-RC-2 or newer to support this.  Ignoring properties.");
         }
 
         // prevent Java stubs (which lack Javadoc) from overwriting Groovydoc by removing Java sources
@@ -301,7 +301,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     linksList.add(linkArgument);
                 }
             } else {
-                getLog().warn("Requested to use Groovydoc links, but your Groovy version doesn't support it (must be 1.5.2 or newer).  Ignoring links parameter.");
+                getLog().warn("Requested to use Groovydoc links, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 1.5.2 or newer).  Ignoring links parameter.");
             }
         }
 
@@ -345,7 +345,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     groovydocLinks
             );
             if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version doesn't support more than one Groovydoc source directory (must be 1.6-RC-2 or newer).  Only using first source directory (" + sourceDirectories.get(0) + ").");
+                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one Groovydoc source directory (must be 1.6-RC-2 or newer).  Only using first source directory (" + sourceDirectories.get(0) + ").");
             }
         } else {
             groovyDocTool = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),
@@ -356,7 +356,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
                     groovyDocTemplateInfo.defaultClassTemplates()
             );
             if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version doesn't support more than one Groovydoc source directory (must be 1.6-RC-2 or newer).  Only using first source directory (" + sourceDirectories.get(0) + ").");
+                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one Groovydoc source directory (must be 1.6-RC-2 or newer).  Only using first source directory (" + sourceDirectories.get(0) + ").");
             }
         }
 

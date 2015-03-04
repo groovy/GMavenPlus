@@ -163,7 +163,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
             return;
         }
 

@@ -180,7 +180,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersion() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
             return;
         }
 
@@ -268,7 +268,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell , configScript);
             } else {
-                getLog().warn("Requested to use configScript, but your Groovy version doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter.");
+                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter.");
             }
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
@@ -288,13 +288,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
                     } else {
-                        getLog().warn("Tried to use to use an indy version of Groovy, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Ignoring invokeDynamic parameter.");
+                        getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Ignoring invokeDynamic parameter.");
                     }
                 } else {
-                    getLog().warn("Requested to use InvokeDynamic, but the version of Groovy on the project classpath doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
+                    getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
                 }
             } else {
-                getLog().warn("Requested to use invokeDynamic, but your Groovy version doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter.");
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter.");
             }
         }
 
