@@ -127,7 +127,13 @@ public class ClassWrangler {
                 }
             }
 
-            // this handles the circumstances in which neither the GroovySystem or InvokerHelper methods worked (GAE with versions older than  1.6.6 is one example, see https://jira.codehaus.org/browse/GROOVY-3884).  One case this can't handle properly is uber jars that include Groovy.
+            /*
+             * This handles the circumstances in which neither the GroovySystem or InvokerHelper methods
+             * worked (GAE with versions older than 1.6.6 is one example, see
+             * https://jira.codehaus.org/browse/GROOVY-3884).  One case this can't handle properly is uber
+             * jars that include Groovy.  It should also be noted this method assumes jars will be named
+             * in the Maven convention (<artifactId>-<version>-<classifier>.jar).
+             */
             if (groovyVersion == null) {
                 log.warn("Unable to get Groovy version from InvokerHelper or GroovySystem, trying jar name.");
                 String jar = getGroovyJar();
