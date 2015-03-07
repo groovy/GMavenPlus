@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.codehaus.gmavenplus</groupId>
+    <artifactId>gmavenplus-plugin-it-shadedGroovy</artifactId>
+    <version>testing</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>gmavenplus-plugin-it-shadedGroovy-uberModule</artifactId>
+  <version>testing</version>
+  <name>GMavenPlus Plugin Shaded Groovy Uber Jar Module</name>
+
+  <profiles>
+    <profile>
+      <id>indy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>nonindy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>pre2.3-indy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>pre2.3-nonindy</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-all</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>@dependencyPluginVersion@</version>
+        <executions>
+          <execution>
+            <!-- simulate Groovy coming in an uber jar by copying Groovy for test module to use -->
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

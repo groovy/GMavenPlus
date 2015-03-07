@@ -21,13 +21,15 @@
     <javadocPluginVersion>2.10.1</javadocPluginVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.5</javaVersion>
+    <dependencyPluginVersion>2.10</dependencyPluginVersion>
     <compilerPluginVersion>3.2</compilerPluginVersion>
     <junitVersion>4.12</junitVersion>
     <surefirePluginVersion>2.18.1</surefirePluginVersion>
     <pluginPluginVersion>3.4</pluginPluginVersion>
+    <!-- this is a property so that site generation can use it -->
+    <sourcePluginVersion>2.4</sourcePluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.4.1</groovyVersion>
-    <sourcePluginVersion>2.4</sourcePluginVersion>
   </properties>
 
   <dependencies>
@@ -315,7 +317,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
+        <version>${dependencyPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
