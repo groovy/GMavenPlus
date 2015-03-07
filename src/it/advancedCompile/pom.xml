@@ -13,7 +13,7 @@
 
   <artifactId>gmavenplus-plugin-it-advancedCompile</artifactId>
   <name>GMavenPlus Plugin Advanced Compile Test</name>
-  <description>The kitchen sink of compile use cases</description>
+  <description>The kitchen sink of compile use cases.</description>
 
   <properties>
     <maven.compiler.target>1.7</maven.compiler.target>

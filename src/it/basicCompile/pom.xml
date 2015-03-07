@@ -14,7 +14,7 @@
   <artifactId>gmavenplus-plugin-it-basicCompile</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Basic Compile Test</name>
-  <description>The simplest compile use case</description>
+  <description>The simplest compile use case.</description>
 
   <dependencies>
     <dependency>

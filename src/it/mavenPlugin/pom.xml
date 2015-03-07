@@ -13,6 +13,7 @@
   <artifactId>gmavenplus-plugin-it-mavenPlugin</artifactId>
   <version>testing</version>
   <packaging>pom</packaging>
+  <name>GMavenPlus Plugin Configuration Maven Plugin Test</name>
 
   <modules>
     <module>mojo</module>
