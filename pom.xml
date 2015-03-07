@@ -27,6 +27,7 @@
     <pluginPluginVersion>3.4</pluginPluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.4.1</groovyVersion>
+    <sourcePluginVersion>2.4</sourcePluginVersion>
   </properties>
 
   <dependencies>
@@ -436,7 +437,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
+        <version>${sourcePluginVersion}</version>
         <executions>
           <execution>
             <id>attach-sources</id>

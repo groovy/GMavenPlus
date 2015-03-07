@@ -63,7 +63,7 @@ mvn test-compile
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <!-- source plugin \> = 2.1 is required to use the no-fork goals -->
-        <version>2.4</version>
+        <version>${sourcePluginVersion}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
