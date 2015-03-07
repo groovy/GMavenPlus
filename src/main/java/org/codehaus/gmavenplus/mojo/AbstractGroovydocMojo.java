@@ -61,6 +61,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
 
     /**
+     * Groovy 1.5.8 version.
+     */
+    protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);
+
+    /**
      * Groovy 1.5.2 version.
      */
     protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
@@ -200,9 +205,9 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support Groovydoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping Groovydoc generation.");
             return;
         }
-        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC1) == 0) {
-            // Groovy 1.6-RC-1 is excluded because of its dependency on org.apache.tools.ant.types.Path for constructing GroovyDocTool
-            getLog().warn("Groovy 1.6-RC-1 is blacklisted from the supported Groovydoc versions because of its dependency on Ant.  Skipping Groovydoc generation.");
+        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC1) == 0 || classWrangler.getGroovyVersion().compareTo(GROOVY_1_5_8) == 0) {
+            // Groovy 1.5.8 and 1.6-RC-1 are blacklisted because of their dependency on org.apache.tools.ant.types.Path in GroovyDocTool constructor
+            getLog().warn("Groovy 1.5.8 and 1.6-RC-1 are blacklisted from the supported Groovydoc versions because of their dependency on Ant.  Skipping Groovydoc generation.");
             return;
         }
 
