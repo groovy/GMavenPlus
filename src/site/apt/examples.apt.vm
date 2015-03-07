@@ -546,7 +546,7 @@ mvn site
       <!-- this is here for both the script and the project to use -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.13</version>
+      <version>1.1.2</version>
     </dependency>
   </dependencies>
 </project>
