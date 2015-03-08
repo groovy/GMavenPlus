@@ -1,3 +1,5 @@
+// Note Groovy 1.7.1 has a bad dependency on Jansi 1.1.  You have to manually install it into your local cache for the tests to work.  You can download it at http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/jansi/jansi/1.1/.
+
 new File(System.getProperty("user.dir")).eachFileMatch groovy.io.FileType.FILES, ~/groovy-.+\.log/, { it.delete() }
 println "Installing plugin..."
 quietlyRunCommand "${mvn()} -B -P nonindy clean install invoker:install"
