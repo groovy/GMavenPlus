@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2011 - 2015</copyright>
     <item>
-      <title>File: 41,
-             Errors: 828,
+      <title>File: 42,
+             Errors: 1305,
              Warnings: 0,
              Infos: 0
       </title>
@@ -69,7 +69,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  66
+                  58
                 </td>
               </tr>
                           <tr>
@@ -172,6 +172,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.HelpMojo.java">org/codehaus/gmavenplus/mojo/HelpMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  484
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.Scopes.java">org/codehaus/gmavenplus/model/Scopes.java</a>
                 </td>
                 <td>
@@ -209,7 +223,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  86
+                  78
                 </td>
               </tr>
                           <tr>
@@ -335,7 +349,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  35
+                  55
                 </td>
               </tr>
                           <tr>
@@ -489,7 +503,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  93
+                  94
                 </td>
               </tr>
                           <tr>
@@ -531,7 +545,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  25
+                  13
                 </td>
               </tr>
                           <tr>

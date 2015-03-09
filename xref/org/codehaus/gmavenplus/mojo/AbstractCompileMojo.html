@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> invokeDynamic;
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> 
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * A &lt;a href="<a href="http://groovy.codehaus.org/Advanced+compiler+configuration" target="alexandria_uri">http://groovy.codehaus.org/Advanced+compiler+configuration</a>"&gt;script&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     * A &lt;a href="<a href="http://groovy-lang.org/dsls.html" target="alexandria_uri">http://groovy-lang.org/dsls.html</a>#compilation-customizers"&gt;script&lt;/a&gt;</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * for tweaking the configuration options (requires Groovy 2.1.0-beta-1</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * or greater).  Note that its encoding must match your source encoding.</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     *</em>
@@ -188,7 +188,7 @@
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>                 }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>             }
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersion() + <span class="jxr_string">") doesn't support compilation.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping compiling."</span>);
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support compilation.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping compiling."</span>);
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>         }
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> 
@@ -276,7 +276,7 @@
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, <span class="jxr_string">"evaluate"</span>, File.<strong class="jxr_keyword">class</strong>), shell , configScript);
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 getLog().warn(<span class="jxr_string">"Requested to use configScript, but your Groovy version doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter."</span>);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>                 getLog().warn(<span class="jxr_string">"Requested to use configScript, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter."</span>);
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>             }
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>         }
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, <span class="jxr_string">"setDebug"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, debug);
@@ -296,13 +296,13 @@
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>                         optimizationOptions.put(<span class="jxr_string">"indy"</span>, <strong class="jxr_keyword">true</strong>);
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>                         optimizationOptions.put(<span class="jxr_string">"int"</span>, false);
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>                     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>                         getLog().warn(<span class="jxr_string">"Tried to use to use an indy version of Groovy, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>                         getLog().warn(<span class="jxr_string">"Requested to use to use invokedynamic, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring invokeDynamic parameter."</span>);
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>                     }
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>                     getLog().warn(<span class="jxr_string">"Requested to use InvokeDynamic, but the version of Groovy on the project classpath doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                     getLog().warn(<span class="jxr_string">"Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter."</span>);
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>                 }
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>                 getLog().warn(<span class="jxr_string">"Requested to use invokeDynamic, but your Groovy version doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>                 getLog().warn(<span class="jxr_string">"Requested to use invokeDynamic, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter."</span>);
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>             }
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>         }
 <a class="jxr_linenumber" name="L300" href="#L300">300</a> 
