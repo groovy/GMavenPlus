@@ -624,6 +624,15 @@
     <system>GitHub Issues</system>
     <url>http://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
+  <mailingLists>
+    <mailingList>
+      <name>Google Group</name>
+      <subscribe>https://groups.google.com/d/forum/gmavenplus</subscribe>
+      <unsubscribe>https://groups.google.com/d/forum/gmavenplus</unsubscribe>
+      <post>gmavenplus@googlegroups.com</post>
+      <archive>https://groups.google.com/d/forum/gmavenplus</archive>
+    </mailingList>
+  </mailingLists>
   <scm>
     <url>http://github.com/groovy/GMavenPlus</url>
     <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>
