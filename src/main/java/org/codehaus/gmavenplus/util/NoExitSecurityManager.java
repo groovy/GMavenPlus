@@ -68,4 +68,5 @@ public class NoExitSecurityManager extends SecurityManager {
     public void checkExit(final int code) {
         throw new SecurityException("Use of System.exit() is forbidden!");
     }
+
 }

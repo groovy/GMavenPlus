@@ -44,4 +44,5 @@ public enum Scopes {
      * The private scope.
      */
     PRIVATE
+
 }
