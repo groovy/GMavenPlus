@@ -24,9 +24,7 @@ import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import org.codehaus.gmavenplus.util.ReflectionUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -180,25 +178,25 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 try {
                     URL url = new URL(script);
                     // it's a URL to a script
-                    getLog().info("Fetching Groovy script from " + url.toString() + ".");
-                    if (sourceEncoding != null) {
-                        reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
-                    } else {
-                        reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                    }
-                    StringBuilder scriptSource = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        scriptSource.append(line).append("\n");
-                    }
-                    if (scriptSource.toString().length() != 0) {
-                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, scriptSource.toString());
+                    try {
+                        if (sourceEncoding != null) {
+                            reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
+                        } else {
+                            reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                        }
+                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", Reader.class), shell, reader);
+                    } finally {
+                        FileUtils.closeQuietly(reader);
                     }
                 } catch (MalformedURLException e) {
-                    // it's not a URL to a script, treat as a script body
-                    ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
-                } finally {
-                    FileUtils.closeQuietly(reader);
+                    // it's not a URL to a script, try as a filename
+                    File scriptFile = new File(script);
+                    if (scriptFile.isFile()) {
+                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell, scriptFile);
+                    } else {
+                        // it's neither a filename or URL, treat as a script body
+                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                    }
                 }
             } catch (IOException ioe) {
                 if (continueExecuting) {

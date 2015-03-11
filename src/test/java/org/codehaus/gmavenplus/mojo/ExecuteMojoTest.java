@@ -75,6 +75,26 @@ public class ExecuteMojoTest {
         executeMojo.sourceEncoding = "UTF-8";
         File file = new File("target/testFile.txt");
         String line = "Hello world!";
+        executeMojo.scripts = new String[] {new File("src/test/resources/testScript.groovy").getCanonicalPath()};
+
+        String actualLine;
+        try {
+            executeMojo.execute();
+        } finally {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            actualLine = reader.readLine();
+            FileUtils.closeQuietly(reader);
+            file.delete();
+        }
+
+        Assert.assertEquals(line, actualLine);
+    }
+
+    @Test
+    public void testScriptURL() throws Exception {
+        executeMojo.sourceEncoding = "UTF-8";
+        File file = new File("target/testFile.txt");
+        String line = "Hello world!";
         executeMojo.scripts = new String[] {new File("src/test/resources/testScript.groovy").toURI().toURL().toString()};
 
         String actualLine;
