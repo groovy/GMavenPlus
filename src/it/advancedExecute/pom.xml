@@ -141,7 +141,7 @@
             </property>
           </properties>
           <scripts>
-            <script>file:///${project.basedir}/src/main/groovy/HelloWorld.groovy</script>
+            <script>file:///${project.basedir}/src/main/resources/groovyScripts/HelloWorld.groovy</script>
             <script><![CDATA[
               @Grapes([
                   @Grab(group='org.apache.commons', module='commons-lang3', version='${commonsLang3Version}')
