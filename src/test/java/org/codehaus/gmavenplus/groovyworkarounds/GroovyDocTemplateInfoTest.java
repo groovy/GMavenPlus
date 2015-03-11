@@ -72,7 +72,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultPackageTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
-        Assert.assertArrayEquals(new String[]{
+        Assert.assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "packageLevel/package-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "packageLevel/package-summary.html"
         }, groovyDocTemplateInfo.defaultPackageTemplates());
@@ -81,7 +81,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultPackageTemplatesWithGroovy1_5_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 5, 0));
-        Assert.assertArrayEquals(new String[]{
+        Assert.assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "package-level/package-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "package-level/package-summary.html"
         }, groovyDocTemplateInfo.defaultPackageTemplates());
@@ -90,13 +90,13 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultClassTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
-        Assert.assertArrayEquals(new String[]{groovyDocTemplateInfo.templateBaseDir + "classLevel/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
+        Assert.assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "classLevel/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
     }
 
     @Test
     public void testDefaultClassTemplatesWithGroovy1_5_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 5, 0));
-        Assert.assertArrayEquals(new String[]{groovyDocTemplateInfo.templateBaseDir + "class-level/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
+        Assert.assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "class-level/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
     }
 
 }
