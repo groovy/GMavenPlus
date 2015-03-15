@@ -527,6 +527,7 @@ mvn site
               assert "${dollar}project.name" == "${dollar}{project.name}"
             ]]></script>
             <script>file:///${dollar}{project.basedir}/src/main/resources/groovyScripts/someScript.groovy</script>
+            <script>${dollar}{project.basedir}/src/main/resources/groovyScripts/anotherScript.groovy</script>
           </scripts>
         </configuration>
         <dependencies>
