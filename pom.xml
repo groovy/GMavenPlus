@@ -623,7 +623,7 @@
     </license>
   </licenses>
   <issueManagement>
-    <system>GitHub Issues</system>
+    <system>GitHub</system>
     <url>http://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
   <mailingLists>
