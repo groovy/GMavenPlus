@@ -65,6 +65,19 @@
           </dependency>
         </dependencies>
       </dependencyManagement>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.gmavenplus</groupId>
+              <artifactId>gmavenplus-plugin</artifactId>
+              <configuration>
+                <invokeDynamic>true</invokeDynamic>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
     <profile>
       <id>nonindy</id>
@@ -95,6 +108,19 @@
           </dependency>
         </dependencies>
       </dependencyManagement>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.gmavenplus</groupId>
+              <artifactId>gmavenplus-plugin</artifactId>
+              <configuration>
+                <invokeDynamic>true</invokeDynamic>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
     <profile>
       <id>pre2.3-nonindy</id>
