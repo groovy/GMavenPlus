@@ -147,8 +147,16 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException when a method needed for script execution cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      */
-    protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+    protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        Object shell;
+        if (sourceEncoding != null) {
+            Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+            Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
+            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
+            shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, compilerConfigurationClass), compilerConfiguration);
+        } else {
+            shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+        }
         initializeProperties();
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
