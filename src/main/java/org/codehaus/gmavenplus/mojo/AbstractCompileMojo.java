@@ -41,7 +41,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Groovy 2.1.0 beta-3 version.
      */
-    protected static final Version GROOVY_2_1_0_BETA3 = new Version(2, 1, 0, "beta-3");
+    protected static final Version GROOVY_2_0_0_BETA3 = new Version(2, 0, 0, "beta-3");
 
     /**
      * Groovy 2.1.0 beta-1 version.
@@ -281,7 +281,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
         if (invokeDynamic) {
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_0_BETA3) >= 0) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_0_0_BETA3) >= 0) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
@@ -294,7 +294,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                     getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
                 }
             } else {
-                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA3 + " or newer).  Ignoring invokeDynamic parameter.");
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_0_0_BETA3 + " or newer).  Ignoring invokeDynamic parameter.");
             }
         }
 
