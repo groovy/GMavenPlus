@@ -268,7 +268,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
                 ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell , configScript);
             } else {
-                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 2.1.0-beta-1 or newer).  Ignoring configScript parameter.");
+                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer).  Ignoring configScript parameter.");
             }
         }
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
@@ -294,7 +294,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                     getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
                 }
             } else {
-                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 2.0.0-beta-3 or newer).  Ignoring invokeDynamic parameter.");
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA3 + " or newer).  Ignoring invokeDynamic parameter.");
             }
         }
 

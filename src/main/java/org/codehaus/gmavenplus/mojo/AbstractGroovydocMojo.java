@@ -207,7 +207,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         }
         if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0_RC1) == 0 || classWrangler.getGroovyVersion().compareTo(GROOVY_1_5_8) == 0) {
             // Groovy 1.5.8 and 1.6-RC-1 are blacklisted because of their dependency on org.apache.tools.ant.types.Path in GroovyDocTool constructor
-            getLog().warn("Groovy 1.5.8 and 1.6-RC-1 are blacklisted from the supported Groovydoc versions because of their dependency on Ant.  Skipping Groovydoc generation.");
+            getLog().warn("Groovy " + GROOVY_1_5_8 + " and " + GROOVY_1_6_0_RC1 + " are blacklisted from the supported Groovydoc versions because of their dependency on Ant.  Skipping Groovydoc generation.");
             return;
         }
 
