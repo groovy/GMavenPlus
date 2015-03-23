@@ -14,13 +14,13 @@ for (int i = 0; i < groovyVersions.size(); i++) {
     pom.write((pom.text =~ /<groovyVersion>.+/).replaceFirst("<groovyVersion>${groovyVersion}</groovyVersion>"))
     testLabel = groovyVersion
     os = new FileOutputStream(new File("groovy-${testLabel}.log"))
-    profile = "${i < 101 ? 'pre2.3-' : ''}nonindy"
+    profile = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}nonindy"
     testVersion()
-    if (i > 65) {
+    if (i >= groovyVersions.indexOf("2.0.0-beta-3")) {
         System.out.print "Testing Groovy ${groovyVersion}-indy..."
         testLabel = "${groovyVersion}-indy"
         os = new FileOutputStream(new File("groovy-${testLabel}.log"))
-        profile = "${i < 101 ? 'pre2.3-' : ''}indy"
+        profile = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}indy"
         testVersion()
     }
 }
