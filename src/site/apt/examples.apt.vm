@@ -231,6 +231,7 @@ mvn compile
         <extensions>true</extensions>
         <configuration>
           <sdk>
+            <!-- a list of version codes is available here: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html -->
             <platform>21</platform>
             <!-- assumes ANDROID_HOME environment variable is set and SDK matching this version is installed there -->
           </sdk>
