@@ -60,7 +60,7 @@ public class AbstractCompileMojoTest {
 
     @Test
     public void testGetTestSourcesEmpty() {
-        testMojo.setTestSources(new FileSet[] {});
+        testMojo.setTestSources(new FileSet[]{});
         Set<File> testSources = testMojo.getTestSources();
         Assert.assertEquals(0, testSources.size());
     }
@@ -75,6 +75,63 @@ public class AbstractCompileMojoTest {
     public void testGroovyVersionSupportsActionFalse() {
         testMojo = new TestMojo("1.1-rc-3");
         Assert.assertFalse(testMojo.groovyVersionSupportsAction());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava6WithOldGroovy() {
+        testMojo = new TestMojo("2.1.2");
+        testMojo.targetBytecode = "1.6";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava6WithNewerGroovy() {
+        testMojo = new TestMojo("2.1.3");
+        testMojo.targetBytecode = "1.6";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava7WithOldGroovy() {
+        testMojo = new TestMojo("2.1.2");
+        testMojo.targetBytecode = "1.7";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava7WithNewerGroovy() {
+        testMojo = new TestMojo("2.1.3");
+        testMojo.targetBytecode = "1.7";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava8WithOldGroovy() {
+        testMojo = new TestMojo("2.3.2");
+        testMojo.targetBytecode = "1.8";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava8WithNewerGroovy() {
+        testMojo = new TestMojo("2.3.3");
+        testMojo.targetBytecode = "1.8";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9() {
+        testMojo = new TestMojo("2.4.3");
+        testMojo.targetBytecode = "1.9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUnrecognizedJava() {
+        testMojo = new TestMojo("2.1.2");
+        testMojo.targetBytecode = "unknown";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
     private class TestMojo extends AbstractCompileMojo {

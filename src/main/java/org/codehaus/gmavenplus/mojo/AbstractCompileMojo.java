@@ -25,9 +25,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.security.CodeSource;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -37,6 +35,16 @@ import java.util.Set;
  * @since 1.0-beta-1
  */
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
+
+    /**
+     * Groovy 2.3.3 version.
+     */
+    protected static final Version GROOVY_2_3_3 = new Version(2, 3, 3);
+
+    /**
+     * Groovy 2.1.3 version.
+     */
+    protected static final Version GROOVY_2_1_3 = new Version(2, 1, 3);
 
     /**
      * Groovy 2.1.0 beta-1 version.
@@ -84,8 +92,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>1.8</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy >= 2.1.3, and using 1.8 requires Groovy >= 2.3.3.
-     * If an invalid selection is made, Groovy will default to VM determined
-     * version (1.4 or 1.5).
      *
      * @parameter property="maven.compiler.target" default-value="1.5"
      */
@@ -179,6 +185,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                     getLog().warn("Unable to log project compile classpath", e);
                 }
             }
+            verifyGroovyVersionSupportsTargetBytecode();
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
             return;
@@ -299,6 +306,25 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
 
         return compilerConfiguration;
+    }
+
+    /**
+     * Throws an exception if targetBytecode is not supported with this version of Groovy.
+     */
+    protected void verifyGroovyVersionSupportsTargetBytecode() {
+        if ("1.9".equals(targetBytecode)) {
+            throw new IllegalArgumentException("Target bytecode 1.9 is not yet supported.");
+        } else if ("1.8".equals(targetBytecode)) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_3_3) < 0) {
+                throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + ".");
+            }
+        } else if ("1.7".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
+            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_3) < 0) {
+                throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + ".");
+            }
+        } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
+            throw new IllegalArgumentException("Unrecognized target bytecode.");
+        }
     }
 
 }
