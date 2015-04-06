@@ -125,7 +125,7 @@ public class ReflectionUtilsTest {
         ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ReflectionUtils.class));
     }
 
-    private static class TestClass {
+    public static class TestClass {
         public static final String HELLO_WORLD = "Hello world!";
         public String stringField;
 

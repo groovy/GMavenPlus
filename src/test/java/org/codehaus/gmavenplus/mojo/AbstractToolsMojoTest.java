@@ -107,7 +107,7 @@ public class AbstractToolsMojoTest {
         Mockito.verify(properties, Mockito.times(1)).put(Mockito.eq("mojoExecution"), Mockito.anyListOf(MojoExecution.class));
     }
 
-    private class TestMojo extends AbstractToolsMojo {
+    public class TestMojo extends AbstractToolsMojo {
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 

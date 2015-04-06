@@ -56,7 +56,7 @@ public class AbstractGroovyMojoTest {
         Assert.assertFalse(testMojo.isJavaSupportIndy());
     }
 
-    private static class TestGroovyMojo extends AbstractGroovyMojo {
+    public static class TestGroovyMojo extends AbstractGroovyMojo {
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 

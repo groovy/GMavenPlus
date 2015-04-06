@@ -88,13 +88,13 @@ public class ClassWranglerTest {
         Assert.assertFalse(classWrangler.isGroovyIndy());
     }
 
-    private static class GroovySystem {
+    public static class GroovySystem {
         public static String getVersion() {
             return "1.5.0";
         }
     }
 
-    private static class InvokerHelper {
+    public static class InvokerHelper {
         public static String getVersion() {
             return "1.5.0";
         }

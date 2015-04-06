@@ -134,7 +134,7 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
-    private class TestMojo extends AbstractCompileMojo {
+    public class TestMojo extends AbstractCompileMojo {
         private String overrideGroovyVersion = minGroovyVersion.toString();
 
         protected TestMojo() {

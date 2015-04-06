@@ -62,7 +62,7 @@ public class AbstractGroovyStubSourcesMojoTest {
         Assert.assertEquals(0, testMojo.getStubs().size());
     }
 
-    private class TestMojo extends AbstractGroovyStubSourcesMojo {
+    public class TestMojo extends AbstractGroovyStubSourcesMojo {
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 

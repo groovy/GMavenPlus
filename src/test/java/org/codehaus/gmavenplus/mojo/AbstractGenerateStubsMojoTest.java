@@ -132,7 +132,7 @@ public class AbstractGenerateStubsMojoTest {
         Mockito.verify(stub, Mockito.atLeastOnce()).setLastModified(Mockito.anyLong());
     }
 
-    private class TestMojo extends AbstractGenerateStubsMojo {
+    public class TestMojo extends AbstractGenerateStubsMojo {
         private String overrideGroovyVersion = minGroovyVersion.toString();
 
         protected TestMojo() {

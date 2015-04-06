@@ -91,7 +91,7 @@ public class AbstractGroovySourcesMojoTest {
         Assert.assertEquals(new HashSet<File>(), testMojo.getTestSources(true));
     }
 
-    private class TestMojo extends AbstractGroovySourcesMojo {
+    public class TestMojo extends AbstractGroovySourcesMojo {
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 
