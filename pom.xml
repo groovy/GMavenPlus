@@ -658,5 +658,9 @@
     <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/groovy/GMavenPlus</url>
+  </ciManagement>
 
 </project>
