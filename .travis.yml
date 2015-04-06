@@ -1,6 +1,11 @@
 language: java
 jdk: oraclejdk8
+
+# unit test
+#script: "mvn -B clean test"
+
+# integration test
 before_install: "mvn -B clean"
 install: "mvn -B -P nonindy install"
 before_script: "mvn -B invoker:install"
-script: "mvn -B invoker:run"
+script: "mvn -B -P nonindy -Dinvoker.streamLogs=true invoker:run"
