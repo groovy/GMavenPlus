@@ -1,3 +1,6 @@
 language: java
-script: mvn -P nonindy clean install invoker:install invoker:run
 jdk: oraclejdk8
+before_install: "mvn -B clean"
+install: "mvn -B -P nonindy install"
+before_script: "mvn -B invoker:install"
+script: "mvn -B invoker:run"
