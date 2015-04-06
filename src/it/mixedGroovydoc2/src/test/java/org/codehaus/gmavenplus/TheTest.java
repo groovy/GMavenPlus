@@ -32,7 +32,7 @@ public class TheTest {
         File generatedGroovydoc2 = new File("target/gapidocs/org/codehaus/gmavenplus/java/Parent.html");
         Assert.assertTrue(generatedGroovydoc2 + " does not exist.", generatedGroovydoc2.exists());
         Assert.assertTrue(generatedGroovydoc2 + " is empty.", generatedGroovydoc2.length() > 0);
-        File generatedGroovydoc3 = new File("target/gapidocs/org/codehaus/gmavenplus/java/GrandChild.html");
+        File generatedGroovydoc3 = new File("target/gapidocs/org/codehaus/gmavenplus/java/Grandchild.html");
         Assert.assertTrue(generatedGroovydoc3 + " does not exist.", generatedGroovydoc3.exists());
         Assert.assertTrue(generatedGroovydoc3 + " is empty.", generatedGroovydoc3.length() > 0);
     }
