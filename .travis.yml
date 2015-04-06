@@ -1,2 +1,3 @@
 language: java
 script: mvn -P nonindy clean install invoker:install invoker:run
+jdk: oraclejdk8
