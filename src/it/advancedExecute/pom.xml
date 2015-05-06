@@ -16,6 +16,10 @@
   <name>GMavenPlus Plugin Execute Test</name>
   <description>The kitchen sink of script executions.  Because this uses Grapes, it will fail for all versions of Groovy before 1.7-beta-1.</description>
 
+  <properties>
+    <projectProp>yetAnotherValue</projectProp>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -170,6 +174,8 @@
               assert someProp == "someValue"
               log.debug("cliProp is " + cliProp)
               assert cliProp == "someOtherValue"
+              log.debug("projectProp is " + project.properties['projectProp'])
+              assert project.properties['projectProp'] == "yetAnotherValue"
               File targetDir = new File(project.build.directory)
               if (!targetDir.exists())
                   targetDir.mkdir()

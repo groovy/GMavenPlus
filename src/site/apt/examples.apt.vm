@@ -488,6 +488,9 @@ mvn site
 
 +-----------------------------------------------------------------------------+
 <project>
+  <properties>
+    <projectProp>someValue</projectProp>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -522,6 +525,7 @@ mvn site
               log.debug("The mojo execution is " + mojoExecution)
               log.debug("The plugin descriptor is " + mojoExecution.mojoDescriptor)
               log.debug("someProp is " + someProp)
+              log.debug("projectProp is " + project.properties['projectProp'])
               log.debug("Using Java " + SystemUtils.JAVA_VERSION)
               assert ant.project.baseDir == project.basedir
               // the first reference is not filtered by Maven, the second reference is
