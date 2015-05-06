@@ -37,6 +37,15 @@
   </custom>
 
   <body>
+    <head>
+      <!-- here as a workaround to https://issues.apache.org/jira/browse/MSKINS-86 -->
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $("div.source pre").addClass("prettyprint");
+          prettyPrint();
+        });
+      </script>
+    </head>
     <menu name="Overview">
       <item name="Introduction" href="index.html" />
       <item name="Goals" href="plugin-info.html" />
