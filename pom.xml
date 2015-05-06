@@ -469,7 +469,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.4</version>
+        <!--<version>3.4</version>-->
+        <!-- not using latest site to avoid https://issues.apache.org/jira/browse/MSKINS-86 -->
+        <version>3.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
