@@ -30,6 +30,8 @@ Examples
 
   * {{{Groovy_Shell}Groovy Shell}}
 
+  * {{{Groovy_Maven_Plugins}Groovy Maven Plugins}}
+
   []
 
 
@@ -663,3 +665,8 @@ mvn ${project.groupId}:${project.artifactId}:${project.version}:console
 +---------------------------------------+
 mvn gplus:shell
 +---------------------------------------+
+
+* {Groovy Maven Plugins}
+
+An example of how to use GMavenPlus to create Maven plugins in Groovy can be seen in GMavenPlus's own integration test
+of that functionality {{{https://github.com/groovy/GMavenPlus/tree/master/src/it/mavenPlugin}here}}.
