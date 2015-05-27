@@ -119,7 +119,6 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
-
     @Test(expected = IllegalArgumentException.class)
     public void testJava9() {
         testMojo = new TestMojo("2.4.3");
