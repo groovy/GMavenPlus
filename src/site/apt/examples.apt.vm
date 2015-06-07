@@ -205,6 +205,7 @@ mvn compile
 +-----------------------------------------------------------------------------+
 <project>
   <properties>
+    <!-- you can use 1.7 if targeting KitKat (19) or higher -->
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
