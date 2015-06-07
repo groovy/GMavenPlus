@@ -52,5 +52,14 @@ def quietlyRunCommand(def command) {
 }
 
 def mvn() {
-    "mvn${System.getProperty('os.name').contains('Windows') ? '.bat' : ''}"
+    if (System.getProperty('os.name').contains('Windows')) {
+        try {
+            quietlyRunCommand("mvn.bat -v")
+            return "mvn.bat"
+        } catch (IOException ioe) {
+            return "mvn.cmd"
+        }
+    } else {
+        return "mvn"
+    }
 }
