@@ -182,6 +182,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
         int scriptNum = 1;
         for (String script : scripts) {
             try {
+                // TODO: try as file first, then as URL?
                 BufferedReader reader = null;
                 try {
                     URL url = new URL(script);
