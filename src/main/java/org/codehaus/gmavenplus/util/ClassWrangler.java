@@ -28,6 +28,9 @@ import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
+
 
 /**
  * Handles getting Groovy classes and version from the specified classpath.
@@ -93,7 +96,7 @@ public class ClassWrangler {
             // this method should work for all Groovy versions >= 1.6.6
             try {
                 Class groovySystemClass = getClass("groovy.lang.GroovySystem");
-                String ver = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(groovySystemClass, "getVersion"));
+                String ver = (String) invokeStaticMethod(findMethod(groovySystemClass, "getVersion"));
                 if (ver != null && ver.length() > 0) {
                     groovyVersion = ver;
                 }
@@ -112,7 +115,7 @@ public class ClassWrangler {
                 log.info("Unable to get Groovy version from GroovySystem, trying InvokerHelper.");
                 try {
                     Class invokerHelperClass = getClass("org.codehaus.groovy.runtime.InvokerHelper");
-                    String ver = (String) ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(invokerHelperClass, "getVersion"));
+                    String ver = (String) invokeStaticMethod(findMethod(invokerHelperClass, "getVersion"));
                     if (ver != null && ver.length() > 0) {
                         groovyVersion = ver;
                     }
@@ -165,6 +168,53 @@ public class ClassWrangler {
             log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
             return null;
         }
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version
+     * or newer.
+     *
+     * @param detectedVersion the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is the specified version or newer, <code>false</code> otherwise
+     */
+    public static boolean groovyAtLeast(Version detectedVersion, Version compareToVersion) {
+        return detectedVersion.compareTo(compareToVersion) >= 0;
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version.
+     *
+     * @param detectedVersion the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is the specified version, <code>false</code> otherwise
+     */
+    public static boolean groovyIs(Version detectedVersion, Version compareToVersion) {
+        return detectedVersion.compareTo(compareToVersion) == 0;
+    }
+
+    /**
+     * Determines whether the detected Groovy version is
+     * newer than the specified version.
+     *
+     * @param detectedVersion the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is newer than the specified version, <code>false</code> otherwise
+     */
+    public static boolean groovyNewerThan(Version detectedVersion, Version compareToVersion) {
+        return detectedVersion.compareTo(compareToVersion) > 0;
+    }
+
+    /**
+     * Determines whether the detected Groovy version is
+     * older than the specified version.
+     *
+     * @param detectedVersion the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is older than the specified version, <code>false</code> otherwise
+     */
+    public static boolean groovyOlderThan(Version detectedVersion, Version compareToVersion) {
+        return detectedVersion.compareTo(compareToVersion) < 0;
     }
 
     /**

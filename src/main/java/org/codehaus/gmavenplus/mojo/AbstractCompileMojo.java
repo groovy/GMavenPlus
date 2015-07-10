@@ -19,13 +19,14 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.util.*;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -198,17 +199,17 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
         // setup compile options
         Object compilerConfiguration = setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
-        Object transformLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class), classWrangler.getClassLoader());
+        Object groovyClassLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
+        Object transformLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class), classWrangler.getClassLoader());
 
         // add Groovy sources
         Object compilationUnit = setupCompilationUnit(sources, compilerConfigurationClass, compilationUnitClass, groovyClassLoaderClass, compilerConfiguration, groovyClassLoader, transformLoader);
 
         // compile the classes
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "compile"), compilationUnit);
+        invokeMethod(findMethod(compilationUnitClass, "compile"), compilationUnit);
 
         // log compiled classes
-        List classes = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "getClasses"), compilationUnit);
+        List classes = (List) invokeMethod(findMethod(compilationUnitClass, "getClasses"), compilationUnit);
         getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
     }
 
@@ -229,17 +230,17 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      */
     protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
-        if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_6_0) >= 0) {
-            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
+        if (groovyAtLeast(GROOVY_1_6_0)) {
+            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
         } else {
-            compilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
+            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
         }
         getLog().debug("Adding Groovy to compile:");
         for (File source : sources) {
             if (getLog().isDebugEnabled()) {
                 getLog().debug("    " + source);
             }
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
+            invokeMethod(findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
 
         return compilationUnit;
@@ -258,40 +259,40 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      */
     @SuppressWarnings("unchecked")
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
+        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_0_BETA1) >= 0) {
+            if (groovyAtLeast(GROOVY_2_1_0_BETA1)) {
                 Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
                 Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
-                Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
-                Object shellCompilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
-                Object importCustomizer = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(importCustomizerClass));
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(importCustomizerClass, "addStaticStar", String.class), importCustomizer, "org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder");
-                List compilationCustomizers = (List) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getCompilationCustomizers"), shellCompilerConfiguration);
+                Object binding = invokeConstructor(findConstructor(bindingClass));
+                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
+                Object shellCompilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
+                Object importCustomizer = invokeConstructor(findConstructor(importCustomizerClass));
+                invokeMethod(findMethod(importCustomizerClass, "addStaticStar", String.class), importCustomizer, "org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder");
+                List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, "getCompilationCustomizers"), shellCompilerConfiguration);
                 compilationCustomizers.add(importCustomizer);
-                Object shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell , configScript);
+                Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
+                invokeMethod(findMethod(groovyShellClass, "evaluate", File.class), shell, configScript);
             } else {
                 getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer).  Ignoring configScript parameter.");
             }
         }
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+        invokeMethod(findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
+        invokeMethod(findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
+        invokeMethod(findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
+        invokeMethod(findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
+        invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         if (sourceEncoding != null) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
+            invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
+        invokeMethod(findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
         if (invokeDynamic) {
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_0_0_BETA3) >= 0) {
+            if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
-                        Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
+                        Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
                     } else {
@@ -315,11 +316,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if ("1.9".equals(targetBytecode)) {
             throw new IllegalArgumentException("Target bytecode 1.9 is not yet supported.");
         } else if ("1.8".equals(targetBytecode)) {
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_3_3) < 0) {
+            if (groovyOlderThan(GROOVY_2_3_3)) {
                 throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + ".");
             }
         } else if ("1.7".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_2_1_3) < 0) {
+            if (groovyOlderThan(GROOVY_2_1_3)) {
                 throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + ".");
             }
         } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {

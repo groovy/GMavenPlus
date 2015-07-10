@@ -17,10 +17,11 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -109,7 +110,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         }
         if (!properties.containsKey("ant")) {
             try {
-                Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 properties.put("ant", antBuilder);
             } catch (InvocationTargetException e) {
                 logUnableToInitializeAntBuilder(e);

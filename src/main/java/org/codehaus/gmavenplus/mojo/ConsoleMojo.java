@@ -21,10 +21,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -77,7 +78,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 Object console = setupConsole(consoleClass, bindingClass);
 
                 // run the console
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(consoleClass, "run"), console);
+                invokeMethod(findMethod(consoleClass, "run"), console);
 
                 // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
                 bindAntBuilder(consoleClass, bindingClass, console);
@@ -126,11 +127,11 @@ public class ConsoleMojo extends AbstractToolsMojo {
     protected void bindAntBuilder(Class consoleClass, Class bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (properties.containsKey("ant")) {
             Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
-            Object shell = ReflectionUtils.getField(ReflectionUtils.findField(consoleClass, "shell", groovyShellClass), console);
-            Object binding = ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "getContext"), shell);
-            Object antBuilder = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+            Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
+            Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
+            Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
             if (bindPropertiesToSeparateVariables) {
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
+                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
             } else {
                 properties.put("ant", antBuilder);
             }
@@ -148,17 +149,17 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed
      */
     protected Object setupConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object binding = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(bindingClass));
+        Object binding = invokeConstructor(findConstructor(bindingClass));
         initializeProperties();
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
+                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
             }
         } else {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
+            invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
         }
 
-        return ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
+        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
     }
 
 }

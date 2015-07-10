@@ -158,7 +158,50 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * @return <code>true</code> only if the version of Groovy supports this mojo.
      */
     protected boolean groovyVersionSupportsAction() {
-        return classWrangler.getGroovyVersion() != null && classWrangler.getGroovyVersion().compareTo(minGroovyVersion) >= 0;
+        return classWrangler.getGroovyVersion() != null && groovyAtLeast(minGroovyVersion);
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version
+     * or newer.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is the specified version or newer, <code>false</code> otherwise
+     */
+    protected boolean groovyAtLeast(Version version) {
+        return ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), version);
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is the specified version, <code>false</code> otherwise
+     */
+    protected boolean groovyIs(Version version) {
+        return ClassWrangler.groovyIs(classWrangler.getGroovyVersion(), version);
+    }
+
+    /**
+     * Determines whether the detected Groovy version is
+     * newer than the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is newer than the specified version, <code>false</code> otherwise
+     */
+    protected boolean groovyNewerThan(Version version) {
+        return ClassWrangler.groovyNewerThan(classWrangler.getGroovyVersion(), version);
+    }
+
+    /**
+     * Determines whether the detected Groovy version is
+     * older than the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return <code>true</code> if the detected Groovy version is older than the specified version, <code>false</code> otherwise
+     */
+    protected boolean groovyOlderThan(Version version) {
+        return ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), version);
     }
 
 }

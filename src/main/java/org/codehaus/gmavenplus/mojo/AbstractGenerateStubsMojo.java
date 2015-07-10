@@ -20,7 +20,6 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -174,14 +175,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
         // setup stub generation options
         Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);
-        Object groovyClassLoader = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
-        Object javaStubCompilationUnit = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
+        Object groovyClassLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
+        Object javaStubCompilationUnit = invokeConstructor(findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
 
         // add Groovy sources
         addGroovySources(stubSources, compilerConfigurationClass, javaStubCompilationUnitClass, compilerConfiguration, javaStubCompilationUnit);
 
         // generate the stubs
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
+        invokeMethod(findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
 
         // log generated stubs
         getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
@@ -198,19 +199,19 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
+        invokeMethod(findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
+        invokeMethod(findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
+        invokeMethod(findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
+        invokeMethod(findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
+        invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
         if (sourceEncoding != null) {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
+            invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("stubDir", outputDirectory);
         options.put("keepStubs", Boolean.TRUE);
-        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
+        invokeMethod(findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
 
         return compilerConfiguration;
     }
@@ -232,15 +233,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (getLog().isDebugEnabled()) {
                 getLog().debug("    " + source);
             }
-            if (classWrangler.getGroovyVersion().compareTo(GROOVY_1_8_3) >= 0 && (classWrangler.getGroovyVersion().compareTo(GROOVY_1_9_0_BETA1) < 0 || classWrangler.getGroovyVersion().compareTo(GROOVY_1_9_0_BETA3) > 0)) {
+            if (groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3))) {
                 Set<String> extensions;
                 if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
                     extensions = scriptExtensions;
                 } else {
                     extensions = DotGroovyFile.defaultScriptExtensions();
                 }
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, extensions);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
+                invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, extensions);
+                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
             } else {
                 DotGroovyFile dotGroovyFile = new DotGroovyFile(source);
                 Set<String> extensions;
@@ -250,7 +251,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
                     extensions = DotGroovyFile.defaultScriptExtensions();
                 }
                 dotGroovyFile.setScriptExtensions(extensions);
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
+                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
             }
         }
     }

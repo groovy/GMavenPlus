@@ -18,6 +18,8 @@ package org.codehaus.gmavenplus.groovyworkarounds;
 
 import org.codehaus.gmavenplus.model.Version;
 
+import static org.codehaus.gmavenplus.util.ClassWrangler.groovyAtLeast;
+
 
 /**
  * This class was taken mostly from the Groovy project
@@ -64,7 +66,7 @@ public class GroovyDocTemplateInfo {
      */
     public GroovyDocTemplateInfo(Version version) {
         groovyVersion = version;
-        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
+        if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
             templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstringTemplates/";
         } else {
             templateBaseDir = "org/codehaus/groovy/tools/groovydoc/gstring-templates/";
@@ -72,7 +74,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultDocTemplates() {
-        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
+        if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
             return new String[] {
                     templateBaseDir + "topLevel/index.html",
                     templateBaseDir + "topLevel/overview-frame.html",
@@ -85,7 +87,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "topLevel/inherit.gif",
                     DOCGEN_BASEDIR + "groovy.ico"
             };
-        } else if (groovyVersion.compareTo(GROOVY_1_6_0) >= 0) {
+        } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_0)) {
             return new String[] {
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
@@ -97,7 +99,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "top-level/stylesheet.css",
                     templateBaseDir + "top-level/inherit.gif"
             };
-        } else if (groovyVersion.compareTo(GROOVY_1_6_0_RC2) >= 0) {
+        } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_0_RC2)) {
             return new String[] {
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
@@ -118,7 +120,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultPackageTemplates() {
-        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
+        if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
             return new String[] {
                     templateBaseDir + "packageLevel/package-frame.html",
                     templateBaseDir + "packageLevel/package-summary.html"
@@ -132,7 +134,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultClassTemplates() {
-        if (groovyVersion.compareTo(GROOVY_1_6_2) >= 0) {
+        if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
             return new String[] {
                     templateBaseDir + "classLevel/classDocName.html"
             };

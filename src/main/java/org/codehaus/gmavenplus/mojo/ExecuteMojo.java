@@ -22,12 +22,13 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
-import org.codehaus.gmavenplus.util.ReflectionUtils;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -151,19 +152,19 @@ public class ExecuteMojo extends AbstractToolsMojo {
         Object shell;
         if (sourceEncoding != null) {
             Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
-            Object compilerConfiguration = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(compilerConfigurationClass));
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
-            shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass, compilerConfigurationClass), compilerConfiguration);
+            Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
+            invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
+            shell = invokeConstructor(findConstructor(groovyShellClass, compilerConfigurationClass), compilerConfiguration);
         } else {
-            shell = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(groovyShellClass));
+            shell = invokeConstructor(findConstructor(groovyShellClass));
         }
         initializeProperties();
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
-                ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, k, properties.get(k));
+                invokeMethod(findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, k, properties.get(k));
             }
         } else {
-            ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "properties", properties);
+            invokeMethod(findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "properties", properties);
         }
 
         return shell;
@@ -193,7 +194,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                         } else {
                             reader = new BufferedReader(new InputStreamReader(url.openStream()));
                         }
-                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", Reader.class), shell, reader);
+                        invokeMethod(findMethod(groovyShellClass, "evaluate", Reader.class), shell, reader);
                     } finally {
                         FileUtils.closeQuietly(reader);
                     }
@@ -201,10 +202,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
                     // it's not a URL to a script, try as a filename
                     File scriptFile = new File(script);
                     if (scriptFile.isFile()) {
-                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", File.class), shell, scriptFile);
+                        invokeMethod(findMethod(groovyShellClass, "evaluate", File.class), shell, scriptFile);
                     } else {
                         // it's neither a filename or URL, treat as a script body
-                        ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                        invokeMethod(findMethod(groovyShellClass, "evaluate", String.class), shell, script);
                     }
                 }
             } catch (IOException ioe) {
