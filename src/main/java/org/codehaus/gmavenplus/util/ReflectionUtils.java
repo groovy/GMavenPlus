@@ -47,34 +47,34 @@ public class ReflectionUtils {
     /**
      * Size for all caches.
      */
-    private static final int CACHE_SIZE = 256;
+    protected static final int CACHE_SIZE = 256;
 
     /**
      * Cache for {@link Class#getConstructors()}, allowing for fast iteration.
      */
-    private static final Map<Class<?>, Constructor[]> constructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
+    protected static final Map<Class<?>, Constructor[]> constructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
 
     /**
      * Cache for {@link Class#getDeclaredConstructors()}, allowing for fast iteration.
      */
-    private static final Map<Class<?>, Constructor[]> declaredConstructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
+    protected static final Map<Class<?>, Constructor[]> declaredConstructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
 
     /**
      * Cache for {@link Class#getDeclaredFields()}, allowing for fast iteration.
      */
-    private static final Map<Class<?>, Field[]> declaredFieldsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Field[]>(CACHE_SIZE));
+    protected static final Map<Class<?>, Field[]> declaredFieldsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Field[]>(CACHE_SIZE));
 
     /**
      * Cache for {@link Class#getDeclaredMethods()}, allowing for fast iteration.
      */
-    private static final Map<Class<?>, Method[]> declaredMethodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
+    protected static final Map<Class<?>, Method[]> declaredMethodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
 
     /**
      * Cache for {@link Class#getMethods()}, allowing for fast iteration.
      */
-    private static final Map<Class<?>, Method[]> methodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
+    protected static final Map<Class<?>, Method[]> methodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
 
-    private static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
+    protected static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
         List<Method> result = null;
         for (Class<?> ifc : clazz.getInterfaces()) {
             for (Method ifcMethod : ifc.getMethods()) {
@@ -184,7 +184,7 @@ public class ReflectionUtils {
      * @return the cached array of constructors
      * @see Class#getConstructors()
      */
-    private static Constructor[] getConstructors(Class<?> clazz) {
+    protected static Constructor[] getConstructors(Class<?> clazz) {
         Constructor[] result = constructorsCache.get(clazz);
         if (result == null) {
             result  = clazz.getConstructors();
@@ -201,7 +201,7 @@ public class ReflectionUtils {
      * @return the cached array of constructors
      * @see Class#getDeclaredConstructors()
      */
-    private static Constructor[] getDeclaredConstructors(Class<?> clazz) {
+    protected static Constructor[] getDeclaredConstructors(Class<?> clazz) {
         Constructor[] result = declaredConstructorsCache.get(clazz);
         if (result == null) {
             result  = clazz.getDeclaredConstructors();
@@ -218,7 +218,7 @@ public class ReflectionUtils {
      * @return the cached array of fields
      * @see Class#getDeclaredFields()
      */
-    private static Field[] getDeclaredFields(Class<?> clazz) {
+    protected static Field[] getDeclaredFields(Class<?> clazz) {
         Field[] result = declaredFieldsCache.get(clazz);
         if (result == null) {
             result = clazz.getDeclaredFields();
@@ -237,7 +237,7 @@ public class ReflectionUtils {
      * @return the cached array of methods
      * @see Class#getDeclaredMethods()
      */
-    private static Method[] getDeclaredMethods(Class<?> clazz) {
+    protected static Method[] getDeclaredMethods(Class<?> clazz) {
         Method[] result = declaredMethodsCache.get(clazz);
         if (result == null) {
             Method[] declaredMethods = clazz.getDeclaredMethods();

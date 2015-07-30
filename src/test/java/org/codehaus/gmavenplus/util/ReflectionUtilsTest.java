@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.util;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -26,6 +27,14 @@ import org.junit.Test;
  * @author Keegan Witt
  */
 public class ReflectionUtilsTest {
+
+    @Before
+    public void init() {
+        ReflectionUtils.constructorsCache.clear();
+        ReflectionUtils.declaredConstructorsCache.clear();
+        ReflectionUtils.declaredFieldsCache.clear();
+        ReflectionUtils.declaredMethodsCache.clear();
+    }
 
     @Test
     public void testHappyPaths() throws Exception {
