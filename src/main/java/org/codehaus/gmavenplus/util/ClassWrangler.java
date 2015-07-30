@@ -25,8 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
@@ -41,14 +40,24 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
 public class ClassWrangler {
 
     /**
+     * Class cache size
+     */
+    protected static final int CACHE_SIZE = 256;
+
+    /**
+     * A cache of previously looked-up classes, for faster reuse.
+     */
+    protected transient Map<String, Class> classCache = null;
+
+    /**
      * Cached Groovy version.
      */
-    protected String groovyVersion = null;
+    protected transient String groovyVersion = null;
 
     /**
      * Cached whether Groovy supports invokedynamic (indy jar).
      */
-    protected Boolean isIndy = null;
+    protected transient Boolean isIndy = null;
 
     /**
      * ClassLoader to use for class wrangling.
@@ -264,7 +273,7 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when Groovu couldn't be found on the classpath
      */
     protected String getJarPath() throws ClassNotFoundException {
-        Class groovyObjectClass = Class.forName("groovy.lang.GroovyObject", true, classLoader);
+        Class groovyObjectClass = getClass("groovy.lang.GroovyObject");
         String groovyObjectClassPath = String.valueOf(groovyObjectClass.getResource("/" + groovyObjectClass.getName().replace('.', '/') + ".class"));
         if (groovyObjectClassPath == null) {
             CodeSource codeSource = groovyObjectClass.getProtectionDomain().getCodeSource();
@@ -311,7 +320,15 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when a class for the specified class name cannot be found
      */
     public Class getClass(final String className) throws ClassNotFoundException {
-        return Class.forName(className, true, classLoader);
+        if (classCache == null) {
+            classCache = Collections.synchronizedMap(new WeakHashMap<String, Class>(CACHE_SIZE));
+        }
+        Class clazz = classCache.get(className);
+        if (clazz == null) {
+            clazz = Class.forName(className, true, classLoader);
+            classCache.put(className, clazz);
+        }
+        return clazz;
     }
 
     /**
