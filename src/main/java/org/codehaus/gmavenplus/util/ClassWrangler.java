@@ -104,7 +104,7 @@ public class ClassWrangler {
         if (groovyVersion == null) {
             // this method should work for all Groovy versions >= 1.6.6
             try {
-                Class groovySystemClass = getClass("groovy.lang.GroovySystem");
+                Class<?> groovySystemClass = getClass("groovy.lang.GroovySystem");
                 String ver = (String) invokeStaticMethod(findMethod(groovySystemClass, "getVersion"));
                 if (ver != null && ver.length() > 0) {
                     groovyVersion = ver;
@@ -123,7 +123,7 @@ public class ClassWrangler {
             if (groovyVersion == null) {
                 log.info("Unable to get Groovy version from GroovySystem, trying InvokerHelper.");
                 try {
-                    Class invokerHelperClass = getClass("org.codehaus.groovy.runtime.InvokerHelper");
+                    Class<?> invokerHelperClass = getClass("org.codehaus.groovy.runtime.InvokerHelper");
                     String ver = (String) invokeStaticMethod(findMethod(invokerHelperClass, "getVersion"));
                     if (ver != null && ver.length() > 0) {
                         groovyVersion = ver;
@@ -273,7 +273,7 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when Groovu couldn't be found on the classpath
      */
     protected String getJarPath() throws ClassNotFoundException {
-        Class groovyObjectClass = getClass("groovy.lang.GroovyObject");
+        Class<?> groovyObjectClass = getClass("groovy.lang.GroovyObject");
         String groovyObjectClassPath = String.valueOf(groovyObjectClass.getResource("/" + groovyObjectClass.getName().replace('.', '/') + ".class"));
         if (groovyObjectClassPath == null) {
             CodeSource codeSource = groovyObjectClass.getProtectionDomain().getCodeSource();
@@ -319,11 +319,11 @@ public class ClassWrangler {
      * @return the class for the given class name
      * @throws ClassNotFoundException when a class for the specified class name cannot be found
      */
-    public Class getClass(final String className) throws ClassNotFoundException {
+    public Class<?> getClass(final String className) throws ClassNotFoundException {
         if (classCache == null) {
             classCache = Collections.synchronizedMap(new WeakHashMap<String, Class>(CACHE_SIZE));
         }
-        Class clazz = classCache.get(className);
+        Class<?> clazz = classCache.get(className);
         if (clazz == null) {
             clazz = Class.forName(className, true, classLoader);
             classCache.put(className, clazz);

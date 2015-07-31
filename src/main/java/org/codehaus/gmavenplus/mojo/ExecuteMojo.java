@@ -114,7 +114,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
+                Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
                 // create a GroovyShell to run scripts in
                 Object shell = setupShell(groovyShellClass);
@@ -148,10 +148,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException when a method needed for script execution cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      */
-    protected Object setupShell(final Class groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    protected Object setupShell(final Class<?> groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object shell;
         if (sourceEncoding != null) {
-            Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+            Class<?> compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
             Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
             shell = invokeConstructor(findConstructor(groovyShellClass, compilerConfigurationClass), compilerConfiguration);
@@ -179,7 +179,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      * @throws MojoExecutionException when an error occurs during script execution
      */
-    protected void executeScripts(final Class groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
+    protected void executeScripts(final Class<?> groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
         int scriptNum = 1;
         for (String script : scripts) {
             try {

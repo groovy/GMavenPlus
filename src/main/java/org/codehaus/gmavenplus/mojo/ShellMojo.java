@@ -88,11 +88,11 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class shellClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.Groovysh");
-                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
-                Class ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
-                Class verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
-                Class loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
+                Class<?> shellClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.Groovysh");
+                Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
+                Class<?> ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
+                Class<?> verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
+                Class<?> loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
 
                 // create shell to run
                 Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
@@ -134,7 +134,7 @@ public class ShellMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException when a method needed for setting up a shell cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed
      */
-    protected Object setupShell(final Class shellClass, final Class bindingClass, final Class ioClass, final Class verbosityClass, final Class loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupShell(final Class<?> shellClass, final Class<?> bindingClass, final Class<?> ioClass, final Class<?> verbosityClass, final Class<?> loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = invokeConstructor(findConstructor(bindingClass));
         initializeProperties();
         if (bindPropertiesToSeparateVariables) {

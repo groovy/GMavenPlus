@@ -71,8 +71,8 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class consoleClass = classWrangler.getClass("groovy.ui.Console");
-                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
+                Class<?> consoleClass = classWrangler.getClass("groovy.ui.Console");
+                Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
 
                 // create console to run
                 Object console = setupConsole(consoleClass, bindingClass);
@@ -124,9 +124,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
         }
     }
 
-    protected void bindAntBuilder(Class consoleClass, Class bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected void bindAntBuilder(Class<?> consoleClass, Class<?> bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (properties.containsKey("ant")) {
-            Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
+            Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
             Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
@@ -148,7 +148,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException when a method needed for creating a console cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed
      */
-    protected Object setupConsole(final Class consoleClass, final Class bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupConsole(final Class<?> consoleClass, final Class<?> bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = invokeConstructor(findConstructor(bindingClass));
         initializeProperties();
         if (bindPropertiesToSeparateVariables) {

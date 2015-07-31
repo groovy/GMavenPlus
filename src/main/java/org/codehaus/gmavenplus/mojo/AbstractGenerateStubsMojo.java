@@ -169,9 +169,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
 
         // get classes we need with reflection
-        Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
-        Class javaStubCompilationUnitClass = classWrangler.getClass("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
-        Class groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
+        Class<?> compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+        Class<?> javaStubCompilationUnitClass = classWrangler.getClass("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
+        Class<?> groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
 
         // setup stub generation options
         Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);
@@ -227,7 +227,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
-    protected void addGroovySources(final Set<File> stubSources, final Class compilerConfigurationClass, final Class javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
+    protected void addGroovySources(final Set<File> stubSources, final Class<?> compilerConfigurationClass, final Class<?> javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File source : stubSources) {
             if (getLog().isDebugEnabled()) {

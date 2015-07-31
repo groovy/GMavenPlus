@@ -213,11 +213,11 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
         }
 
         // get classes we need with reflection
-        Class groovyDocToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
-        Class outputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.OutputTool");
-        Class fileOutputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
-        Class resourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ResourceManager");
-        Class classpathResourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class<?> groovyDocToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
+        Class<?> outputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.OutputTool");
+        Class<?> fileOutputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
+        Class<?> resourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ResourceManager");
+        Class<?> classpathResourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
 
         // set up Groovydoc options
         Properties docProperties = setupProperties();
@@ -293,7 +293,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
     protected List setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
-            Class linkArgumentClass = null;
+            Class<?> linkArgumentClass = null;
             if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
                 linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
             } else if (groovyAtLeast(GROOVY_1_5_2)) {
@@ -329,7 +329,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for setting up Groovydoc tool cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up Groovydoc tool cannot be completed
      */
-    protected Object createGroovyDocTool(final Class groovyDocToolClass, final Class resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovydocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
         if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
@@ -411,7 +411,7 @@ public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for Groovydoc generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for Groovydoc generation cannot be completed
      */
-    protected void generateGroovydoc(final File outputDirectory, final Class groovyDocToolClass, final Class outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
+    protected void generateGroovydoc(final File outputDirectory, final Class<?> groovyDocToolClass, final Class<?> outputToolClass, final Object fileOutputTool, final List<String> groovydocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
         getLog().debug("Adding sources to generate Groovydoc for:");
         if (getLog().isDebugEnabled()) {
             getLog().debug("    " + groovydocSources);

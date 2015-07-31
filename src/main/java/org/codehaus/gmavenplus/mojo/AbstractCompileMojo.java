@@ -193,9 +193,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
 
         // get classes we need with reflection
-        Class compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
-        Class compilationUnitClass = classWrangler.getClass("org.codehaus.groovy.control.CompilationUnit");
-        Class groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
+        Class<?> compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
+        Class<?> compilationUnitClass = classWrangler.getClass("org.codehaus.groovy.control.CompilationUnit");
+        Class<?> groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
 
         // setup compile options
         Object compilerConfiguration = setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
@@ -228,7 +228,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for setting up compilation unit cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up compilation unit cannot be completed
      */
-    protected Object setupCompilationUnit(final Set<File> sources, final Class compilerConfigurationClass, final Class compilationUnitClass, final Class groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupCompilationUnit(final Set<File> sources, final Class<?> compilerConfigurationClass, final Class<?> compilationUnitClass, final Class<?> groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
         if (groovyAtLeast(GROOVY_1_6_0)) {
             compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);
@@ -258,13 +258,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException when a reflection invocation needed for setting up CompilerConfiguration cannot be completed
      */
     @SuppressWarnings("unchecked")
-    protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (groovyAtLeast(GROOVY_2_1_0_BETA1) && configScript.exists()) {
-                Class bindingClass = classWrangler.getClass("groovy.lang.Binding");
-                Class importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
-                Class groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
+                Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
+                Class<?> importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
+                Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
                 Object binding = invokeConstructor(findConstructor(bindingClass));
                 invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "configuration", compilerConfiguration);
