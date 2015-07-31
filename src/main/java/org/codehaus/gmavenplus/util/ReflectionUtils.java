@@ -250,8 +250,7 @@ public class ReflectionUtils {
                     result[index] = defaultMethod;
                     index++;
                 }
-            }
-            else {
+            } else {
                 result = declaredMethods;
             }
             declaredMethodsCache.put(clazz, result);
@@ -318,8 +317,7 @@ public class ReflectionUtils {
                     result[index] = defaultMethod;
                     index++;
                 }
-            }
-            else {
+            } else {
                 result = methods;
             }
             methodsCache.put(clazz, result);
