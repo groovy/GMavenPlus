@@ -20,14 +20,12 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
@@ -39,8 +37,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @since 1.0-beta-1
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
-    // TODO: support Groovy 1.5.0 - 1.8.1?
     /*
+     * TODO: support Groovy 1.5.0 - 1.8.1?
      * For some reason, the JavaStubCompilationUnit is silently not creating my
      * stubs (although it does create the target directory) when I use other
      * versions.
@@ -228,32 +226,31 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void addGroovySources(final Set<File> stubSources, final Class<?> compilerConfigurationClass, final Class<?> javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
+        Set<String> scriptExtensions = new HashSet<String>();
+        for (File stubSource : stubSources) {
+            scriptExtensions.add(FileUtils.getFileExtension(stubSource));
+        }
+        getLog().debug("Detected Groovy file extensions: "+ scriptExtensions + ".");
+        if (supportsSettingExtensions()) {
+            invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
+        }
         getLog().debug("Adding Groovy to generate stubs for:");
-        for (File source : stubSources) {
+        for (File stubSource : stubSources) {
             if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + source);
+                getLog().debug("    " + stubSource);
             }
-            if (groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3))) {
-                Set<String> extensions;
-                if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
-                    extensions = scriptExtensions;
-                } else {
-                    extensions = DotGroovyFile.defaultScriptExtensions();
-                }
-                invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, extensions);
-                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, source);
+            if (supportsSettingExtensions()) {
+                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, stubSource);
             } else {
-                DotGroovyFile dotGroovyFile = new DotGroovyFile(source);
-                Set<String> extensions;
-                if (scriptExtensions != null && !scriptExtensions.isEmpty()) {
-                    extensions = scriptExtensions;
-                } else {
-                    extensions = DotGroovyFile.defaultScriptExtensions();
-                }
-                dotGroovyFile.setScriptExtensions(extensions);
+                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource);
+                dotGroovyFile.setScriptExtensions(scriptExtensions);
                 invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
             }
         }
+    }
+
+    protected boolean supportsSettingExtensions() {
+        return groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));
     }
 
     /**

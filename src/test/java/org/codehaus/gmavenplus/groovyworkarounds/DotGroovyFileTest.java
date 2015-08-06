@@ -47,32 +47,6 @@ public class DotGroovyFileTest {
     }
 
     @Test
-    public void testGroovyWithDefaultExtensions() {
-        DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
-                new DotGroovyFile("pathname.groovy").setScriptExtensions(DotGroovyFile.defaultScriptExtensions()),
-                new DotGroovyFile("parent", "child.gy").setScriptExtensions(DotGroovyFile.defaultScriptExtensions()),
-                new DotGroovyFile(new File("parent"), "child.gvy").setScriptExtensions(DotGroovyFile.defaultScriptExtensions()),
-                new DotGroovyFile(new File("filename.gsh")).setScriptExtensions(DotGroovyFile.defaultScriptExtensions()),
-                new DotGroovyFile(new File("filename.groovy").toURI()).setScriptExtensions(DotGroovyFile.defaultScriptExtensions())
-        };
-        for (DotGroovyFile dotGroovyFile : dotGroovyFiles) {
-            Assert.assertTrue(dotGroovyFile.getName() + " doesn't end with .groovy", dotGroovyFile.getName().endsWith(".groovy"));
-        }
-    }
-
-    @Test
-    public void testDefaultScriptExtensions() {
-        Set<String> defaultScriptExtensions = new HashSet<String>();
-        defaultScriptExtensions.add("groovy");
-        defaultScriptExtensions.add("gvy");
-        defaultScriptExtensions.add("gy");
-        defaultScriptExtensions.add("gsh");
-
-        Assert.assertEquals(defaultScriptExtensions, DotGroovyFile.defaultScriptExtensions());
-
-    }
-
-    @Test
     public void testNonGroovyFile() {
         DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
                 new DotGroovyFile("pathname.ext"),

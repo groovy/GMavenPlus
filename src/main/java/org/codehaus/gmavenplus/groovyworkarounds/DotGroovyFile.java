@@ -87,22 +87,6 @@ public class DotGroovyFile extends File {
     }
 
     /**
-     * Default Groovy file extensions (currently '.groovy', '.gvy', '.gy', and '.gsh').
-     *
-     * @return The default Groovy file extensions
-     */
-    public static Set<String> defaultScriptExtensions() {
-        Set<String> defaultScriptExtensions = new HashSet<String>();
-
-        defaultScriptExtensions.add("groovy");
-        defaultScriptExtensions.add("gvy");
-        defaultScriptExtensions.add("gy");
-        defaultScriptExtensions.add("gsh");
-
-        return defaultScriptExtensions;
-    }
-
-    /**
      * A method to lie about the file extension and say it is ".groovy".
      *
      * @return Filename with forced <tt>.groovy</tt> extension

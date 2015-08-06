@@ -95,6 +95,16 @@
               <goal>removeStubs</goal>
               <goal>removeTestStubs</goal>
             </goals>
+            <configuration>
+              <sources>
+                <source>
+                  <directory>${project.basedir}/src/main/groovy</directory>
+                  <includes>
+                    <include>**/*.g</include>
+                  </includes>
+                </source>
+              </sources>
+            </configuration>
           </execution>
         </executions>
       </plugin>

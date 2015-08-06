@@ -47,22 +47,44 @@ public class FileUtils {
      * @param file the file to get the extension from
      * @return the file extension
      */
-    public static String getFileExtension(final String file) {
-        String fileName = new File(file).getName();
+    public static String getFileExtension(final File file) {
+        String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
 
     /**
+     * Returns the file extension without the '.' for the given filename, or
+     * the empty string if the file has
+     * no extension.
+     *
+     * @param file the file to get the extension from
+     * @return the file extension
+     */
+    public static String getFileExtension(final String file) {
+        return getFileExtension(new File(file));
+    }
+
+    /**
      * Returns the filename without the extension or '.'.
      *
-     * @param file the name of the file remove the extension from
+     * @param file the file remove the extension from
+     * @return the file name without its path or extension
+     */
+    public static String getNameWithoutExtension(final File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+    }
+
+    /**
+     * Returns the filename without the extension or '.'.
+     *
+     * @param file the file remove the extension from
      * @return the file name without its path or extension
      */
     public static String getNameWithoutExtension(final String file) {
-        String fileName = new File(file).getName();
-        int dotIndex = fileName.lastIndexOf('.');
-        return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
+        return getNameWithoutExtension(new File(file));
     }
 
     /**
