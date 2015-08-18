@@ -77,7 +77,7 @@ public class ReflectionUtils {
     protected static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
         List<Method> result = null;
         for (Class<?> ifc : clazz.getInterfaces()) {
-            for (Method ifcMethod : ifc.getMethods()) {
+            for (Method ifcMethod : getMethods(ifc)) {
                 if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
                     if (result == null) {
                         result = new LinkedList<Method>();
@@ -297,29 +297,15 @@ public class ReflectionUtils {
     /**
      * This variant retrieves {@link Class#getMethods()} from a local cache
      * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     * In addition, it also includes Java 8 default methods from locally implemented
-     * interfaces, since those are effectively to be treated just like methods.
      *
-     *  @param clazz the class to introspect
+     * @param clazz the class to introspect
      * @return the cached array of methods
      * @see Class#getMethods()
      */
     private static Method[] getMethods(Class<?> clazz) {
         Method[] result = methodsCache.get(clazz);
         if (result == null) {
-            Method[] methods = clazz.getMethods();
-            List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
-            if (defaultMethods != null) {
-                result = new Method[methods.length + defaultMethods.size()];
-                System.arraycopy(methods, 0, result, 0, methods.length);
-                int index = methods.length;
-                for (Method defaultMethod : defaultMethods) {
-                    result[index] = defaultMethod;
-                    index++;
-                }
-            } else {
-                result = methods;
-            }
+            result = clazz.getMethods();
             methodsCache.put(clazz, result);
         }
         return result;
