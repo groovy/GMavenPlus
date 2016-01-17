@@ -49,40 +49,10 @@ public class ReflectionUtils {
      */
     private ReflectionUtils() { }
 
-    /**
-     * Size for all caches.
-     */
-    protected static final int CACHE_SIZE = 256;
-
-    /**
-     * Cache for {@link Class#getConstructors()}, allowing for fast iteration.
-     */
-    protected static final Map<Class<?>, Constructor[]> constructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
-
-    /**
-     * Cache for {@link Class#getDeclaredConstructors()}, allowing for fast iteration.
-     */
-    protected static final Map<Class<?>, Constructor[]> declaredConstructorsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor[]>(CACHE_SIZE));
-
-    /**
-     * Cache for {@link Class#getDeclaredFields()}, allowing for fast iteration.
-     */
-    protected static final Map<Class<?>, Field[]> declaredFieldsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Field[]>(CACHE_SIZE));
-
-    /**
-     * Cache for {@link Class#getDeclaredMethods()}, allowing for fast iteration.
-     */
-    protected static final Map<Class<?>, Method[]> declaredMethodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
-
-    /**
-     * Cache for {@link Class#getMethods()}, allowing for fast iteration.
-     */
-    protected static final Map<Class<?>, Method[]> methodsCache = Collections.synchronizedMap(new WeakHashMap<Class<?>, Method[]>(CACHE_SIZE));
-
     protected static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
         List<Method> result = null;
         for (Class<?> ifc : clazz.getInterfaces()) {
-            for (Method ifcMethod : getMethods(ifc)) {
+            for (Method ifcMethod : ifc.getMethods()) {
                 if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
                     if (result == null) {
                         result = new LinkedList<Method>();
@@ -109,7 +79,7 @@ public class ReflectionUtils {
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
-            Constructor[] constructors = searchType.isInterface() ? getConstructors(searchType) : getDeclaredConstructors(searchType);
+            Constructor[] constructors = searchType.isInterface() ? clazz.getConstructors() : clazz.getDeclaredConstructors();
             for (Constructor constructor : constructors) {
                 if (paramTypes == null || Arrays.equals(paramTypes, constructor.getParameterTypes())) {
                     return constructor;
@@ -139,7 +109,7 @@ public class ReflectionUtils {
         }
         Class<?> searchType = clazz;
         while (Object.class != searchType && searchType != null) {
-            Field[] fields = getDeclaredFields(searchType);
+            Field[] fields = searchType.getDeclaredFields();
             for (Field field : fields) {
                 if ((name == null || name.equals(field.getName())) && (type == null || type.equals(field.getType()))) {
                     return field;
@@ -170,66 +140,17 @@ public class ReflectionUtils {
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
-            Method[] methods = searchType.isInterface() ? getMethods(searchType) : getDeclaredMethods(searchType);
-            for (Method method : methods) {
-                if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
-                    return method;
+            Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));
+            if (methods != null) {
+                for (Method method : methods) {
+                    if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
+                        return method;
+                    }
                 }
             }
             searchType = searchType.getSuperclass();
         }
         throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ").");
-    }
-
-    /**
-     * This variant retrieves {@link Class#getConstructors()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of constructors
-     * @see Class#getConstructors()
-     */
-    protected static Constructor[] getConstructors(Class<?> clazz) {
-        Constructor[] result = constructorsCache.get(clazz);
-        if (result == null) {
-            result  = clazz.getConstructors();
-            constructorsCache.put(clazz, result);
-        }
-        return result;
-    }
-
-    /**
-     * This variant retrieves {@link Class#getDeclaredConstructors()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of constructors
-     * @see Class#getDeclaredConstructors()
-     */
-    protected static Constructor[] getDeclaredConstructors(Class<?> clazz) {
-        Constructor[] result = declaredConstructorsCache.get(clazz);
-        if (result == null) {
-            result  = clazz.getDeclaredConstructors();
-            declaredConstructorsCache.put(clazz, result);
-        }
-        return result;
-    }
-
-    /**
-     * This variant retrieves {@link Class#getDeclaredFields()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of fields
-     * @see Class#getDeclaredFields()
-     */
-    protected static Field[] getDeclaredFields(Class<?> clazz) {
-        Field[] result = declaredFieldsCache.get(clazz);
-        if (result == null) {
-            result = clazz.getDeclaredFields();
-            declaredFieldsCache.put(clazz, result);
-        }
-        return result;
     }
 
     /**
@@ -243,22 +164,19 @@ public class ReflectionUtils {
      * @see Class#getDeclaredMethods()
      */
     protected static Method[] getDeclaredMethods(Class<?> clazz) {
-        Method[] result = declaredMethodsCache.get(clazz);
-        if (result == null) {
-            Method[] declaredMethods = clazz.getDeclaredMethods();
-            List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
-            if (defaultMethods != null) {
-                result = new Method[declaredMethods.length + defaultMethods.size()];
-                System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);
-                int index = declaredMethods.length;
-                for (Method defaultMethod : defaultMethods) {
-                    result[index] = defaultMethod;
-                    index++;
-                }
-            } else {
-                result = declaredMethods;
+        Method[] result;
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+        List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
+        if (defaultMethods != null) {
+            result = new Method[declaredMethods.length + defaultMethods.size()];
+            System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);
+            int index = declaredMethods.length;
+            for (Method defaultMethod : defaultMethods) {
+                result[index] = defaultMethod;
+                index++;
             }
-            declaredMethodsCache.put(clazz, result);
+        } else {
+            result = declaredMethods;
         }
         return result;
     }
@@ -297,23 +215,6 @@ public class ReflectionUtils {
     public static Object getField(final Field field, final Object target) throws IllegalAccessException {
         field.setAccessible(true);
         return field.get(target);
-    }
-
-    /**
-     * This variant retrieves {@link Class#getMethods()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of methods
-     * @see Class#getMethods()
-     */
-    private static Method[] getMethods(Class<?> clazz) {
-        Method[] result = methodsCache.get(clazz);
-        if (result == null) {
-            result = clazz.getMethods();
-            methodsCache.put(clazz, result);
-        }
-        return result;
     }
 
     /**
