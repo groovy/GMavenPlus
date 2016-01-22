@@ -43,7 +43,7 @@ public class GroovyDocMojoTest {
     private static final String INTENTIONAL_EXCEPTION_MESSAGE = "Intentionally blowing up.";
 
     @Spy
-    private GroovydocMojo groovydocMojo;
+    private GroovyDocMojo groovydocMojo;
 
     @Before
     public void setup() throws Exception {
