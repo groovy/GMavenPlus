@@ -39,7 +39,7 @@ import java.util.HashSet;
  * @author Keegan Witt
  */
 @RunWith(MockitoJUnitRunner.class)
-public class GroovydocTestsMojoTest {
+public class GroovyDocTestsMojoTest {
     private static final String INTENTIONAL_EXCEPTION_MESSAGE = "Intentionally blowing up.";
 
     @Spy
