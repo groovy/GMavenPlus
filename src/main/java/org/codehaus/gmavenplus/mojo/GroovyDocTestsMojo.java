@@ -40,7 +40,7 @@ import java.net.MalformedURLException;
  * @requiresDependencyResolution test
  * @threadSafe
  */
-public class GroovydocTestsMojo extends AbstractGroovydocMojo {
+public class GroovyDocTestsMojo extends AbstractGroovydocMojo {
 
     /**
      * Executes this mojo.
