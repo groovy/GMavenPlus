@@ -49,7 +49,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-public abstract class AbstractGroovydocMojo extends AbstractGroovySourcesMojo {
+public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Groovy 1.6.0 RC-2 version.
