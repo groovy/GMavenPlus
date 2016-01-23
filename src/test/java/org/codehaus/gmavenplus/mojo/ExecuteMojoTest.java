@@ -18,21 +18,29 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -40,7 +48,6 @@ import java.io.FileReader;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ExecuteMojoTest {
     private ExecuteMojo executeMojo;
 
@@ -49,11 +56,14 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         executeMojo = new ExecuteMojo();
-        executeMojo.mojoExecution = Mockito.mock(MojoExecution.class);
-        MojoDescriptor mockMojoDescriptor = Mockito.mock(MojoDescriptor.class);
-        Mockito.doReturn(mockMojoDescriptor).when(executeMojo.mojoExecution).getMojoDescriptor();
-        Mockito.doReturn("execute").when(mockMojoDescriptor).getGoal();
+        executeMojo.mojoExecution = mock(MojoExecution.class);
+        MavenProject project = mock(MavenProject.class);
+        executeMojo.project = project;
+        MojoDescriptor mockMojoDescriptor = mock(MojoDescriptor.class);
+        doReturn(mockMojoDescriptor).when(executeMojo.mojoExecution).getMojoDescriptor();
+        doReturn("execute").when(mockMojoDescriptor).getGoal();
     }
 
     @Test
@@ -67,7 +77,7 @@ public class ExecuteMojoTest {
         String actualLine = reader.readLine();
         FileUtils.closeQuietly(reader);
 
-        Assert.assertEquals(line, actualLine);
+        assertEquals(line, actualLine);
     }
 
     @Test
@@ -87,7 +97,7 @@ public class ExecuteMojoTest {
             file.delete();
         }
 
-        Assert.assertEquals(line, actualLine);
+        assertEquals(line, actualLine);
     }
 
     @Test
@@ -107,21 +117,21 @@ public class ExecuteMojoTest {
             file.delete();
         }
 
-        Assert.assertEquals(line, actualLine);
+        assertEquals(line, actualLine);
     }
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
-        executeMojo.classWrangler = Mockito.mock(ClassWrangler.class);
-        Mockito.doReturn(Version.parseFromString("1.5.0")).when(executeMojo.classWrangler).getGroovyVersion();
-        Assert.assertTrue(executeMojo.groovyVersionSupportsAction());
+        executeMojo.classWrangler = mock(ClassWrangler.class);
+        doReturn(Version.parseFromString("1.5.0")).when(executeMojo.classWrangler).getGroovyVersion();
+        assertTrue(executeMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
-        executeMojo.classWrangler = Mockito.mock(ClassWrangler.class);
-        Mockito.doReturn(Version.parseFromString("1.0")).when(executeMojo.classWrangler).getGroovyVersion();
-        Assert.assertFalse(executeMojo.groovyVersionSupportsAction());
+        executeMojo.classWrangler = mock(ClassWrangler.class);
+        doReturn(Version.parseFromString("1.0")).when(executeMojo.classWrangler).getGroovyVersion();
+        assertFalse(executeMojo.groovyVersionSupportsAction());
     }
 
 }

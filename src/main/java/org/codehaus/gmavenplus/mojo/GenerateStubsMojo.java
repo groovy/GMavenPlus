@@ -55,8 +55,13 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
         minGroovyVersion = GROOVY_1_8_2;
 
         try {
-            doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
+            try {
+                getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+            } catch (DependencyResolutionRequiredException e) {
+                getLog().warn("Unable to log project compile classpath", e);
+            }
 
+            doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
             resetStubModifiedDates(getStubs());
 
             // add stubs to project source so the Maven Compiler Plugin can find them

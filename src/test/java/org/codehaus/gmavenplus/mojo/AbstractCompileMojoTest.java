@@ -22,16 +22,21 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -39,7 +44,6 @@ import java.util.Set;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AbstractCompileMojoTest {
     private TestMojo testMojo;
 
@@ -48,6 +52,7 @@ public class AbstractCompileMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
     }
 
@@ -55,26 +60,26 @@ public class AbstractCompileMojoTest {
     public void testGetSourcesEmpty() {
         testMojo.setSources(new FileSet[] {});
         Set<File> sources = testMojo.getSources();
-        Assert.assertEquals(0, sources.size());
+        assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSourcesEmpty() {
-        testMojo.setTestSources(new FileSet[]{});
+        testMojo.setTestSources(new FileSet[] {});
         Set<File> testSources = testMojo.getTestSources();
-        Assert.assertEquals(0, testSources.size());
+        assertEquals(0, testSources.size());
     }
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
         testMojo = new TestMojo("1.5.0");
-        Assert.assertTrue(testMojo.groovyVersionSupportsAction());
+        assertTrue(testMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
         testMojo = new TestMojo("1.1-rc-3");
-        Assert.assertFalse(testMojo.groovyVersionSupportsAction());
+        assertFalse(testMojo.groovyVersionSupportsAction());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -137,14 +142,14 @@ public class AbstractCompileMojoTest {
         private String overrideGroovyVersion = minGroovyVersion.toString();
 
         protected TestMojo() {
-            classWrangler = Mockito.mock(ClassWrangler.class);
-            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+            classWrangler = mock(ClassWrangler.class);
+            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         protected TestMojo(String newOverrideGroovyVersion) {
             overrideGroovyVersion = newOverrideGroovyVersion;
-            classWrangler = Mockito.mock(ClassWrangler.class);
-            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+            classWrangler = mock(ClassWrangler.class);
+            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }

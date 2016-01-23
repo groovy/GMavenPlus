@@ -61,8 +61,13 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
         if (!skipTests) {
             minGroovyVersion = GROOVY_1_8_2;
             try {
-                doStubGeneration(getTestSources(), project.getTestClasspathElements(), testStubsOutputDirectory);
+                try {
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                } catch (DependencyResolutionRequiredException e) {
+                    getLog().warn("Unable to log project test classpath", e);
+                }
 
+                doStubGeneration(getTestSources(), project.getTestClasspathElements(), testStubsOutputDirectory);
                 resetStubModifiedDates(getTestStubs());
 
                 // add stubs to project source so the Maven Compiler Plugin can find them

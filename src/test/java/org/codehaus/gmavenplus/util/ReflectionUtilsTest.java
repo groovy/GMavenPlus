@@ -16,9 +16,9 @@
 
 package org.codehaus.gmavenplus.util;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -28,25 +28,17 @@ import org.junit.Test;
  */
 public class ReflectionUtilsTest {
 
-    @Before
-    public void init() {
-        ReflectionUtils.constructorsCache.clear();
-        ReflectionUtils.declaredConstructorsCache.clear();
-        ReflectionUtils.declaredFieldsCache.clear();
-        ReflectionUtils.declaredMethodsCache.clear();
-    }
-
     @Test
     public void testHappyPaths() throws Exception {
         String expectedString = "some string";
         Object test1 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class));
         ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "setStringField", String.class), test1, expectedString);
-        Assert.assertEquals(expectedString, ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "getStringField"), test1));
-        Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld")));
-        Assert.assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumValue(TestClass.ENUM.class, "VALUE"));
-        Assert.assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "HELLO_WORLD", null)));
+        assertEquals(expectedString, ReflectionUtils.invokeMethod(ReflectionUtils.findMethod(TestClass.class, "getStringField"), test1));
+        assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld")));
+        assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumValue(TestClass.ENUM.class, "VALUE"));
+        assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "HELLO_WORLD", null)));
         Object test2 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class, String.class), expectedString );
-        Assert.assertEquals(expectedString, ReflectionUtils.getField(ReflectionUtils.findField(TestClass.class, "stringField", String.class), test2));
+        assertEquals(expectedString, ReflectionUtils.getField(ReflectionUtils.findField(TestClass.class, "stringField", String.class), test2));
     }
 
     @Test(expected = IllegalArgumentException.class)

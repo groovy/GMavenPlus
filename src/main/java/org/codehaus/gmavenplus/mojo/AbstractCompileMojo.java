@@ -24,9 +24,14 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.security.CodeSource;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -172,20 +177,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+
         if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
+
         if (groovyVersionSupportsAction()) {
-            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project compile classpath", e);
-                }
-            }
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
@@ -237,9 +237,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         }
         getLog().debug("Adding Groovy to compile:");
         for (File source : sources) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + source);
-            }
+            getLog().debug("    " + source);
             invokeMethod(findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
         }
 

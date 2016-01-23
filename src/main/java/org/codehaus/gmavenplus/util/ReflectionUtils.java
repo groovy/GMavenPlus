@@ -21,7 +21,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 
 /**
@@ -233,7 +238,7 @@ public class ReflectionUtils {
      * In addition, it also includes Java 8 default methods from locally implemented
      * interfaces, since those are effectively to be treated just like declared methods.
      *
-     *  @param clazz the class to introspect
+     * @param clazz the class to introspect
      * @return the cached array of methods
      * @see Class#getDeclaredMethods()
      */

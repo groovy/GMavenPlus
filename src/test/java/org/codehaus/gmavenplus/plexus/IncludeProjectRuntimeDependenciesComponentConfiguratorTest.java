@@ -21,18 +21,28 @@ import org.codehaus.plexus.component.configurator.converters.lookup.ConverterLoo
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -40,69 +50,73 @@ import java.util.List;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
     @Spy
     private IncludeProjectRuntimeDependenciesComponentConfigurator configurator = new IncludeProjectRuntimeDependenciesComponentConfigurator();
 
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void testConfigureComponent_1() throws Exception {
-        ConverterLookup converterLookup = Mockito.mock(ConverterLookup.class);
+        ConverterLookup converterLookup = mock(ConverterLookup.class);
         Field modifiersField = configurator.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("converterLookup");
         modifiersField.setAccessible(true);
         modifiersField.set(configurator, converterLookup);
-        Object component = Mockito.mock(Object.class);
-        PlexusConfiguration configuration = Mockito.mock(PlexusConfiguration.class);
-        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
-        org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = Mockito.mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
-        ConfigurationListener listener = Mockito.mock(ConfigurationListener.class);
-        Mockito.doNothing().when(configurator).addDependenciesToClassRealm(Mockito.any(ExpressionEvaluator.class), Mockito.any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), Mockito.any(org.codehaus.plexus.classworlds.realm.ClassRealm.class));
+        Object component = mock(Object.class);
+        PlexusConfiguration configuration = mock(PlexusConfiguration.class);
+        ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
+        org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
+        ConfigurationListener listener = mock(ConfigurationListener.class);
+        doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.plexus.classworlds.realm.ClassRealm.class));
 
         configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);
 
-        Mockito.verify(configurator, Mockito.atLeastOnce()).addDependenciesToClassRealm(Mockito.any(ExpressionEvaluator.class), Mockito.any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), Mockito.any(org.codehaus.plexus.classworlds.realm.ClassRealm.class));
-        Mockito.verify(converterLookup, Mockito.atLeastOnce()).registerConverter(Mockito.any(ClassRealmConverter.class));
+        verify(configurator, atLeastOnce()).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.plexus.classworlds.realm.ClassRealm.class));
+        verify(converterLookup, atLeastOnce()).registerConverter(any(ClassRealmConverter.class));
     }
 
     @Test
     public void testConfigureComponent_2() throws Exception {
-        ConverterLookup converterLookup = Mockito.mock(ConverterLookup.class);
+        ConverterLookup converterLookup = mock(ConverterLookup.class);
         Field modifiersField = configurator.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("converterLookup");
         modifiersField.setAccessible(true);
         modifiersField.set(configurator, converterLookup);
-        Object component = Mockito.mock(Object.class);
-        PlexusConfiguration configuration = Mockito.mock(PlexusConfiguration.class);
-        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
-        org.codehaus.classworlds.ClassRealm containerRealm = Mockito.mock(org.codehaus.classworlds.ClassRealm.class);
-        ConfigurationListener listener = Mockito.mock(ConfigurationListener.class);
-        Mockito.doNothing().when(configurator).addDependenciesToClassRealm(Mockito.any(ExpressionEvaluator.class), Mockito.any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), Mockito.any(org.codehaus.classworlds.ClassRealm.class));
+        Object component = mock(Object.class);
+        PlexusConfiguration configuration = mock(PlexusConfiguration.class);
+        ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
+        org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.class);
+        ConfigurationListener listener = mock(ConfigurationListener.class);
+        doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.classworlds.ClassRealm.class));
 
         configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);
 
-        Mockito.verify(configurator, Mockito.atLeastOnce()).addDependenciesToClassRealm(Mockito.any(ExpressionEvaluator.class), Mockito.any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), Mockito.any(org.codehaus.classworlds.ClassRealm.class));
-        Mockito.verify(converterLookup, Mockito.atLeastOnce()).registerConverter(Mockito.any(ClassRealmConverter.class));
+        verify(configurator, atLeastOnce()).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.classworlds.ClassRealm.class));
+        verify(converterLookup, atLeastOnce()).registerConverter(any(ClassRealmConverter.class));
     }
 
     @Test
     public void testAddProjectRuntimeDependenciesToClassRealm() throws Exception {
-        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
-        List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
-        Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
-        org.codehaus.classworlds.ClassRealm containerRealm = Mockito.mock(org.codehaus.classworlds.ClassRealm.class);
+        ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
+        List classpathElements = singletonList("CLASSPATH_ELEMENT");
+        doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
+        org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.class);
         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);
-        Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
-        Mockito.verify(containerRealm, Mockito.times(1)).addConstituent(Mockito.any(URL.class));
+        verify(expressionEvaluator, times(1)).evaluate(anyString());
+        verify(containerRealm, times(1)).addConstituent(any(URL.class));
     }
 
     @Test
     public void testAddProjectRuntimeDependenciesToPlexusClassRealm() throws Exception {
-        ExpressionEvaluator expressionEvaluator = Mockito.mock(ExpressionEvaluator.class);
-        List classpathElements = Arrays.asList("CLASSPATH_ELEMENT");
-        Mockito.doReturn(classpathElements).when(expressionEvaluator).evaluate(Mockito.anyString());
-        org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = Mockito.mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
+        ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
+        List classpathElements = singletonList("CLASSPATH_ELEMENT");
+        doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
+        org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);
-        Mockito.verify(expressionEvaluator, Mockito.times(1)).evaluate(Mockito.anyString());
-        Mockito.verify(containerRealm, Mockito.times(1)).addURL(Mockito.any(URL.class));
+        verify(expressionEvaluator, times(1)).evaluate(anyString());
+        verify(containerRealm, times(1)).addURL(any(URL.class));
     }
 
     @Test
@@ -110,7 +124,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
         List<String> elements = new ArrayList<String>();
         elements.add("ELEMENT_1");
         URL[] urls = configurator.buildURLs(elements);
-        Assert.assertEquals(elements.size(), urls.length);
+        assertEquals(elements.size(), urls.length);
     }
 
 }

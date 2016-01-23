@@ -23,12 +23,19 @@ import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -91,16 +98,15 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected synchronized void doExecute() throws MojoExecutionException, MojoFailureException {
         classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
+        try {
+            getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+        } catch (DependencyResolutionRequiredException e) {
+            getLog().warn("Unable to log project test classpath", e);
+        }
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+
         if (groovyVersionSupportsAction()) {
-            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project test classpath", e);
-                }
-            }
 
             if (scripts == null || scripts.length == 0) {
                 getLog().info("No scripts specified for execution.  Skipping.");

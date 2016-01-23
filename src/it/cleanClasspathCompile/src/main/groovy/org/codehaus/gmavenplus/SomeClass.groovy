@@ -20,11 +20,11 @@ import org.apache.maven.project.MavenProject
 
 
 /**
- * Some Groovydoc.
+ * Some GroovyDoc.
  */
 class SomeClass {
     /**
-     * Some more Groovdoc.
+     * Some more GroovDoc.
      *
      * @param project
      */

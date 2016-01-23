@@ -25,7 +25,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;

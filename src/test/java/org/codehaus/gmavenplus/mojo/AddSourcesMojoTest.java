@@ -22,10 +22,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
+import static java.util.Collections.singletonList;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -33,7 +38,6 @@ import java.util.Arrays;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AddSourcesMojoTest {
     private AddSourcesMojo addSourcesMojo;
 
@@ -44,28 +48,29 @@ public class AddSourcesMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         addSourcesMojo = new AddSourcesMojo();
         addSourcesMojo.project = project;
     }
 
     @Test
     public void testAddSourcePathContainsPath() throws Exception {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
+        doReturn(singletonList(PATH)).when(project).getCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory(PATH);
         addSourcesMojo.sources = new FileSet[] {fs};
         addSourcesMojo.execute();
-        Mockito.verify(project, Mockito.never()).addCompileSourceRoot(Mockito.anyString());
+        verify(project, never()).addCompileSourceRoot(anyString());
     }
 
     @Test
     public void testAddSourcePathNotContainsPath() throws Exception {
-        Mockito.doReturn(Arrays.asList(PATH)).when(project).getCompileSourceRoots();
+        doReturn(singletonList(PATH)).when(project).getCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory("OTHER PATH");
         addSourcesMojo.sources = new FileSet[] {fs};
         addSourcesMojo.execute();
-        Mockito.verify(project, Mockito.times(1)).addCompileSourceRoot(Mockito.anyString());
+        verify(project, times(1)).addCompileSourceRoot(anyString());
     }
 
 }

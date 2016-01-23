@@ -16,10 +16,22 @@
 
 package org.codehaus.gmavenplus.util;
 
+import groovy.lang.GroovySystem;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Assert;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.mockito.ArgumentCaptor;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -31,73 +43,58 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyJar() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(Mockito.anyString());
-        Mockito.doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
-        Assert.assertEquals("groovy-all-1.5.0.jar", classWrangler.getGroovyJar());
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
+        doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
+        assertEquals("groovy-all-1.5.0.jar", classWrangler.getGroovyJar());
     }
 
     @Test
-    public void testGetGroovyVersionStringFromGroovySystem() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doReturn(GroovySystem.class).when(classWrangler).getClass(Mockito.anyString());
-        Assert.assertEquals("1.5.0", classWrangler.getGroovyVersionString());
-    }
-
-    @Test
-    public void testGetGroovyVersionStringFromInvokerHelper() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from InvokerHelper.")).doReturn(InvokerHelper.class).when(classWrangler).getClass(Mockito.anyString());
-        Assert.assertEquals("1.5.0", classWrangler.getGroovyVersionString());
+    public void testGetGroovyVersionStringFromGroovySystemThenFromInvokerHelper() throws Exception {
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
+        ArgumentCaptor<String> classArg = ArgumentCaptor.forClass(String.class);
+        classWrangler.getGroovyVersionString();
+        verify(classWrangler, times(2)).getClass(classArg.capture());
+        assertEquals(GroovySystem.class.getCanonicalName(), classArg.getAllValues().get(0));
+        assertEquals(InvokerHelper.class.getCanonicalName(), classArg.getAllValues().get(1));
     }
 
     @Test
     public void testGetGroovyVersionStringFromJar() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(Mockito.anyString());
-        Mockito.doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
-        Assert.assertEquals("1.5.0", classWrangler.getGroovyVersionString());
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
+        doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
+        assertEquals("1.5.0", classWrangler.getGroovyVersionString());
     }
 
     @Test
     public void testGetGroovyVersionWithIndyFromJar() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(Mockito.anyString());
-        Mockito.doReturn("some/path/groovy-all-2.4.0-indy.jar").when(classWrangler).getJarPath();
-        Assert.assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
+        doReturn("some/path/groovy-all-2.4.0-indy.jar").when(classWrangler).getJarPath();
+        assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
     }
 
     @Test
     public void testGetGroovyVersionWithGrooidFromJar() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doReturn("some/path/groovy-all-2.4.0-grooid.jar").when(classWrangler).getJarPath();
-        Assert.assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doReturn("some/path/groovy-all-2.4.0-grooid.jar").when(classWrangler).getJarPath();
+        assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
     }
 
     @Test
     public void testIsGroovyIndyTrue() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doReturn(null).when(classWrangler).getClass(Mockito.anyString());  // make it appear Groovy is indy
-        Assert.assertTrue(classWrangler.isGroovyIndy());
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doReturn(null).when(classWrangler).getClass(anyString());  // make it appear Groovy is indy
+        assertTrue(classWrangler.isGroovyIndy());
     }
 
     @Test
     public void testIsGroovyIndyFalse() throws Exception {
-        ClassWrangler classWrangler = Mockito.spy(new ClassWrangler(Mockito.mock(ClassLoader.class), Mockito.mock(Log.class)));
-        Mockito.doThrow(new ClassNotFoundException("Throwing exception to make it appear Groovy is not indy.")).when(classWrangler).getClass(Mockito.anyString());
-        Assert.assertFalse(classWrangler.isGroovyIndy());
-    }
-
-    public static class GroovySystem {
-        public static String getVersion() {
-            return "1.5.0";
-        }
-    }
-
-    public static class InvokerHelper {
-        public static String getVersion() {
-            return "1.5.0";
-        }
+        ClassWrangler classWrangler = spy(new ClassWrangler(mock(ClassLoader.class), mock(Log.class)));
+        doThrow(new ClassNotFoundException("Throwing exception to make it appear Groovy is not indy.")).when(classWrangler).getClass(anyString());
+        assertFalse(classWrangler.isGroovyIndy());
     }
 
 }

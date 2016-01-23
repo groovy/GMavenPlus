@@ -325,6 +325,9 @@
         <configuration>
           <source>${javaVersion}</source>
           <target>${javaVersion}</target>
+          <compilerArgs>
+            <compilerArg>-Xlint:all</compilerArg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -585,21 +588,21 @@
         </reportSets>
       </plugin>
       <!--<plugin>-->
-      <!--<groupId>org.apache.maven.plugins</groupId>-->
-      <!--<artifactId>maven-changes-plugin</artifactId>-->
-      <!--<version>2.11</version>-->
-      <!--<reportSets>-->
-      <!--<reportSet>-->
-      <!--<reports>-->
-      <!--<report>github-report</report>-->
-      <!--</reports>-->
-      <!--</reportSet>-->
-      <!--</reportSets>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-changes-plugin</artifactId>-->
+        <!--<version>2.11</version>-->
+        <!--<reportSets>-->
+          <!--<reportSet>-->
+            <!--<reports>-->
+              <!--<report>github-report</report>-->
+            <!--</reports>-->
+          <!--</reportSet>-->
+        <!--</reportSets>-->
       <!--</plugin>-->
       <!--<plugin>-->
-      <!--<groupId>org.apache.maven.plugins</groupId>-->
-      <!--<artifactId>maven-changelog-plugin</artifactId>-->
-      <!--<version>2.3</version>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-changelog-plugin</artifactId>-->
+        <!--<version>2.3</version>-->
       <!--</plugin>-->
     </plugins>
   </reporting>

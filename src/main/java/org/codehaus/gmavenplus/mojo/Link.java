@@ -19,7 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 
 
 /**
- * This class was taken from the Groovy project, so that Groovydoc links can be
+ * This class was taken from the Groovy project, so that GroovyDoc links can be
  * added as mojo parameters without a compile dependency on Groovy.
  *
  * Represents a link pair (href, packages).

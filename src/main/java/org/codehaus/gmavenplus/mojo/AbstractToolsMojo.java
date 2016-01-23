@@ -21,7 +21,8 @@ import org.apache.maven.project.MavenProjectHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
 
 
 /**

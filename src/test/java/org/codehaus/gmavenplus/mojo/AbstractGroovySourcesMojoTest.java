@@ -19,16 +19,18 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
 
 
 /**
@@ -36,7 +38,6 @@ import java.util.HashSet;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AbstractGroovySourcesMojoTest {
     private TestMojo testMojo;
     @Mock
@@ -46,49 +47,50 @@ public class AbstractGroovySourcesMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
-        Mockito.doReturn(basedir).when(project).getBasedir();
+        doReturn(basedir).when(project).getBasedir();
         testMojo.project = project;
     }
 
     @Test
     public void testGetSourceRootsFromDefaultSources() {
-        Assert.assertEquals(1, testMojo.getSourceRoots().length);
+        assertEquals(1, testMojo.getSourceRoots().length);
     }
 
     @Test
     public void testGetSourceRootsFromDefaultSourcesIncludingJava() {
-        Assert.assertEquals(1, testMojo.getSourceRoots(true).length);
+        assertEquals(1, testMojo.getSourceRoots(true).length);
     }
 
     @Test
     public void testGetSourcesFromDefaultSourcesEmpty() {
-        Assert.assertEquals(new HashSet<File>(), testMojo.getSources());
+        assertEquals(new HashSet<File>(), testMojo.getSources());
     }
 
     @Test
     public void testGetSourcesFromDefaultSourcesIncludingJavaEmpty() {
-        Assert.assertEquals(new HashSet<File>(), testMojo.getSources(true));
+        assertEquals(new HashSet<File>(), testMojo.getSources(true));
     }
 
     @Test
     public void testGetTestSourceRootsFromDefaultSources() {
-        Assert.assertEquals(1, testMojo.getTestSourceRoots().length);
+        assertEquals(1, testMojo.getTestSourceRoots().length);
     }
 
     @Test
     public void testGetTestSourceRootsFromDefaultSourcesIncludingJava() {
-        Assert.assertEquals(1, testMojo.getTestSourceRoots(true).length);
+        assertEquals(1, testMojo.getTestSourceRoots(true).length);
     }
 
     @Test
     public void testGetTestSourcesFromDefaultSourcesEmpty() {
-        Assert.assertEquals(new HashSet<File>(), testMojo.getTestSources());
+        assertEquals(new HashSet<File>(), testMojo.getTestSources());
     }
 
     @Test
     public void testGetTestSourcesFromDefaultSourcesIncludingJavaEmpty() {
-        Assert.assertEquals(new HashSet<File>(), testMojo.getTestSources(true));
+        assertEquals(new HashSet<File>(), testMojo.getTestSources(true));
     }
 
     public class TestMojo extends AbstractGroovySourcesMojo {

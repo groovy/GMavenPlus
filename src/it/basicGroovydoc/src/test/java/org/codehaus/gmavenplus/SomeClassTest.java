@@ -26,16 +26,16 @@ public class SomeClassTest {
 
     @Test
     public void testSomeClassExists() {
-        File generatedGroovydoc = new File("target/gapidocs/org/codehaus/gmavenplus/SomeClass.html");
-        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
-        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
+        File generatedGroovyDoc = new File("target/gapidocs/org/codehaus/gmavenplus/SomeClass.html");
+        Assert.assertTrue(generatedGroovyDoc + " does not exist.", generatedGroovyDoc.exists());
+        Assert.assertTrue(generatedGroovyDoc + " is empty.", generatedGroovyDoc.length() > 0);
     }
 
     @Test
     public void testOverviewSummaryExists() {
-        File generatedGroovydoc = new File("target/gapidocs/overview-summary.html");
-        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
-        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
+        File generatedGroovyDoc = new File("target/gapidocs/overview-summary.html");
+        Assert.assertTrue(generatedGroovyDoc + " does not exist.", generatedGroovyDoc.exists());
+        Assert.assertTrue(generatedGroovyDoc + " is empty.", generatedGroovyDoc.length() > 0);
     }
 
 }

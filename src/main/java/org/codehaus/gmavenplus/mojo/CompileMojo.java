@@ -47,6 +47,11 @@ public class CompileMojo extends AbstractCompileMojo {
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
+            try {
+                getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
+            } catch (DependencyResolutionRequiredException e) {
+                getLog().warn("Unable to log project compile classpath", e);
+            }
             doCompile(getSources(), project.getCompileClasspathElements(), outputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);

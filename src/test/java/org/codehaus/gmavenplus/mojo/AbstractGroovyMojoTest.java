@@ -19,10 +19,14 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.model.Version;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 
 /**
@@ -35,25 +39,25 @@ public class AbstractGroovyMojoTest {
 
     @Before
     public void setup() throws Exception {
-        testMojo = Mockito.spy(new TestGroovyMojo());
+        testMojo = spy(new TestGroovyMojo());
     }
 
     @Test
     public void testGetJavaVersion() {
-        Assert.assertTrue(testMojo.getJavaVersionString() != null && testMojo.getJavaVersionString().length() != 0);
-        Assert.assertNotNull(testMojo.getJavaVersion());
+        assertTrue(testMojo.getJavaVersionString() != null && testMojo.getJavaVersionString().length() != 0);
+        assertNotNull(testMojo.getJavaVersion());
     }
 
     @Test
     public void testIsJavaSupportIndy() {
-        Mockito.doReturn(Version.parseFromString("1.7.0_45")).when(testMojo).getJavaVersion();
-        Assert.assertTrue(testMojo.isJavaSupportIndy());
+        doReturn(Version.parseFromString("1.7.0_45")).when(testMojo).getJavaVersion();
+        assertTrue(testMojo.isJavaSupportIndy());
     }
 
     @Test
     public void testIsJavaSupportIndyNo() {
-        Mockito.doReturn(Version.parseFromString("1.6.0_45")).when(testMojo).getJavaVersion();
-        Assert.assertFalse(testMojo.isJavaSupportIndy());
+        doReturn(Version.parseFromString("1.6.0_45")).when(testMojo).getJavaVersion();
+        assertFalse(testMojo.isJavaSupportIndy());
     }
 
     public static class TestGroovyMojo extends AbstractGroovyMojo {

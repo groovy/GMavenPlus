@@ -11,10 +11,10 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gmavenplus-plugin-it-advancedGroovydoc</artifactId>
+  <artifactId>gmavenplus-plugin-it-advancedGroovyDoc</artifactId>
   <version>testing</version>
-  <name>GMavenPlus Plugin Advanced Groovydoc Test</name>
-  <description>The kitchen sink of Groovydoc use cases.  This will fail for Groovy 1.5.8 and 1.6-RC-1.</description>
+  <name>GMavenPlus Plugin Advanced GroovyDoc Test</name>
+  <description>The kitchen sink of GroovyDoc use cases.  This will fail for Groovy 1.5.8 and 1.6-RC-1.</description>
 
   <dependencies>
     <dependency>

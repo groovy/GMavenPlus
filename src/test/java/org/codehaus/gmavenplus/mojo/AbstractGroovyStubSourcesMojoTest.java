@@ -18,15 +18,17 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
 
 
 /**
@@ -34,7 +36,6 @@ import java.io.File;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AbstractGroovyStubSourcesMojoTest {
     private TestMojo testMojo;
     @Mock
@@ -45,21 +46,22 @@ public class AbstractGroovyStubSourcesMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
-        Mockito.doReturn(PATH).when(stubsOutputDirectory).getAbsolutePath();
-        Mockito.doReturn(PATH).when(testStubsOutputDirectory).getAbsolutePath();
+        doReturn(PATH).when(stubsOutputDirectory).getAbsolutePath();
+        doReturn(PATH).when(testStubsOutputDirectory).getAbsolutePath();
         testMojo.stubsOutputDirectory = stubsOutputDirectory;
         testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
     }
 
     @Test
     public void testGetStubsEmpty() {
-        Assert.assertEquals(0, testMojo.getStubs().size());
+        assertEquals(0, testMojo.getStubs().size());
     }
 
     @Test
     public void testGetTestStubsEmpty() {
-        Assert.assertEquals(0, testMojo.getStubs().size());
+        assertEquals(0, testMojo.getStubs().size());
     }
 
     public class TestMojo extends AbstractGroovyStubSourcesMojo {

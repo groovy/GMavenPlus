@@ -31,7 +31,7 @@ import java.net.MalformedURLException;
  */
 
 /**
- * Generates Groovydoc for the test sources.
+ * Generates GroovyDoc for the test sources.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -50,7 +50,7 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            doGroovydocGeneration(getTestSourceRoots(groovydocJavaSources), project.getTestClasspathElements(), testGroovydocOutputDirectory);
+            doGroovyDocGeneration(getTestSourceRoots(groovyDocJavaSources), project.getTestClasspathElements(), testGroovyDocOutputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {

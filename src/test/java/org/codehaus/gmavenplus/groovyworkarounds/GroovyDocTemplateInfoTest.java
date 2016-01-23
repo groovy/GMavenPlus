@@ -1,8 +1,9 @@
 package org.codehaus.gmavenplus.groovyworkarounds;
 
 import org.codehaus.gmavenplus.model.Version;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
 
 
 /**
@@ -15,7 +16,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultDocTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
-        Assert.assertArrayEquals(new String[] {
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/index.html",
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/overview-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/allclasses-frame.html",
@@ -32,7 +33,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultDocTemplatesWithGroovy1_6_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 0));
-        Assert.assertArrayEquals(new String[]{
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "top-level/index.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/overview-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/allclasses-frame.html",
@@ -47,7 +48,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultDocTemplatesWithGroovy1_6_0_RC2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 0, "RC-2"));
-        Assert.assertArrayEquals(new String[]{
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "top-level/index.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/overview-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/allclasses-frame.html",
@@ -60,7 +61,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultDocTemplatesWithGroovy1_5_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 5, 0));
-        Assert.assertArrayEquals(new String[]{
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "top-level/index.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/overview-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "top-level/allclasses-frame.html",
@@ -72,7 +73,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultPackageTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
-        Assert.assertArrayEquals(new String[] {
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "packageLevel/package-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "packageLevel/package-summary.html"
         }, groovyDocTemplateInfo.defaultPackageTemplates());
@@ -81,7 +82,7 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultPackageTemplatesWithGroovy1_5_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 5, 0));
-        Assert.assertArrayEquals(new String[] {
+        assertArrayEquals(new String[] {
                 groovyDocTemplateInfo.templateBaseDir + "package-level/package-frame.html",
                 groovyDocTemplateInfo.templateBaseDir + "package-level/package-summary.html"
         }, groovyDocTemplateInfo.defaultPackageTemplates());
@@ -90,13 +91,13 @@ public class GroovyDocTemplateInfoTest {
     @Test
     public void testDefaultClassTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
-        Assert.assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "classLevel/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
+        assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "classLevel/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
     }
 
     @Test
     public void testDefaultClassTemplatesWithGroovy1_5_0() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 5, 0));
-        Assert.assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "class-level/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
+        assertArrayEquals(new String[] {groovyDocTemplateInfo.templateBaseDir + "class-level/classDocName.html"}, groovyDocTemplateInfo.defaultClassTemplates());
     }
 
 }

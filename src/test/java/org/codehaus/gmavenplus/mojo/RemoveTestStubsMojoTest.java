@@ -17,16 +17,18 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.project.MavenProject;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
 
 
 /**
@@ -34,7 +36,6 @@ import java.io.File;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class RemoveTestStubsMojoTest {
     @Spy
     private RemoveTestStubsMojo removeTestStubsMojo;
@@ -45,25 +46,26 @@ public class RemoveTestStubsMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         project = new MavenProject();
         removeTestStubsMojo.project = project;
-        Mockito.doReturn(PATH).when(testStubsDir).getAbsolutePath();
+        doReturn(PATH).when(testStubsDir).getAbsolutePath();
         removeTestStubsMojo.testStubsOutputDirectory = testStubsDir;
     }
 
     @Test
     public void testRemoveTestSourcePathContainsPath() throws Exception {
         project.addTestCompileSourceRoot(testStubsDir.getAbsolutePath());
-        Assert.assertEquals(1, project.getTestCompileSourceRoots().size());
+        assertEquals(1, project.getTestCompileSourceRoots().size());
         removeTestStubsMojo.execute();
-        Assert.assertEquals(0, project.getTestCompileSourceRoots().size());
+        assertEquals(0, project.getTestCompileSourceRoots().size());
     }
 
     @Test
     public void testRemoveTestSourcePathNotContainsPath() throws Exception {
-        Assert.assertEquals(0, project.getCompileSourceRoots().size());
+        assertEquals(0, project.getCompileSourceRoots().size());
         removeTestStubsMojo.execute();
-        Assert.assertEquals(0, project.getTestCompileSourceRoots().size());
+        assertEquals(0, project.getTestCompileSourceRoots().size());
     }
 
 }

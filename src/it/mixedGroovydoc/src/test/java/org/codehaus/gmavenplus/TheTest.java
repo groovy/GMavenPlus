@@ -26,22 +26,22 @@ public class TheTest {
 
     @Test
     public void testClassesExist() {
-        File generatedGroovydoc1 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Parent.html");
-        File generatedGroovydoc2 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Grandchild.html");
-        File generatedGroovydoc3 = new File("target/gapidocs/org/codehaus/gmavenplus/java/Child.html");
-        Assert.assertTrue(generatedGroovydoc1 + " does not exist.", generatedGroovydoc1.exists());
-        Assert.assertTrue(generatedGroovydoc1 + " is empty.", generatedGroovydoc1.length() > 0);
-        Assert.assertTrue(generatedGroovydoc2 + " does not exist.", generatedGroovydoc2.exists());
-        Assert.assertTrue(generatedGroovydoc2 + " is empty.", generatedGroovydoc2.length() > 0);
-        Assert.assertTrue(generatedGroovydoc3 + " does not exist.", generatedGroovydoc3.exists());
-        Assert.assertTrue(generatedGroovydoc3 + " is empty.", generatedGroovydoc3.length() > 0);
+        File generatedGroovyDoc1 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Parent.html");
+        File generatedGroovyDoc2 = new File("target/gapidocs/org/codehaus/gmavenplus/groovy/Grandchild.html");
+        File generatedGroovyDoc3 = new File("target/gapidocs/org/codehaus/gmavenplus/java/Child.html");
+        Assert.assertTrue(generatedGroovyDoc1 + " does not exist.", generatedGroovyDoc1.exists());
+        Assert.assertTrue(generatedGroovyDoc1 + " is empty.", generatedGroovyDoc1.length() > 0);
+        Assert.assertTrue(generatedGroovyDoc2 + " does not exist.", generatedGroovyDoc2.exists());
+        Assert.assertTrue(generatedGroovyDoc2 + " is empty.", generatedGroovyDoc2.length() > 0);
+        Assert.assertTrue(generatedGroovyDoc3 + " does not exist.", generatedGroovyDoc3.exists());
+        Assert.assertTrue(generatedGroovyDoc3 + " is empty.", generatedGroovyDoc3.length() > 0);
     }
 
     @Test
     public void testOverviewSummaryExists() {
-        File generatedGroovydoc = new File("target/gapidocs/overview-summary.html");
-        Assert.assertTrue(generatedGroovydoc + " does not exist.", generatedGroovydoc.exists());
-        Assert.assertTrue(generatedGroovydoc + " is empty.", generatedGroovydoc.length() > 0);
+        File generatedGroovyDoc = new File("target/gapidocs/overview-summary.html");
+        Assert.assertTrue(generatedGroovyDoc + " does not exist.", generatedGroovyDoc.exists());
+        Assert.assertTrue(generatedGroovyDoc + " is empty.", generatedGroovyDoc.length() > 0);
     }
 
 }

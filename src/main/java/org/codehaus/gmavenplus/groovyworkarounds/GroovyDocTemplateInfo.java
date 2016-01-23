@@ -49,7 +49,7 @@ public class GroovyDocTemplateInfo {
     protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
 
     /**
-     * The version of Groovy whose locations to use for Groovydoc templates.
+     * The version of Groovy whose locations to use for GroovyDoc templates.
      */
     protected Version groovyVersion;
 

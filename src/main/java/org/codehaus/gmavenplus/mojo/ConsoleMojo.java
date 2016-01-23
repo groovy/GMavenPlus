@@ -25,7 +25,12 @@ import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.getField;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -53,16 +58,15 @@ public class ConsoleMojo extends AbstractToolsMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
+        try {
+            getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+        } catch (DependencyResolutionRequiredException e) {
+            getLog().warn("Unable to log project test classpath", e);
+        }
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+
         if (groovyVersionSupportsAction()) {
-            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project test classpath", e);
-                }
-            }
 
             final SecurityManager sm = System.getSecurityManager();
             try {

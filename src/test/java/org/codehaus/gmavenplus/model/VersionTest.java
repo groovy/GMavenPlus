@@ -1,11 +1,14 @@
 package org.codehaus.gmavenplus.model;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -17,60 +20,60 @@ public class VersionTest {
 
     @Test
     public void testCompare() {
-        Assert.assertTrue(new Version(1, 9).compareTo(new Version(1, 10)) < 0);
+        assertTrue(new Version(1, 9).compareTo(new Version(1, 10)) < 0);
     }
 
     @Test
     public void testCompareWithTag() {
         Version v1 = Version.parseFromString("1.0.0");
         Version v2 = Version.parseFromString("1.0.0-beta-1");
-        Assert.assertTrue(v1.compareTo(v2) > 0);
+        assertTrue(v1.compareTo(v2) > 0);
     }
 
     @Test
     public void testCompareWithTwoTags() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-beta-2");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testCompareWithTwoTagsDifferentStartUppercase() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-RC-2");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testCompareWithTwoTagsDifferentStartLowercase() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-rc-2");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testCompareWithSnapshotTag() {
         Version v1 = Version.parseFromString("1.0-SNAPSHOT");
         Version v2 = Version.parseFromString("1.0");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testCompareWithSnapshotTagOtherHasRevision() {
         Version v1 = Version.parseFromString("1.0-SNAPSHOT");
         Version v2 = Version.parseFromString("1.0.1");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
     public void testCompareWithTwoTagsOneSnapshot() {
         Version v1 = Version.parseFromString("1.0.0-beta-1");
         Version v2 = Version.parseFromString("1.0.0-beta-2-SNAPSHOT");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
 
         v1 = Version.parseFromString("1.0.0-beta-1-SNAPSHOT");
         v2 = Version.parseFromString("1.0.0-beta-2");
-        Assert.assertTrue(v1.compareTo(v2) < 0);
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
     @Test
@@ -89,12 +92,12 @@ public class VersionTest {
         versions.add(v5);
         versions.add(v6);
         Collections.sort(versions);
-        Assert.assertEquals(v1, versions.get(0));
-        Assert.assertEquals(v2, versions.get(1));
-        Assert.assertEquals(v3, versions.get(2));
-        Assert.assertEquals(v4, versions.get(3));
-        Assert.assertEquals(v5, versions.get(4));
-        Assert.assertEquals(v6, versions.get(5));
+        assertEquals(v1, versions.get(0));
+        assertEquals(v2, versions.get(1));
+        assertEquals(v3, versions.get(2));
+        assertEquals(v4, versions.get(3));
+        assertEquals(v5, versions.get(4));
+        assertEquals(v6, versions.get(5));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -105,7 +108,7 @@ public class VersionTest {
     @Test
     public void testNotEqualsWithNonVersion() {
         Version version = new Version(0);
-        Assert.assertFalse(version.toString().equals(""));
+        assertFalse(version.toString().equals(""));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -116,7 +119,7 @@ public class VersionTest {
     @Test
     public void testParseFromStringMinorIsNotInteger() {
         Version version = Version.parseFromString("0.a");
-        Assert.assertEquals(0, version.getMinor());
+        assertEquals(0, version.getMinor());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -131,12 +134,12 @@ public class VersionTest {
 
     @Test
     public void testParseFromStringAndToStringWithMultiPartTag() {
-        Assert.assertEquals(5, Version.parseFromString("0-multi-part-tag").toString().split("-").length);
+        assertEquals(5, Version.parseFromString("0-multi-part-tag").toString().split("-").length);
     }
 
     @Test
     public void testParsingJavaVersion() {
-        Assert.assertTrue(Version.parseFromString("1.7.0_45").compareTo(new Version(1, 7), false) >= 0);
+        assertTrue(Version.parseFromString("1.7.0_45").compareTo(new Version(1, 7), false) >= 0);
     }
 
     @Test
@@ -148,17 +151,17 @@ public class VersionTest {
                 .setMinor(num)
                 .setRevision(num)
                 .setTag(str);
-        Assert.assertEquals(num, version.getMajor());
-        Assert.assertEquals(num, version.getMinor());
-        Assert.assertEquals(num, version.getRevision());
-        Assert.assertEquals(str, version.getTag());
+        assertEquals(num, version.getMajor());
+        assertEquals(num, version.getMinor());
+        assertEquals(num, version.getRevision());
+        assertEquals(str, version.getTag());
     }
 
     @Test
     public void testHashCodeSame() {
         Version one = new Version(1, 2, 3);
         Version two = new Version(1, 2, 3);
-        Assert.assertEquals(one.hashCode(), two.hashCode());
+        assertEquals(one.hashCode(), two.hashCode());
     }
 
 }

@@ -25,9 +25,16 @@ import org.codehaus.gmavenplus.util.FileUtils;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -146,22 +153,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation.  Skipping.");
             return;
         }
 
-        if (groovyVersionSupportsAction()) {
-            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-            logPluginClasspath();
-            if (getLog().isDebugEnabled()) {
-                try {
-                    getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
-                } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project compile classpath", e);
-                }
-            }
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
             return;
         }
@@ -236,9 +236,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
         getLog().debug("Adding Groovy to generate stubs for:");
         for (File stubSource : stubSources) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + stubSource);
-            }
+            getLog().debug("    " + stubSource);
             if (supportsSettingExtensions()) {
                 invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, stubSource);
             } else {

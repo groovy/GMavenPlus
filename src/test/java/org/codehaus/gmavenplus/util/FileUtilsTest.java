@@ -16,15 +16,17 @@
 
 package org.codehaus.gmavenplus.util;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -37,39 +39,39 @@ public class FileUtilsTest {
 
     @Test
     public void testGetFileExtension() {
-        Assert.assertEquals("gz", FileUtils.getFileExtension("foo.tar.gz"));
+        assertEquals("gz", FileUtils.getFileExtension("foo.tar.gz"));
     }
 
     @Test
     public void testGetNameWithoutExtension() {
-        Assert.assertEquals("foo.tar", FileUtils.getNameWithoutExtension("foo.tar.gz"));
+        assertEquals("foo.tar", FileUtils.getNameWithoutExtension("foo.tar.gz"));
     }
 
     @Test
     public void testCloseInputStreamQuietly() throws Exception {
-        InputStream inputStream = Mockito.mock(InputStream.class);
-        Mockito.doThrow(ioException).when(inputStream).close();
+        InputStream inputStream = mock(InputStream.class);
+        doThrow(ioException).when(inputStream).close();
         FileUtils.closeQuietly(inputStream);
     }
 
     @Test
     public void testCloseOutputStreamQuietly() throws Exception {
-        OutputStream outputStream = Mockito.mock(OutputStream.class);
-        Mockito.doThrow(ioException).when(outputStream).close();
+        OutputStream outputStream = mock(OutputStream.class);
+        doThrow(ioException).when(outputStream).close();
         FileUtils.closeQuietly(outputStream);
     }
 
     @Test
     public void testCloseReaderQuietly() throws Exception {
-        Reader reader = Mockito.mock(Reader.class);
-        Mockito.doThrow(ioException).when(reader).close();
+        Reader reader = mock(Reader.class);
+        doThrow(ioException).when(reader).close();
         FileUtils.closeQuietly(reader);
     }
 
     @Test
     public void testCloseWriterQuietly() throws Exception {
-        Writer writer = Mockito.mock(Writer.class);
-        Mockito.doThrow(ioException).when(writer).close();
+        Writer writer = mock(Writer.class);
+        doThrow(ioException).when(writer).close();
         FileUtils.closeQuietly(writer);
     }
 

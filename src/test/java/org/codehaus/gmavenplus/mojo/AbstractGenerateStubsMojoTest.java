@@ -22,17 +22,25 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -40,7 +48,6 @@ import java.util.Set;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AbstractGenerateStubsMojoTest {
     private TestMojo testMojo;
 
@@ -58,13 +65,14 @@ public class AbstractGenerateStubsMojoTest {
 
     @Before
     public void setup() {
-        Mockito.doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
-        Mockito.doReturn(new String[] {"STUBBED_INCLUDES"}).when(fileSet).getIncludesArray();
-        Mockito.doReturn("STUBBED_STUBS_DIRECTORY").when(stubsOutputDirectory).getAbsolutePath();
-        Mockito.doReturn("STUBBED_TEST_STUBS_DIRECTORY").when(testStubsOutputDirectory).getAbsolutePath();
-        File mockBaseDir = Mockito.mock(File.class);
-        Mockito.doReturn("STUBBED_BASEDIR").when(mockBaseDir).getAbsolutePath();
-        Mockito.doReturn(mockBaseDir).when(project).getBasedir();
+        MockitoAnnotations.initMocks(this);
+        doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
+        doReturn(new String[] {"STUBBED_INCLUDES"}).when(fileSet).getIncludesArray();
+        doReturn("STUBBED_STUBS_DIRECTORY").when(stubsOutputDirectory).getAbsolutePath();
+        doReturn("STUBBED_TEST_STUBS_DIRECTORY").when(testStubsOutputDirectory).getAbsolutePath();
+        File mockBaseDir = mock(File.class);
+        doReturn("STUBBED_BASEDIR").when(mockBaseDir).getAbsolutePath();
+        doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
         testMojo.setSources(new FileSet[] {});
@@ -76,60 +84,60 @@ public class AbstractGenerateStubsMojoTest {
     @Test
     public void testGetSources() {
         Set<File> sources = testMojo.getSources();
-        Assert.assertEquals(0, sources.size());
+        assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSources() {
         Set<File> testSources = testMojo.getTestSources();
-        Assert.assertEquals(0, testSources.size());
+        assertEquals(0, testSources.size());
     }
 
     @Test
     public void testGetSourcesWithNullSources() {
         testMojo.setSources(null);
         Set<File> sources = testMojo.getSources();
-        Assert.assertEquals(0, sources.size());
+        assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSourcesWithNullTestSources() {
         testMojo.setTestSources(null);
         Set<File> testSources = testMojo.getTestSources();
-        Assert.assertEquals(0, testSources.size());
+        assertEquals(0, testSources.size());
     }
 
     @Test
     public void testGetStubs() {
         Set<File> stubs = testMojo.getStubs();
-        Assert.assertEquals(0, stubs.size());
+        assertEquals(0, stubs.size());
     }
 
     @Test
     public void testGetTestStubs() {
         Set<File> testStubs = testMojo.getTestStubs();
-        Assert.assertEquals(0, testStubs.size());
+        assertEquals(0, testStubs.size());
     }
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
         testMojo = new TestMojo("1.8.2");
-        Assert.assertTrue(testMojo.groovyVersionSupportsAction());
+        assertTrue(testMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
         testMojo = new TestMojo("1.8.1");
-        Assert.assertFalse(testMojo.groovyVersionSupportsAction());
+        assertFalse(testMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testResetStubModifiedDates() {
-        File stub = Mockito.mock(File.class);
+        File stub = mock(File.class);
         Set<File> stubs = new HashSet<File>();
         stubs.add(stub);
         testMojo.resetStubModifiedDates(stubs);
-        Mockito.verify(stub, Mockito.atLeastOnce()).setLastModified(Mockito.anyLong());
+        verify(stub, atLeastOnce()).setLastModified(anyLong());
     }
 
     public class TestMojo extends AbstractGenerateStubsMojo {
@@ -137,15 +145,15 @@ public class AbstractGenerateStubsMojoTest {
 
         protected TestMojo() {
             minGroovyVersion = new Version(1, 8, 2);
-            classWrangler = Mockito.mock(ClassWrangler.class);
-            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+            classWrangler = mock(ClassWrangler.class);
+            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         protected TestMojo(String newOverrideGroovyVersion) {
             minGroovyVersion = new Version(1, 8, 2);
             overrideGroovyVersion = newOverrideGroovyVersion;
-            classWrangler = Mockito.mock(ClassWrangler.class);
-            Mockito.doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+            classWrangler = mock(ClassWrangler.class);
+            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
         }
 
         public void execute() throws MojoExecutionException, MojoFailureException { }

@@ -16,13 +16,16 @@
 
 package org.codehaus.gmavenplus.groovyworkarounds;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -35,14 +38,14 @@ public class DotGroovyFileTest {
     @Test
     public void testGroovyWithCustomExtension() {
         DotGroovyFile[] dotGroovyFiles = new DotGroovyFile[] {
-                new DotGroovyFile("pathname.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
-                new DotGroovyFile("parent", "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
-                new DotGroovyFile(new File("parent"), "child.ext").setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
-                new DotGroovyFile(new File("filename.ext")).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"}))),
-                new DotGroovyFile(new File("filename.ext").toURI()).setScriptExtensions(new HashSet<String>(Arrays.asList(new String[] {"ext"})))
+                new DotGroovyFile("pathname.ext").setScriptExtensions(new HashSet<String>(asList(new String[] {"ext"}))),
+                new DotGroovyFile("parent", "child.ext").setScriptExtensions(new HashSet<String>(asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("parent"), "child.ext").setScriptExtensions(new HashSet<String>(asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("filename.ext")).setScriptExtensions(new HashSet<String>(asList(new String[] {"ext"}))),
+                new DotGroovyFile(new File("filename.ext").toURI()).setScriptExtensions(new HashSet<String>(asList(new String[] {"ext"})))
         };
         for (DotGroovyFile dotGroovyFile : dotGroovyFiles) {
-            Assert.assertTrue(dotGroovyFile.getName() + " doesn't end with .groovy", dotGroovyFile.getName().endsWith(".groovy"));
+            assertTrue(dotGroovyFile.getName() + " doesn't end with .groovy", dotGroovyFile.getName().endsWith(".groovy"));
         }
     }
 
@@ -56,7 +59,7 @@ public class DotGroovyFileTest {
                 new DotGroovyFile(new File("filename.ext").toURI())
         };
         for (DotGroovyFile dotGroovyFile : dotGroovyFiles) {
-            Assert.assertFalse(dotGroovyFile.getName() + " ends with .groovy", dotGroovyFile.getName().endsWith(".groovy"));
+            assertFalse(dotGroovyFile.getName() + " ends with .groovy", dotGroovyFile.getName().endsWith(".groovy"));
         }
     }
 
@@ -66,7 +69,7 @@ public class DotGroovyFileTest {
         extensions.add("ext");
         DotGroovyFile dotGroovyFile = new DotGroovyFile("")
                 .setScriptExtensions(extensions);
-        Assert.assertEquals(extensions, dotGroovyFile.getScriptExtensions());
+        assertEquals(extensions, dotGroovyFile.getScriptExtensions());
     }
 
 }

@@ -21,10 +21,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -32,7 +34,6 @@ import java.io.File;
  *
  * @author Keegan Witt
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AddStubSourcesMojoTest {
     private AddStubSourcesMojo mojo;
     @Mock
@@ -42,6 +43,7 @@ public class AddStubSourcesMojoTest {
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         mojo = new AddStubSourcesMojo();
         mojo.project = project;
         mojo.stubsOutputDirectory = stubsOutputDirectory;
@@ -50,7 +52,7 @@ public class AddStubSourcesMojoTest {
     @Test
     public void testAddsStubsToSources() throws Exception {
         mojo.execute();
-        Mockito.verify(project).addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
+        verify(project).addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
     }
 
 }
