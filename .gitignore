@@ -13,3 +13,6 @@ bin
 *.iws
 .idea
 out
+
+# Sonar
+.sonar
