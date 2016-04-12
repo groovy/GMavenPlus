@@ -128,6 +128,17 @@ public class ConsoleMojo extends AbstractToolsMojo {
         }
     }
 
+    /**
+     * Binds a new AntBuilder to the project properties.
+     *
+     * @param consoleClass the groovy.ui.Console class to use
+     * @param bindingClass the groovy.lang.Binding class to use
+     * @param console the groovy.ui.Console object to use
+     * @throws ClassNotFoundException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     */
     protected void bindAntBuilder(Class<?> consoleClass, Class<?> bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (properties.containsKey("ant")) {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
