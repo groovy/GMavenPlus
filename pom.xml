@@ -75,7 +75,7 @@
       <!-- this will work for all Groovy >= 2.2.0-beta-1; users of older versions will need to pull in 1.0 as a runtime dependency -->
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
-      <version>2.12.1</version>
+      <version>2.13</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -566,7 +566,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
