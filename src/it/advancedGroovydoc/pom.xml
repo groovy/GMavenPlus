@@ -100,15 +100,15 @@
           <stylesheetFile>src/main/resources/stylesheet.css</stylesheetFile>
           <links>
             <link>
-              <packages>java.,javax.,java.lang.</packages>
+              <packages>java,javax,org.ietf.jgss,org.omg,org.w3c,org.xml</packages>
               <href>http://docs.oracle.com/javase/5/docs/api/</href>
             </link>
             <link>
-              <packages>groovy.,org.codehaus.groovy.</packages>
+              <packages>org.codehaus.groovy,groovy</packages>
               <href>http://docs.groovy-lang.org/latest/html/api/</href>
             </link>
             <link>
-              <packages>org.junit.,junit.framework.</packages>
+              <packages>junit,org.junit</packages>
               <href>http://junit.org/javadoc/latest/</href>
             </link>
           </links>
