@@ -99,9 +99,18 @@
           </sources>
           <stylesheetFile>src/main/resources/stylesheet.css</stylesheetFile>
           <links>
-            <link packages="java.,javax.,java.lang" href="http://docs.oracle.com/javase/5/docs/api/" />
-            <link packages="groovy.,org.codehaus.groovy." href="http://docs.groovy-lang.org/latest/html/api/" />
-            <link packages="org.junit.,junit.framework." href="http://junit.org/javadoc/latest/" />
+            <link>
+              <packages>java.,javax.,java.lang.</packages>
+              <href>http://docs.oracle.com/javase/5/docs/api/</href>
+            </link>
+            <link>
+              <packages>groovy.,org.codehaus.groovy.</packages>
+              <href>http://docs.groovy-lang.org/latest/html/api/</href>
+            </link>
+            <link>
+              <packages>org.junit.,junit.framework.</packages>
+              <href>http://junit.org/javadoc/latest/</href>
+            </link>
           </links>
         </configuration>
       </plugin>
