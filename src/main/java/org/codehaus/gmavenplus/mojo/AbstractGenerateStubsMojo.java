@@ -23,6 +23,7 @@ import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.*;
 
@@ -227,14 +228,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
         }
         getLog().debug("Adding Groovy to generate stubs for:");
+        Method addSource = findMethod(javaStubCompilationUnitClass, "addSource", File.class);
         for (File stubSource : stubSources) {
             getLog().debug("    " + stubSource);
             if (supportsSettingExtensions()) {
-                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, stubSource);
+                invokeMethod(addSource, javaStubCompilationUnit, stubSource);
             } else {
                 DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource);
                 dotGroovyFile.setScriptExtensions(scriptExtensions);
-                invokeMethod(findMethod(javaStubCompilationUnitClass, "addSource", File.class), javaStubCompilationUnit, dotGroovyFile);
+                invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);
             }
         }
     }

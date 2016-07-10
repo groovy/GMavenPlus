@@ -21,6 +21,7 @@ import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.security.CodeSource;
 import java.util.List;
@@ -232,9 +233,10 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
         }
         getLog().debug("Adding Groovy to compile:");
+        Method addSourceMethod = findMethod(compilationUnitClass, "addSource", File.class);
         for (File source : sources) {
             getLog().debug("    " + source);
-            invokeMethod(findMethod(compilationUnitClass, "addSource", File.class), compilationUnit, source);
+            invokeMethod(addSourceMethod, compilationUnit, source);
         }
 
         return compilationUnit;

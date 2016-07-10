@@ -23,6 +23,7 @@ import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
@@ -136,12 +137,13 @@ public class ShellMojo extends AbstractToolsMojo {
     protected Object setupShell(final Class<?> shellClass, final Class<?> bindingClass, final Class<?> ioClass, final Class<?> verbosityClass, final Class<?> loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = invokeConstructor(findConstructor(bindingClass));
         initializeProperties();
+        Method setVariable = findMethod(bindingClass, "setVariable", String.class, Object.class);
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
-                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
+                invokeMethod(setVariable, binding, k, properties.get(k));
             }
         } else {
-            invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
+            invokeMethod(setVariable, binding, "properties", properties);
         }
         Object io = invokeConstructor(findConstructor(ioClass));
         invokeMethod(findMethod(ioClass, "setVerbosity", verbosityClass), io, invokeStaticMethod(findMethod(verbosityClass, "forName", String.class), verbosity));

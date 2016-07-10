@@ -23,6 +23,7 @@ import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
@@ -166,12 +167,13 @@ public class ConsoleMojo extends AbstractToolsMojo {
     protected Object setupConsole(final Class<?> consoleClass, final Class<?> bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = invokeConstructor(findConstructor(bindingClass));
         initializeProperties();
+        Method setVariable = findMethod(bindingClass, "setVariable", String.class, Object.class);
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
-                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, k, properties.get(k));
+                invokeMethod(setVariable, binding, k, properties.get(k));
             }
         } else {
-            invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "properties", properties);
+            invokeMethod(setVariable, binding, "properties", properties);
         }
 
         return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);

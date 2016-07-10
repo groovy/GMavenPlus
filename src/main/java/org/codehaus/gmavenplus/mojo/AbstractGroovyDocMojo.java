@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -301,10 +302,12 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                 linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
             }
             if (linkArgumentClass != null) {
+                Method setHref = findMethod(linkArgumentClass, "setHref", String.class);
+                Method setPackages = findMethod(linkArgumentClass, "setPackages", String.class);
                 for (Link link : links) {
                     Object linkArgument = invokeConstructor(findConstructor(linkArgumentClass));
-                    invokeMethod(findMethod(linkArgumentClass, "setHref", String.class), linkArgument, link.getHref());
-                    invokeMethod(findMethod(linkArgumentClass, "setPackages", String.class), linkArgument, link.getPackages());
+                    invokeMethod(setHref, linkArgument, link.getHref());
+                    invokeMethod(setPackages, linkArgument, link.getPackages());
                     linksList.add(linkArgument);
                 }
             } else {
@@ -422,8 +425,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
             invokeMethod(findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, groovyDocSources);
         } else {
+            Method add = findMethod(groovyDocToolClass, "add", String.class);
             for (String groovyDocSource : groovyDocSources) {
-                invokeMethod(findMethod(groovyDocToolClass, "add", String.class), groovyDocTool, groovyDocSource);
+                invokeMethod(add, groovyDocTool, groovyDocSource);
             }
         }
         invokeMethod(findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());

@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -165,12 +166,13 @@ public class ExecuteMojo extends AbstractToolsMojo {
             shell = invokeConstructor(findConstructor(groovyShellClass));
         }
         initializeProperties();
+        Method setProperty = findMethod(groovyShellClass, "setProperty", String.class, Object.class);
         if (bindPropertiesToSeparateVariables) {
             for (Object k : properties.keySet()) {
-                invokeMethod(findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, k, properties.get(k));
+                invokeMethod(setProperty, shell, k, properties.get(k));
             }
         } else {
-            invokeMethod(findMethod(groovyShellClass, "setProperty", String.class, Object.class), shell, "properties", properties);
+            invokeMethod(setProperty, shell, "properties", properties);
         }
 
         return shell;
@@ -186,6 +188,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoExecutionException when an error occurs during script execution
      */
     protected void executeScripts(final Class<?> groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
+        Method evaluateUrl = findMethod(groovyShellClass, "evaluate", Reader.class);
+        Method evaluateFile = findMethod(groovyShellClass, "evaluate", File.class);
+        Method evaluateString = findMethod(groovyShellClass, "evaluate", String.class);
         int scriptNum = 1;
         for (String script : scripts) {
             try {
@@ -200,7 +205,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
                         } else {
                             reader = new BufferedReader(new InputStreamReader(url.openStream()));
                         }
-                        invokeMethod(findMethod(groovyShellClass, "evaluate", Reader.class), shell, reader);
+
+                        invokeMethod(evaluateUrl, shell, reader);
                     } finally {
                         FileUtils.closeQuietly(reader);
                     }
@@ -208,10 +214,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
                     // it's not a URL to a script, try as a filename
                     File scriptFile = new File(script);
                     if (scriptFile.isFile()) {
-                        invokeMethod(findMethod(groovyShellClass, "evaluate", File.class), shell, scriptFile);
+                        invokeMethod(evaluateFile, shell, scriptFile);
                     } else {
                         // it's neither a filename or URL, treat as a script body
-                        invokeMethod(findMethod(groovyShellClass, "evaluate", String.class), shell, script);
+                        invokeMethod(evaluateString, shell, script);
                     }
                 }
             } catch (IOException ioe) {
