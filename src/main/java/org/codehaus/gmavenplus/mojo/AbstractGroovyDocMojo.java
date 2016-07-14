@@ -160,7 +160,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected String scope;
 
     /**
-     * Links to include in the generated groovyDoc (key is link href, value is
+     * Links to include in the generated GroovyDoc (key is link href, value is
      * comma-separated packages to use that link).
      * @since 1.0-beta-2
      *
@@ -169,7 +169,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected List<Link> links;
 
     /**
-     * Whether to include Java sources in groovyDoc generation.
+     * Whether to include Java sources in GroovyDoc generation.
      * @since 1.0-beta-2
      *
      * @parameter default-value="true"
