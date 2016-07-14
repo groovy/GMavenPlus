@@ -48,7 +48,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
- * The base groovyDoc mojo, which all groovyDoc mojos extend.
+ * The base GroovyDoc mojo, which all GroovyDoc mojos extend.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -179,13 +179,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Generates the GroovyDoc for the specified sources.
      *
-     * @param sourceDirectories The source directories to generate groovyDoc for
+     * @param sourceDirectories The source directories to generate GroovyDoc for
      * @param classpath The classpath to use for compilation
-     * @param outputDirectory The directory to save the generated groovyDoc in
-     * @throws ClassNotFoundException when a class needed for groovyDoc generation cannot be found
-     * @throws InstantiationException when a class needed for groovyDoc generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for groovyDoc generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for groovyDoc generation cannot be completed
+     * @param outputDirectory The directory to save the generated GroovyDoc in
+     * @throws ClassNotFoundException when a class needed for GroovyDoc generation cannot be found
+     * @throws InstantiationException when a class needed for GroovyDoc generation cannot be instantiated
+     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     @SuppressWarnings("unchecked")
