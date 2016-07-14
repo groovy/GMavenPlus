@@ -74,7 +74,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
             }
         } else {
-            getLog().info("Skipping compilation of tests because ${maven.test.skip} was set to true.");
+            getLog().info("Compilation of tests is skipped.");
         }
     }
 

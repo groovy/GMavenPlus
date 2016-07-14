@@ -86,7 +86,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                 throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
             }
         } else {
-            getLog().info("Skipping generation of test stubs because ${maven.test.skip} was set to true.");
+            getLog().info("Generation of test stubs is skipped.");
         }
     }
 
