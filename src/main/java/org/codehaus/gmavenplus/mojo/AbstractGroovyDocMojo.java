@@ -177,6 +177,14 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected boolean groovyDocJavaSources;
 
     /**
+     * Flag to allow GroovyDoc generation to be skipped.
+     * @since 1.6
+     *
+     * @parameter property="maven.groovydoc.skip" default-value="false"
+     */
+    protected boolean skipGroovyDoc;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -192,6 +200,10 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
+        if (skipGroovyDoc) {
+            getLog().info("Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.");
+            return;
+        }
         if (sourceDirectories == null || sourceDirectories.length == 0) {
             getLog().info("No source directories specified for GroovyDoc generation.  Skipping.");
             return;
