@@ -16,6 +16,8 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,11 +41,8 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     /**
      * Maven ProjectHelper to use in properties.
      * @since 1.3
-     *
-     * @component
-     * @readonly
-     *
      */
+    @Component
     protected MavenProjectHelper projectHelper;
 
     /**
@@ -65,26 +64,23 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * </dl>
      * These can be overridden.
      * @since 1.0-beta-3
-     *
-     * @parameter
      */
+    @Parameter
     protected Properties properties = new Properties();
 
     /**
      * Whether to allow System.exit() to be used.
      * @since 1.2
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean allowSystemExits;
 
     /**
      * Whether to bind each property to a separate variable (otherwise binds
      * properties to a single 'properties' variable).
      * @since 1.2
-     *
-     * @parameter default-value="true"
      */
+    @Parameter(defaultValue="true")
     protected boolean bindPropertiesToSeparateVariables;
 
     /**

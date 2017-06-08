@@ -19,6 +19,9 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -37,12 +40,8 @@ import java.net.MalformedURLException;
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
- *
- * @phase test-compile
- * @goal testCompile
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo(name="testCompile", defaultPhase=LifecyclePhase.TEST_COMPILE, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
 public class CompileTestsMojo extends AbstractCompileMojo {
 
     /**
@@ -51,6 +50,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skipTests) {
             try {

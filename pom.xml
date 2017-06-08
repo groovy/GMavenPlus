@@ -10,18 +10,18 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenVersion>2.2.1</mavenVersion>
+    <mavenVersion>3.0</mavenVersion>
     <coberturaPluginVersion>2.7</coberturaPluginVersion>
-    <javadocPluginVersion>2.10.3</javadocPluginVersion>
+    <javadocPluginVersion>2.10.4</javadocPluginVersion>
     <!-- these are properties so integration tests can use them -->
-    <javaVersion>1.5</javaVersion>
-    <dependencyPluginVersion>2.10</dependencyPluginVersion>
-    <compilerPluginVersion>3.3</compilerPluginVersion>
+    <javaVersion>1.6</javaVersion>
+    <dependencyPluginVersion>3.0.1</dependencyPluginVersion>
+    <compilerPluginVersion>3.6.1</compilerPluginVersion>
     <junitVersion>4.12</junitVersion>
-    <surefirePluginVersion>2.18.1</surefirePluginVersion>
-    <pluginPluginVersion>3.4</pluginPluginVersion>
+    <surefirePluginVersion>2.20</surefirePluginVersion>
+    <pluginPluginVersion>3.5</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
-    <sourcePluginVersion>2.4</sourcePluginVersion>
+    <sourcePluginVersion>3.0.1</sourcePluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
     <groovyVersion>2.4.11</groovyVersion>
   </properties>
@@ -34,7 +34,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
+      <artifactId>maven-model</artifactId>
       <version>${mavenVersion}</version>
     </dependency>
     <dependency>
@@ -45,23 +45,23 @@
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>file-management</artifactId>
-      <version>1.2.1</version>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.5</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.6</version>
+      <version>1.7.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-classworlds</artifactId>
       <version>2.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-registry</artifactId>
-      <version>${mavenVersion}</version>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
@@ -75,14 +75,14 @@
       <!-- this will work for all Groovy >= 2.2.0-beta-1; users of older versions will need to pull in 1.0 as a runtime dependency -->
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
-      <version>2.13</version>
+      <version>2.14.4</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.9.6</version>
+      <version>1.10.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -306,7 +306,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>2.6.1</version>
+        <version>3.0.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -316,7 +316,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.0.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -333,7 +333,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <version>1.6</version>
+        <version>1.7.1</version>
         <executions>
           <execution>
             <goals>
@@ -360,16 +360,14 @@
           </execution>
           <execution>
             <id>generate-descriptor</id>
-            <goals>
-              <goal>descriptor</goal>
-            </goals>
+            <phase>process-classes</phase>
           </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.14</version>
+        <version>1.15</version>
         <executions>
           <execution>
             <id>sniffClasses</id>
@@ -381,7 +379,7 @@
         <configuration>
           <signature>
             <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java15</artifactId>
+            <artifactId>java16</artifactId>
             <version>1.0</version>
           </signature>
           <ignoreDependencies>false</ignoreDependencies>
@@ -417,12 +415,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.0.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>2.0.0</version>
+        <version>3.0.0</version>
         <configuration>
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -472,12 +470,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.6</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>2.5.3</version>
       </plugin>
     </plugins>
 
@@ -526,7 +524,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.8.1</version>
+        <version>2.9</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -561,22 +559,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.5</version>
+        <version>3.8</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>3.0.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.16</version>
+        <version>2.17</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.4</version>
         <reportSets>
           <reportSet>
             <reports>

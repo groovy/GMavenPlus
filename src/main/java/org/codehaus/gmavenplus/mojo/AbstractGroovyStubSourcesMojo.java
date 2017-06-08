@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
@@ -35,16 +36,14 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
 
     /**
      * The location for the compiled classes.
-     *
-     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/main"
      */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/main")
     protected File stubsOutputDirectory;
 
     /**
      * The location for the compiled test classes.
-     *
-     * @parameter default-value="${project.build.directory}/generated-sources/groovy-stubs/test"
      */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
     protected File testStubsOutputDirectory;
 
     /**

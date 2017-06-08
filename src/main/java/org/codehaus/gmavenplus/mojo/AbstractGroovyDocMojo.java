@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
@@ -77,73 +78,63 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * The location for the generated API docs.
-     *
-     * @parameter default-value="${project.build.directory}/gapidocs"
      */
+    @Parameter(defaultValue="${project.build.directory}/gapidocs")
     protected File groovyDocOutputDirectory;
 
     /**
      * The location for the generated test API docs.
-     *
-     * @parameter default-value="${project.build.directory}/testgapidocs"
      */
+    @Parameter(defaultValue="${project.build.directory}/testgapidocs")
     protected File testGroovyDocOutputDirectory;
 
     /**
      * The window title.
-     *
-     * @parameter default-value="Groovy Documentation"
      */
+    @Parameter(defaultValue="Groovy Documentation")
     protected String windowTitle;
 
     /**
      * The page title.
-     *
-     * @parameter default-value="Groovy Documentation"
      */
+    @Parameter(defaultValue="Groovy Documentation")
     protected String docTitle;
 
     /**
      * The page footer.
-     *
-     * @parameter default-value="Groovy Documentation"
      */
+    @Parameter(defaultValue="Groovy Documentation")
     protected String footer;
 
     /**
      * The page header.
-     *
-     * @parameter default-value="Groovy Documentation"
      */
+    @Parameter(defaultValue="Groovy Documentation")
     protected String header;
 
     /**
      * Whether to display the author in the generated GroovyDoc.
-     *
-     * @parameter default-value="true"
      */
+    @Parameter(defaultValue="true")
     protected boolean displayAuthor;
 
     /**
      * The HTML file to be used for overview documentation.
-     *
-     * @parameter
      */
+    @Parameter
     protected File overviewFile;
 
     /**
      * The stylesheet file (absolute path) to copy to output directory (will
      * overwrite default stylesheet.css).
-     *
-     * @parameter
      */
+    @Parameter
     protected File stylesheetFile;
 
     /**
      * The encoding of stylesheetFile.
-     *
-     * @parameter default-value="${project.build.sourceEncoding}
      */
+    @Parameter(defaultValue="${project.build.sourceEncoding}")
     protected String stylesheetEncoding;
 
     /**
@@ -154,34 +145,30 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      *   <li>"package"</li>
      *   <li>"private"</li>
      * </ul>
-     *
-     * @parameter default-value="private"
      */
+    @Parameter(defaultValue="private")
     protected String scope;
 
     /**
      * Links to include in the generated GroovyDoc (key is link href, value is
      * comma-separated packages to use that link).
      * @since 1.0-beta-2
-     *
-     * @parameter
      */
+    @Parameter
     protected List<Link> links;
 
     /**
      * Whether to include Java sources in GroovyDoc generation.
      * @since 1.0-beta-2
-     *
-     * @parameter default-value="true"
      */
+    @Parameter(defaultValue="true")
     protected boolean groovyDocJavaSources;
 
     /**
      * Flag to allow GroovyDoc generation to be skipped.
      * @since 1.6
-     *
-     * @parameter property="maven.groovydoc.skip" default-value="false"
      */
+    @Parameter(property="maven.groovydoc.skip", defaultValue="false")
     protected boolean skipGroovyDoc;
 
     /**

@@ -19,6 +19,9 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.Version;
 
 import java.lang.reflect.InvocationTargetException;
@@ -38,12 +41,8 @@ import java.net.MalformedURLException;
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
- *
- * @goal testGenerateStubs
- * @phase generate-test-sources
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo(name="testGenerateStubs", defaultPhase=LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
@@ -57,6 +56,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (!skipTests) {
             minGroovyVersion = GROOVY_1_8_2;

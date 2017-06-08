@@ -20,6 +20,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
@@ -70,38 +71,26 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
 
     /**
      * The Maven project this plugin is being used on.
-     *
-     * @parameter property="project"
-     * @required
-     * @readonly
      */
+    @Parameter(property="project", required=true, readonly=true)
     protected MavenProject project;
 
     /**
      * The Maven Session this plugin is being used on.
-     *
-     * @parameter property="session"
-     * @required
-     * @readonly
      */
+    @Parameter(property="session", required=true, readonly=true)
     protected MavenSession session;
 
     /**
      * The plugin dependencies.
-     *
-     * @parameter property="plugin.artifacts"
-     * @required
-     * @readonly
      */
+    @Parameter(property="plugin.artifacts", required=true, readonly=true)
     protected List<Artifact> pluginArtifacts;
 
     /**
      * The plugin's mojo execution.
-     *
-     * @parameter property="mojoExecution"
-     * @required
-     * @readonly
      */
+    @Parameter(property="mojoExecution", required=true, readonly=true)
     protected MojoExecution mojoExecution;
 
     /**
@@ -112,9 +101,8 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
 
     /**
      * Flag to allow test compilation to be skipped.
-     *
-     * @parameter property="maven.test.skip" default-value="false"
      */
+    @Parameter(property="maven.test.skip",  defaultValue="false")
     protected boolean skipTests;
 
     /**
