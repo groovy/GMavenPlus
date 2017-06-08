@@ -653,6 +653,10 @@
       <post>gmavenplus@googlegroups.com</post>
       <archive>https://groups.google.com/d/forum/gmavenplus</archive>
     </mailingList>
+    <mailingList>
+      <name>Slack Channel</name>
+      <post>https://groovy-community.slack.com/messages/C2SLAV9FY/</post>
+    </mailingList>
   </mailingLists>
   <scm>
     <url>http://github.com/groovy/GMavenPlus</url>
