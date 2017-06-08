@@ -23,6 +23,7 @@ import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -52,9 +53,9 @@ public class GenerateStubsMojoTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doReturn(new HashSet<File>()).when(generateStubsMojo).getSources();
-        doReturn(new HashSet<File>()).when(generateStubsMojo).getStubs();
+        doReturn(new HashSet<File>()).when(generateStubsMojo).getStubs(any(File.class));
         generateStubsMojo.project = mock(MavenProject.class);
-        generateStubsMojo.stubsOutputDirectory = mock(File.class);
+        generateStubsMojo.outputDirectory = mock(File.class);
         doReturn(mock(Build.class)).when(generateStubsMojo.project).getBuild();
         generateStubsMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 8, 2)).when(generateStubsMojo.classWrangler).getGroovyVersion();

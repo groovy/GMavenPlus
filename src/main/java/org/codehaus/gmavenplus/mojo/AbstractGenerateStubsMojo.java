@@ -168,9 +168,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
         // generate the stubs
         invokeMethod(findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
-
-        // log generated stubs
-        getLog().info("Generated " + getStubs().size() + " stub" + (getStubs().size() > 1 || getStubs().size() == 0 ? "s" : "") + ".");
     }
 
     /**
@@ -237,6 +234,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
     protected boolean supportsSettingExtensions() {
         return groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));
+    }
+
+    protected void logGeneratedStubs(File outputDirectory) {
+        Set<File> stubs = getStubs(outputDirectory);
+        getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() > 1 || stubs.size() == 0 ? "s" : "") + ".");
     }
 
     /**

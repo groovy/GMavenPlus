@@ -19,14 +19,10 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
 
 
 /**
@@ -44,12 +40,12 @@ public class RemoveStubsMojoTest {
         removeStubsMojo = new RemoveStubsMojo();
         project = new MavenProject();
         removeStubsMojo.project = project;
-        removeStubsMojo.stubsOutputDirectory = new File(PATH);
+        removeStubsMojo.outputDirectory = new File(PATH);
     }
 
     @Test
     public void testRemoveSourcePathContainsPath() throws Exception {
-        project.addCompileSourceRoot(removeStubsMojo.stubsOutputDirectory.getAbsolutePath());
+        project.addCompileSourceRoot(removeStubsMojo.outputDirectory.getAbsolutePath());
         assertEquals(1, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         assertEquals(0, project.getCompileSourceRoots().size());

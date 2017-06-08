@@ -104,8 +104,8 @@
             <goals>
               <goal>generateStubs</goal>
               <goal>groovydoc</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>testGroovydoc</goal>
+              <goal>generateTestStubs</goal>
+              <goal>groovydocTests</goal>
             </goals>
           </execution>
           <execution>

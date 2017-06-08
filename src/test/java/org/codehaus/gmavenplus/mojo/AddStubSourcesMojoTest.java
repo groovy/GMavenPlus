@@ -37,20 +37,20 @@ public class AddStubSourcesMojoTest {
     @Mock
     private MavenProject project;
     @Mock
-    private File stubsOutputDirectory;
+    private File outputDirectory;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mojo = new AddStubSourcesMojo();
         mojo.project = project;
-        mojo.stubsOutputDirectory = stubsOutputDirectory;
+        mojo.outputDirectory = outputDirectory;
     }
 
     @Test
     public void testAddsStubsToSources() throws Exception {
         mojo.execute();
-        verify(project).addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
+        verify(project).addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
 }

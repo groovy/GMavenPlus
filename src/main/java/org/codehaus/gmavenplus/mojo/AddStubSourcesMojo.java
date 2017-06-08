@@ -19,6 +19,9 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
 
 
 /**
@@ -32,6 +35,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class AddStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * The location for the compiled classes.
+     */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/main")
+    protected File outputDirectory;
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
@@ -39,8 +48,8 @@ public class AddStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().debug("Added stub directory " + stubsOutputDirectory.getAbsolutePath() + " to project sources.");
-        project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
+        getLog().debug("Added stub directory " + outputDirectory.getAbsolutePath() + " to project sources.");
+        project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
 }

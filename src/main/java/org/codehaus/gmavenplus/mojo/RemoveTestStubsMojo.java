@@ -20,6 +20,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
 
 
 /**
@@ -32,6 +35,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * The location for the compiled test classes.
+     */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
+    protected File outputDirectory;
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
@@ -39,7 +48,7 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+        project.getTestCompileSourceRoots().remove(outputDirectory.getAbsolutePath());
     }
 
 }

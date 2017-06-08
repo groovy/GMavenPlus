@@ -81,7 +81,7 @@
           <execution>
             <phase>generate-test-sources</phase>
             <goals>
-              <goal>testGroovydoc</goal>
+              <goal>groovydocTests</goal>
             </goals>
           </execution>
         </executions>

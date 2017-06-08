@@ -35,50 +35,19 @@ import java.util.Set;
 public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
-     * The location for the compiled classes.
-     */
-    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/main")
-    protected File stubsOutputDirectory;
-
-    /**
-     * The location for the compiled test classes.
-     */
-    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
-    protected File testStubsOutputDirectory;
-
-    /**
-     * Gets the set of files of the main stubs.
+     * Gets the set of stub files in specified directory.
      *
-     * @return The set of files of the main stubs
+     * @return The set of stub files in specified directory
      */
-    protected Set<File> getStubs() {
+    protected Set<File> getStubs(File outputDirectory) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         FileSet fileSet = new FileSet();
-        fileSet.setDirectory(stubsOutputDirectory.getAbsolutePath());
+        fileSet.setDirectory(outputDirectory.getAbsolutePath());
         fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
         for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(stubsOutputDirectory, file));
-        }
-
-        return files;
-    }
-
-    /**
-     * Gets the set of files of the test stubs.
-     *
-     * @return The set of files of the test stubs
-     */
-    protected Set<File> getTestStubs() {
-        Set<File> files = new HashSet<File>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
-
-        FileSet fileSet = new FileSet();
-        fileSet.setDirectory(testStubsOutputDirectory.getAbsolutePath());
-        fileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
-        for (String file : fileSetManager.getIncludedFiles(fileSet)) {
-            files.add(new File(testStubsOutputDirectory, file));
+            files.add(new File(outputDirectory, file));
         }
 
         return files;

@@ -21,8 +21,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
@@ -37,6 +39,12 @@ import java.net.MalformedURLException;
  */
 @Mojo(name="compile", defaultPhase=LifecyclePhase.COMPILE, requiresDependencyResolution=ResolutionScope.COMPILE, threadSafe=true)
 public class CompileMojo extends AbstractCompileMojo {
+
+    /**
+     * The location for the compiled classes.
+     */
+    @Parameter(defaultValue="${project.build.outputDirectory}")
+    private File outputDirectory;
 
     /**
      * Executes this mojo.
