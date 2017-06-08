@@ -19,6 +19,9 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
@@ -48,36 +51,28 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
- *
- * @goal execute
- * @configurator include-project-test-dependencies
- * @requiresDependencyResolution test
- * @threadSafe
  */
+@Mojo(name="execute", requiresDependencyResolution=ResolutionScope.TEST, configurator="include-project-test-dependencies", threadSafe=true)
 public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
      * Groovy scripts to run (in order).  Can be an actual Groovy script or a
      * {@link java.net.URL URL} to a Groovy script (local or remote).
-     *
-     * @parameter
-     * @required
      */
+    @Parameter(required=true)
     protected String[] scripts;
 
     /**
      * Whether to continue executing remaining scripts when a script fails.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean continueExecuting;
 
     /**
      * The encoding of script files.
      * @since 1.0-beta-2
-     *
-     * @parameter default-value="${project.build.sourceEncoding}"
      */
+    @Parameter(defaultValue="${project.build.sourceEncoding}")
     protected String sourceEncoding;
 
     /**
@@ -86,6 +81,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         doExecute();
     }

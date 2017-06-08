@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 
@@ -71,23 +72,20 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * The location for the compiled classes.
-     *
-     * @parameter default-value="${project.build.outputDirectory}"
      */
+    @Parameter(defaultValue="${project.build.outputDirectory}")
     protected File outputDirectory;
 
     /**
      * The location for the compiled test classes.
-     *
-     * @parameter default-value="${project.build.testOutputDirectory}"
      */
+    @Parameter(defaultValue="${project.build.testOutputDirectory}")
     protected File testOutputDirectory;
 
     /**
      * The encoding of source files.
-     *
-     * @parameter default-value="${project.build.sourceEncoding}"
      */
+    @Parameter(defaultValue="${project.build.sourceEncoding}")
     protected String sourceEncoding;
 
     /**
@@ -100,23 +98,20 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>1.8</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy >= 2.1.3, and using 1.8 requires Groovy >= 2.3.3.
-     *
-     * @parameter property="maven.compiler.target" default-value="1.5"
      */
+    @Parameter(property="maven.compiler.target", defaultValue="1.5")
     protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean debug;
 
     /**
      * Whether Groovy compiler should be set to verbose.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean verbose;
 
     /**
@@ -131,43 +126,38 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <dt>3</dt>
      *     <dd>Paranoia</dd>
      * </dl>
-     *
-     * @parameter default-value="1"
      */
+    @Parameter(defaultValue="1")
     protected int warningLevel;
 
     /**
      * Groovy compiler error tolerance
      * (the number of non-fatal errors (per unit) that should be tolerated
      * before compilation is aborted).
-     *
-     * @parameter default-value="0"
      */
+    @Parameter(defaultValue="0")
     protected int tolerance;
 
     /**
      * Whether to support invokeDynamic (requires Java 7 or greater and Groovy
      * indy 2.0.0-beta-3 or greater).
-     *
-     * @parameter property="invokeDynamic" default-value="false"
      */
+    @Parameter(property="invokeDynamic", defaultValue="false")
     protected boolean invokeDynamic;
 
     /**
      * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a>
      * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
      * or greater).  Note that its encoding must match your source encoding.
-     *
-     * @parameter property="configScript"
      */
+    @Parameter(property="configScript")
     protected File configScript;
 
     /**
      * Generate metadata for reflection on method parameter names using the functionality provided by JEP 118
-     * (requires Java 8 or greater and Groovy 2.5.0-alpha-1 or greater)
-     *
-     * @parameter property="parameters" default-value="false"
+     * (requires Java 8 or greater and Groovy 2.5.0-alpha-1 or greater).
      */
+    @Parameter(property="parameters", defaultValue="false")
     protected boolean parameters;
 
     /**

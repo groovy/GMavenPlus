@@ -16,9 +16,9 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
-import org.codehaus.gmavenplus.util.JDK5Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,17 +49,15 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * The Groovy source files (relative paths).
      * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
      */
+    @Parameter
     protected FileSet[] sources;
 
     /**
      * The Groovy test source files (relative paths).
      * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
-     *
-     * @parameter
      */
+    @Parameter
     protected FileSet[] testSources;
 
     /**
@@ -202,7 +200,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
                 }
             }
             FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[javaFileSets.size()]);
-            result = JDK5Utils.Arrays_copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
+            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
             System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
         } else {
             result = groovyFileSets;

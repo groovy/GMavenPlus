@@ -35,25 +35,21 @@ import static org.mockito.Mockito.doReturn;
  * @author Keegan Witt
  */
 public class RemoveStubsMojoTest {
-    @Spy
     private RemoveStubsMojo removeStubsMojo;
-    @Mock
-    private File stubsDir;
     private static final String PATH = "FAKE_PATH";
     private MavenProject project;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        removeStubsMojo = new RemoveStubsMojo();
         project = new MavenProject();
         removeStubsMojo.project = project;
-        doReturn(PATH).when(stubsDir).getAbsolutePath();
-        removeStubsMojo.stubsOutputDirectory = stubsDir;
+        removeStubsMojo.stubsOutputDirectory = new File(PATH);
     }
 
     @Test
     public void testRemoveSourcePathContainsPath() throws Exception {
-        project.addCompileSourceRoot(stubsDir.getAbsolutePath());
+        project.addCompileSourceRoot(removeStubsMojo.stubsOutputDirectory.getAbsolutePath());
         assertEquals(1, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         assertEquals(0, project.getCompileSourceRoots().size());

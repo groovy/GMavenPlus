@@ -18,6 +18,8 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.shared.model.fileset.FileSet;
 
 
@@ -26,13 +28,8 @@ import org.apache.maven.shared.model.fileset.FileSet;
  *
  * @author Keegan Witt
  * @since 1.0-beta-3
- *
- * @phase initialize
- * @goal addTestSources
- * @executionStrategy always
- * @requiresDirectInvocation false
- * @threadSafe
  */
+@Mojo(name="addTestSources", defaultPhase=LifecyclePhase.INITIALIZE, threadSafe=true)
 public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
@@ -41,6 +38,7 @@ public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         for (FileSet testSource : getTestSourceRoots()) {
             addTestSourcePath(testSource.getDirectory());

@@ -18,6 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
 
 
 /**
@@ -26,10 +27,8 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author Keegan Witt
  * @since 1.1
- *
- * @goal addTestStubSources
- * @threadSafe
  */
+@Mojo(name="addTestStubSources", threadSafe=true)
 public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
@@ -38,6 +37,7 @@ public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().debug("Added test stub directory " + testStubsOutputDirectory.getAbsolutePath() + " to project test sources.");
         project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());

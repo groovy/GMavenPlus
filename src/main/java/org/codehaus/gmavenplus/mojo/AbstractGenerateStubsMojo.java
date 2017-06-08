@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
@@ -61,17 +62,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
     /**
      * The encoding of source files.
-     *
-     * @parameter default-value="${project.build.sourceEncoding}"
      */
+    @Parameter(defaultValue="${project.build.sourceEncoding}")
     protected String sourceEncoding;
 
     /**
      * The file extensions of Groovy source files.
      * @since 1.0-beta-2
-     *
-     * @parameter
      */
+    @Parameter
     protected Set<String> scriptExtensions;
 
     /**
@@ -87,23 +86,20 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * If an invalid selection is made, Groovy will default to VM determined
      * version (1.4 or 1.5).
      * @since 1.0-beta-3
-     *
-     * @parameter property="maven.compiler.target" default-value="1.5"
      */
+    @Parameter(property="maven.compiler.target", defaultValue="1.5")
     protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean debug;
 
     /**
      * Whether Groovy compiler should be set to verbose.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter(defaultValue="false")
     protected boolean verbose;
 
     /**
@@ -118,17 +114,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <dt>3</dt>
      *     <dd>Paranoia</dd>
      * </dl>
-     *
-     * @parameter default-value="1"
      */
+    @Parameter(defaultValue="1")
     protected int warningLevel;
 
     /**
      * Groovy compiler error tolerance (the number of non-fatal errors
      * (per unit) that should be tolerated before compilation is aborted).
-     *
-     * @parameter default-value="0"
      */
+    @Parameter(defaultValue="0")
     protected int tolerance;
 
     /**

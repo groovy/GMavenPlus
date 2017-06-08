@@ -19,6 +19,8 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
@@ -43,11 +45,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  *
  * @author Keegan Witt
  * @since 1.1
- *
- * @goal console
- * @configurator include-project-test-dependencies
- * @requiresDependencyResolution test
  */
+@Mojo(name="console", requiresDependencyResolution=ResolutionScope.TEST, configurator="include-project-test-dependencies")
 public class ConsoleMojo extends AbstractToolsMojo {
 
     /**
@@ -56,6 +55,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
