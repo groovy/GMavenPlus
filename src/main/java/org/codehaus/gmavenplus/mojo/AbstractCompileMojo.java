@@ -71,18 +71,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected static final Version GROOVY_1_6_0 = new Version(1, 6, 0);
 
     /**
-     * The location for the compiled classes.
-     */
-    @Parameter(defaultValue="${project.build.outputDirectory}")
-    protected File outputDirectory;
-
-    /**
-     * The location for the compiled test classes.
-     */
-    @Parameter(defaultValue="${project.build.testOutputDirectory}")
-    protected File testOutputDirectory;
-
-    /**
      * The encoding of source files.
      */
     @Parameter(defaultValue="${project.build.sourceEncoding}")

@@ -51,18 +51,14 @@ public class AbstractGenerateStubsMojoTest {
     private FileSet fileSet;
 
     @Mock
-    private File testStubsOutputDirectory;
-
-    @Mock
-    private File stubsOutputDirectory;
+    private File outputDirectory;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
         doReturn(new String[] {"STUBBED_INCLUDES"}).when(fileSet).getIncludesArray();
-        doReturn("STUBBED_STUBS_DIRECTORY").when(stubsOutputDirectory).getAbsolutePath();
-        doReturn("STUBBED_TEST_STUBS_DIRECTORY").when(testStubsOutputDirectory).getAbsolutePath();
+        doReturn("STUBBED_STUBS_DIRECTORY").when(outputDirectory).getAbsolutePath();
         File mockBaseDir = mock(File.class);
         doReturn("STUBBED_BASEDIR").when(mockBaseDir).getAbsolutePath();
         doReturn(mockBaseDir).when(project).getBasedir();
@@ -70,8 +66,6 @@ public class AbstractGenerateStubsMojoTest {
         testMojo.project = project;
         testMojo.setSources(new FileSet[] {});
         testMojo.setTestSources(new FileSet[] {});
-        testMojo.stubsOutputDirectory = stubsOutputDirectory;
-        testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
     }
 
     @Test
@@ -102,14 +96,8 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testGetStubs() {
-        Set<File> stubs = testMojo.getStubs();
+        Set<File> stubs = testMojo.getStubs(outputDirectory);
         assertEquals(0, stubs.size());
-    }
-
-    @Test
-    public void testGetTestStubs() {
-        Set<File> testStubs = testMojo.getTestStubs();
-        assertEquals(0, testStubs.size());
     }
 
     @Test

@@ -56,9 +56,9 @@
               <!-- note that stubs are needed so Mojo annotations will work -->
               <goal>generateStubs</goal>
               <goal>compile</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>testCompile</goal>
               <goal>removeStubs</goal>
+              <goal>generateTestStubs</goal>
+              <goal>compileTests</goal>
               <goal>removeTestStubs</goal>
             </goals>
           </execution>

@@ -52,9 +52,9 @@ public class GenerateTestStubsMojoTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         doReturn(new HashSet<File>()).when(generateTestStubsMojo).getTestSources();
-        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getTestStubs();
+        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getStubs(any(File.class));
         generateTestStubsMojo.project = mock(MavenProject.class);
-        generateTestStubsMojo.testStubsOutputDirectory = mock(File.class);
+        generateTestStubsMojo.outputDirectory = mock(File.class);
         doReturn(mock(Build.class)).when(generateTestStubsMojo.project).getBuild();
         generateTestStubsMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 8, 2)).when(generateTestStubsMojo.classWrangler).getGroovyVersion();

@@ -44,12 +44,12 @@ public class RemoveTestStubsMojoTest {
         removeTestStubsMojo = new RemoveTestStubsMojo();
         project = new MavenProject();
         removeTestStubsMojo.project = project;
-        removeTestStubsMojo.testStubsOutputDirectory = new File(PATH);
+        removeTestStubsMojo.outputDirectory = new File(PATH);
     }
 
     @Test
     public void testRemoveTestSourcePathContainsPath() throws Exception {
-        project.addTestCompileSourceRoot(removeTestStubsMojo.testStubsOutputDirectory.getAbsolutePath());
+        project.addTestCompileSourceRoot(removeTestStubsMojo.outputDirectory.getAbsolutePath());
         assertEquals(1, project.getTestCompileSourceRoots().size());
         removeTestStubsMojo.execute();
         assertEquals(0, project.getTestCompileSourceRoots().size());

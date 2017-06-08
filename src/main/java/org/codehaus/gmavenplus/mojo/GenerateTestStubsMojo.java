@@ -21,9 +21,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.Version;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
@@ -42,13 +44,19 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name="testGenerateStubs", defaultPhase=LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
+@Mojo(name="generateTestStubs", defaultPhase=LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
      * Groovv 1.8.2 version.
      */
-    protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+    private static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+
+    /**
+     * The location for the compiled test classes.
+     */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
+    protected File outputDirectory;
 
     /**
      * Executes this mojo.
@@ -67,11 +75,12 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                     getLog().warn("Unable to log project test classpath", e);
                 }
 
-                doStubGeneration(getTestSources(), project.getTestClasspathElements(), testStubsOutputDirectory);
-                resetStubModifiedDates(getTestStubs());
+                doStubGeneration(getTestSources(), project.getTestClasspathElements(), outputDirectory);
+                logGeneratedStubs(outputDirectory);
+                resetStubModifiedDates(getStubs(outputDirectory));
 
                 // add stubs to project source so the Maven Compiler Plugin can find them
-                project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
+                project.addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {

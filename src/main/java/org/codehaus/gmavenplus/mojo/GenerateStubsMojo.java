@@ -21,9 +21,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.Version;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
@@ -42,7 +44,13 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * Groovy 1.8.2 version.
      */
-    protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+    private static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+
+    /**
+     * The location for the compiled classes.
+     */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/main")
+    protected File outputDirectory;
 
     /**
      * Executes this mojo.
@@ -61,11 +69,12 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
                 getLog().warn("Unable to log project compile classpath", e);
             }
 
-            doStubGeneration(getSources(), project.getCompileClasspathElements(), stubsOutputDirectory);
-            resetStubModifiedDates(getStubs());
+            doStubGeneration(getSources(), project.getCompileClasspathElements(), outputDirectory);
+            logGeneratedStubs(outputDirectory);
+            resetStubModifiedDates(getStubs(outputDirectory));
 
             // add stubs to project source so the Maven Compiler Plugin can find them
-            project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
+            project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {

@@ -21,8 +21,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
@@ -41,8 +43,14 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name="testCompile", defaultPhase=LifecyclePhase.TEST_COMPILE, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
+@Mojo(name="compileTests", defaultPhase=LifecyclePhase.TEST_COMPILE, requiresDependencyResolution=ResolutionScope.TEST, threadSafe=true)
 public class CompileTestsMojo extends AbstractCompileMojo {
+
+    /**
+     * The location for the compiled test classes.
+     */
+    @Parameter(defaultValue="${project.build.testOutputDirectory}")
+    private File outputDirectory;
 
     /**
      * Executes this mojo.
@@ -59,7 +67,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 } catch (DependencyResolutionRequiredException e) {
                     getLog().warn("Unable to log project test classpath", e);
                 }
-                doCompile(getTestSources(), project.getTestClasspathElements(), testOutputDirectory);
+                doCompile(getTestSources(), project.getTestClasspathElements(), outputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {

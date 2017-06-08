@@ -20,7 +20,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
+
+import java.io.File;
 
 
 /**
@@ -31,6 +34,12 @@ import org.apache.maven.shared.model.fileset.FileSet;
  */
 @Mojo(name="addTestSources", defaultPhase=LifecyclePhase.INITIALIZE, threadSafe=true)
 public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
+
+    /**
+     * The location for the compiled test classes.
+     */
+    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
+    private File outputDirectory;
 
     /**
      * Executes this mojo.

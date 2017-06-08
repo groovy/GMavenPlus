@@ -37,29 +37,19 @@ import static org.mockito.Mockito.doReturn;
 public class AbstractGroovyStubSourcesMojoTest {
     private TestMojo testMojo;
     @Mock
-    private File stubsOutputDirectory;
-    @Mock
-    private File testStubsOutputDirectory;
+    private File outputDirectory;
     private static final String PATH = "path";
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
-        doReturn(PATH).when(stubsOutputDirectory).getAbsolutePath();
-        doReturn(PATH).when(testStubsOutputDirectory).getAbsolutePath();
-        testMojo.stubsOutputDirectory = stubsOutputDirectory;
-        testMojo.testStubsOutputDirectory = testStubsOutputDirectory;
+        doReturn(PATH).when(outputDirectory).getAbsolutePath();
     }
 
     @Test
     public void testGetStubsEmpty() {
-        assertEquals(0, testMojo.getStubs().size());
-    }
-
-    @Test
-    public void testGetTestStubsEmpty() {
-        assertEquals(0, testMojo.getStubs().size());
+        assertEquals(0, testMojo.getStubs(outputDirectory).size());
     }
 
     public class TestMojo extends AbstractGroovyStubSourcesMojo {
