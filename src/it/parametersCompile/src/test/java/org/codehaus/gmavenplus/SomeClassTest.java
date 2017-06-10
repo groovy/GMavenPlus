@@ -36,7 +36,7 @@ public class SomeClassTest {
 
         Assert.assertEquals(2, parameterNames.size());
         System.out.println(GroovySystem.getVersion());
-        if (GroovySystem.getVersion().startsWith("2.5.0")) {
+        if (GroovySystem.getVersion().startsWith("2.5")) {
             Assert.assertEquals("param1", parameterNames.get(0).getName());
             Assert.assertEquals("param2", parameterNames.get(1).getName());
         } else {
