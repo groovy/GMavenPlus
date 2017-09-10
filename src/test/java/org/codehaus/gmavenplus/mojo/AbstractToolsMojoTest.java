@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 
@@ -81,6 +80,7 @@ public class AbstractToolsMojoTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testInitializePropertiesNull() {
         testMojo.project = null;
         testMojo.session= null;
@@ -96,6 +96,7 @@ public class AbstractToolsMojoTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testInitializePropertiesAlreadyInProps() {
         testMojo.properties = properties;
 
@@ -105,7 +106,7 @@ public class AbstractToolsMojoTest {
         verify(properties, times(1)).put(eq("project"), any(MavenProject.class));
         verify(properties, times(1)).put(eq("session"), any(MavenSession.class));
         verify(properties, times(1)).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
-        verify(properties, times(1)).put(eq("mojoExecution"), anyListOf(MojoExecution.class));
+        verify(properties, times(1)).put(eq("mojoExecution"), any(MojoExecution.class));
     }
 
     protected class TestMojo extends AbstractToolsMojo {

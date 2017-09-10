@@ -30,12 +30,10 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anySet;
 import static org.mockito.Mockito.*;
 
 
@@ -49,9 +47,12 @@ public class CompileMojoTest {
     private CompileMojo compileMojo;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(compileMojo).getSources();
+        Set<File> sources = new HashSet<File>();
+        sources.add(mock(File.class));
+        doReturn(sources).when(compileMojo).getSources();
+        compileMojo.outputDirectory = mock(File.class);
         compileMojo.project = mock(MavenProject.class);
         doReturn(mock(Build.class)).when(compileMojo.project).getBuild();
         doReturn(true).when(compileMojo).groovyVersionSupportsAction();
@@ -60,45 +61,45 @@ public class CompileMojoTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testCallsExpectedMethods() throws Exception {
-        doNothing().when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doNothing().when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
         verify(compileMojo, never()).logPluginClasspath();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileMojo.execute();
     }
 

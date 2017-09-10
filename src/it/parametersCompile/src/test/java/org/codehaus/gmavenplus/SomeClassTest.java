@@ -16,15 +16,14 @@
 
 package org.codehaus.gmavenplus;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import groovy.lang.GroovySystem;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SomeClassTest {

@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.Properties;
 
 import static java.util.Collections.emptyList;
-import static org.mockito.Matchers.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -39,6 +39,7 @@ public class AbstractGroovyDocMojoTest {
     private MavenProject project;
 
     @Before
+    @SuppressWarnings("deprecation")
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         testMojo.mojoExecution = mojoExecution;
@@ -50,12 +51,14 @@ public class AbstractGroovyDocMojoTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testDontSkipGroovyDoc() throws Exception {
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
         verify(testMojo, times(1)).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), anyObject(), anyListOf(String.class), anyObject());
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testSkipGroovyDoc() throws Exception {
         testMojo.skipGroovyDoc = true;
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
