@@ -309,18 +309,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     }
 
     /**
-     * Throws an exception if targetBytecode is not supported with this version of Groovy.
+     * Throws an exception if targetBytecode is not supported with this version of Groovy.  That is, when Groovy added
+     * the option to org.codehaus.groovy.control.CompilerConfiguration.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
         if ("1.9".equals(targetBytecode)) {
             throw new IllegalArgumentException("Target bytecode 1.9 is not yet supported.");
         } else if ("1.8".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_3_3)) {
-                throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + ".");
+                throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + " or newer.");
             }
         } else if ("1.7".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_1_3)) {
-                throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + ".");
+                throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + " or newer.");
             }
         } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
             throw new IllegalArgumentException("Unrecognized target bytecode.");
