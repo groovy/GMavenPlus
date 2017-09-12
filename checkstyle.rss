@@ -23,10 +23,10 @@ under the License.
     <link>http://groovy.github.io/GMavenPlus/</link>
     <description>GMavenPlus Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2011 - 2015</copyright>
+    <copyright>&#169;2011 - 2017</copyright>
     <item>
       <title>File: 42,
-             Errors: 1305,
+             Errors: 1567,
              Warnings: 0,
              Infos: 0
       </title>
@@ -69,7 +69,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  58
+                  80
                 </td>
               </tr>
                           <tr>
@@ -83,7 +83,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  16
+                  26
                 </td>
               </tr>
                           <tr>
@@ -97,7 +97,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  21
+                  20
                 </td>
               </tr>
                           <tr>
@@ -111,7 +111,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  7
+                  3
                 </td>
               </tr>
                           <tr>
@@ -125,7 +125,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  5
+                  12
                 </td>
               </tr>
                           <tr>
@@ -139,7 +139,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  14
                 </td>
               </tr>
                           <tr>
@@ -153,7 +153,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  10
+                  9
                 </td>
               </tr>
                           <tr>
@@ -167,7 +167,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  6
+                  12
                 </td>
               </tr>
                           <tr>
@@ -181,7 +181,21 @@ under the License.
                   0
                 </td>
                 <td>
-                  484
+                  498
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AbstractGroovyDocMojo.java">org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  115
                 </td>
               </tr>
                           <tr>
@@ -223,7 +237,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  78
+                  112
                 </td>
               </tr>
                           <tr>
@@ -237,21 +251,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  44
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovydocMojo.java">org/codehaus/gmavenplus/mojo/GroovydocMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  12
+                  48
                 </td>
               </tr>
                           <tr>
@@ -321,21 +321,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  10
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovydocTestsMojo.java">org/codehaus/gmavenplus/mojo/GroovydocTestsMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  12
+                  16
                 </td>
               </tr>
                           <tr>
@@ -349,7 +335,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  55
+                  70
                 </td>
               </tr>
                           <tr>
@@ -363,7 +349,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  43
+                  60
                 </td>
               </tr>
                           <tr>
@@ -391,7 +377,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  13
+                  22
                 </td>
               </tr>
                           <tr>
@@ -405,7 +391,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  18
+                  13
                 </td>
               </tr>
                           <tr>
@@ -419,7 +405,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  14
+                  22
                 </td>
               </tr>
                           <tr>
@@ -447,7 +433,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  36
+                  48
                 </td>
               </tr>
                           <tr>
@@ -475,7 +461,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  7
+                  5
                 </td>
               </tr>
                           <tr>
@@ -490,20 +476,6 @@ under the License.
                 </td>
                 <td>
                   39
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AbstractGroovydocMojo.java">org/codehaus/gmavenplus/mojo/AbstractGroovydocMojo.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  94
                 </td>
               </tr>
                           <tr>
@@ -531,7 +503,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  15
+                  25
                 </td>
               </tr>
                           <tr>
@@ -545,7 +517,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  13
+                  17
                 </td>
               </tr>
                           <tr>
@@ -559,7 +531,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  35
+                  38
                 </td>
               </tr>
                           <tr>
@@ -573,7 +545,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  21
+                  68
                 </td>
               </tr>
                           <tr>
@@ -601,7 +573,35 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  11
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovyDocMojo.java">org/codehaus/gmavenplus/mojo/GroovyDocMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  17
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovyDocTestsMojo.java">org/codehaus/gmavenplus/mojo/GroovyDocTestsMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  17
                 </td>
               </tr>
                           <tr>
@@ -615,7 +615,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  8
+                  15
                 </td>
               </tr>
                           <tr>
