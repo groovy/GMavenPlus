@@ -26,10 +26,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
@@ -49,19 +46,14 @@ public class ClassWrangler {
     protected static final int CACHE_SIZE = 256;
 
     /**
-     * A cache of previously looked-up classes, for faster reuse.
-     */
-    protected transient Map<String, Class> classCache = null;
-
-    /**
      * Cached Groovy version.
      */
-    protected transient String groovyVersion = null;
+    protected String groovyVersion = null;
 
     /**
      * Cached whether Groovy supports invokedynamic (indy jar).
      */
-    protected transient Boolean isIndy = null;
+    protected Boolean isIndy = null;
 
     /**
      * ClassLoader to use for class wrangling.
@@ -324,15 +316,7 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when a class for the specified class name cannot be found
      */
     public Class<?> getClass(final String className) throws ClassNotFoundException {
-        if (classCache == null) {
-            classCache = Collections.synchronizedMap(new WeakHashMap<String, Class>(CACHE_SIZE));
-        }
-        Class<?> clazz = classCache.get(className);
-        if (clazz == null) {
-            clazz = Class.forName(className, true, classLoader);
-            classCache.put(className, clazz);
-        }
-        return clazz;
+        return Class.forName(className, true, classLoader);
     }
 
     /**
