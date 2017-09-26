@@ -59,16 +59,15 @@ public class ConsoleMojo extends AbstractToolsMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         try {
             getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
             getLog().warn("Unable to log project test classpath", e);
         }
-        logPluginClasspath();
-        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         if (groovyVersionSupportsAction()) {
-
             final SecurityManager sm = System.getSecurityManager();
             try {
                 if (!allowSystemExits) {
