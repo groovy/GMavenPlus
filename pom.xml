@@ -67,7 +67,7 @@
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
-      <version>1.11</version>
+      <version>1.13</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
