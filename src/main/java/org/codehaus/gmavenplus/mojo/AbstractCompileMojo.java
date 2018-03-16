@@ -248,7 +248,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
-            if (groovyAtLeast(GROOVY_2_1_0_BETA1) && configScript.exists()) {
+            if (!configScript.exists()) {
+                getLog().warn("Configuration script file (" + configScript.getAbsolutePath() + ") doesn't exist.  Ignoring configScript parameter.");
+            } else if (groovyOlderThan(GROOVY_2_1_0_BETA1)) {
+                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer).  Ignoring configScript parameter.");
+            } else {
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class<?> importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
                 Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
@@ -263,8 +267,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
                 getLog().debug("Using configuration script " + configScript + " for compilation.");
                 invokeMethod(findMethod(groovyShellClass, "evaluate", File.class), shell, configScript);
-            } else {
-                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer).  Ignoring configScript parameter.");
             }
         }
         invokeMethod(findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
