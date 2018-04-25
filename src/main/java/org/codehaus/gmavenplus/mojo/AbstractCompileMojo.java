@@ -165,13 +165,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
-        logPluginClasspath();
-        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-
         if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
+
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         if (groovyVersionSupportsAction()) {
             verifyGroovyVersionSupportsTargetBytecode();

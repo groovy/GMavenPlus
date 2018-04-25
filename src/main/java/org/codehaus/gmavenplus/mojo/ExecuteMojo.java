@@ -95,8 +95,14 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected synchronized void doExecute() throws MojoExecutionException, MojoFailureException {
         classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
+        if (scripts == null || scripts.length == 0) {
+            getLog().info("No scripts specified for execution.  Skipping.");
+            return;
+        }
+
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+
         try {
             getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
@@ -104,11 +110,6 @@ public class ExecuteMojo extends AbstractToolsMojo {
         }
 
         if (groovyVersionSupportsAction()) {
-            if (scripts == null || scripts.length == 0) {
-                getLog().info("No scripts specified for execution.  Skipping.");
-                return;
-            }
-
             final SecurityManager sm = System.getSecurityManager();
             try {
                 if (!allowSystemExits) {
