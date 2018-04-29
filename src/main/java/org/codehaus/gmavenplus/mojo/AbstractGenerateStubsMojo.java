@@ -140,13 +140,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         classWrangler = new ClassWrangler(classpath, getLog());
 
-        logPluginClasspath();
-        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation.  Skipping.");
             return;
         }
+
+        logPluginClasspath();
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");

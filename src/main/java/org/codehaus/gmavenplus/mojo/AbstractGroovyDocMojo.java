@@ -191,13 +191,16 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             getLog().info("Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.");
             return;
         }
+
         if (sourceDirectories == null || sourceDirectories.length == 0) {
             getLog().info("No source directories specified for GroovyDoc generation.  Skipping.");
             return;
         }
+
+        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+        logPluginClasspath();
+
         if (groovyVersionSupportsAction()) {
-            classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-            logPluginClasspath();
             try {
                 getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
             } catch (DependencyResolutionRequiredException e) {
