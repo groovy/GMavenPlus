@@ -50,6 +50,11 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
+            try {
+                getLog().debug("Project test classpath:\n" + project.getCompileClasspathElements());
+            } catch (DependencyResolutionRequiredException e) {
+                getLog().warn("Unable to log project tset classpath", e);
+            }
             doGroovyDocGeneration(getTestSourceRoots(groovyDocJavaSources), project.getTestClasspathElements(), testGroovyDocOutputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);

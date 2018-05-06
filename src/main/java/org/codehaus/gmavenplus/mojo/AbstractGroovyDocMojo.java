@@ -200,13 +200,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();
 
-        if (groovyVersionSupportsAction()) {
-            try {
-                getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
-            } catch (DependencyResolutionRequiredException e) {
-                getLog().warn("Unable to log project compile classpath", e);
-            }
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping GroovyDoc generation.");
             return;
         }
