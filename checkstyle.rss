@@ -23,10 +23,10 @@ under the License.
     <link>http://groovy.github.io/GMavenPlus/</link>
     <description>GMavenPlus Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2011 - 2017</copyright>
+    <copyright>&#169;2011 - 2018</copyright>
     <item>
       <title>File: 42,
-             Errors: 1567,
+             Errors: 1568,
              Warnings: 0,
              Infos: 0
       </title>
@@ -237,7 +237,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  112
+                  113
                 </td>
               </tr>
                           <tr>
@@ -335,7 +335,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  70
+                  68
                 </td>
               </tr>
                           <tr>
@@ -587,7 +587,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  17
+                  18
                 </td>
               </tr>
                           <tr>
@@ -601,7 +601,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  17
+                  18
                 </td>
               </tr>
                           <tr>

@@ -67,16 +67,16 @@
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException, MojoFailureException {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          classWrangler = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(Thread.currentThread().getContextClassLoader(), getLog());
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>              getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getTestClasspathElements());
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>              getLog().warn(<span class="jxr_string">"Unable to log project test classpath"</span>, e);
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          }
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          logPluginClasspath();
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>  
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          logPluginClasspath();
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getTestClasspathElements());
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>              getLog().warn(<span class="jxr_string">"Unable to log project test classpath"</span>, e);
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              <strong class="jxr_keyword">final</strong> SecurityManager sm = System.getSecurityManager();
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>              <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>                  <strong class="jxr_keyword">if</strong> (!allowSystemExits) {
@@ -190,6 +190,6 @@
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2017. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2018. All rights reserved.</div>
 </body>
 </html>

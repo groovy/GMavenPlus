@@ -148,13 +148,13 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">synchronized</strong> <strong class="jxr_keyword">void</strong> doStubGeneration(<strong class="jxr_keyword">final</strong> Set&lt;File&gt; stubSources, <strong class="jxr_keyword">final</strong> List classpath, <strong class="jxr_keyword">final</strong> File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         classWrangler = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(classpath, getLog());
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         logPluginClasspath();
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-<a class="jxr_linenumber" name="L145" href="#L145">145</a> 
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">if</strong> (stubSources == <strong class="jxr_keyword">null</strong> || stubSources.isEmpty()) {
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             getLog().info(<span class="jxr_string">"No sources specified for stub generation.  Skipping."</span>);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>             <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>         }
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">if</strong> (stubSources == <strong class="jxr_keyword">null</strong> || stubSources.isEmpty()) {
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             getLog().info(<span class="jxr_string">"No sources specified for stub generation.  Skipping."</span>);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         }
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> 
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         logPluginClasspath();
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">if</strong> (!groovyVersionSupportsAction()) {
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>             getLog().error(<span class="jxr_string">"Your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support stub generation.  The minimum version of Groovy required is "</span> + minGroovyVersion + <span class="jxr_string">".  Skipping stub generation."</span>);
@@ -271,6 +271,6 @@
 <a class="jxr_linenumber" name="L263" href="#L263">263</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2017. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2018. All rights reserved.</div>
 </body>
 </html>

@@ -173,13 +173,13 @@
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         classWrangler = <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(classpath, getLog());
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> 
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         logPluginClasspath();
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
-<a class="jxr_linenumber" name="L170" href="#L170">170</a> 
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <strong class="jxr_keyword">if</strong> (sources == <strong class="jxr_keyword">null</strong> || sources.isEmpty()) {
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             getLog().info(<span class="jxr_string">"No sources specified for compilation.  Skipping."</span>);
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>             <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>         }
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <strong class="jxr_keyword">if</strong> (sources == <strong class="jxr_keyword">null</strong> || sources.isEmpty()) {
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>             getLog().info(<span class="jxr_string">"No sources specified for compilation.  Skipping."</span>);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         }
+<a class="jxr_linenumber" name="L172" href="#L172">172</a> 
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         logPluginClasspath();
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> 
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>             verifyGroovyVersionSupportsTargetBytecode();
@@ -256,89 +256,91 @@
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>     <strong class="jxr_keyword">protected</strong> Object setupCompilerConfiguration(<strong class="jxr_keyword">final</strong> File compileOutputDirectory, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; compilerConfigurationClass) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>         <strong class="jxr_keyword">if</strong> (configScript != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>             <strong class="jxr_keyword">if</strong> (groovyAtLeast(GROOVY_2_1_0_BETA1) &amp;&amp; configScript.exists()) {
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 Class&lt;?&gt; bindingClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.Binding"</span>);
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 Class&lt;?&gt; importCustomizerClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.control.customizers.ImportCustomizer"</span>);
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 Class&lt;?&gt; groovyShellClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.GroovyShell"</span>);
-<a class="jxr_linenumber" name="L255" href="#L255">255</a> 
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 Object binding = invokeConstructor(findConstructor(bindingClass));
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 invokeMethod(findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"configuration"</span>, compilerConfiguration);
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 Object shellCompilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>                 Object importCustomizer = invokeConstructor(findConstructor(importCustomizerClass));
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>                 invokeMethod(findMethod(importCustomizerClass, <span class="jxr_string">"addStaticStar"</span>, String.<strong class="jxr_keyword">class</strong>), importCustomizer, <span class="jxr_string">"org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder"</span>);
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>                 List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"getCompilationCustomizers"</span>), shellCompilerConfiguration);
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 compilationCustomizers.add(importCustomizer);
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>                 getLog().debug(<span class="jxr_string">"Using configuration script "</span> + configScript + <span class="jxr_string">" for compilation."</span>);
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>                 invokeMethod(findMethod(groovyShellClass, <span class="jxr_string">"evaluate"</span>, File.<strong class="jxr_keyword">class</strong>), shell, configScript);
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 getLog().warn(<span class="jxr_string">"Requested to use configScript, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_1_0_BETA1 + <span class="jxr_string">" or newer).  Ignoring configScript parameter."</span>);
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>             }
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         }
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setDebug"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, debug);
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setVerbose"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, verbose);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setWarningLevel"</span>, <strong class="jxr_keyword">int</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, warningLevel);
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTolerance"</span>, <strong class="jxr_keyword">int</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, tolerance);
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTargetBytecode"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, targetBytecode);
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <strong class="jxr_keyword">if</strong> (sourceEncoding != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>             invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setSourceEncoding"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, sourceEncoding);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         }
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTargetDirectory"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">if</strong> (invokeDynamic) {
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>             <strong class="jxr_keyword">if</strong> (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>                 <strong class="jxr_keyword">if</strong> (classWrangler.isGroovyIndy()) {
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>                     <strong class="jxr_keyword">if</strong> (isJavaSupportIndy()) {
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>                         Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"getOptimizationOptions"</span>), compilerConfiguration);
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>                         optimizationOptions.put(<span class="jxr_string">"indy"</span>, <strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>                         optimizationOptions.put(<span class="jxr_string">"int"</span>, false);
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>                     } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>                         getLog().warn(<span class="jxr_string">"Requested to use to use invokedynamic, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring invokeDynamic parameter."</span>);
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>                     }
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>                     getLog().warn(<span class="jxr_string">"Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter."</span>);
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>                 }
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 getLog().warn(<span class="jxr_string">"Requested to use invokeDynamic, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_0_0_BETA3 + <span class="jxr_string">" or newer).  Ignoring invokeDynamic parameter."</span>);
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>             }
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         }
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">if</strong> (parameters) {
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             <strong class="jxr_keyword">if</strong> (groovyAtLeast(GROOVY_2_5_0_ALPHA1)) {
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>                 <strong class="jxr_keyword">if</strong> (isJavaSupportParameters()) {
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>                     invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setParameters"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, parameters);
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>                     getLog().warn(<span class="jxr_string">"Requested to use to use parameters, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring parameters parameter."</span>);
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>                 }
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>                 getLog().warn(<span class="jxr_string">"Requested to use parameters, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_5_0_ALPHA1 + <span class="jxr_string">" or newer).  Ignoring parameters parameter."</span>);
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>             }
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>         }
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> 
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">return</strong> compilerConfiguration;
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>     }
-<a class="jxr_linenumber" name="L310" href="#L310">310</a> 
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L312" href="#L312">312</a> <em class="jxr_javadoccomment">     * Throws an exception if targetBytecode is not supported with this version of Groovy.  That is, when Groovy added</em>
-<a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">     * the option to org.codehaus.groovy.control.CompilerConfiguration.</em>
-<a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> verifyGroovyVersionSupportsTargetBytecode() {
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.9"</span>.equals(targetBytecode)) {
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.9 is not yet supported."</span>);
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.8"</span>.equals(targetBytecode)) {
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>             <strong class="jxr_keyword">if</strong> (groovyOlderThan(GROOVY_2_3_3)) {
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.8 requires Groovy "</span> + GROOVY_2_3_3 + <span class="jxr_string">" or newer."</span>);
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>             }
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.7"</span>.equals(targetBytecode) || <span class="jxr_string">"1.6"</span>.equals(targetBytecode)) {
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>             <strong class="jxr_keyword">if</strong> (groovyOlderThan(GROOVY_2_1_3)) {
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.6 and 1.7 require Groovy "</span> + GROOVY_2_1_3 + <span class="jxr_string">" or newer."</span>);
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>             }
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (!<span class="jxr_string">"1.5"</span>.equals(targetBytecode) &amp;&amp; !<span class="jxr_string">"1.4"</span>.equals(targetBytecode)) {
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Unrecognized target bytecode."</span>);
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         }
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>     }
-<a class="jxr_linenumber" name="L330" href="#L330">330</a> 
-<a class="jxr_linenumber" name="L331" href="#L331">331</a> }
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>             <strong class="jxr_keyword">if</strong> (!configScript.exists()) {
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 getLog().warn(<span class="jxr_string">"Configuration script file ("</span> + configScript.getAbsolutePath() + <span class="jxr_string">") doesn't exist.  Ignoring configScript parameter."</span>);
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (groovyOlderThan(GROOVY_2_1_0_BETA1)) {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>                 getLog().warn(<span class="jxr_string">"Requested to use configScript, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_1_0_BETA1 + <span class="jxr_string">" or newer).  Ignoring configScript parameter."</span>);
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>             } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 Class&lt;?&gt; bindingClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.Binding"</span>);
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 Class&lt;?&gt; importCustomizerClass = classWrangler.getClass(<span class="jxr_string">"org.codehaus.groovy.control.customizers.ImportCustomizer"</span>);
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 Class&lt;?&gt; groovyShellClass = classWrangler.getClass(<span class="jxr_string">"groovy.lang.GroovyShell"</span>);
+<a class="jxr_linenumber" name="L259" href="#L259">259</a> 
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>                 Object binding = invokeConstructor(findConstructor(bindingClass));
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>                 invokeMethod(findMethod(bindingClass, <span class="jxr_string">"setVariable"</span>, String.<strong class="jxr_keyword">class</strong>, Object.<strong class="jxr_keyword">class</strong>), binding, <span class="jxr_string">"configuration"</span>, compilerConfiguration);
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 Object shellCompilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 Object importCustomizer = invokeConstructor(findConstructor(importCustomizerClass));
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>                 invokeMethod(findMethod(importCustomizerClass, <span class="jxr_string">"addStaticStar"</span>, String.<strong class="jxr_keyword">class</strong>), importCustomizer, <span class="jxr_string">"org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder"</span>);
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>                 List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"getCompilationCustomizers"</span>), shellCompilerConfiguration);
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>                 compilationCustomizers.add(importCustomizer);
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>                 getLog().debug(<span class="jxr_string">"Using configuration script "</span> + configScript + <span class="jxr_string">" for compilation."</span>);
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>                 invokeMethod(findMethod(groovyShellClass, <span class="jxr_string">"evaluate"</span>, File.<strong class="jxr_keyword">class</strong>), shell, configScript);
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>             }
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         }
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setDebug"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, debug);
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setVerbose"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, verbose);
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setWarningLevel"</span>, <strong class="jxr_keyword">int</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, warningLevel);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTolerance"</span>, <strong class="jxr_keyword">int</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, tolerance);
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTargetBytecode"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, targetBytecode);
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">if</strong> (sourceEncoding != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>             invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setSourceEncoding"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, sourceEncoding);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         }
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setTargetDirectory"</span>, String.<strong class="jxr_keyword">class</strong>), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         <strong class="jxr_keyword">if</strong> (invokeDynamic) {
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>             <strong class="jxr_keyword">if</strong> (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>                 <strong class="jxr_keyword">if</strong> (classWrangler.isGroovyIndy()) {
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>                     <strong class="jxr_keyword">if</strong> (isJavaSupportIndy()) {
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>                         Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"getOptimizationOptions"</span>), compilerConfiguration);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>                         optimizationOptions.put(<span class="jxr_string">"indy"</span>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>                         optimizationOptions.put(<span class="jxr_string">"int"</span>, false);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>                     } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>                         getLog().warn(<span class="jxr_string">"Requested to use to use invokedynamic, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>                     }
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>                     getLog().warn(<span class="jxr_string">"Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 }
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>             } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>                 getLog().warn(<span class="jxr_string">"Requested to use invokeDynamic, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_0_0_BETA3 + <span class="jxr_string">" or newer).  Ignoring invokeDynamic parameter."</span>);
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>             }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">if</strong> (parameters) {
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             <strong class="jxr_keyword">if</strong> (groovyAtLeast(GROOVY_2_5_0_ALPHA1)) {
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>                 <strong class="jxr_keyword">if</strong> (isJavaSupportParameters()) {
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>                     invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"setParameters"</span>, <strong class="jxr_keyword">boolean</strong>.<strong class="jxr_keyword">class</strong>), compilerConfiguration, parameters);
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>                     getLog().warn(<span class="jxr_string">"Requested to use to use parameters, but your Java version ("</span> + getJavaVersionString() + <span class="jxr_string">") doesn't support it.  Ignoring parameters parameter."</span>);
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>                 }
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>             } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>                 getLog().warn(<span class="jxr_string">"Requested to use parameters, but your Groovy version ("</span> + classWrangler.getGroovyVersionString() + <span class="jxr_string">") doesn't support it (must be "</span> + GROOVY_2_5_0_ALPHA1 + <span class="jxr_string">" or newer).  Ignoring parameters parameter."</span>);
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>             }
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>         }
+<a class="jxr_linenumber" name="L309" href="#L309">309</a> 
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>         <strong class="jxr_keyword">return</strong> compilerConfiguration;
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>     }
+<a class="jxr_linenumber" name="L312" href="#L312">312</a> 
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">     * Throws an exception if targetBytecode is not supported with this version of Groovy.  That is, when Groovy added</em>
+<a class="jxr_linenumber" name="L315" href="#L315">315</a> <em class="jxr_javadoccomment">     * the option to org.codehaus.groovy.control.CompilerConfiguration.</em>
+<a class="jxr_linenumber" name="L316" href="#L316">316</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> verifyGroovyVersionSupportsTargetBytecode() {
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>         <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.9"</span>.equals(targetBytecode)) {
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.9 is not yet supported."</span>);
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.8"</span>.equals(targetBytecode)) {
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>             <strong class="jxr_keyword">if</strong> (groovyOlderThan(GROOVY_2_3_3)) {
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.8 requires Groovy "</span> + GROOVY_2_3_3 + <span class="jxr_string">" or newer."</span>);
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>             }
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (<span class="jxr_string">"1.7"</span>.equals(targetBytecode) || <span class="jxr_string">"1.6"</span>.equals(targetBytecode)) {
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>             <strong class="jxr_keyword">if</strong> (groovyOlderThan(GROOVY_2_1_3)) {
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Target bytecode 1.6 and 1.7 require Groovy "</span> + GROOVY_2_1_3 + <span class="jxr_string">" or newer."</span>);
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>             }
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (!<span class="jxr_string">"1.5"</span>.equals(targetBytecode) &amp;&amp; !<span class="jxr_string">"1.4"</span>.equals(targetBytecode)) {
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(<span class="jxr_string">"Unrecognized target bytecode."</span>);
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>         }
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>     }
+<a class="jxr_linenumber" name="L332" href="#L332">332</a> 
+<a class="jxr_linenumber" name="L333" href="#L333">333</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2017. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2018. All rights reserved.</div>
 </body>
 </html>
