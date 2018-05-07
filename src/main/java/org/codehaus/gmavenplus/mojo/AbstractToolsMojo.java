@@ -72,7 +72,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * Whether to allow System.exit() to be used.
      * @since 1.2
      */
-    @Parameter(defaultValue="false")
+    @Parameter(defaultValue = "false")
     protected boolean allowSystemExits;
 
     /**
@@ -80,7 +80,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * properties to a single 'properties' variable).
      * @since 1.2
      */
-    @Parameter(defaultValue="true")
+    @Parameter(defaultValue = "true")
     protected boolean bindPropertiesToSeparateVariables;
 
     /**

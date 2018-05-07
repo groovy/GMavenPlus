@@ -46,7 +46,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
  * @author Keegan Witt
  * @since 1.1
  */
-@Mojo(name="shell", requiresDependencyResolution=ResolutionScope.TEST, configurator="include-project-test-dependencies")
+@Mojo(name = "shell", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
 public class ShellMojo extends AbstractToolsMojo {
 
     /**
@@ -58,14 +58,14 @@ public class ShellMojo extends AbstractToolsMojo {
      *   <li>VERBOSE</li>
      * </ul>
      */
-    @Parameter(defaultValue="QUIET")
+    @Parameter(defaultValue = "QUIET")
     protected String verbosity;
 
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

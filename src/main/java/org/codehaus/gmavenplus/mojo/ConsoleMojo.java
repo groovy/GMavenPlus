@@ -46,14 +46,14 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * @author Keegan Witt
  * @since 1.1
  */
-@Mojo(name="console", requiresDependencyResolution=ResolutionScope.TEST, configurator="include-project-test-dependencies")
+@Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
 public class ConsoleMojo extends AbstractToolsMojo {
 
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

@@ -72,25 +72,25 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * The Maven project this plugin is being used on.
      */
-    @Parameter(property="project", required=true, readonly=true)
+    @Parameter(property = "project", required = true, readonly = true)
     protected MavenProject project;
 
     /**
      * The Maven Session this plugin is being used on.
      */
-    @Parameter(property="session", required=true, readonly=true)
+    @Parameter(property = "session", required = true, readonly = true)
     protected MavenSession session;
 
     /**
      * The plugin dependencies.
      */
-    @Parameter(property="plugin.artifacts", required=true, readonly=true)
+    @Parameter(property = "plugin.artifacts", required = true, readonly = true)
     protected List<Artifact> pluginArtifacts;
 
     /**
      * The plugin's mojo execution.
      */
-    @Parameter(property="mojoExecution", required=true, readonly=true)
+    @Parameter(property = "mojoExecution", required = true, readonly = true)
     protected MojoExecution mojoExecution;
 
     /**
@@ -102,7 +102,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Flag to allow test compilation to be skipped.
      */
-    @Parameter(property="maven.test.skip",  defaultValue="false")
+    @Parameter(property = "maven.test.skip", defaultValue = "false")
     protected boolean skipTests;
 
     /**

@@ -32,20 +32,20 @@ import java.io.File;
  * @author Keegan Witt
  * @since 1.0-beta-3
  */
-@Mojo(name="addTestSources", defaultPhase=LifecyclePhase.INITIALIZE, threadSafe=true)
+@Mojo(name = "addTestSources", defaultPhase = LifecyclePhase.INITIALIZE, threadSafe = true)
 public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
      * The location for the compiled test classes.
      */
-    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/test")
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/test")
     private File outputDirectory;
 
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

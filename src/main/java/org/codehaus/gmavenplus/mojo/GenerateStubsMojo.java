@@ -38,7 +38,7 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name="generateStubs", defaultPhase=LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution=ResolutionScope.COMPILE, threadSafe=true)
+@Mojo(name = "generateStubs", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
@@ -49,14 +49,14 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * The location for the compiled classes.
      */
-    @Parameter(defaultValue="${project.build.directory}/generated-sources/groovy-stubs/main")
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/main")
     protected File outputDirectory;
 
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {

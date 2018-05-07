@@ -79,43 +79,43 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * The location for the generated API docs.
      */
-    @Parameter(defaultValue="${project.build.directory}/gapidocs")
+    @Parameter(defaultValue = "${project.build.directory}/gapidocs")
     protected File groovyDocOutputDirectory;
 
     /**
      * The location for the generated test API docs.
      */
-    @Parameter(defaultValue="${project.build.directory}/testgapidocs")
+    @Parameter(defaultValue = "${project.build.directory}/testgapidocs")
     protected File testGroovyDocOutputDirectory;
 
     /**
      * The window title.
      */
-    @Parameter(defaultValue="Groovy Documentation")
+    @Parameter(defaultValue = "Groovy Documentation")
     protected String windowTitle;
 
     /**
      * The page title.
      */
-    @Parameter(defaultValue="Groovy Documentation")
+    @Parameter(defaultValue = "Groovy Documentation")
     protected String docTitle;
 
     /**
      * The page footer.
      */
-    @Parameter(defaultValue="Groovy Documentation")
+    @Parameter(defaultValue = "Groovy Documentation")
     protected String footer;
 
     /**
      * The page header.
      */
-    @Parameter(defaultValue="Groovy Documentation")
+    @Parameter(defaultValue = "Groovy Documentation")
     protected String header;
 
     /**
      * Whether to display the author in the generated GroovyDoc.
      */
-    @Parameter(defaultValue="true")
+    @Parameter(defaultValue = "true")
     protected boolean displayAuthor;
 
     /**
@@ -134,11 +134,11 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * The encoding of stylesheetFile.
      */
-    @Parameter(defaultValue="${project.build.sourceEncoding}")
+    @Parameter(defaultValue = "${project.build.sourceEncoding}")
     protected String stylesheetEncoding;
 
     /**
-     * The scope to generate GroovyDoc for. Should be one of:
+     * The scope to generate GroovyDoc for.  Should be one of:
      * <ul>
      *   <li>"public"</li>
      *   <li>"protected"</li>
@@ -146,7 +146,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      *   <li>"private"</li>
      * </ul>
      */
-    @Parameter(defaultValue="private")
+    @Parameter(defaultValue = "private")
     protected String scope;
 
     /**
@@ -161,14 +161,14 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Whether to include Java sources in GroovyDoc generation.
      * @since 1.0-beta-2
      */
-    @Parameter(defaultValue="true")
+    @Parameter(defaultValue = "true")
     protected boolean groovyDocJavaSources;
 
     /**
      * Flag to allow GroovyDoc generation to be skipped.
      * @since 1.6
      */
-    @Parameter(property="maven.groovydoc.skip", defaultValue="false")
+    @Parameter(property = "maven.groovydoc.skip", defaultValue = "false")
     protected boolean skipGroovyDoc;
 
     /**

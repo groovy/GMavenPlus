@@ -63,7 +63,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     /**
      * The encoding of source files.
      */
-    @Parameter(defaultValue="${project.build.sourceEncoding}")
+    @Parameter(defaultValue = "${project.build.sourceEncoding}")
     protected String sourceEncoding;
 
     /**
@@ -87,19 +87,19 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * version (1.4 or 1.5).
      * @since 1.0-beta-3
      */
-    @Parameter(property="maven.compiler.target", defaultValue="1.5")
+    @Parameter(property = "maven.compiler.target", defaultValue = "1.5")
     protected String targetBytecode;
 
     /**
      * Whether Groovy compiler should be set to debug.
      */
-    @Parameter(defaultValue="false")
+    @Parameter(defaultValue = "false")
     protected boolean debug;
 
     /**
      * Whether Groovy compiler should be set to verbose.
      */
-    @Parameter(defaultValue="false")
+    @Parameter(defaultValue = "false")
     protected boolean verbose;
 
     /**
@@ -115,14 +115,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *     <dd>Paranoia</dd>
      * </dl>
      */
-    @Parameter(defaultValue="1")
+    @Parameter(defaultValue = "1")
     protected int warningLevel;
 
     /**
      * Groovy compiler error tolerance (the number of non-fatal errors
      * (per unit) that should be tolerated before compilation is aborted).
      */
-    @Parameter(defaultValue="0")
+    @Parameter(defaultValue = "0")
     protected int tolerance;
 
     /**

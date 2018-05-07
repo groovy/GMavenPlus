@@ -66,7 +66,7 @@ public class ReflectionUtils {
 
     /**
      * Attempt to find a {@link Constructor} on the supplied class with the
-     * supplied parameter types. Searches all superclasses up to
+     * supplied parameter types.  Searches all superclasses up to
      * <code>Object</code>.
      *
      * @param clazz The class to introspect
@@ -92,7 +92,7 @@ public class ReflectionUtils {
 
     /**
      * Attempt to find a {@link Field field} on the supplied {@link Class} with
-     * the supplied <code>name</code> and/or {@link Class type}. Searches all
+     * the supplied <code>name</code> and/or {@link Class type}.  Searches all
      * superclasses up to {@link Object}.
      *
      * @param clazz The class to introspect
@@ -122,7 +122,7 @@ public class ReflectionUtils {
 
     /**
      * Attempt to find a {@link Method} on the supplied class with the supplied
-     * name and parameter types. Searches all superclasses up to
+     * name and parameter types.  Searches all superclasses up to
      * <code>Object</code>.
      *
      * @param clazz      The class to introspect
@@ -203,7 +203,7 @@ public class ReflectionUtils {
 
     /**
      * Get the field represented by the supplied {@link Field field object} on
-     * the specified {@link Object target object}. In accordance with
+     * the specified {@link Object target object}.  In accordance with
      * {@link Field#get(Object)} semantics, the returned value is automatically
      * wrapped if the underlying field has a primitive type.
      *
@@ -219,7 +219,7 @@ public class ReflectionUtils {
 
     /**
      * Get the field represented by the supplied {@link Field field object} on
-     * the specified {@link Object target object}. In accordance with
+     * the specified {@link Object target object}.  In accordance with
      * {@link Field#get(Object)} semantics, the returned value is automatically
      * wrapped if the underlying field has a primitive type.
      *
@@ -254,7 +254,7 @@ public class ReflectionUtils {
 
     /**
      * Invoke the specified {@link Method} against the supplied target object
-     * with the supplied arguments. The target object can be <code>null</code>
+     * with the supplied arguments.  The target object can be <code>null</code>
      * when invoking a static {@link Method}.
      *
      * @param method The method to invoke
