@@ -138,12 +138,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-        classWrangler = new ClassWrangler(classpath, getLog());
-
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation.  Skipping.");
             return;
         }
+
+        classWrangler = new ClassWrangler(classpath, getLog());
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

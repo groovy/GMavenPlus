@@ -93,12 +93,12 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     protected synchronized void doExecute() throws MojoExecutionException, MojoFailureException {
-        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-
         if (scripts == null || scripts.length == 0) {
             getLog().info("No scripts specified for execution.  Skipping.");
             return;
         }
+
+        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

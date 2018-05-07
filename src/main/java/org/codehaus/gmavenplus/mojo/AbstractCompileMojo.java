@@ -163,12 +163,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     @SuppressWarnings("unchecked")
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
-        classWrangler = new ClassWrangler(classpath, getLog());
-
         if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation.  Skipping.");
             return;
         }
+
+        classWrangler = new ClassWrangler(classpath, getLog());
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

@@ -185,8 +185,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     @SuppressWarnings("unchecked")
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-        classWrangler = new ClassWrangler(classpath, getLog());
-
         if (skipGroovyDoc) {
             getLog().info("Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.");
             return;
@@ -196,6 +194,8 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             getLog().info("No source directories specified for GroovyDoc generation.  Skipping.");
             return;
         }
+
+        classWrangler = new ClassWrangler(classpath, getLog());
 
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();
