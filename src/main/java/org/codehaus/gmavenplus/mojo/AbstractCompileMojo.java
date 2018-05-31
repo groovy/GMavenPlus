@@ -332,7 +332,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + " or newer.");
             }
         } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
-            throw new IllegalArgumentException("Unrecognized target bytecode.");
+            throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'.");
         }
     }
 
