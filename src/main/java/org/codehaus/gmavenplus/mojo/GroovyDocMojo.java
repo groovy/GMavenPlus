@@ -32,7 +32,7 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = "groovydoc", requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
+@Mojo(name = "groovydoc", requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true)
 public class GroovyDocMojo extends AbstractGroovyDocMojo {
 
     /**
@@ -49,7 +49,7 @@ public class GroovyDocMojo extends AbstractGroovyDocMojo {
             } catch (DependencyResolutionRequiredException e) {
                 getLog().warn("Unable to log project compile classpath", e);
             }
-            doGroovyDocGeneration(getSourceRoots(groovyDocJavaSources), project.getCompileClasspathElements(), groovyDocOutputDirectory);
+            doGroovyDocGeneration(getSourceRoots(groovyDocJavaSources), project.getRuntimeClasspathElements(), groovyDocOutputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
