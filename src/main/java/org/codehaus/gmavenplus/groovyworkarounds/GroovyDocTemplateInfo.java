@@ -29,9 +29,9 @@ import static org.codehaus.gmavenplus.util.ClassWrangler.groovyAtLeast;
 public class GroovyDocTemplateInfo {
 
     /**
-     * Base directory of document generation classes.
+     * Groovy 2.5.0 version.
      */
-    protected static final String DOCGEN_BASEDIR = "org/codehaus/groovy/tools/";
+    protected static final Version GROOVY_2_5_0 = new Version(2, 5, 0);
 
     /**
      * Groovy 1.6.2 version.
@@ -74,7 +74,7 @@ public class GroovyDocTemplateInfo {
     }
 
     public String[] defaultDocTemplates() {
-        if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
+        if (groovyAtLeast(groovyVersion, GROOVY_2_5_0)) {
             return new String[] {
                     templateBaseDir + "topLevel/index.html",
                     templateBaseDir + "topLevel/overview-frame.html",
@@ -85,7 +85,20 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "topLevel/deprecated-list.html",
                     templateBaseDir + "topLevel/stylesheet.css",
                     templateBaseDir + "topLevel/inherit.gif",
-                    DOCGEN_BASEDIR + "groovy.ico"
+                    "org/apache/groovy/docgenerator/groovy.ico"
+            };
+        } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
+            return new String[] {
+                    templateBaseDir + "topLevel/index.html",
+                    templateBaseDir + "topLevel/overview-frame.html",
+                    templateBaseDir + "topLevel/allclasses-frame.html",
+                    templateBaseDir + "topLevel/overview-summary.html",
+                    templateBaseDir + "topLevel/help-doc.html",
+                    templateBaseDir + "topLevel/index-all.html",
+                    templateBaseDir + "topLevel/deprecated-list.html",
+                    templateBaseDir + "topLevel/stylesheet.css",
+                    templateBaseDir + "topLevel/inherit.gif",
+                    "org/codehaus/groovy/tools/groovy.ico"
             };
         } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_0)) {
             return new String[] {

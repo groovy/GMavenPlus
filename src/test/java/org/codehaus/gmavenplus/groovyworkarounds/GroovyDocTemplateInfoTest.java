@@ -14,6 +14,23 @@ import static org.junit.Assert.assertArrayEquals;
 public class GroovyDocTemplateInfoTest {
 
     @Test
+    public void testDefaultDocTemplatesWithGroovy2_5_0() {
+        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(2, 6, 0));
+        assertArrayEquals(new String[] {
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/index.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/overview-frame.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/allclasses-frame.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/overview-summary.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/help-doc.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/index-all.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/deprecated-list.html",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/stylesheet.css",
+                groovyDocTemplateInfo.templateBaseDir + "topLevel/inherit.gif",
+                "org/apache/groovy/docgenerator/groovy.ico"
+        }, groovyDocTemplateInfo.defaultDocTemplates());
+    }
+
+    @Test
     public void testDefaultDocTemplatesWithGroovy1_6_2() {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(new Version(1, 6, 2));
         assertArrayEquals(new String[] {
@@ -26,7 +43,7 @@ public class GroovyDocTemplateInfoTest {
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/deprecated-list.html",
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/stylesheet.css",
                 groovyDocTemplateInfo.templateBaseDir + "topLevel/inherit.gif",
-                GroovyDocTemplateInfo.DOCGEN_BASEDIR + "groovy.ico"
+                "org/codehaus/groovy/tools/groovy.ico"
         }, groovyDocTemplateInfo.defaultDocTemplates());
     }
 
