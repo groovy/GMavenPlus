@@ -19,14 +19,10 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 import java.io.File;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
 
 
 /**

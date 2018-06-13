@@ -21,11 +21,9 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.Collections.singletonList;
 
 
 /**
@@ -151,7 +149,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         for (FileSet fileSet : getFilesets(fromSources, defaultSourceDirectory, includeJavaSources)) {
-            for (String include : Arrays.asList(fileSetManager.getIncludedFiles(fileSet))) {
+            for (String include : fileSetManager.getIncludedFiles(fileSet)) {
                 files.add(new File(fileSet.getDirectory(), include));
             }
         }
@@ -178,7 +176,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
             FileSet groovyFileSet = new FileSet();
             String groovyDirectory = "src" + File.separator + defaultSubDirectory + File.separator + "groovy";
             groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);
-            groovyFileSet.setIncludes(Arrays.asList(GROOVY_SOURCES_PATTERN));
+            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));
             groovyFileSets = new FileSet[] {groovyFileSet};
         }
 
@@ -188,18 +186,18 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
                 for (Object sourceRoot : project.getTestCompileSourceRoots()) {
                     FileSet javaFileSet = new FileSet();
                     javaFileSet.setDirectory((String) sourceRoot);
-                    javaFileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
+                    javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                     javaFileSets.add(javaFileSet);
                 }
             } else {
                 for (Object sourceRoot : project.getCompileSourceRoots()) {
                     FileSet javaFileSet = new FileSet();
                     javaFileSet.setDirectory((String) sourceRoot);
-                    javaFileSet.setIncludes(Arrays.asList(JAVA_SOURCES_PATTERN));
+                    javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                     javaFileSets.add(javaFileSet);
                 }
             }
-            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[javaFileSets.size()]);
+            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);
             result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
             System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
         } else {

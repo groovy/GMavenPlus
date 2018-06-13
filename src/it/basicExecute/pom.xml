@@ -33,13 +33,19 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <classifier>indy</classifier>
                 <version>@groovyVersion@</version>
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-ant</artifactId>
+                <classifier>indy</classifier>
+                <version>@groovyVersion@</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-groovydoc</artifactId>
                 <classifier>indy</classifier>
                 <version>@groovyVersion@</version>
               </dependency>
@@ -58,12 +64,17 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-ant</artifactId>
+                <version>@groovyVersion@</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-groovydoc</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
             </dependencies>

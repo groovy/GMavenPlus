@@ -28,12 +28,7 @@ import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**

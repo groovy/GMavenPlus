@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
@@ -26,26 +25,15 @@ import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
 
 /**
@@ -381,7 +369,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         List<String> groovySources = new ArrayList<String>();
         List<String> possibleGroovyStubs = new ArrayList<String>();
         for (FileSet sourceDirectory : sourceDirectories) {
-            List<String> sources = Arrays.asList(fileSetManager.getIncludedFiles(sourceDirectory));
+            String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);
             for (String source : sources) {
                 if (source.endsWith(".java") && !javaSources.contains(source)) {
                     javaSources.add(source);
