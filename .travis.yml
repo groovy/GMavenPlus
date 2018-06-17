@@ -3,10 +3,10 @@ jdk: oraclejdk8
 sudo: false
 
 # unit test
-#script: "mvn -B -P nonindy clean test"
+#script: "mvn -B -P indy clean test"
 
 # integration test
 before_install: "mvn -B clean"
-install: "mvn -B -P nonindy install"
+install: "mvn -B -P indy install"
 before_script: "mvn -B invoker:install"
-script: "mvn -B -P nonindy -Dinvoker.streamLogs=true invoker:run"
+script: "mvn -B -P indy -Dinvoker.streamLogs=true invoker:run"
