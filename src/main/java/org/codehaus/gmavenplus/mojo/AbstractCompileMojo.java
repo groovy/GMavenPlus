@@ -88,8 +88,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>1.6</li>
      *   <li>1.7</li>
      *   <li>1.8</li>
+     *   <li>9</li>
+     *   <li>10</li>
+     *   <li>11</li>
      * </ul>
-     * Using 1.6 or 1.7 requires Groovy >= 2.1.3, and using 1.8 requires Groovy >= 2.3.3.
+     * Using 1.6 or 1.7 requires Groovy >= 2.1.3.
+     * Using 1.8 requires Groovy >= 2.3.3.
+     * Using 9 requires Groovy >= 2.5.0 RC-1.
+     * Using 10 or 11 requires Groovy >= 2.5.2.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.5")
     protected String targetBytecode;
