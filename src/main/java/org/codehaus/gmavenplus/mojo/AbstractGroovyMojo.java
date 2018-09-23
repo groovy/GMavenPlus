@@ -206,4 +206,13 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         return ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), version);
     }
 
+    /**
+     * Gets whether the version of Groovy on the classpath supports invokedynamic.
+     *
+     * @return <code>true</code> if the version of Groovy uses invokedynamic,
+     *         <code>false</code> if not or Groovy dependency cannot be found.
+     */
+    protected boolean isGroovyIndy() {
+        return classWrangler.isGroovyIndy();
+    }
 }
