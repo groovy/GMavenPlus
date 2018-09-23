@@ -72,6 +72,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testConfigureComponent_2() throws Exception {
         ConverterLookup converterLookup = mock(ConverterLookup.class);
         Field modifiersField = configurator.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("converterLookup");
@@ -91,6 +92,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testAddProjectRuntimeDependenciesToClassRealm() throws Exception {
         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
         List classpathElements = singletonList("CLASSPATH_ELEMENT");

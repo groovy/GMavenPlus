@@ -93,7 +93,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 10, 11, or 12 requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 4, but not any 2.6 versions.
      * @since 1.0-beta-3
      */
-    @Parameter(property = "maven.compiler.target", defaultValue = "1.5")
+    @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
 
     /**

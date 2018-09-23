@@ -52,6 +52,7 @@ public class IncludeProjectCompileDependenciesComponentConfigurator extends Abst
      * @param listener the component's Listener
      * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
+    @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
         addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
