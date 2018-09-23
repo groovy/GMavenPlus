@@ -120,17 +120,6 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
-    /*
-    java 9 - 2.5.3, 2.6.0 alpha 4, 3.0.0 alpha 2
-    java 9 indy - 2.5.3, 3.0.0 alpha 4
-    java 10 - 2.5.3, 3.0.0 alpha 4
-    java 10 indy - 2.5.3, 3.0.0 alpha 4
-    java 11 - 2.5.3, 3.0.0 alpha 4
-    java 11 indy - 2.5.3, 3.0.0 alpha 4
-    java 12 - 2.5.3, 3.0.0 alpha 4
-    java 12 indy - 2.5.3, 3.0.0 alpha 4
-     */
-
     @Test(expected = IllegalArgumentException.class)
     public void testJava9WithUnsupportedGroovy2_5() {
         testMojo = new TestMojo("2.5.2");
