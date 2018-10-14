@@ -16,7 +16,7 @@
   <description>The kitchen sink of compile use cases.</description>
 
   <properties>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>

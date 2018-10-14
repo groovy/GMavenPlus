@@ -77,6 +77,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
+    @SuppressWarnings("deprecation")
     protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
         List classpathElements;
 

@@ -39,10 +39,36 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @since 1.0-beta-1
  */
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
+
     /**
-     * Groovy 2.5.0 alpha-1 version.
+     * Groovy 3.0.0 alpha-4 version.
      */
-    protected static final Version GROOVY_2_5_0_RC1 = new Version(2, 5, 0, "RC-1");
+    protected static final Version GROOVY_3_0_0_ALPHA4 = new Version(3, 0, 0, "alpha-4");
+
+    /**
+     * Groovy 3.0.0 alpha-2 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA2 = new Version(3, 0, 0, "alpha-2");
+
+    /**
+     * Groovy 3.0.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA1 = new Version(3, 0, 0, "alpha-1");
+
+    /**
+     * Groovy 2.6.0 alpha-4 version.
+     */
+    protected static final Version GROOVY_2_6_0_ALPHA4 = new Version(2, 6, 0, "alpha-4");
+
+    /**
+     * Groovy 2.6.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_2_6_0_ALPHA1 = new Version(2, 6, 0, "alpha-1");
+
+    /**
+     * Groovy 2.5.3 version.
+     */
+    protected static final Version GROOVY_2_5_3 = new Version(2, 5, 3);
 
     /**
      * Groovy 2.5.0 alpha-1 version.
@@ -91,13 +117,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>9</li>
      *   <li>10</li>
      *   <li>11</li>
+     *   <li>12</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy >= 2.1.3.
      * Using 1.8 requires Groovy >= 2.3.3.
-     * Using 9 requires Groovy >= 2.5.0 RC-1.
-     * Using 10 or 11 requires Groovy >= 2.5.2.
+     * Using 9 requires Groovy >= 2.5.3, or Groovy >= 2.6.0 alpha 4, or Groovy >= 3.0.0 alpha 2.
+     * Using 9 with invokedynamic requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 2, but not any 2.6 versions.
+     * Using 10, 11, or 12 requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 4, but not any 2.6 versions.
      */
-    @Parameter(property = "maven.compiler.target", defaultValue = "1.5")
+    @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
 
     /**
@@ -170,7 +198,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sources == null || sources.isEmpty()) {
@@ -254,7 +282,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for setting up CompilerConfiguration cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up CompilerConfiguration cannot be completed
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
@@ -322,12 +350,21 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Throws an exception if targetBytecode is not supported with this version of Groovy.  That is, when Groovy added
-     * the option to org.codehaus.groovy.control.CompilerConfiguration.
+     * the option to org.codehaus.groovy.control.CompilerConfiguration and used it in
+     * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("1.9".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_5_0_RC1)) {
-                throw new IllegalArgumentException("Target bytecode 1.9 requires Groovy " + GROOVY_2_5_0_RC1 + " or newer.");
+        if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {
+                throw new IllegalArgumentException("Target bytecode 10, 11, or 12 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer.  No 2.6 version is supported.");
+            }
+        } else if ("9".equals(targetBytecode)) {
+            if (!isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3)
+                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_2_6_0_ALPHA4))
+                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {
+                throw new IllegalArgumentException("Target bytecode 9 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
+            } else if (isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {
+                throw new IllegalArgumentException("Target bytecode 9 with invokedynamic requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer.  No 2.6 version is supported.");
             }
         } else if ("1.8".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_3_3)) {
