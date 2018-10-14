@@ -80,55 +80,57 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      @Test
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConfigureComponent_2() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          ConverterLookup converterLookup = mock(ConverterLookup.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          Field modifiersField = configurator.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField(<span class="jxr_string">"converterLookup"</span>);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          modifiersField.setAccessible(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          modifiersField.set(configurator, converterLookup);
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          Object component = mock(Object.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          PlexusConfiguration configuration = mock(PlexusConfiguration.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          ConfigurationListener listener = mock(ConfigurationListener.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.<strong class="jxr_keyword">class</strong>), any(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>  
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>  
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>          verify(configurator, atLeastOnce()).addDependenciesToClassRealm(any(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.<strong class="jxr_keyword">class</strong>), any(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>          verify(converterLookup, atLeastOnce()).registerConverter(any(ClassRealmConverter.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      }
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>  
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      @Test
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectTestDependenciesToClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>          ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>          List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         verify(expressionEvaluator, times(1)).evaluate(anyString());
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         verify(containerRealm, times(1)).addConstituent(any(URL.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>     }
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> 
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     @Test
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectTestDependenciesToPlexusClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>         doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         verify(expressionEvaluator, times(1)).evaluate(anyString());
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         verify(containerRealm, times(1)).addURL(any(URL.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L113" href="#L113">113</a>     }
-<a class="jxr_linenumber" name="L114" href="#L114">114</a> 
-<a class="jxr_linenumber" name="L115" href="#L115">115</a>     @Test
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testBuildURLs() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         List&lt;String&gt; elements = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>         elements.add(<span class="jxr_string">"ELEMENT_1"</span>);
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         URL[] urls = configurator.buildURLs(elements);
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         assertEquals(elements.size(), urls.length);
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>     }
-<a class="jxr_linenumber" name="L122" href="#L122">122</a> 
-<a class="jxr_linenumber" name="L123" href="#L123">123</a> }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConfigureComponent_2() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          ConverterLookup converterLookup = mock(ConverterLookup.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          Field modifiersField = configurator.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField(<span class="jxr_string">"converterLookup"</span>);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          modifiersField.setAccessible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          modifiersField.set(configurator, converterLookup);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          Object component = mock(Object.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          PlexusConfiguration configuration = mock(PlexusConfiguration.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          ConfigurationListener listener = mock(ConfigurationListener.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.<strong class="jxr_keyword">class</strong>), any(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>  
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          verify(configurator, atLeastOnce()).addDependenciesToClassRealm(any(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.<strong class="jxr_keyword">class</strong>), any(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          verify(converterLookup, atLeastOnce()).registerConverter(any(ClassRealmConverter.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      }
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      @Test
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectTestDependenciesToClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         verify(expressionEvaluator, times(1)).evaluate(anyString());
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         verify(containerRealm, times(1)).addConstituent(any(URL.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     }
+<a class="jxr_linenumber" name="L105" href="#L105">105</a> 
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>     @Test
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectTestDependenciesToPlexusClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectTestDependenciesComponentConfigurator.Classpath.TEST, containerRealm);
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         verify(expressionEvaluator, times(1)).evaluate(anyString());
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         verify(containerRealm, times(1)).addURL(any(URL.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>     }
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> 
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     @Test
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testBuildURLs() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         List&lt;String&gt; elements = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         elements.add(<span class="jxr_string">"ELEMENT_1"</span>);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         URL[] urls = configurator.buildURLs(elements);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         assertEquals(elements.size(), urls.length);
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     }
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> 
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2018. All rights reserved.</div>
