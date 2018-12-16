@@ -27,6 +27,7 @@ import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
@@ -64,7 +65,17 @@ public class ShellMojo extends AbstractToolsMojo {
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            try {
+                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
+            }
+        }
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

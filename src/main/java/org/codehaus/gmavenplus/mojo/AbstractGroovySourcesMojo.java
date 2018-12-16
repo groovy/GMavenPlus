@@ -58,6 +58,19 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     @Parameter
     protected FileSet[] testSources;
 
+
+    /**
+     * Flag to allow test compilation/GroovyDoc/stub generation to be skipped.
+     */
+    @Parameter(property = "maven.test.skip", defaultValue = "false")
+    protected boolean skipTests;
+
+    /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     */
+    @Parameter(property = "sharedClassLoader", defaultValue = "false")
+    protected boolean useSharedClassLoader;
+
     /**
      * Gets the filesets of the the main sources.
      *

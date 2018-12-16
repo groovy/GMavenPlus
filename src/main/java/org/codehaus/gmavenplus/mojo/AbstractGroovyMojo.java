@@ -100,12 +100,6 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected Version minGroovyVersion = GROOVY_1_5_0;
 
     /**
-     * Flag to allow test compilation to be skipped.
-     */
-    @Parameter(property = "maven.test.skip", defaultValue = "false")
-    protected boolean skipTests;
-
-    /**
      * Logs the plugin classpath.
      */
     protected void logPluginClasspath() {
@@ -215,4 +209,5 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected boolean isGroovyIndy() {
         return classWrangler.isGroovyIndy();
     }
+
 }

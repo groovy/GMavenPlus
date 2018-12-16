@@ -84,6 +84,12 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected boolean bindPropertiesToSeparateVariables;
 
     /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     */
+    @Parameter(property = "sharedClassLoader", defaultValue = "true")
+    protected boolean useSharedClassLoader;
+
+    /**
      * Initializes the properties field.
      */
     protected void initializeProperties() {

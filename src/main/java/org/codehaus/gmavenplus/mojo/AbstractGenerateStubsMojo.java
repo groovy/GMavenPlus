@@ -149,7 +149,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             return;
         }
 
-        classWrangler = new ClassWrangler(classpath, getLog());
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            classWrangler = new ClassWrangler(classpath, getLog());
+        }
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
