@@ -183,7 +183,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Generate metadata for reflection on method parameter names using the functionality provided by JEP 118
      * (requires Java 8 or greater and Groovy 2.5.0-alpha-1 or greater).
      */
-    @Parameter(property  =  "parameters", defaultValue = "false")
+    @Parameter(property = "parameters", defaultValue = "false")
     protected boolean parameters;
 
     /**
@@ -206,7 +206,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        classWrangler = new ClassWrangler(classpath, getLog());
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            classWrangler = new ClassWrangler(classpath, getLog());
+        }
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

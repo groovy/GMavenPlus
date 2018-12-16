@@ -183,7 +183,11 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        classWrangler = new ClassWrangler(classpath, getLog());
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            classWrangler = new ClassWrangler(classpath, getLog());
+        }
 
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();

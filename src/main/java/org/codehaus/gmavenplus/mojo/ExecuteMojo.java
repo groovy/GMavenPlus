@@ -83,15 +83,24 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * Does the actual execution.
      *
      * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
-    protected synchronized void doExecute() throws MojoExecutionException, MojoFailureException {
+    protected synchronized void doExecute() throws MojoExecutionException {
         if (scripts == null || scripts.length == 0) {
             getLog().info("No scripts specified for execution.  Skipping.");
             return;
         }
 
-        classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            try {
+                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
+            }
+        }
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
