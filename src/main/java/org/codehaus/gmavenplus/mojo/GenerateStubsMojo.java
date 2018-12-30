@@ -76,7 +76,7 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
             // add stubs to project source so the Maven Compiler Plugin can find them
             project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
             throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
         } catch (InstantiationException e) {

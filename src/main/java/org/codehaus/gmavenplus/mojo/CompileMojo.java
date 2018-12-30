@@ -62,7 +62,7 @@ public class CompileMojo extends AbstractCompileMojo {
             }
             doCompile(getSources(), project.getCompileClasspathElements(), outputDirectory);
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
             throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
         } catch (InstantiationException e) {
