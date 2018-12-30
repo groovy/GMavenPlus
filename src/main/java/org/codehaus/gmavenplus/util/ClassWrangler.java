@@ -138,8 +138,8 @@ public class ClassWrangler {
             /*
              * This handles the circumstances in which neither the GroovySystem or InvokerHelper methods
              * worked (GAE with versions older than 1.6.6 is one example, see
-             * https://jira.codehaus.org/browse/GROOVY-3884).  One case this can't handle properly is uber
-             * jars that include Groovy.  It should also be noted this method assumes jars will be named
+             * https://jira.codehaus.org/browse/GROOVY-3884). One case this can't handle properly is uber
+             * jars that include Groovy. It should also be noted this method assumes jars will be named
              * in the Maven convention (<artifactId>-<version>-<classifier>.jar).
              */
             if (groovyVersion == null) {
@@ -170,7 +170,7 @@ public class ClassWrangler {
         try {
             return Version.parseFromString(getGroovyVersionString());
         } catch (Exception e) {
-            log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            log.error("Unable to determine Groovy version. Is Groovy declared as a dependency?");
             return null;
         }
     }
@@ -257,7 +257,7 @@ public class ClassWrangler {
 
             return groovyJar;
         } catch (ClassNotFoundException e) {
-            log.error("Unable to determine Groovy version.  Is Groovy declared as a dependency?");
+            log.error("Unable to determine Groovy version. Is Groovy declared as a dependency?");
             return null;
         }
     }

@@ -15,7 +15,7 @@
   <version>testing</version>
   <packaging>pom</packaging>
   <name>GMavenPlus Plugin Mixed Compile MultiModule Test 2</name>
-  <description>This tests mixed Java/Groovy compilation across modules.  This will fail for all versions of Groovy before 1.8.2.</description>
+  <description>This tests mixed Java/Groovy compilation across modules. This will fail for all versions of Groovy before 1.8.2.</description>
 
   <dependencyManagement>
     <dependencies>

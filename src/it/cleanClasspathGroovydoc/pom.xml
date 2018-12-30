@@ -14,7 +14,7 @@
   <artifactId>gmavenplus-plugin-it-cleanClasspathGroovyDoc</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Clean Classpath GroovyDoc Test</name>
-  <description>The simplest GroovyDoc use case where it would fail if the classpath were polluted with the plugin classpath.  This will fail for Groovy 1.5.8 and 1.6-RC-1.</description>
+  <description>The simplest GroovyDoc use case where it would fail if the classpath were polluted with the plugin classpath. This will fail for Groovy 1.5.8 and 1.6-RC-1.</description>
 
   <profiles>
     <profile>

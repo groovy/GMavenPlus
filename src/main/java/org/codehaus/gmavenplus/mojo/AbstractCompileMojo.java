@@ -107,7 +107,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected String sourceEncoding;
 
     /**
-     * The Groovy compiler bytecode compatibility.  One of
+     * The Groovy compiler bytecode compatibility. One of
      * <ul>
      *   <li>1.4</li>
      *   <li>1.5</li>
@@ -141,7 +141,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level.  Should be one of:
+     * Groovy compiler warning level. Should be one of:
      * <dl>
      *   <dt>0</dt>
      *     <dd>None</dd>
@@ -174,7 +174,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a>
      * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
-     * or greater).  Note that its encoding must match your source encoding.
+     * or greater). Note that its encoding must match your source encoding.
      */
     @Parameter(property = "configScript")
     protected File configScript;
@@ -202,7 +202,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sources == null || sources.isEmpty()) {
-            getLog().info("No sources specified for compilation.  Skipping.");
+            getLog().info("No sources specified for compilation. Skipping.");
             return;
         }
 
@@ -218,7 +218,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if (groovyVersionSupportsAction()) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping compiling.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
             return;
         }
 
@@ -291,9 +291,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (!configScript.exists()) {
-                getLog().warn("Configuration script file (" + configScript.getAbsolutePath() + ") doesn't exist.  Ignoring configScript parameter.");
+                getLog().warn("Configuration script file (" + configScript.getAbsolutePath() + ") doesn't exist. Ignoring configScript parameter.");
             } else if (groovyOlderThan(GROOVY_2_1_0_BETA1)) {
-                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer).  Ignoring configScript parameter.");
+                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer). Ignoring configScript parameter.");
             } else {
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class<?> importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
@@ -328,13 +328,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
                     } else {
-                        getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Ignoring invokeDynamic parameter.");
+                        getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring invokeDynamic parameter.");
                     }
                 } else {
-                    getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier).  Ignoring invokeDynamic parameter.");
+                    getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.");
                 }
             } else {
-                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_0_0_BETA3 + " or newer).  Ignoring invokeDynamic parameter.");
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_0_0_BETA3 + " or newer). Ignoring invokeDynamic parameter.");
             }
         }
         if (parameters) {
@@ -342,10 +342,10 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 if (isJavaSupportParameters()) {
                     invokeMethod(findMethod(compilerConfigurationClass, "setParameters", boolean.class), compilerConfiguration, parameters);
                 } else {
-                    getLog().warn("Requested to use to use parameters, but your Java version (" + getJavaVersionString() + ") doesn't support it.  Ignoring parameters parameter.");
+                    getLog().warn("Requested to use to use parameters, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring parameters parameter.");
                 }
             } else {
-                getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer).  Ignoring parameters parameter.");
+                getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer). Ignoring parameters parameter.");
             }
         }
 
@@ -353,14 +353,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     }
 
     /**
-     * Throws an exception if targetBytecode is not supported with this version of Groovy.  That is, when Groovy added
+     * Throws an exception if targetBytecode is not supported with this version of Groovy. That is, when Groovy added
      * the option to org.codehaus.groovy.control.CompilerConfiguration and used it in
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
         if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {
-                throw new IllegalArgumentException("Target bytecode 10, 11, or 12 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer.  No 2.6 version is supported.");
+                throw new IllegalArgumentException("Target bytecode 10, 11, or 12 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
             }
         } else if ("9".equals(targetBytecode)) {
             if (!isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3)
@@ -368,7 +368,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                     || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {
                 throw new IllegalArgumentException("Target bytecode 9 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
             } else if (isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {
-                throw new IllegalArgumentException("Target bytecode 9 with invokedynamic requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer.  No 2.6 version is supported.");
+                throw new IllegalArgumentException("Target bytecode 9 with invokedynamic requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
             }
         } else if ("1.8".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_3_3)) {

@@ -44,8 +44,8 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -57,7 +57,7 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
             }
             doGroovyDocGeneration(getTestSourceRoots(groovyDocJavaSources), project.getTestClasspathElements(), testGroovyDocOutputDirectory);
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
             throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
         } catch (InstantiationException e) {

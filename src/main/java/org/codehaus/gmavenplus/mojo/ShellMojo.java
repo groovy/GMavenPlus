@@ -46,7 +46,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public class ShellMojo extends AbstractToolsMojo {
 
     /**
-     * Groovy shell verbosity level.  Should be one of:
+     * Groovy shell verbosity level. Should be one of:
      * <ul>
      *   <li>QUIET</li>
      *   <li>INFO</li>
@@ -60,8 +60,8 @@ public class ShellMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -106,10 +106,10 @@ public class ShellMojo extends AbstractToolsMojo {
                 // run the shell
                 invokeMethod(findMethod(shellClass, "run", String.class), shell, (String) null);
             } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?", e);
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project or the plugin?", e);
             } catch (InvocationTargetException e) {
                 if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().contains("jline")) {
-                    throw new MojoExecutionException("Unable to get a JLine class from classpath.  This might be because of a JLine version mismatch.  If you are using Groovy < 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.", e);
+                    throw new MojoExecutionException("Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy < 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.", e);
                 } else {
                     throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
                 }
@@ -123,7 +123,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping shell startup.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
         }
     }
 

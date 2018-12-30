@@ -61,8 +61,8 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -82,7 +82,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                 // add stubs to project source so the Maven Compiler Plugin can find them
                 project.addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
             } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project?", e);
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {
                 throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
             } catch (InstantiationException e) {

@@ -35,9 +35,9 @@ public class JDK5Utils {
 
     /**
      * Copies the specified array, truncating or padding with nulls (if necessary)
-     * so the copy has the specified length.  For all indices that are
+     * so the copy has the specified length. For all indices that are
      * valid in both the original array and the copy, the two arrays will
-     * contain identical values.  For any indices that are valid in the
+     * contain identical values. For any indices that are valid in the
      * copy but not the original, the copy will contain <tt>null</tt>.
      * Such indices will exist if and only if the specified length
      * is greater than that of the original array.
@@ -57,9 +57,9 @@ public class JDK5Utils {
 
     /**
      * Copies the specified array, truncating or padding with nulls (if necessary)
-     * so the copy has the specified length.  For all indices that are
+     * so the copy has the specified length. For all indices that are
      * valid in both the original array and the copy, the two arrays will
-     * contain identical values.  For any indices that are valid in the
+     * contain identical values. For any indices that are valid in the
      * copy but not the original, the copy will contain <tt>null</tt>.
      * Such indices will exist if and only if the specified length
      * is greater than that of the original array.

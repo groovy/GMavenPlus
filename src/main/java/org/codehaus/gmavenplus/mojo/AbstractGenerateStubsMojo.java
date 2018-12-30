@@ -74,7 +74,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected Set<String> scriptExtensions;
 
     /**
-     * The Groovy compiler bytecode compatibility.  One of
+     * The Groovy compiler bytecode compatibility. One of
      * <ul>
      *   <li>1.4</li>
      *   <li>1.5</li>
@@ -109,7 +109,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected boolean verbose;
 
     /**
-     * Groovy compiler warning level.  Should be one of:
+     * Groovy compiler warning level. Should be one of:
      * <dl>
      *   <dt>0</dt>
      *     <dd>None</dd>
@@ -145,7 +145,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
-            getLog().info("No sources specified for stub generation.  Skipping.");
+            getLog().info("No sources specified for stub generation. Skipping.");
             return;
         }
 
@@ -159,7 +159,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         if (!groovyVersionSupportsAction()) {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping stub generation.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
             return;
         }
 
@@ -255,7 +255,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * This is a fix for http://jira.codehaus.org/browse/MGROOVY-187
      * It modifies the dates of the created stubs to 1/1/1970, ensuring that
      * the Java compiler will not overwrite perfectly good compiled Groovy
-     * just because it has a newer source stub.  Basically, this prevents the
+     * just because it has a newer source stub. Basically, this prevents the
      * stubs from causing a side effect with the Java compiler, but still
      * allows stubs to work with JavaDoc.
      *

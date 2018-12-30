@@ -15,7 +15,7 @@
   <version>testing</version>
   <packaging>pom</packaging>
   <name>GMavenPlus Plugin Shaded Groovy Test</name>
-  <description>This tests Groovy on the classpath from an uber jar.  This will fail with Groovy versions older than 1.6.6 and 1.7-beta-1 and 1.7-beta-2.</description>
+  <description>This tests Groovy on the classpath from an uber jar. This will fail with Groovy versions older than 1.6.6 and 1.7-beta-1 and 1.7-beta-2.</description>
 
   <dependencyManagement>
     <dependencies>

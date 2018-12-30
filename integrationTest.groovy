@@ -1,6 +1,6 @@
-// Note Groovy 1.7.1 has a bad dependency on Jansi 1.1.  You have to manually install it into your local cache for the tests to work.  You can download it at http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/jansi/jansi/1.1/.
+// Note Groovy 1.7.1 has a bad dependency on Jansi 1.1. You have to manually install it into your local cache for the tests to work. You can download it at http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/jansi/jansi/1.1/.
 
-// Remember to test the console and shell goals.  There are currently no integration tests for these.
+// Remember to test the console and shell goals. There are currently no integration tests for these.
 
 new File(System.getProperty("user.dir")).eachFileMatch groovy.io.FileType.FILES, ~/groovy-.+\.log/, { it.delete() }
 println "Installing plugin..."

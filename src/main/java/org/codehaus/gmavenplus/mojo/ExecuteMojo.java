@@ -49,7 +49,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
-     * Groovy scripts to run (in order).  Can be an actual Groovy script or a
+     * Groovy scripts to run (in order). Can be an actual Groovy script or a
      * {@link java.net.URL URL} to a Groovy script (local or remote).
      */
     @Parameter(required = true)
@@ -71,8 +71,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs.  Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -82,11 +82,11 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Does the actual execution.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs.  Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
      */
     protected synchronized void doExecute() throws MojoExecutionException {
         if (scripts == null || scripts.length == 0) {
-            getLog().info("No scripts specified for execution.  Skipping.");
+            getLog().info("No scripts specified for execution. Skipping.");
             return;
         }
 
@@ -127,7 +127,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 // run the scripts
                 executeScripts(groovyShellClass, shell);
             } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath.  Do you have Groovy as a compile dependency in your project or the plugin?", e);
+                throw new MojoExecutionException("Unable to get a Groovy class from classpath. Do you have Groovy as a compile dependency in your project or the plugin?", e);
             } catch (InvocationTargetException e) {
                 throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
             } catch (InstantiationException e) {
@@ -140,7 +140,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support script execution.  The minimum version of Groovy required is " + minGroovyVersion + ".  Skipping script execution.");
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support script execution. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping script execution.");
         }
     }
 
@@ -220,7 +220,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
             } catch (IOException ioe) {
                 if (continueExecuting) {
-                    getLog().error("An Exception occurred while executing script " + scriptNum + ".  Continuing to execute remaining scripts.", ioe);
+                    getLog().error("An Exception occurred while executing script " + scriptNum + ". Continuing to execute remaining scripts.", ioe);
                 } else {
                     throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", ioe);
                 }

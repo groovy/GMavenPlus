@@ -14,7 +14,7 @@
   <artifactId>gmavenplus-plugin-it-parametersCompile</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Parameters Compile Test</name>
-  <description>The simplest compile with parameters use case.  This will fail for all Groovy versions before 2.5.0-beta-1.</description>
+  <description>The simplest compile with parameters use case. This will fail for all Groovy versions before 2.5.0-beta-1.</description>
 
   <dependencies>
     <dependency>
