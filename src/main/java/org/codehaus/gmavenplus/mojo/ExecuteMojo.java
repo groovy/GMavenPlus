@@ -193,25 +193,14 @@ public class ExecuteMojo extends AbstractToolsMojo {
         for (String script : scripts) {
             try {
                 // TODO: try as file first, then as URL?
-                BufferedReader reader = null;
                 try {
-                    URL url = new URL(script);
                     // it's a URL to a script
-                    try {
-                        if (sourceEncoding != null) {
-                            reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
-                        } else {
-                            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                        }
-
-                        invokeMethod(evaluateUrl, shell, reader);
-                    } finally {
-                        FileUtils.closeQuietly(reader);
-                    }
+                    executeScriptFromUrl(shell, evaluateUrl, script);
                 } catch (MalformedURLException e) {
                     // it's not a URL to a script, try as a filename
                     File scriptFile = new File(script);
                     if (scriptFile.isFile()) {
+                        getLog().info("Running Groovy script from " + scriptFile.getCanonicalPath() + ".");
                         invokeMethod(evaluateFile, shell, scriptFile);
                     } else {
                         // it's neither a filename or URL, treat as a script body
@@ -226,6 +215,23 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
             }
             scriptNum++;
+        }
+    }
+
+    private void executeScriptFromUrl(Object shell, Method evaluateUrl, String script) throws IOException, InvocationTargetException, IllegalAccessException {
+        URL url = new URL(script);
+        getLog().info("Running Groovy script from " + url + ".");
+        BufferedReader reader = null;
+        try {
+            if (sourceEncoding != null) {
+                reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            }
+
+            invokeMethod(evaluateUrl, shell, reader);
+        } finally {
+            FileUtils.closeQuietly(reader);
         }
     }
 
