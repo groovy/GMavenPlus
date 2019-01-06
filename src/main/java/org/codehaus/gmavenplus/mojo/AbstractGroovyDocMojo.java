@@ -113,8 +113,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected File overviewFile;
 
     /**
-     * The stylesheet file (absolute path) to copy to output directory (will
-     * overwrite default stylesheet.css).
+     * The stylesheet file (absolute path) to copy to output directory (will overwrite default stylesheet.css).
      */
     @Parameter
     protected File stylesheetFile;
@@ -138,8 +137,8 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected String scope;
 
     /**
-     * Links to include in the generated GroovyDoc (key is link href, value is
-     * comma-separated packages to use that link).
+     * Links to include in the generated GroovyDoc (key is link href, value is comma-separated packages to use that link).
+     *
      * @since 1.0-beta-2
      */
     @Parameter
@@ -147,6 +146,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Whether to include Java sources in GroovyDoc generation.
+     *
      * @since 1.0-beta-2
      */
     @Parameter(defaultValue = "true")
@@ -154,6 +154,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Flag to allow GroovyDoc generation to be skipped.
+     *
      * @since 1.6
      */
     @Parameter(property = "maven.groovydoc.skip", defaultValue = "false")
@@ -171,8 +172,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    @SuppressWarnings("unchecked")
-    protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+    protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (skipGroovyDoc) {
             getLog().info("Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.");
             return;
@@ -219,7 +219,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
         }
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
-        List groovyDocLinks = setupLinks();
+        List<?> groovyDocLinks = setupLinks();
         if (groovyOlderThan(GROOVY_1_6_0_RC2)) {
             getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
         }
@@ -279,8 +279,8 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for setting up GroovyDoc links cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc links cannot be completed
      */
-    @SuppressWarnings("unchecked")
-    protected List setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    protected List<?> setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
             Class<?> linkArgumentClass = null;
@@ -321,12 +321,12 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException when a method needed for setting up GroovyDoc tool cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc tool cannot be completed
      */
-    protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List<?> groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
         if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
-                    sourceDirectories.toArray(new String[sourceDirectories.size()]),
+                    sourceDirectories.toArray(new String[0]),
                     groovyDocTemplateInfo.defaultDocTemplates(),
                     groovyDocTemplateInfo.defaultPackageTemplates(),
                     groovyDocTemplateInfo.defaultClassTemplates(),

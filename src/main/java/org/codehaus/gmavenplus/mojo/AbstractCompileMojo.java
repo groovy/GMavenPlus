@@ -157,24 +157,20 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance
-     * (the number of non-fatal errors (per unit) that should be tolerated
-     * before compilation is aborted).
+     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
      */
     @Parameter(defaultValue = "0")
     protected int tolerance;
 
     /**
-     * Whether to support invokeDynamic (requires Java 7 or greater and Groovy
-     * indy 2.0.0-beta-3 or greater).
+     * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
      */
     @Parameter(property = "invokeDynamic", defaultValue = "false")
     protected boolean invokeDynamic;
 
     /**
-     * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a>
-     * for tweaking the configuration options (requires Groovy 2.1.0-beta-1
-     * or greater). Note that its encoding must match your source encoding.
+     * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a> for tweaking the configuration options
+     * (requires Groovy 2.1.0-beta-1 or greater). Note that its encoding must match your source encoding.
      */
     @Parameter(property = "configScript")
     protected File configScript;
@@ -198,7 +194,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sources == null || sources.isEmpty()) {

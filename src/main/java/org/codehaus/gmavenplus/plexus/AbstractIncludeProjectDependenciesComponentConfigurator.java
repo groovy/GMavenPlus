@@ -32,10 +32,8 @@ import java.util.List;
 
 
 /**
- * A custom ComponentConfigurator which adds the project's classpath elements
- * to the plugin's ClassRealm.
- * Note that there are two method signatures for addDependenciesToClassRealm,
- * since different versions of Maven have different expectations.
+ * A custom ComponentConfigurator which adds the project's classpath elements to the plugin's ClassRealm.
+ * Note that there are two method signatures for addDependenciesToClassRealm, since different versions of Maven have different expectations.
  *
  * @author <a href="http://stackoverflow.com/a/2659324/160256">Brian Jackson</a>
  * @author Keegan Witt
@@ -116,7 +114,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
             }
         }
 
-        return urls.toArray(new URL[urls.size()]);
+        return urls.toArray(new URL[0]);
     }
 
     /**

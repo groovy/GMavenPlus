@@ -17,12 +17,9 @@
 package org.codehaus.gmavenplus.groovy
 
 import org.codehaus.gmavenplus.java.Child
-//import org.slf4j.Logger
-//import org.slf4j.LoggerFactory
 
 
 class Grandchild extends Child {
-//    private Logger logger = LoggerFactory.getLogger(this.getClass())
 
     String yetAnotherMethod() {
         return someMethod()

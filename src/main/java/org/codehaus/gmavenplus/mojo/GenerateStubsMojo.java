@@ -18,12 +18,10 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -31,8 +29,7 @@ import java.net.MalformedURLException;
 
 
 /**
- * Generates stubs for the main Groovy sources and adds them to Maven's sources
- * for the Maven compiler plugin to find.
+ * Generates stubs for the main Groovy sources and adds them to Maven's sources for the Maven compiler plugin to find.
  * Note that this mojo requires Groovy >= 1.8.2.
  *
  * @author Keegan Witt
@@ -40,11 +37,6 @@ import java.net.MalformedURLException;
  */
 @Mojo(name = "generateStubs", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
-
-    /**
-     * Groovy 1.8.2 version.
-     */
-    private static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
 
     /**
      * The location for the compiled classes.
@@ -55,11 +47,10 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         minGroovyVersion = GROOVY_1_8_2;
 
         try {

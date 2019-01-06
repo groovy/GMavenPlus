@@ -18,19 +18,12 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
-
-/*
- * The mojo doesn't match the goal name, but it was decided it was better
- * to avoid breaking existing builds than to correct the discrepancy
- * (http://jira.codehaus.org/browse/GMAVENPLUS-33)
- */
 
 /**
  * Generates GroovyDoc for the test sources.
@@ -44,11 +37,10 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         try {
             try {
                 getLog().debug("Project test classpath:\n" + project.getCompileClasspathElements());

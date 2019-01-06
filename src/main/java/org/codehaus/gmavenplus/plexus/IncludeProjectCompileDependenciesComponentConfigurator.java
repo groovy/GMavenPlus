@@ -45,6 +45,8 @@ public class IncludeProjectCompileDependenciesComponentConfigurator extends Abst
 //    private static final Log LOG = new SystemStreamLog();
 
     /**
+     * Configures the specified component.
+     *
      * @param component the Component to configure
      * @param configuration the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator
@@ -52,7 +54,6 @@ public class IncludeProjectCompileDependenciesComponentConfigurator extends Abst
      * @param listener the component's Listener
      * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
-    @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
         addDependenciesToClassRealm(expressionEvaluator, Classpath.COMPILE, containerRealm);
@@ -62,6 +63,8 @@ public class IncludeProjectCompileDependenciesComponentConfigurator extends Abst
     }
 
     /**
+     * Configures the specified component.
+     *
      * @param component the Component to configure
      * @param configuration the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator

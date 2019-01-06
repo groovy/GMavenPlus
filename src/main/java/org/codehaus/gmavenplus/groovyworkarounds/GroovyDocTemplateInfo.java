@@ -59,8 +59,7 @@ public class GroovyDocTemplateInfo {
     protected String templateBaseDir;
 
     /**
-     * Constructs a new GroovyDocTemplateInfo using the specified Groovy version
-     * to determine templates location.
+     * Constructs a new GroovyDocTemplateInfo using the specified Groovy version to determine templates location.
      *
      * @param version the version of Groovy whose locations to use for templates
      */

@@ -20,8 +20,7 @@ import java.util.Arrays;
 
 
 /**
- * Container for Version information in the form of
- * <tt>major.minor.revision-tag</tt>.
+ * Container for Version information in the form of <tt>major.minor.revision-tag</tt>.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Keegan Witt
@@ -68,7 +67,7 @@ public class Version implements Comparable<Version> {
         revision = newRevision;
         if (newTag == null || newTag.length() != 0) {
             tag = newTag;
-        } else if (newTag.length() == 0) {
+        } else {
             tag = null;
         }
     }
@@ -160,6 +159,7 @@ public class Version implements Comparable<Version> {
      * @return The hash code for this object
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public final int hashCode() {
         return Arrays.hashCode(new Object[] {major, minor, revision, tag});
     }
@@ -171,6 +171,7 @@ public class Version implements Comparable<Version> {
      * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public final boolean equals(final Object obj) {
         if (obj == null) {
             return false;
@@ -190,6 +191,7 @@ public class Version implements Comparable<Version> {
      * @return The String representation of this object
      * @see java.lang.Object#toString()
      */
+    @Override
     public final String toString() {
         StringBuilder buff = new StringBuilder();
 
@@ -204,22 +206,20 @@ public class Version implements Comparable<Version> {
     }
 
     /**
-     * Compares two versions objects. Note that if the major, minor, and
-     * revision are all the same, tags are compared with
-     * {@link java.lang.String#compareTo(String) String.compareTo()}. Having
-     * no tag is considered a newer version than a version with a tag.
+     * Compares two versions objects. Note that if the major, minor, and revision are all the same, tags are compared with
+     * {@link java.lang.String#compareTo(String) String.compareTo()}. Having no tag is considered a newer version than a version with a tag.
      *
      * @param version The version to compare this version to
      * @return <code>0</code> if the version is equal to this version, <code>1</code> if the version is greater than
      *         this version, or <code>-1</code> if the version is lower than this version.
      */
+    @Override
     public final int compareTo(final Version version) {
         return compareTo(version, true);
     }
 
     /**
-     * Compares two versions objects. Note that if the major, minor, and
-     * revision are all the same, tags are compared with
+     * Compares two versions objects. Note that if the major, minor, and revision are all the same, tags are compared with
      * {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
      * @param version The version to compare this version to
@@ -236,12 +236,18 @@ public class Version implements Comparable<Version> {
         if (comp == 0) {
             comp = revision < version.revision ? -1 : (revision == version.revision ? 0 : 1);
         }
-        if (comp == 0 && tag != null && version.tag != null) {
-            return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
-        } else if (comp == 0 && tag == null && version.tag != null) {
-            return noTagsAreNewer ? 1 : -1;
-        } else if (comp == 0 && tag != null && version.tag == null) {
-            return noTagsAreNewer ? -1 : 1;
+        if (comp == 0) {
+            if (tag != null && version.tag != null) {
+                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
+            } else if (tag == null ^ version.tag == null) {
+                if (tag == null) {
+                    return noTagsAreNewer ? 1 : -1;
+                } else {
+                    return noTagsAreNewer ? -1 : 1;
+                }
+            } else {
+                return comp;
+            }
         } else {
             return comp;
         }

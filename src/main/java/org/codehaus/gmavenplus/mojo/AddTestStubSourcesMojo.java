@@ -16,8 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -25,8 +23,7 @@ import java.io.File;
 
 
 /**
- * Adds Groovy test stubs directory back to Maven's list of test source
- * directories. Normally, you won't need to use this mojo.
+ * Adds Groovy test stubs directory back to Maven's list of test source directories. Normally, you won't need to use this mojo.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -42,12 +39,9 @@ public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
      * Executes this mojo.
-     *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() {
         getLog().debug("Added test stub directory " + outputDirectory.getAbsolutePath() + " to project test sources.");
         project.addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
     }

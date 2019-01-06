@@ -18,27 +18,18 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
 
-/*
- * The mojo doesn't match the goal name, but it was decided it was better
- * to avoid breaking existing builds than to correct the discrepancy
- * (http://jira.codehaus.org/browse/GMAVENPLUS-33)
- */
-
 /**
- * Generates stubs for the test Groovy sources and adds them to Maven's test
- * sources for the Maven compiler plugin to find.
+ * Generates stubs for the test Groovy sources and adds them to Maven's test sources for the Maven compiler plugin to find.
  * Note that this mojo requires Groovy >= 1.8.2.
  *
  * @author Keegan Witt
@@ -46,11 +37,6 @@ import java.net.MalformedURLException;
  */
 @Mojo(name = "generateTestStubs", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
-
-    /**
-     * Groovv 1.8.2 version.
-     */
-    private static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
 
     /**
      * The location for the compiled test classes.
@@ -61,11 +47,10 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         if (!skipTests) {
             minGroovyVersion = GROOVY_1_8_2;
             try {

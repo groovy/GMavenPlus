@@ -64,8 +64,8 @@ public class AbstractGenerateStubsMojoTest {
         doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.setSources(new FileSet[] {});
-        testMojo.setTestSources(new FileSet[] {});
+        testMojo.sources = new FileSet[] {};
+        testMojo.testSources = new FileSet[] {};
     }
 
     @Test
@@ -82,14 +82,14 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testGetSourcesWithNullSources() {
-        testMojo.setSources(null);
+        testMojo.sources = null;
         Set<File> sources = testMojo.getSources();
         assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSourcesWithNullTestSources() {
-        testMojo.setTestSources(null);
+        testMojo.testSources = null;
         Set<File> testSources = testMojo.getTestSources();
         assertEquals(0, testSources.size());
     }

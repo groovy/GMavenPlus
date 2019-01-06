@@ -56,6 +56,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected static final Version GROOVY_1_9_0_BETA3 = new Version(1, 9, 0, "beta-3");
 
     /**
+     * Groovy 1.8.2 version.
+     */
+    protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
+
+    /**
      * Groovy 1.8.3 version.
      */
     protected static final Version GROOVY_1_8_3 = new Version(1, 8, 3);
@@ -65,13 +70,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     @Parameter(defaultValue = "${project.build.sourceEncoding}")
     protected String sourceEncoding;
-
-    /**
-     * The file extensions of Groovy source files.
-     * @since 1.0-beta-2
-     */
-    @Parameter
-    protected Set<String> scriptExtensions;
 
     /**
      * The Groovy compiler bytecode compatibility. One of
@@ -91,6 +89,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 9 requires Groovy >= 2.5.3, or Groovy >= 2.6.0 alpha 4, or Groovy >= 3.0.0 alpha 2.
      * Using 9 with invokedynamic requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 4, but not any 2.6 versions.
+     *
      * @since 1.0-beta-3
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
@@ -125,8 +124,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected int warningLevel;
 
     /**
-     * Groovy compiler error tolerance (the number of non-fatal errors
-     * (per unit) that should be tolerated before compilation is aborted).
+     * Groovy compiler error tolerance (the number of non-fatal errors (per unit) that should be tolerated before compilation is aborted).
      */
     @Parameter(defaultValue = "0")
     protected int tolerance;
@@ -143,7 +141,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    protected synchronized void doStubGeneration(final Set<File> stubSources, final List classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+    protected synchronized void doStubGeneration(final Set<File> stubSources, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
             getLog().info("No sources specified for stub generation. Skipping.");
             return;
@@ -190,7 +188,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
-    protected Object setupCompilerConfiguration(final File outputDirectory, final Class compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    protected Object setupCompilerConfiguration(final File outputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         invokeMethod(findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
         invokeMethod(findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
@@ -235,17 +233,27 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (supportsSettingExtensions()) {
                 invokeMethod(addSource, javaStubCompilationUnit, stubSource);
             } else {
-                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource);
-                dotGroovyFile.setScriptExtensions(scriptExtensions);
+                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource)
+                        .setScriptExtensions(scriptExtensions);
                 invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);
             }
         }
     }
 
+    /**
+     * Determines whether the version of Groovy supports stub generation.
+     *
+     * @return <code>true</code> if the version of Groovy supports stub generation, <code>false</code> otherwise
+     */
     protected boolean supportsSettingExtensions() {
         return groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));
     }
 
+    /**
+     * Logs the stubs that have been generated.
+     *
+     * @param outputDirectory the output directory for the stubs
+     */
     protected void logGeneratedStubs(File outputDirectory) {
         Set<File> stubs = getStubs(outputDirectory);
         getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() > 1 || stubs.size() == 0 ? "s" : "") + ".");
@@ -253,11 +261,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
 
     /**
      * This is a fix for http://jira.codehaus.org/browse/MGROOVY-187
-     * It modifies the dates of the created stubs to 1/1/1970, ensuring that
-     * the Java compiler will not overwrite perfectly good compiled Groovy
-     * just because it has a newer source stub. Basically, this prevents the
-     * stubs from causing a side effect with the Java compiler, but still
-     * allows stubs to work with JavaDoc.
+     * It modifies the dates of the created stubs to 1/1/1970, ensuring that the Java compiler will not overwrite perfectly
+     * good compiled Groovy just because it has a newer source stub. Basically, this prevents the stubs from causing a
+     * side-effect with the Java compiler, but still allows stubs to work with JavaDoc.
      *
      * @param stubs the files on which to reset the modified date
      */

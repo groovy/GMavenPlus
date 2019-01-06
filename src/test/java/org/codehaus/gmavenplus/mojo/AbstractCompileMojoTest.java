@@ -54,14 +54,14 @@ public class AbstractCompileMojoTest {
 
     @Test
     public void testGetSourcesEmpty() {
-        testMojo.setSources(new FileSet[] {});
+        testMojo.sources = new FileSet[] {};
         Set<File> sources = testMojo.getSources();
         assertEquals(0, sources.size());
     }
 
     @Test
     public void testGetTestSourcesEmpty() {
-        testMojo.setTestSources(new FileSet[] {});
+        testMojo.testSources = new FileSet[] {};
         Set<File> testSources = testMojo.getTestSources();
         assertEquals(0, testSources.size());
     }

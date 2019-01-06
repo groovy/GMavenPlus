@@ -91,6 +91,7 @@ public class DotGroovyFile extends File {
      *
      * @return Filename with forced <tt>.groovy</tt> extension
      */
+    @Override
     public String getName() {
         if (scriptExtensions != null && !scriptExtensions.isEmpty() && scriptExtensions.contains(FileUtils.getFileExtension(super.getAbsolutePath()))) {
             return FileUtils.getNameWithoutExtension(super.getName()) + ".groovy";

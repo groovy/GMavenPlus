@@ -42,8 +42,7 @@ public class NoExitSecurityManager extends SecurityManager {
     }
 
     /**
-     * Construct a new NoExitSecurityManager, using the System SecurityManager
-     * as the parent.
+     * Construct a new NoExitSecurityManager, using the System SecurityManager as the parent.
      */
     public NoExitSecurityManager() {
         this(System.getSecurityManager());
@@ -52,7 +51,7 @@ public class NoExitSecurityManager extends SecurityManager {
     /**
      * Check the given Permission.
      *
-     * @param permission the Permission to check.
+     * @param permission the Permission to check
      */
     public void checkPermission(final Permission permission) {
         if (parent != null) {

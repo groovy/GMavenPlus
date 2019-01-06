@@ -16,12 +16,8 @@
 
 package org.codehaus.gmavenplus.groovy
 
-//import org.slf4j.Logger
-//import org.slf4j.LoggerFactory
-
 
 class Parent {
-//    private Logger logger = LoggerFactory.getLogger(this.getClass())
 
     String someMethod() {
         return "Hello, world."

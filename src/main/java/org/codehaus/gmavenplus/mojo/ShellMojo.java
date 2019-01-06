@@ -18,16 +18,13 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
@@ -36,8 +33,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * Launches a Groovy shell bound to the current project.
  * Note that this mojo requires Groovy >= 1.5.0.
  * Note that it references the plugin ClassLoader to pull in dependencies
- * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
- * and Jansi for Groovysh).
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
  *
  * @author Keegan Witt
  * @since 1.1
@@ -60,22 +56,11 @@ public class ShellMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            try {
-                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
-            }
-        }
+    public void execute() throws MojoExecutionException {
+        classWrangler = setupClasswrangler();
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

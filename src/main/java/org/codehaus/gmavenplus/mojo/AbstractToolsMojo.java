@@ -16,11 +16,15 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.util.Properties;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
@@ -30,8 +34,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
 /**
  * The base tools mojo, which all tool mojos extend.
  * Note that it references the plugin classloader to pull in dependencies
- * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
- * and Jansi for Groovysh).
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
  *
  * @author Keegan Witt
  * @since 1.1
@@ -40,14 +43,14 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Maven ProjectHelper to use in properties.
+     *
      * @since 1.3
      */
     @Component
     protected MavenProjectHelper projectHelper;
 
     /**
-     * Properties to make available in scripts as variables using the property
-     * name. By default will include
+     * Properties to make available in scripts as variables using the property name. By default will include
      * <dl>
      *   <dt>project</dt>
      *     <dd>A org.apache.maven.project.Project object of the current Maven project.</dd>
@@ -63,6 +66,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *     <dd>A groovy.util.AntBuilder object.</dd>
      * </dl>
      * These can be overridden.
+     *
      * @since 1.0-beta-3
      */
     @Parameter
@@ -70,14 +74,15 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Whether to allow System.exit() to be used.
+     *
      * @since 1.2
      */
     @Parameter(defaultValue = "false")
     protected boolean allowSystemExits;
 
     /**
-     * Whether to bind each property to a separate variable (otherwise binds
-     * properties to a single 'properties' variable).
+     * Whether to bind each property to a separate variable (otherwise binds properties to a single 'properties' variable).
+     *
      * @since 1.2
      */
     @Parameter(defaultValue = "true")
@@ -85,6 +90,8 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     *
+     * @since 1.6.3
      */
     @Parameter(property = "sharedClassLoader", defaultValue = "true")
     protected boolean useSharedClassLoader;
@@ -129,10 +136,31 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Logs errors that caused the 'ant' object to not be populated.
+     *
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
         getLog().error("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.", e);
     }
 
+    /**
+     * Instantiates the classWrangler, based on the useSharedClassLoader property.
+     *
+     * @throws MojoExecutionException when a DependencyResolutionRequiredException is thrown (causes a "BUILD ERROR" message to be displayed)
+     */
+    protected ClassWrangler setupClasswrangler() throws MojoExecutionException {
+        ClassWrangler classWrangler;
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            try {
+                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
+            } catch (DependencyResolutionRequiredException e) {
+                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
+            }
+        }
+        return classWrangler;
+    }
 }

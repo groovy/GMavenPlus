@@ -41,29 +41,24 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
 public class ClassWrangler {
 
     /**
-     * Class cache size
-     */
-    protected static final int CACHE_SIZE = 256;
-
-    /**
      * Cached Groovy version.
      */
-    protected String groovyVersion = null;
+    private String groovyVersion = null;
 
     /**
      * Cached whether Groovy supports invokedynamic (indy jar).
      */
-    protected Boolean isIndy = null;
+    private Boolean isIndy = null;
 
     /**
      * ClassLoader to use for class wrangling.
      */
-    protected ClassLoader classLoader;
+    private ClassLoader classLoader;
 
     /**
      * Plugin log.
      */
-    protected Log log;
+    private Log log;
 
     /**
      * Creates a new ClassWrangler using the specified ClassLoader.
@@ -77,14 +72,13 @@ public class ClassWrangler {
     }
 
     /**
-     * Creates a new ClassWrangler using a new ClassLoader, loaded with the
-     * items from the specified classpath.
+     * Creates a new ClassWrangler using a new ClassLoader, loaded with the items from the specified classpath.
      *
      * @param classpath the classpath to load the new ClassLoader with
      * @param pluginLog the Maven log to use for logging
-     * @throws MalformedURLException
+     * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    public ClassWrangler(final List classpath, final Log pluginLog) throws MalformedURLException {
+    public ClassWrangler(final List<?> classpath, final Log pluginLog) throws MalformedURLException {
         log = pluginLog;
         // create an isolated ClassLoader with all the appropriate project dependencies in it
         classLoader = createNewClassLoader(classpath);
@@ -176,8 +170,7 @@ public class ClassWrangler {
     }
 
     /**
-     * Determines whether the detected Groovy version is the specified version
-     * or newer.
+     * Determines whether the detected Groovy version is the specified version or newer.
      *
      * @param detectedVersion the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
@@ -199,8 +192,7 @@ public class ClassWrangler {
     }
 
     /**
-     * Determines whether the detected Groovy version is
-     * newer than the specified version.
+     * Determines whether the detected Groovy version is newer than the specified version.
      *
      * @param detectedVersion the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
@@ -211,8 +203,7 @@ public class ClassWrangler {
     }
 
     /**
-     * Determines whether the detected Groovy version is
-     * older than the specified version.
+     * Determines whether the detected Groovy version is older than the specified version.
      *
      * @param detectedVersion the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
@@ -252,7 +243,7 @@ public class ClassWrangler {
             String groovyJar = null;
             if (groovyObjectClassPath != null) {
                 groovyJar = groovyObjectClassPath.replaceAll("!.+", "");
-                groovyJar = groovyJar.substring(groovyJar.lastIndexOf("/") + 1, groovyJar.length());
+                groovyJar = groovyJar.substring(groovyJar.lastIndexOf("/") + 1);
             }
 
             return groovyJar;
@@ -266,7 +257,7 @@ public class ClassWrangler {
      * Returns the path of the Groovy jar on the classpath.
      *
      * @return the path of the Groovy jar
-     * @throws ClassNotFoundException when Groovu couldn't be found on the classpath
+     * @throws ClassNotFoundException when Groovy couldn't be found on the classpath
      */
     protected String getJarPath() throws ClassNotFoundException {
         Class<?> groovyObjectClass = getClass("groovy.lang.GroovyObject");
@@ -298,13 +289,13 @@ public class ClassWrangler {
      * @return the new ClassLoader
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    public ClassLoader createNewClassLoader(final List classpath) throws MalformedURLException {
+    public ClassLoader createNewClassLoader(final List<?> classpath) throws MalformedURLException {
         List<URL> urlsList = new ArrayList<URL>();
         for (Object classPathObject : classpath) {
             String path = (String) classPathObject;
             urlsList.add(new File(path).toURI().toURL());
         }
-        URL[] urlsArray = urlsList.toArray(new URL[urlsList.size()]);
+        URL[] urlsArray = urlsList.toArray(new URL[0]);
         return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());
     }
 

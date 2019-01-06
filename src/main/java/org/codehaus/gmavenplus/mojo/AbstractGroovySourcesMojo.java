@@ -37,12 +37,12 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Main source directory name.
      */
-    public static final String MAIN = "main";
+    protected static final String MAIN = "main";
 
     /**
      * Test source directory name.
      */
-    public static final String TEST = "test";
+    protected static final String TEST = "test";
 
     /**
      * The Groovy source files (relative paths).
@@ -67,6 +67,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
     /**
      * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * @since 1.6.3
      */
     @Parameter(property = "sharedClassLoader", defaultValue = "false")
     protected boolean useSharedClassLoader;
@@ -75,7 +76,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * Gets the filesets of the the main sources.
      *
      * @param includeJavaSources Whether to include Java sources
-     * @return The filesets of the the main sources.
+     * @return The filesets of the the main sources
      */
     protected FileSet[] getSourceRoots(final boolean includeJavaSources) {
         return getFilesets(sources, MAIN, includeJavaSources);
@@ -84,7 +85,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the filesets of the the main sources (not including Java sources).
      *
-     * @return The filesets of the the main sources.
+     * @return The filesets of the the main sources
      */
     protected FileSet[] getSourceRoots() {
         return getFilesets(sources, MAIN, false);
@@ -94,17 +95,16 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * Gets the set of files of the the main sources.
      *
      * @param includeJavaSources Whether to include Java sources
-     * @return The set of files of the the main sources.
+     * @return The set of files of the the main sources
      */
     protected Set<File> getSources(final boolean includeJavaSources) {
         return getFiles(sources, MAIN, includeJavaSources);
     }
 
     /**
-     * Gets the set of files of the the main sources (not including Java
-     * sources).
+     * Gets the set of files of the the main sources (not including Java sources).
      *
-     * @return The set of files of the the main sources.
+     * @return The set of files of the the main sources
      */
     protected Set<File> getSources() {
         return getFiles(sources, MAIN, false);
@@ -114,7 +114,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * Gets the filesets of the test sources.
      *
      * @param includeJavaSources Whether to include Java sources
-     * @return The filesets of the test sources.
+     * @return The filesets of the test sources
      */
     protected FileSet[] getTestSourceRoots(final boolean includeJavaSources) {
         return getFilesets(testSources, TEST, includeJavaSources);
@@ -123,7 +123,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the filesets of the test sources (not including Java sources).
      *
-     * @return The filesets of the test sources.
+     * @return The filesets of the test sources
      */
     protected FileSet[] getTestSourceRoots() {
         return getFilesets(testSources, TEST, false);
@@ -133,7 +133,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * Gets the set of files of the test sources.
      *
      * @param includeJavaSources Whether to include Java sources
-     * @return The set of files of the test sources.
+     * @return The set of files of the test sources
      */
     protected Set<File> getTestSources(final boolean includeJavaSources) {
         return getFiles(testSources, TEST, includeJavaSources);
@@ -142,15 +142,14 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     /**
      * Gets the set of files of the test sources (not including Java sources).
      *
-     * @return The set of files of the test sources.
+     * @return The set of files of the test sources
      */
     protected Set<File> getTestSources() {
         return getFiles(testSources, TEST, false);
     }
 
     /**
-     * Gets the set of included files from the specified source files or source
-     * directory (if sources are null).
+     * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
      * @param defaultSourceDirectory The source directory to fall back on if sources are null
@@ -171,8 +170,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     }
 
     /**
-     * Gets the set of included filesets from the specified source files or
-     * source directory (if sources are null).
+     * Gets the set of included filesets from the specified source files or source directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
      * @param defaultSubDirectory The source subdirectory to fall back on if sources are null
@@ -218,24 +216,6 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
         }
 
         return result;
-    }
-
-    /**
-     * Sets the sources to specified.
-     *
-     * @param newSources the sources to set
-     */
-    public void setSources(final FileSet[] newSources) {
-        sources = newSources;
-    }
-
-    /**
-     * Sets the test sources to specified.
-     *
-     * @param newTestSources the test sources to set
-     */
-    public void setTestSources(final FileSet[] newTestSources) {
-        testSources = newTestSources;
     }
 
 }

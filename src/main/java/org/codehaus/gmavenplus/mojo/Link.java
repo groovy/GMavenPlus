@@ -40,7 +40,7 @@ public class Link {
     /**
      * Get the packages attribute.
      *
-     * @return the packages attribute.
+     * @return the packages attribute
      */
     public String getPackages() {
         return packages;
@@ -49,7 +49,7 @@ public class Link {
     /**
      * Set the packages attribute.
      *
-     * @param newPackages the comma separated package prefixs corresponding to this link
+     * @param newPackages the comma separated package prefixes corresponding to this link
      * @return this object (for fluent invocation)
      */
     public Link setPackages(final String newPackages) {
@@ -60,7 +60,7 @@ public class Link {
     /**
      * Get the href attribute.
      *
-     * @return the href attribute.
+     * @return the href attribute
      */
     public String getHref() {
         return href;

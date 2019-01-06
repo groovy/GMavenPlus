@@ -17,15 +17,12 @@
 package org.codehaus.gmavenplus.groovy
 
 import org.codehaus.gmavenplus.java.Parent
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 
 class Child extends Parent {
-    private Logger logger = LoggerFactory.getLogger(this.getClass())
 
-    public String someOtherMethod() {
-        return someMethod()
+    String someOtherMethod() {
+        someMethod()
     }
 
 }

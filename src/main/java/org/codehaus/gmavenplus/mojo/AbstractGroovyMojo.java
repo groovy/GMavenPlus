@@ -151,15 +151,14 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Determines whether this mojo can be run with the version of Groovy supplied.
      *
-     * @return <code>true</code> only if the version of Groovy supports this mojo.
+     * @return <code>true</code> only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
         return classWrangler.getGroovyVersion() != null && groovyAtLeast(minGroovyVersion);
     }
 
     /**
-     * Determines whether the detected Groovy version is the specified version
-     * or newer.
+     * Determines whether the detected Groovy version is the specified version or newer.
      *
      * @param version the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is the specified version or newer, <code>false</code> otherwise
@@ -179,8 +178,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Determines whether the detected Groovy version is
-     * newer than the specified version.
+     * Determines whether the detected Groovy version is newer than the specified version.
      *
      * @param version the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is newer than the specified version, <code>false</code> otherwise
@@ -190,8 +188,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     }
 
     /**
-     * Determines whether the detected Groovy version is
-     * older than the specified version.
+     * Determines whether the detected Groovy version is older than the specified version.
      *
      * @param version the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is older than the specified version, <code>false</code> otherwise
@@ -204,7 +201,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * Gets whether the version of Groovy on the classpath supports invokedynamic.
      *
      * @return <code>true</code> if the version of Groovy uses invokedynamic,
-     *         <code>false</code> if not or Groovy dependency cannot be found.
+     *         <code>false</code> if not or Groovy dependency cannot be found
      */
     protected boolean isGroovyIndy() {
         return classWrangler.isGroovyIndy();

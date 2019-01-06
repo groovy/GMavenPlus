@@ -36,57 +36,36 @@ import java.util.List;
  */
 public class ReflectionUtils {
 
-    /**
-     * Private constructor that should never be called since this is a static
-     * utility class.
-     */
     private ReflectionUtils() { }
 
-    protected static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
-        List<Method> result = null;
-        for (Class<?> ifc : clazz.getInterfaces()) {
-            for (Method ifcMethod : ifc.getMethods()) {
-                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
-                    if (result == null) {
-                        result = new LinkedList<Method>();
-                    }
-                    result.add(ifcMethod);
-                }
-            }
-        }
-        return result;
-    }
-
     /**
-     * Attempt to find a {@link Constructor} on the supplied class with the
-     * supplied parameter types. Searches all superclasses up to
-     * <code>Object</code>.
+     * Attempt to find a {@link Constructor} on the supplied class with the supplied parameter types.
+     * Searches all superclasses up to <code>Object</code>.
      *
      * @param clazz The class to introspect
      * @param paramTypes The parameter types of the method (may be <code>null</code> to indicate any signature)
      * @return The Constructor object
      */
-    public static Constructor findConstructor(final Class<?> clazz, final Class<?>... paramTypes) {
+    public static Constructor<?> findConstructor(final Class<?> clazz, final Class<?>... paramTypes) {
         if (clazz == null) {
             throw new IllegalArgumentException("Class must not be null.");
         }
         Class<?> searchType = clazz;
         while (searchType != null) {
-            Constructor[] constructors = searchType.isInterface() ? clazz.getConstructors() : clazz.getDeclaredConstructors();
-            for (Constructor constructor : constructors) {
+            Constructor<?>[] constructors = searchType.isInterface() ? clazz.getConstructors() : clazz.getDeclaredConstructors();
+            for (Constructor<?> constructor : constructors) {
                 if (paramTypes == null || Arrays.equals(paramTypes, constructor.getParameterTypes())) {
                     return constructor;
                 }
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ").");
+        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("]$", "").replaceAll("class ", "") + ").");
     }
 
     /**
-     * Attempt to find a {@link Field field} on the supplied {@link Class} with
-     * the supplied <code>name</code> and/or {@link Class type}. Searches all
-     * superclasses up to {@link Object}.
+     * Attempt to find a {@link Field field} on the supplied {@link Class} with the supplied <code>name</code> and/or {@link Class type}.
+     * Searches all superclasses up to {@link Object}.
      *
      * @param clazz The class to introspect
      * @param name The name of the field (may be <code>null</code> if type is specified)
@@ -114,9 +93,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Attempt to find a {@link Method} on the supplied class with the supplied
-     * name and parameter types. Searches all superclasses up to
-     * <code>Object</code>.
+     * Attempt to find a {@link Method} on the supplied class with the supplied name and parameter types.
+     * Searches all superclasses up to <code>Object</code>.
      *
      * @param clazz      The class to introspect
      * @param name       The name of the method
@@ -143,35 +121,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("\\]$", "").replaceAll("class ", "") + ").");
-    }
-
-    /**
-     * This variant retrieves {@link Class#getDeclaredMethods()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     * In addition, it also includes Java 8 default methods from locally implemented
-     * interfaces, since those are effectively to be treated just like declared methods.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of methods
-     * @see Class#getDeclaredMethods()
-     */
-    protected static Method[] getDeclaredMethods(Class<?> clazz) {
-        Method[] result;
-        Method[] declaredMethods = clazz.getDeclaredMethods();
-        List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
-        if (defaultMethods != null) {
-            result = new Method[declaredMethods.length + defaultMethods.size()];
-            System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);
-            int index = declaredMethods.length;
-            for (Method defaultMethod : defaultMethods) {
-                result[index] = defaultMethod;
-                index++;
-            }
-        } else {
-            result = declaredMethods;
-        }
-        return result;
+        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("]$", "").replaceAll("class ", "") + ").");
     }
 
     /**
@@ -195,10 +145,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Get the field represented by the supplied {@link Field field object} on
-     * the specified {@link Object target object}. In accordance with
-     * {@link Field#get(Object)} semantics, the returned value is automatically
-     * wrapped if the underlying field has a primitive type.
+     * Get the field represented by the supplied {@link Field field object} on the specified {@link Object target object}.
+     * In accordance with {@link Field#get(Object)} semantics, the returned value is automatically wrapped if the underlying field has a primitive type.
      *
      * @param field The field to get
      * @param target The target object from which to get the field
@@ -211,10 +159,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Get the field represented by the supplied {@link Field field object} on
-     * the specified {@link Object target object}. In accordance with
-     * {@link Field#get(Object)} semantics, the returned value is automatically
-     * wrapped if the underlying field has a primitive type.
+     * Get the field represented by the supplied {@link Field field object} on the specified {@link Object target object}.
+     * In accordance with {@link Field#get(Object)} semantics, the returned value is automatically wrapped if the underlying field has a primitive type.
      *
      * @param field The field to get
      * @return The field's current value
@@ -237,7 +183,7 @@ public class ReflectionUtils {
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      * @throws InstantiationException when an instantiation fails
      */
-    public static Object invokeConstructor(final Constructor constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    public static Object invokeConstructor(final Constructor<?> constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (constructor == null) {
             throw new IllegalArgumentException("Constructor must not be null.");
         }
@@ -246,9 +192,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Invoke the specified {@link Method} against the supplied target object
-     * with the supplied arguments. The target object can be <code>null</code>
-     * when invoking a static {@link Method}.
+     * Invoke the specified {@link Method} against the supplied target object with the supplied arguments.
+     * The target object can be <code>null</code> when invoking a static {@link Method}.
      *
      * @param method The method to invoke
      * @param target The target object to invoke the method on
@@ -286,6 +231,47 @@ public class ReflectionUtils {
         }
         method.setAccessible(true);
         return method.invoke(null, args);
+    }
+
+    /**
+     * This variant retrieves {@link Class#getDeclaredMethods()} from a local cache in order to avoid the JVM's SecurityManager check and defensive array copying.
+     * In addition, it also includes Java 8 default methods from locally implemented interfaces, since those are effectively to be treated just like declared methods.
+     *
+     * @param clazz the class to introspect
+     * @return the cached array of methods
+     * @see Class#getDeclaredMethods()
+     */
+    private static Method[] getDeclaredMethods(Class<?> clazz) {
+        Method[] result;
+        Method[] declaredMethods = clazz.getDeclaredMethods();
+        List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
+        if (defaultMethods != null) {
+            result = new Method[declaredMethods.length + defaultMethods.size()];
+            System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);
+            int index = declaredMethods.length;
+            for (Method defaultMethod : defaultMethods) {
+                result[index] = defaultMethod;
+                index++;
+            }
+        } else {
+            result = declaredMethods;
+        }
+        return result;
+    }
+
+    private static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
+        List<Method> result = null;
+        for (Class<?> ifc : clazz.getInterfaces()) {
+            for (Method ifcMethod : ifc.getMethods()) {
+                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
+                    if (result == null) {
+                        result = new LinkedList<Method>();
+                    }
+                    result.add(ifcMethod);
+                }
+            }
+        }
+        return result;
     }
 
 }

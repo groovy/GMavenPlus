@@ -45,6 +45,8 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
 //    private static final Log LOG = new SystemStreamLog();
 
     /**
+     * Configures the specified component.
+     *
      * @param component the Component to configure
      * @param configuration the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator
@@ -61,6 +63,8 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
     }
 
     /**
+     * Configures the specified component.
+     *
      * @param component the Component to configure
      * @param configuration the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator

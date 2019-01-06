@@ -21,12 +21,10 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.util.Set;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
@@ -35,9 +33,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 /**
  * Launches a Groovy console window bound to the current project.
  * Note that this mojo requires Groovy >= 1.5.0.
- * Note that it references the plugin classloader to pull in dependencies
- * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
- * and Jansi for Groovysh).
+ * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
+ * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
  *
  * @author Keegan Witt
  * @since 1.1
@@ -48,22 +45,12 @@ public class ConsoleMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as an invocation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
+     * @throws MojoFailureException If unable to await console exit
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            try {
-                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
-            }
-        }
+        classWrangler = setupClasswrangler();
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
@@ -95,24 +82,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 bindAntBuilder(consoleClass, bindingClass, console);
 
                 // wait for console to be closed
-                Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-                Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-                Thread consoleThread = null;
-                for (Thread thread : threadArray) {
-                    if ("AWT-Shutdown".equals(thread.getName())) {
-                        consoleThread = thread;
-                        break;
-                    }
-                }
-                if (consoleThread != null) {
-                    try {
-                        consoleThread.join();
-                    } catch (InterruptedException e) {
-                        throw new MojoExecutionException("Mojo interrupted while waiting for Console thread to end.", e);
-                    }
-                } else {
-                    throw new MojoFailureException("Unable to locate Console thread to wait on.");
-                }
+                waitForConsoleClose();
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
             } catch (InvocationTargetException e) {
@@ -136,15 +106,40 @@ public class ConsoleMojo extends AbstractToolsMojo {
     }
 
     /**
+     * Instantiates a groovy.ui.Console object.
+     *
+     * @param consoleClass the groovy.ui.Console class to use
+     * @param bindingClass the groovy.lang.Binding class to use
+     * @return a new groovy.ui.Console object
+     * @throws InvocationTargetException when a reflection invocation needed for instantiating a console object cannot be completed
+     * @throws IllegalAccessException when a method needed for instantiating a console object cannot be accessed
+     * @throws InstantiationException when a class needed for instantiating a console object cannot be instantiated
+     */
+    protected Object setupConsole(final Class<?> consoleClass, final Class<?> bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+        Object binding = invokeConstructor(findConstructor(bindingClass));
+        initializeProperties();
+        Method setVariable = findMethod(bindingClass, "setVariable", String.class, Object.class);
+        if (bindPropertiesToSeparateVariables) {
+            for (Object k : properties.keySet()) {
+                invokeMethod(setVariable, binding, k, properties.get(k));
+            }
+        } else {
+            invokeMethod(setVariable, binding, "properties", properties);
+        }
+
+        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
+    }
+
+    /**
      * Binds a new AntBuilder to the project properties.
      *
      * @param consoleClass the groovy.ui.Console class to use
      * @param bindingClass the groovy.lang.Binding class to use
      * @param console the groovy.ui.Console object to use
-     * @throws ClassNotFoundException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws InstantiationException
+     * @throws ClassNotFoundException when a class needed for binding an AntBuilder object cannot be found
+     * @throws IllegalAccessException when a method needed for binding an AntBuilder object cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for binding an AntBuilder object cannot be completed
+     * @throws InstantiationException when a class needed for binding an AntBuilder object cannot be instantiated
      */
     protected void bindAntBuilder(Class<?> consoleClass, Class<?> bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (properties.containsKey("ant")) {
@@ -161,28 +156,29 @@ public class ConsoleMojo extends AbstractToolsMojo {
     }
 
     /**
-     * Instantiates a Groovy Console.
+     * Waits for the console in use to be closed.
      *
-     * @param consoleClass the Console class
-     * @param bindingClass the Binding class
-     * @return the instantiated Console
-     * @throws InstantiationException when a class needed for creating a console cannot be instantiated
-     * @throws IllegalAccessException when a method needed for creating a console cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for creating a console cannot be completed
+     * @throws MojoFailureException if the execution was interrupted while running or it was unable to find the console thread to wait on
      */
-    protected Object setupConsole(final Class<?> consoleClass, final Class<?> bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object binding = invokeConstructor(findConstructor(bindingClass));
-        initializeProperties();
-        Method setVariable = findMethod(bindingClass, "setVariable", String.class, Object.class);
-        if (bindPropertiesToSeparateVariables) {
-            for (Object k : properties.keySet()) {
-                invokeMethod(setVariable, binding, k, properties.get(k));
+    protected void waitForConsoleClose() throws MojoFailureException {
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Thread[] threadArray = threadSet.toArray(new Thread[0]);
+        Thread consoleThread = null;
+        for (Thread thread : threadArray) {
+            if ("AWT-Shutdown".equals(thread.getName())) {
+                consoleThread = thread;
+                break;
+            }
+        }
+        if (consoleThread != null) {
+            try {
+                consoleThread.join();
+            } catch (InterruptedException e) {
+                throw new MojoFailureException("Mojo interrupted while waiting for Console thread to end.", e);
             }
         } else {
-            invokeMethod(setVariable, binding, "properties", properties);
+            throw new MojoFailureException("Unable to locate Console thread to wait on.");
         }
-
-        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
     }
 
 }

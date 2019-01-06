@@ -20,24 +20,17 @@ import java.io.*;
 
 
 /**
- * A collection of file utility methods taken from Guava so we don't have to
- * depend on Guava.
+ * A collection of file utility methods taken from Guava so we don't have to depend on Guava.
  *
  * @author Keegan Witt
  * @since 1.2
  */
 public class FileUtils {
 
-    /**
-     * Private constructor that should never be called since this is a static
-     * utility class.
-     */
     private FileUtils() { }
 
     /**
-     * Returns the file extension without the '.' for the given filename, or
-     * the empty string if the file has
-     * no extension.
+     * Returns the file extension without the '.' for the given filename, or the empty string if the file has no extension.
      *
      * @param file the file to get the extension from
      * @return the file extension
@@ -49,9 +42,7 @@ public class FileUtils {
     }
 
     /**
-     * Returns the file extension without the '.' for the given filename, or
-     * the empty string if the file has
-     * no extension.
+     * Returns the file extension without the '.' for the given filename, or the empty string if the file has no extension.
      *
      * @param file the file to get the extension from
      * @return the file extension

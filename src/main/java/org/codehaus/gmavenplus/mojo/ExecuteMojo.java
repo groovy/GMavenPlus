@@ -18,11 +18,9 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
@@ -38,9 +36,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 /**
  * Executes Groovy scripts (in the pom or external), bound to the current project.
  * Note that this mojo requires Groovy >= 1.5.0.
- * Note that it references the plugin classloader to pull in dependencies
- * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab,
- * and Jansi for Groovysh).
+ * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
+ * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -49,8 +46,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
-     * Groovy scripts to run (in order). Can be an actual Groovy script or a
-     * {@link java.net.URL URL} to a Groovy script (local or remote).
+     * Groovy scripts to run (in order). Can be an actual Groovy script or a {@link java.net.URL URL} to a Groovy script (local or remote).
      */
     @Parameter(required = true)
     protected String[] scripts;
@@ -63,6 +59,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
      * The encoding of script files.
+     *
      * @since 1.0-beta-2
      */
     @Parameter(defaultValue = "${project.build.sourceEncoding}")
@@ -71,18 +68,17 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Executes this mojo.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
-     * @throws MojoFailureException If an expected problem (such as a compilation failure) occurs. Throwing this exception causes a "BUILD FAILURE" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         doExecute();
     }
 
     /**
      * Does the actual execution.
      *
-     * @throws MojoExecutionException If an unexpected problem occurs. Throwing this exception causes a "BUILD ERROR" message to be displayed
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     protected synchronized void doExecute() throws MojoExecutionException {
         if (scripts == null || scripts.length == 0) {
@@ -90,17 +86,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
             return;
         }
 
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            try {
-                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
-            }
-        }
+        classWrangler = setupClasswrangler();
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
@@ -145,13 +131,14 @@ public class ExecuteMojo extends AbstractToolsMojo {
     }
 
     /**
-     * Creates the GroovyShell shell to use to execute scripts.
+     * Instantiates a new groovy.lang.GroovyShell object.
      *
-     * @param groovyShellClass the GroovyShell class
-     * @return the GroovyShell shell to use to execute scripts
-     * @throws InstantiationException when a class needed for script execution cannot be instantiated
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
+     * @param groovyShellClass the groovy.lang.GroovyShell class
+     * @return a new groovy.lang.GroovyShell object
+     * @throws InvocationTargetException when a reflection invocation needed for shell configuration cannot be completed
+     * @throws IllegalAccessException when a method needed for shell configuration cannot be accessed
+     * @throws InstantiationException when a class needed for shell configuration cannot be instantiated
+     * @throws ClassNotFoundException when a class needed for shell configuration cannot be found
      */
     protected Object setupShell(final Class<?> groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object shell;
@@ -177,13 +164,13 @@ public class ExecuteMojo extends AbstractToolsMojo {
     }
 
     /**
-     * Executes the scripts using the GroovyShell.
+     * Executes the configured scripts.
      *
-     * @param groovyShellClass the GroovyShell class
-     * @param shell the shell to use for script execution
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @param groovyShellClass the groovy.lang.GroovyShell class
+     * @param shell a groovy.lag.GroovyShell object
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
-     * @throws MojoExecutionException when an error occurs during script execution
+     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @throws MojoExecutionException when an exception occurred during script execution (causes a "BUILD ERROR" message to be displayed)
      */
     protected void executeScripts(final Class<?> groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
         Method evaluateUrl = findMethod(groovyShellClass, "evaluate", Reader.class);
@@ -218,7 +205,17 @@ public class ExecuteMojo extends AbstractToolsMojo {
         }
     }
 
-    private void executeScriptFromUrl(Object shell, Method evaluateUrl, String script) throws IOException, InvocationTargetException, IllegalAccessException {
+    /**
+     * Executes a script at a URL location.
+     *
+     * @param shell a groovy.lag.GroovyShell object
+     * @param evaluateUrl the evaluate method on groovy.lag.GroovyShell
+     * @param script the script URL to execute
+     * @throws IOException when the stream can't be opened on the URL
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
+     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     */
+    protected void executeScriptFromUrl(Object shell, Method evaluateUrl, String script) throws IOException, InvocationTargetException, IllegalAccessException {
         URL url = new URL(script);
         getLog().info("Running Groovy script from " + url + ".");
         BufferedReader reader = null;
