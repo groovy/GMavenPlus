@@ -40,22 +40,30 @@ public class RemoveTestStubsMojoTest {
         removeTestStubsMojo = new RemoveTestStubsMojo();
         project = new MavenProject();
         removeTestStubsMojo.project = project;
-        removeTestStubsMojo.outputDirectory = new File(PATH);
+        removeTestStubsMojo.testStubsOutputDirectory = new File(PATH);
     }
 
     @Test
-    public void testRemoveTestSourcePathContainsPath() throws Exception {
-        project.addTestCompileSourceRoot(removeTestStubsMojo.outputDirectory.getAbsolutePath());
+    public void testRemoveTestSourcePathContainsPath() {
+        project.addTestCompileSourceRoot(removeTestStubsMojo.testStubsOutputDirectory.getAbsolutePath());
         assertEquals(1, project.getTestCompileSourceRoots().size());
         removeTestStubsMojo.execute();
         assertEquals(0, project.getTestCompileSourceRoots().size());
     }
 
     @Test
-    public void testRemoveTestSourcePathNotContainsPath() throws Exception {
+    public void testRemoveTestSourcePathNotContainsPath() {
         assertEquals(0, project.getCompileSourceRoots().size());
         removeTestStubsMojo.execute();
         assertEquals(0, project.getTestCompileSourceRoots().size());
+    }
+
+    @Test
+    public void testDoesNothingWhenSkipFlagIsSet() {
+        project.addTestCompileSourceRoot(removeTestStubsMojo.testStubsOutputDirectory.getAbsolutePath());
+        removeTestStubsMojo.skipTests = true;
+        removeTestStubsMojo.execute();
+        assertEquals(1, project.getTestCompileSourceRoots().size());
     }
 
 }

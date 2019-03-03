@@ -16,8 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.gmavenplus.model.Version;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +57,7 @@ public class AbstractGroovyMojoTest {
     }
 
     public static class TestGroovyMojo extends AbstractGroovyMojo {
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
     }
 
 }

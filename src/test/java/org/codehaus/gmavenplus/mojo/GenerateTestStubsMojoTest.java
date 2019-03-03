@@ -16,9 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
@@ -46,12 +48,12 @@ public class GenerateTestStubsMojoTest {
     private GenerateTestStubsMojo generateTestStubsMojo;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getTestSources();
+        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].class), eq(false));
         doReturn(new HashSet<File>()).when(generateTestStubsMojo).getStubs(any(File.class));
         generateTestStubsMojo.project = mock(MavenProject.class);
-        generateTestStubsMojo.outputDirectory = mock(File.class);
+        generateTestStubsMojo.testStubsOutputDirectory = mock(File.class);
         doReturn(mock(Build.class)).when(generateTestStubsMojo.project).getBuild();
         generateTestStubsMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 8, 2)).when(generateTestStubsMojo.classWrangler).getGroovyVersion();
@@ -104,6 +106,12 @@ public class GenerateTestStubsMojoTest {
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        generateTestStubsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
+        doThrow(mock(DependencyResolutionRequiredException.class)).when(generateTestStubsMojo.project).getTestClasspathElements();
         generateTestStubsMojo.execute();
     }
 

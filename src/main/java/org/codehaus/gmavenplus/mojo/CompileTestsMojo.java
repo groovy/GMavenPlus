@@ -22,6 +22,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -39,10 +40,23 @@ import java.net.MalformedURLException;
 public class CompileTestsMojo extends AbstractCompileMojo {
 
     /**
+     * The Groovy test source files (relative paths).
+     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
+     */
+    @Parameter
+    protected FileSet[] testSources;
+
+    /**
      * The location for the compiled test classes.
      */
     @Parameter(defaultValue = "${project.build.testOutputDirectory}")
-    protected File outputDirectory;
+    protected File testOutputDirectory;
+
+    /**
+     * Flag to allow test compilation to be skipped.
+     */
+    @Parameter(property = "maven.test.skip", defaultValue = "false")
+    protected boolean skipTests;
 
     /**
      * Executes this mojo.
@@ -58,7 +72,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 } catch (DependencyResolutionRequiredException e) {
                     getLog().warn("Unable to log project test classpath", e);
                 }
-                doCompile(getTestSources(), project.getTestClasspathElements(), outputDirectory);
+                doCompile(getTestFiles(testSources, false), project.getTestClasspathElements(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
             } catch (InvocationTargetException e) {

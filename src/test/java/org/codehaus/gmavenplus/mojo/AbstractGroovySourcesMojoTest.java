@@ -16,18 +16,13 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.File;
-import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
 
@@ -51,49 +46,8 @@ public class AbstractGroovySourcesMojoTest {
         testMojo.project = project;
     }
 
-    @Test
-    public void testGetSourceRootsFromDefaultSources() {
-        assertEquals(1, testMojo.getSourceRoots().length);
-    }
-
-    @Test
-    public void testGetSourceRootsFromDefaultSourcesIncludingJava() {
-        assertEquals(1, testMojo.getSourceRoots(true).length);
-    }
-
-    @Test
-    public void testGetSourcesFromDefaultSourcesEmpty() {
-        assertEquals(new HashSet<File>(), testMojo.getSources());
-    }
-
-    @Test
-    public void testGetSourcesFromDefaultSourcesIncludingJavaEmpty() {
-        assertEquals(new HashSet<File>(), testMojo.getSources(true));
-    }
-
-    @Test
-    public void testGetTestSourceRootsFromDefaultSources() {
-        assertEquals(1, testMojo.getTestSourceRoots().length);
-    }
-
-    @Test
-    public void testGetTestSourceRootsFromDefaultSourcesIncludingJava() {
-        assertEquals(1, testMojo.getTestSourceRoots(true).length);
-    }
-
-    @Test
-    public void testGetTestSourcesFromDefaultSourcesEmpty() {
-        assertEquals(new HashSet<File>(), testMojo.getTestSources());
-    }
-
-    @Test
-    public void testGetTestSourcesFromDefaultSourcesIncludingJavaEmpty() {
-        assertEquals(new HashSet<File>(), testMojo.getTestSources(true));
-    }
-
-    protected class TestMojo extends AbstractGroovySourcesMojo {
-        @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+    public class TestMojo extends AbstractGroovySourcesMojo {
+        public void execute() { }
     }
 
 }

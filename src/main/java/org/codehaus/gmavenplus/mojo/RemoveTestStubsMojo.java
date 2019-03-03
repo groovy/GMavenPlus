@@ -36,14 +36,22 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
      * The location for the compiled test classes.
      */
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/test")
-    protected File outputDirectory;
+    protected File testStubsOutputDirectory;
+
+    /**
+     * Flag to allow adding test sources to be skipped.
+     */
+    @Parameter(property = "maven.test.skip", defaultValue = "false")
+    protected boolean skipTests;
 
     /**
      * Executes this mojo.
      */
     @Override
     public void execute() {
-        project.getTestCompileSourceRoots().remove(outputDirectory.getAbsolutePath());
+        if (!skipTests) {
+            project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+        }
     }
 
 }

@@ -33,24 +33,24 @@ import static org.mockito.Mockito.verify;
  * @author Keegan Witt
  */
 public class AddStubSourcesMojoTest {
-    private AddStubSourcesMojo mojo;
+    private AddStubSourcesMojo addStubSourcesMojo;
     @Mock
     private MavenProject project;
     @Mock
-    private File outputDirectory;
+    private File stubsOutputDirectory;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mojo = new AddStubSourcesMojo();
-        mojo.project = project;
-        mojo.outputDirectory = outputDirectory;
+        addStubSourcesMojo = new AddStubSourcesMojo();
+        addStubSourcesMojo.project = project;
+        addStubSourcesMojo.stubsOutputDirectory = stubsOutputDirectory;
     }
 
     @Test
-    public void testAddsStubsToSources() throws Exception {
-        mojo.execute();
-        verify(project).addCompileSourceRoot(outputDirectory.getAbsolutePath());
+    public void testAddsStubsToSources() {
+        addStubSourcesMojo.execute();
+        verify(project).addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
     }
 
 }

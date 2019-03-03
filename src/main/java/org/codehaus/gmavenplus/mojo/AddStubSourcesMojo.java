@@ -35,15 +35,15 @@ public class AddStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
      * The location for the compiled classes.
      */
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/main")
-    protected File outputDirectory;
+    protected File stubsOutputDirectory;
 
     /**
      * Executes this mojo.
      */
     @Override
     public void execute() {
-        getLog().debug("Added stub directory " + outputDirectory.getAbsolutePath() + " to project sources.");
-        project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+        getLog().debug("Added stub directory " + stubsOutputDirectory.getAbsolutePath() + " to project sources.");
+        project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
     }
 
 }

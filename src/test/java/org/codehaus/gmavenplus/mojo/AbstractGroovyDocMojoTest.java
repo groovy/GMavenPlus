@@ -1,8 +1,6 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugin.MojoExecution;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
@@ -67,7 +65,7 @@ public class AbstractGroovyDocMojoTest {
 
     public static class TestMojo extends AbstractGroovyDocMojo {
         @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
     }
 
 }

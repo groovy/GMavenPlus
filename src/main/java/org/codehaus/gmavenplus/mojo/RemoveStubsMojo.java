@@ -36,14 +36,14 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
      * The location for the compiled classes.
      */
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/main")
-    protected File outputDirectory;
+    protected File stubsOutputDirectory;
 
     /**
      * Executes this mojo.
      */
     @Override
     public void execute() {
-        project.getCompileSourceRoots().remove(outputDirectory.getAbsolutePath());
+        project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
     }
 
 }

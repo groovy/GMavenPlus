@@ -16,8 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -54,7 +52,7 @@ public class AbstractGroovyStubSourcesMojoTest {
 
     protected class TestMojo extends AbstractGroovyStubSourcesMojo {
         @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
     }
 
 }

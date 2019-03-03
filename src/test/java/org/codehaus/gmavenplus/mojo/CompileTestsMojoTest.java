@@ -16,9 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
@@ -51,8 +53,8 @@ public class CompileTestsMojoTest {
         MockitoAnnotations.initMocks(this);
         Set<File> sources = new HashSet<File>();
         sources.add(mock(File.class));
-        doReturn(sources).when(compileTestsMojo).getSources();
-        compileTestsMojo.outputDirectory = mock(File.class);
+        doReturn(sources).when(compileTestsMojo).getTestFiles(any(FileSet[].class), eq(false));
+        compileTestsMojo.testOutputDirectory = mock(File.class);
         compileTestsMojo.project = mock(MavenProject.class);
         doReturn(mock(Build.class)).when(compileTestsMojo.project).getBuild();
         doReturn(true).when(compileTestsMojo).groovyVersionSupportsAction();
@@ -101,6 +103,12 @@ public class CompileTestsMojoTest {
     @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
+        compileTestsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
+        doThrow(mock(DependencyResolutionRequiredException.class)).when(compileTestsMojo.project).getTestClasspathElements();
         compileTestsMojo.execute();
     }
 
