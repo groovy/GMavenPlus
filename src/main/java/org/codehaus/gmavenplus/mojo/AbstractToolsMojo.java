@@ -93,7 +93,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *
      * @since 1.6.3
      */
-    @Parameter(property = "sharedClassLoader", defaultValue = "true")
+    @Parameter(defaultValue = "true")
     protected boolean useSharedClassLoader;
 
     /**

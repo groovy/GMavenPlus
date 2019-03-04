@@ -67,9 +67,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
     /**
      * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * Use only if you know what you're doing.
+     *
      * @since 1.6.3
      */
-    @Parameter(property = "sharedClassLoader", defaultValue = "false")
+    @Parameter(defaultValue = "false")
     protected boolean useSharedClassLoader;
 
     /**
