@@ -275,13 +275,41 @@ public class AbstractCompileMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava13WithUnsupportedGroovy() {
+        testMojo = new TestMojo("2.5.6");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava13WithSupportedGroovy() {
+        testMojo = new TestMojo("2.5.7");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava13WithUnsupportedGroovy3() {
+        testMojo = new TestMojo("3.0.0-alpha-4");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava13WithSupportedGroovy3() {
+        testMojo = new TestMojo("3.0.0-alpha-5");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testUnrecognizedJava() {
         testMojo = new TestMojo("2.1.2");
         testMojo.targetBytecode = "unknown";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
-    public class TestMojo extends AbstractCompileMojo {
+    protected class TestMojo extends AbstractCompileMojo {
         protected TestMojo() {
             this(GROOVY_1_5_0.toString(), false);
         }
@@ -296,6 +324,7 @@ public class AbstractCompileMojoTest {
             doReturn(indy).when(classWrangler).isGroovyIndy();
         }
 
+        @Override
         public void execute() throws MojoExecutionException, MojoFailureException { }
 
     }

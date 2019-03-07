@@ -52,7 +52,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
-        List classpathElements;
+        List<?> classpathElements;
 
         try {
             classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
@@ -77,7 +77,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      */
     @SuppressWarnings("deprecation")
     protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
-        List classpathElements;
+        List<?> classpathElements;
 
         try {
             classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
@@ -99,7 +99,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @return URLs for all the classpath elements
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
-    protected URL[] buildURLs(final List classpathElements) throws ComponentConfigurationException {
+    protected URL[] buildURLs(final List<?> classpathElements) throws ComponentConfigurationException {
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
         for (Object element : classpathElements) {
             try {

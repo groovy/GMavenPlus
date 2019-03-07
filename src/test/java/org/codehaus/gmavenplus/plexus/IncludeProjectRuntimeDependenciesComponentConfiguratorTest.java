@@ -95,7 +95,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
     @SuppressWarnings("deprecation")
     public void testAddProjectRuntimeDependenciesToClassRealm() throws Exception {
         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
-        List classpathElements = singletonList("CLASSPATH_ELEMENT");
+        List<?> classpathElements = singletonList("CLASSPATH_ELEMENT");
         doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
         org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.class);
         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);
@@ -106,7 +106,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
     @Test
     public void testAddProjectRuntimeDependenciesToPlexusClassRealm() throws Exception {
         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
-        List classpathElements = singletonList("CLASSPATH_ELEMENT");
+        List<?> classpathElements = singletonList("CLASSPATH_ELEMENT");
         doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);

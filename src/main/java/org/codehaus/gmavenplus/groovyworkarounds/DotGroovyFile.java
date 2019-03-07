@@ -34,6 +34,8 @@ import java.util.Set;
  */
 public class DotGroovyFile extends File {
 
+    private static final long serialVersionUID = -3325908173654793431L;
+
     /**
      * The file extensions to consider as Groovy files.
      */

@@ -17,9 +17,7 @@ import java.io.File;
 import java.util.Properties;
 
 import static java.util.Collections.emptyList;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -65,6 +63,7 @@ public class AbstractGroovyDocMojoTest {
     }
 
     public static class TestMojo extends AbstractGroovyDocMojo {
+        @Override
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 

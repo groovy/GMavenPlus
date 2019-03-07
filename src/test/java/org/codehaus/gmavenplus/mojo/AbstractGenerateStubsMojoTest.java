@@ -102,13 +102,13 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testGroovyVersionSupportsActionTrue() {
-        testMojo = new TestMojo("1.8.2");
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("1.5.0");
         assertTrue(testMojo.groovyVersionSupportsAction());
     }
 
     @Test
     public void testGroovyVersionSupportsActionFalse() {
-        testMojo = new TestMojo("1.8.1");
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("1.1-rc-3");
         assertFalse(testMojo.groovyVersionSupportsAction());
     }
 
@@ -121,22 +121,246 @@ public class AbstractGenerateStubsMojoTest {
         verify(stub, atLeastOnce()).setLastModified(anyLong());
     }
 
-    public class TestMojo extends AbstractGenerateStubsMojo {
-        private String overrideGroovyVersion = minGroovyVersion.toString();
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava6WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.1.2");
+        testMojo.targetBytecode = "1.6";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
 
+    @Test
+    public void testJava6WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.1.3");
+        testMojo.targetBytecode = "1.6";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava7WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.1.2");
+        testMojo.targetBytecode = "1.7";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava7WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.1.3");
+        testMojo.targetBytecode = "1.7";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava8WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.3.2");
+        testMojo.targetBytecode = "1.8";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava8WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.3.3");
+        testMojo.targetBytecode = "1.8";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9WithUnsupportedGroovy2_5() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.2");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava9WithSupportedGroovy2_5() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.3");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9WithUnsupportedGroovy2_6() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.6.0-alpha-3");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava9WithSupportedGroovy2_6() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.6.0-alpha-4");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9WithUnsupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-1");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava9WithSupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-2");
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9WithUnsupportedGroovyIndy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.2", true);
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava9WithSupportedGroovyIndy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.3", true);
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava9WithUnsupportedGroovy3Indy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-3", true);
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava9WithSupportedGroovy3Indy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-4", true);
+        testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava10WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.2");
+        testMojo.targetBytecode = "10";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava10WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.3");
+        testMojo.targetBytecode = "10";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava10WithUnsupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-3");
+        testMojo.targetBytecode = "10";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava10WithSupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-4");
+        testMojo.targetBytecode = "10";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava11WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.2");
+        testMojo.targetBytecode = "11";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava11WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.3");
+        testMojo.targetBytecode = "11";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava11WithUnsupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-3");
+        testMojo.targetBytecode = "11";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava11WithSupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-4");
+        testMojo.targetBytecode = "11";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava12WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.2");
+        testMojo.targetBytecode = "12";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava12WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.3");
+        testMojo.targetBytecode = "12";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava12WithUnsupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-3");
+        testMojo.targetBytecode = "12";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava12WithSupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-4");
+        testMojo.targetBytecode = "12";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava13WithUnsupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.6");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava13WithSupportedGroovy() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("2.5.7");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava13WithUnsupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-4");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava13WithSupportedGroovy3() {
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-5");
+        testMojo.targetBytecode = "13";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    protected class TestMojo extends AbstractGenerateStubsMojo {
         protected TestMojo() {
-            minGroovyVersion = new Version(1, 8, 2);
-            classWrangler = mock(ClassWrangler.class);
-            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+            this(GROOVY_1_8_2.toString(), false);
         }
 
-        protected TestMojo(String newOverrideGroovyVersion) {
-            minGroovyVersion = new Version(1, 8, 2);
-            overrideGroovyVersion = newOverrideGroovyVersion;
-            classWrangler = mock(ClassWrangler.class);
-            doReturn(Version.parseFromString(overrideGroovyVersion)).when(classWrangler).getGroovyVersion();
+        protected TestMojo(String groovyVersion) {
+            this(groovyVersion, false);
         }
 
+        protected TestMojo(String groovyVersion, boolean indy) {
+            classWrangler = mock(ClassWrangler.class);
+            doReturn(Version.parseFromString(groovyVersion)).when(classWrangler).getGroovyVersion();
+            doReturn(indy).when(classWrangler).isGroovyIndy();
+        }
+
+        @Override
         public void execute() throws MojoExecutionException, MojoFailureException { }
 
     }
