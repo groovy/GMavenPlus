@@ -28,5 +28,5 @@ class SomeClass {
      *
      * @param project
      */
-    void someMethod(MavenProject project) {}
+    void someMethod(MavenProject project) { }
 }

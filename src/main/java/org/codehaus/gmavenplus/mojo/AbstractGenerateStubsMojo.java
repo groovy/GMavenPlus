@@ -46,6 +46,56 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
 
     /**
+     * Groovy 3.0.0 alpha-5 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA5 = new Version(3, 0, 0, "alpha-5");
+
+    /**
+     * Groovy 3.0.0 alpha-4 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA4 = new Version(3, 0, 0, "alpha-4");
+
+    /**
+     * Groovy 3.0.0 alpha-2 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA2 = new Version(3, 0, 0, "alpha-2");
+
+    /**
+     * Groovy 3.0.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA1 = new Version(3, 0, 0, "alpha-1");
+
+    /**
+     * Groovy 2.6.0 alpha-4 version.
+     */
+    protected static final Version GROOVY_2_6_0_ALPHA4 = new Version(2, 6, 0, "alpha-4");
+
+    /**
+     * Groovy 2.6.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_2_6_0_ALPHA1 = new Version(2, 6, 0, "alpha-1");
+
+    /**
+     * Groovy 2.5.7 version.
+     */
+    protected static final Version GROOVY_2_5_7 = new Version(2, 5, 7);
+
+    /**
+     * Groovy 2.5.3 version.
+     */
+    protected static final Version GROOVY_2_5_3 = new Version(2, 5, 3);
+
+    /**
+     * Groovy 2.3.3 version.
+     */
+    protected static final Version GROOVY_2_3_3 = new Version(2, 3, 3);
+
+    /**
+     * Groovy 2.1.3 version.
+     */
+    protected static final Version GROOVY_2_1_3 = new Version(2, 1, 3);
+
+    /**
      * Groovy 2.9.0 beta-1 version.
      */
     protected static final Version GROOVY_1_9_0_BETA1 = new Version(1, 9, 0, "beta-1");
@@ -83,12 +133,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>10</li>
      *   <li>11</li>
      *   <li>12</li>
+     *   <li>13</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy >= 2.1.3.
      * Using 1.8 requires Groovy >= 2.3.3.
      * Using 9 requires Groovy >= 2.5.3, or Groovy >= 2.6.0 alpha 4, or Groovy >= 3.0.0 alpha 2.
      * Using 9 with invokedynamic requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 4, but not any 2.6 versions.
+     * Using 13 requires Groovy >= 2.5.7, or Groovy >= 3.0.0-alpha-5, but not any 2.6 versions.
      *
      * @since 1.0-beta-3
      */
@@ -156,7 +208,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (!groovyVersionSupportsAction()) {
+        if (groovyVersionSupportsAction()) {
+            verifyGroovyVersionSupportsTargetBytecode();
+        } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
             return;
         }
@@ -273,6 +327,41 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (!success) {
                 getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
             }
+        }
+    }
+
+    /**
+     * Throws an exception if targetBytecode is not supported with this version of Groovy. That is, when Groovy added
+     * the option to org.codehaus.groovy.control.CompilerConfiguration and used it in
+     * org.codehaus.groovy.classgen.asm.WriterController.
+     */
+    protected void verifyGroovyVersionSupportsTargetBytecode() {
+        if ("13".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA5))) {
+                throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_ALPHA5 + " or newer. No 2.6 version is supported.");
+            }
+        } else if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {
+                throw new IllegalArgumentException("Target bytecode 10, 11, or 12 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
+            }
+        } else if ("9".equals(targetBytecode)) {
+            if (!isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3)
+                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_2_6_0_ALPHA4))
+                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {
+                throw new IllegalArgumentException("Target bytecode 9 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
+            } else if (isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {
+                throw new IllegalArgumentException("Target bytecode 9 with invokedynamic requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
+            }
+        } else if ("1.8".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_2_3_3)) {
+                throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + " or newer.");
+            }
+        } else if ("1.7".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_2_1_3)) {
+                throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + " or newer.");
+            }
+        } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
+            throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'.");
         }
     }
 

@@ -52,7 +52,8 @@ public class AbstractGroovyStubSourcesMojoTest {
         assertEquals(0, testMojo.getStubs(outputDirectory).size());
     }
 
-    public class TestMojo extends AbstractGroovyStubSourcesMojo {
+    protected class TestMojo extends AbstractGroovyStubSourcesMojo {
+        @Override
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 

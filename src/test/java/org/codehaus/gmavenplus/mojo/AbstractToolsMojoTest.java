@@ -34,10 +34,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 
@@ -111,7 +108,8 @@ public class AbstractToolsMojoTest {
         verify(properties, times(1)).put(eq("mojoExecution"), anyListOf(MojoExecution.class));
     }
 
-    public class TestMojo extends AbstractToolsMojo {
+    protected class TestMojo extends AbstractToolsMojo {
+        @Override
         public void execute() throws MojoExecutionException, MojoFailureException { }
     }
 
