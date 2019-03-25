@@ -103,7 +103,7 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectRuntimeDependenciesToClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          List&lt;?&gt; classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);
@@ -114,7 +114,7 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     @Test
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddProjectRuntimeDependenciesToPlexusClassRealm() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         List classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         List&lt;?&gt; classpathElements = singletonList(<span class="jxr_string">"CLASSPATH_ELEMENT"</span>);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         doReturn(classpathElements).when(expressionEvaluator).evaluate(anyString());
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         configurator.addDependenciesToClassRealm(expressionEvaluator, IncludeProjectRuntimeDependenciesComponentConfigurator.Classpath.RUNTIME, containerRealm);
@@ -133,6 +133,6 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2018. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
 </body>
 </html>
