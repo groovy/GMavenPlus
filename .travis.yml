@@ -1,5 +1,6 @@
 language: java
-jdk: oraclejdk8
+#jdk: openjdk12
+jdk: oraclejdk11
 sudo: false
 
 # unit test
