@@ -36,7 +36,7 @@ public class AbstractGroovyMojoTest {
     private AbstractGroovyMojo testMojo;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         testMojo = spy(new TestGroovyMojo());
     }
 

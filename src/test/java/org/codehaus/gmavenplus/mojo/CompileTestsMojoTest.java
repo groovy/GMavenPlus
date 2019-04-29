@@ -30,12 +30,10 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anySet;
 import static org.mockito.Mockito.*;
 
 
@@ -49,9 +47,12 @@ public class CompileTestsMojoTest {
     private CompileTestsMojo compileTestsMojo;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(compileTestsMojo).getTestSources();
+        Set<File> sources = new HashSet<File>();
+        sources.add(mock(File.class));
+        doReturn(sources).when(compileTestsMojo).getSources();
+        compileTestsMojo.outputDirectory = mock(File.class);
         compileTestsMojo.project = mock(MavenProject.class);
         doReturn(mock(Build.class)).when(compileTestsMojo.project).getBuild();
         doReturn(true).when(compileTestsMojo).groovyVersionSupportsAction();
@@ -60,53 +61,53 @@ public class CompileTestsMojoTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testCallsExpectedMethods() throws Exception {
-        doNothing().when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doNothing().when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
-        verify(compileTestsMojo, times(1)).doCompile(anySet(), anyList(), any(File.class));
+        verify(compileTestsMojo, times(1)).doCompile(anySetOf(File.class), anyList(), any(File.class));
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testSkipped() throws Exception {
         compileTestsMojo.skipTests = true;
         compileTestsMojo.execute();
-        verify(compileTestsMojo, never()).doCompile(anySet(), anyList(), any(File.class));
+        verify(compileTestsMojo, never()).doCompile(anySetOf(File.class), anyList(), any(File.class));
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
     @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
-        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySet(), anyList(), any(File.class));
+        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 

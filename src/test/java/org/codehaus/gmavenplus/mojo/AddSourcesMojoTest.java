@@ -24,7 +24,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static java.util.Collections.singletonList;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 

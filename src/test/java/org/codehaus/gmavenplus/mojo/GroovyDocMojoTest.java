@@ -30,11 +30,10 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.*;
 
 
@@ -48,10 +47,12 @@ public class GroovyDocMojoTest {
     private GroovyDocMojo groovyDocMojo;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(groovyDocMojo).getSources();
-        groovyDocMojo.project = mock(MavenProject.class);
+        Set<File> sources = new HashSet<File>();
+        sources.add(mock(File.class));
+        doReturn(sources).when(groovyDocMojo).getSources();
+        groovyDocMojo.groovyDocOutputDirectory = mock(File.class);groovyDocMojo.project = mock(MavenProject.class);
         doReturn(mock(File.class)).when(groovyDocMojo.project).getBasedir();
         groovyDocMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 5, 0)).when(groovyDocMojo.classWrangler).getGroovyVersion();
