@@ -36,6 +36,7 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
 
     /**
      * Gets the set of stub files in specified directory.
+     * @param outputDirectory the directory to write stubs to
      *
      * @return The set of stub files in specified directory
      */

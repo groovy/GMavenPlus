@@ -145,6 +145,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Instantiates the classWrangler, based on the useSharedClassLoader property.
+     * @return the configured ClassWrangler
      *
      * @throws MojoExecutionException when a DependencyResolutionRequiredException is thrown (causes a "BUILD ERROR" message to be displayed)
      */

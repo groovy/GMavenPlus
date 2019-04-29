@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 
 /**
  * Compiles the main sources.
- * Note that this mojo requires Groovy >= 1.5.0, and >= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic option.
+ * Note that this mojo requires Groovy &gt;= 1.5.0, and &gt;= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic option.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
