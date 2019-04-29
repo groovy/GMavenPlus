@@ -130,12 +130,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>12</li>
      *   <li>13</li>
      * </ul>
-     * Using 1.6 or 1.7 requires Groovy >= 2.1.3.
-     * Using 1.8 requires Groovy >= 2.3.3.
-     * Using 9 requires Groovy >= 2.5.3, or Groovy >= 2.6.0 alpha 4, or Groovy >= 3.0.0 alpha 2.
-     * Using 9 with invokedynamic requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 2, but not any 2.6 versions.
-     * Using 10, 11, or 12 requires Groovy >= 2.5.3, or Groovy >= 3.0.0 alpha 4, but not any 2.6 versions.
-     * Using 13 requires Groovy >= 2.5.7, or Groovy >= 3.0.0-alpha-5, but not any 2.6 versions.
+     * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
+     * Using 1.8 requires Groovy &gt;= 2.3.3.
+     * Using 9 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 2.6.0 alpha 4, or Groovy &gt;= 3.0.0 alpha 2.
+     * Using 9 with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
+     * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
+     * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-alpha-5, but not any 2.6 versions.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
