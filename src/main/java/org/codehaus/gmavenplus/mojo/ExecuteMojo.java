@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
@@ -44,6 +45,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  */
 @Mojo(name = "execute", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies", threadSafe = true)
 public class ExecuteMojo extends AbstractToolsMojo {
+
+    /**
+     * Groovy 1.7.0 version.
+     */
+    protected static final Version GROOVY_1_7_0 = new Version(1, 7, 0);
 
     /**
      * Groovy scripts to run (in order). Can be an actual Groovy script or a {@link java.net.URL URL} to a Groovy script (local or remote).
@@ -173,24 +179,23 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoExecutionException when an exception occurred during script execution (causes a "BUILD ERROR" message to be displayed)
      */
     protected void executeScripts(final Class<?> groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
-        Method evaluateUrl = findMethod(groovyShellClass, "evaluate", Reader.class);
-        Method evaluateFile = findMethod(groovyShellClass, "evaluate", File.class);
-        Method evaluateString = findMethod(groovyShellClass, "evaluate", String.class);
         int scriptNum = 1;
         for (String script : scripts) {
             try {
                 // TODO: try as file first, then as URL?
                 try {
                     // it's a URL to a script
-                    executeScriptFromUrl(shell, evaluateUrl, script);
+                    executeScriptFromUrl(groovyShellClass, shell, script);
                 } catch (MalformedURLException e) {
                     // it's not a URL to a script, try as a filename
                     File scriptFile = new File(script);
                     if (scriptFile.isFile()) {
                         getLog().info("Running Groovy script from " + scriptFile.getCanonicalPath() + ".");
+                        Method evaluateFile = findMethod(groovyShellClass, "evaluate", File.class);
                         invokeMethod(evaluateFile, shell, scriptFile);
                     } else {
                         // it's neither a filename or URL, treat as a script body
+                        Method evaluateString = findMethod(groovyShellClass, "evaluate", String.class);
                         invokeMethod(evaluateString, shell, script);
                     }
                 }
@@ -208,27 +213,41 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Executes a script at a URL location.
      *
+     * @param groovyShellClass the GroovyShell class
      * @param shell a groovy.lag.GroovyShell object
-     * @param evaluateUrl the evaluate method on groovy.lag.GroovyShell
      * @param script the script URL to execute
      * @throws IOException when the stream can't be opened on the URL
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
      * @throws IllegalAccessException when a method needed for script execution cannot be accessed
      */
-    protected void executeScriptFromUrl(Object shell, Method evaluateUrl, String script) throws IOException, InvocationTargetException, IllegalAccessException {
+    protected void executeScriptFromUrl(Class<?> groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
         URL url = new URL(script);
         getLog().info("Running Groovy script from " + url + ".");
-        BufferedReader reader = null;
-        try {
-            if (sourceEncoding != null) {
-                reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
-            } else {
-                reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        if (groovyAtLeast(GROOVY_1_7_0)) {
+            Method evaluateUrlWithReader = findMethod(groovyShellClass, "evaluate", Reader.class);
+            BufferedReader reader = null;
+            try {
+                if (sourceEncoding != null) {
+                    reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
+                } else {
+                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                }
+                invokeMethod(evaluateUrlWithReader, shell, reader);
+            } finally {
+                FileUtils.closeQuietly(reader);
             }
-
-            invokeMethod(evaluateUrl, shell, reader);
-        } finally {
-            FileUtils.closeQuietly(reader);
+        } else {
+            Method evaluateUrlWithStream = findMethod(groovyShellClass, "evaluate", InputStream.class);
+            InputStream inputStream = null;
+            try {
+                if (sourceEncoding != null) {
+                    getLog().warn("Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.");
+                }
+                inputStream = url.openStream();
+                invokeMethod(evaluateUrlWithStream, shell, inputStream);
+            } finally {
+                FileUtils.closeQuietly(inputStream);
+            }
         }
     }
 
