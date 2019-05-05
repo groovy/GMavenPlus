@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConsoleMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">ConsoleMojo.java</span></div><h1>ConsoleMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.util.Set;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+
+
+/**
+ * Launches a Groovy console window bound to the current project.
+ * Note that this mojo requires Groovy &amp;gt;= 1.5.0.
+ * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
+ * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ *
+ * @author Keegan Witt
+ * @since 1.1
+ */
+@Mojo(name = &quot;console&quot;, requiresDependencyResolution = ResolutionScope.TEST, configurator = &quot;include-project-test-dependencies&quot;)
+<span class="nc" id="L44">public class ConsoleMojo extends AbstractToolsMojo {</span>
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     * @throws MojoFailureException If unable to await console exit
+     */
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        try {
+<span class="nc" id="L55">            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);</span>
+<span class="nc" id="L56">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L57">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="nc" id="L58">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L59">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="nc" id="L60">        }</span>
+
+<span class="nc" id="L62">        logPluginClasspath();</span>
+<span class="nc" id="L63">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+
+        try {
+<span class="nc" id="L66">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="nc" id="L67">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L68">            getLog().warn(&quot;Unable to log project test classpath&quot;, e);</span>
+<span class="nc" id="L69">        }</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L72">            final SecurityManager sm = System.getSecurityManager();</span>
+            try {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L75">                    System.setSecurityManager(new NoExitSecurityManager());</span>
+                }
+
+                // get classes we need with reflection
+<span class="nc" id="L79">                Class&lt;?&gt; consoleClass = classWrangler.getClass(&quot;groovy.ui.Console&quot;);</span>
+<span class="nc" id="L80">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
+
+                // create console to run
+<span class="nc" id="L83">                Object console = setupConsole(consoleClass, bindingClass);</span>
+
+                // run the console
+<span class="nc" id="L86">                invokeMethod(findMethod(consoleClass, &quot;run&quot;), console);</span>
+
+                // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
+<span class="nc" id="L89">                bindAntBuilder(consoleClass, bindingClass, console);</span>
+
+                // wait for console to be closed
+<span class="nc" id="L92">                waitForConsoleClose();</span>
+<span class="nc" id="L93">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L94">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
+<span class="nc" id="L95">            } catch (InvocationTargetException e) {</span>
+<span class="nc bnc" id="L96" title="All 4 branches missed.">                if (e.getCause() instanceof NoClassDefFoundError &amp;&amp; &quot;org/apache/ivy/core/report/ResolveReport&quot;.equals(e.getCause().getMessage())) {</span>
+<span class="nc" id="L97">                    throw new MojoExecutionException(&quot;Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console. Either change your Groovy version or add Ivy as a project or plugin dependency.&quot;, e);</span>
+                } else {
+<span class="nc" id="L99">                    throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+                }
+<span class="nc" id="L101">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L102">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L103">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L104">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+            } finally {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L107">                    System.setSecurityManager(sm);</span>
+                }
+            }
+<span class="nc" id="L110">        } else {</span>
+<span class="nc" id="L111">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support running a console. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping console startup.&quot;);</span>
+        }
+<span class="nc" id="L113">    }</span>
+
+    /**
+     * Instantiates a groovy.ui.Console object.
+     *
+     * @param consoleClass the groovy.ui.Console class to use
+     * @param bindingClass the groovy.lang.Binding class to use
+     * @return a new groovy.ui.Console object
+     * @throws InvocationTargetException when a reflection invocation needed for instantiating a console object cannot be completed
+     * @throws IllegalAccessException when a method needed for instantiating a console object cannot be accessed
+     * @throws InstantiationException when a class needed for instantiating a console object cannot be instantiated
+     */
+    protected Object setupConsole(final Class&lt;?&gt; consoleClass, final Class&lt;?&gt; bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+<span class="nc" id="L126">        Object binding = invokeConstructor(findConstructor(bindingClass));</span>
+<span class="nc" id="L127">        initializeProperties();</span>
+<span class="nc" id="L128">        Method setVariable = findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            for (Object k : properties.keySet()) {</span>
+<span class="nc" id="L131">                invokeMethod(setVariable, binding, k, properties.get(k));</span>
+<span class="nc" id="L132">            }</span>
+        } else {
+<span class="nc" id="L134">            invokeMethod(setVariable, binding, &quot;properties&quot;, properties);</span>
+        }
+
+<span class="nc" id="L137">        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);</span>
+    }
+
+    /**
+     * Binds a new AntBuilder to the project properties.
+     *
+     * @param consoleClass the groovy.ui.Console class to use
+     * @param bindingClass the groovy.lang.Binding class to use
+     * @param console the groovy.ui.Console object to use
+     * @throws ClassNotFoundException when a class needed for binding an AntBuilder object cannot be found
+     * @throws IllegalAccessException when a method needed for binding an AntBuilder object cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for binding an AntBuilder object cannot be completed
+     * @throws InstantiationException when a class needed for binding an AntBuilder object cannot be instantiated
+     */
+    protected void bindAntBuilder(Class&lt;?&gt; consoleClass, Class&lt;?&gt; bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (properties.containsKey(&quot;ant&quot;)) {</span>
+<span class="nc" id="L153">            Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
+<span class="nc" id="L154">            Object shell = getField(findField(consoleClass, &quot;shell&quot;, groovyShellClass), console);</span>
+<span class="nc" id="L155">            Object binding = invokeMethod(findMethod(groovyShellClass, &quot;getContext&quot;), shell);</span>
+<span class="nc" id="L156">            Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc" id="L158">                invokeMethod(findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class), binding, &quot;ant&quot;, antBuilder);</span>
+            } else {
+<span class="nc" id="L160">                properties.put(&quot;ant&quot;, antBuilder);</span>
+            }
+        }
+<span class="nc" id="L163">    }</span>
+
+    /**
+     * Waits for the console in use to be closed.
+     *
+     * @throws MojoFailureException if the execution was interrupted while running or it was unable to find the console thread to wait on
+     */
+    protected void waitForConsoleClose() throws MojoFailureException {
+<span class="nc" id="L171">        Set&lt;Thread&gt; threadSet = Thread.getAllStackTraces().keySet();</span>
+<span class="nc" id="L172">        Thread[] threadArray = threadSet.toArray(new Thread[0]);</span>
+<span class="nc" id="L173">        Thread consoleThread = null;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        for (Thread thread : threadArray) {</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">            if (&quot;AWT-Shutdown&quot;.equals(thread.getName())) {</span>
+<span class="nc" id="L176">                consoleThread = thread;</span>
+<span class="nc" id="L177">                break;</span>
+            }
+        }
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (consoleThread != null) {</span>
+            try {
+<span class="nc" id="L182">                consoleThread.join();</span>
+<span class="nc" id="L183">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L184">                throw new MojoFailureException(&quot;Mojo interrupted while waiting for Console thread to end.&quot;, e);</span>
+<span class="nc" id="L185">            }</span>
+        } else {
+<span class="nc" id="L187">            throw new MojoFailureException(&quot;Unable to locate Console thread to wait on.&quot;);</span>
+        }
+<span class="nc" id="L189">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractToolsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractToolsMojo.java</span></div><h1>AbstractToolsMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProjectHelper;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+
+
+/**
+ * The base tools mojo, which all tool mojos extend.
+ * Note that it references the plugin classloader to pull in dependencies
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ *
+ * @author Keegan Witt
+ * @since 1.1
+ */
+<span class="fc" id="L38">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
+
+    /**
+     * Maven ProjectHelper to use in properties.
+     *
+     * @since 1.3
+     */
+    @Component
+    protected MavenProjectHelper projectHelper;
+
+    /**
+     * Properties to make available in scripts as variables using the property name. By default will include
+     * &lt;dl&gt;
+     *   &lt;dt&gt;project&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.project.Project object of the current Maven project.&lt;/dd&gt;
+     *   &lt;dt&gt;session&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.execution.MavenSession object of the current Maven session.&lt;/dd&gt;
+     *   &lt;dt&gt;pluginArtifacts&lt;/dt&gt;
+     *     &lt;dd&gt;A list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts.&lt;/dd&gt;
+     *   &lt;dt&gt;mojoExecution&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.plugin.MojoExecution object of this plugin's mojo execution.&lt;/dd&gt;
+     *   &lt;dt&gt;log&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.plugin.logging.Log object of Maven's log.&lt;/dd&gt;
+     *   &lt;dt&gt;ant&lt;/dt&gt;
+     *     &lt;dd&gt;A groovy.util.AntBuilder object.&lt;/dd&gt;
+     * &lt;/dl&gt;
+     * These can be overridden.
+     *
+     * @since 1.0-beta-3
+     */
+<span class="fc" id="L68">    @Parameter</span>
+    protected Properties properties = new Properties();
+
+    /**
+     * Whether to allow System.exit() to be used.
+     *
+     * @since 1.2
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean allowSystemExits;
+
+    /**
+     * Whether to bind each property to a separate variable (otherwise binds properties to a single 'properties' variable).
+     *
+     * @since 1.2
+     */
+    @Parameter(defaultValue = &quot;true&quot;)
+    protected boolean bindPropertiesToSeparateVariables;
+
+    /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     *
+     * @since 1.6.3
+     */
+    @Parameter(defaultValue = &quot;true&quot;)
+    protected boolean useSharedClassLoader;
+
+    /**
+     * Initializes the properties field.
+     */
+    protected void initializeProperties() {
+<span class="fc bfc" id="L99" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
+<span class="fc" id="L100">            properties.put(&quot;project&quot;, project);</span>
+        }
+<span class="fc bfc" id="L102" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
+<span class="fc" id="L103">            properties.put(&quot;session&quot;, session);</span>
+        }
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
+<span class="fc" id="L106">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
+        }
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
+<span class="fc" id="L109">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
+        }
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
+<span class="fc" id="L112">            properties.put(&quot;log&quot;, getLog());</span>
+        }
+<span class="pc bpc" id="L114" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
+<span class="nc" id="L115">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
+        }
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
+            try {
+<span class="fc" id="L119">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="fc" id="L120">                properties.put(&quot;ant&quot;, antBuilder);</span>
+<span class="nc" id="L121">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L122">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L123">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L124">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L125">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L126">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L127">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L128">                logUnableToInitializeAntBuilder(e);</span>
+<span class="pc" id="L129">            }</span>
+        }
+<span class="fc" id="L131">    }</span>
+
+    /**
+     * Logs errors that caused the 'ant' object to not be populated.
+     *
+     * @param e the exception causing the failure
+     */
+    protected void logUnableToInitializeAntBuilder(final Throwable e) {
+<span class="nc" id="L139">        getLog().error(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;, e);</span>
+<span class="nc" id="L140">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

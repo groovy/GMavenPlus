@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DotGroovyFile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.groovyworkarounds</a> &gt; <span class="el_source">DotGroovyFile.java</span></div><h1>DotGroovyFile.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.groovyworkarounds;
+
+import org.codehaus.gmavenplus.util.FileUtils;
+
+import java.io.File;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+
+
+/**
+ * This class exists solely to trick
+ * &lt;a href=&quot;http://docs.groovy-lang.org/docs/latest/html/api/org/codehaus/groovy/tools/javac/JavaStubCompilationUnit.html#addSource%28java.io.File%29&quot;&gt;JavaStubCompilationUnit.addSource(java.io.File)&lt;/a&gt;
+ * into letting us use files that don't end in &quot;.groovy&quot; (as a workaround for &lt;a href=&quot;http://jira.codehaus.org/browse/GROOVY-5021&quot;&gt;GROOVY-5021&lt;/a&gt;).
+ *
+ * @author Keegan Witt
+ * @since 1.0-beta-1
+ */
+public class DotGroovyFile extends File {
+
+    private static final long serialVersionUID = -3325908173654793431L;
+
+    /**
+     * The file extensions to consider as Groovy files.
+     */
+<span class="fc" id="L42">    private Set&lt;String&gt; scriptExtensions = new HashSet&lt;String&gt;();</span>
+
+    /**
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param pathname Pathname to use to create DotGroovyFile
+     */
+    public DotGroovyFile(final String pathname) {
+<span class="fc" id="L50">        super(pathname);</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param parent Parent pathname to use to create DotGroovyFile
+     * @param child Child pathname to use to create DotGroovyFile
+     */
+    public DotGroovyFile(final String parent, final String child) {
+<span class="fc" id="L60">        super(parent, child);</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param parent Parent file to use to create DotGroovyFile
+     * @param child Child pathname to use to create DotGroovyFile
+     */
+    public DotGroovyFile(final File parent, final String child) {
+<span class="fc" id="L70">        super(parent, child);</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * Constructs a new DotGroovyFile object with the specified parameters.
+     *
+     * @param uri URI to use to create DotGroovyFile
+     */
+    public DotGroovyFile(final URI uri) {
+<span class="fc" id="L79">        super(uri);</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * A convenience constructor to turn a regular file into a DotGroovyFile.
+     *
+     * @param file File to use to create DotGroovyFile
+     */
+    public DotGroovyFile(final File file) {
+<span class="fc" id="L88">        super(file.getAbsolutePath());</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * A method to lie about the file extension and say it is &quot;.groovy&quot;.
+     *
+     * @return Filename with forced &lt;tt&gt;.groovy&lt;/tt&gt; extension
+     */
+    @Override
+    public String getName() {
+<span class="pc bpc" id="L98" title="2 of 6 branches missed.">        if (scriptExtensions != null &amp;&amp; !scriptExtensions.isEmpty() &amp;&amp; scriptExtensions.contains(FileUtils.getFileExtension(super.getAbsolutePath()))) {</span>
+<span class="fc" id="L99">            return FileUtils.getNameWithoutExtension(super.getName()) + &quot;.groovy&quot;;</span>
+        } else {
+<span class="fc" id="L101">            return super.getName();</span>
+        }
+    }
+
+    /**
+     * Gets the script extensions for this Groovy file.
+     *
+     * @return The script extensions for this Groovy file
+     */
+    public Set&lt;String&gt; getScriptExtensions() {
+<span class="fc" id="L111">        return scriptExtensions;</span>
+    }
+
+    /**
+     * Sets the script extensions for this Groovy file.
+     *
+     * @param newScriptExtensions The script extensions to set on this Groovy file
+     * @return This object (for fluent invocation)
+     */
+    public DotGroovyFile setScriptExtensions(final Set&lt;String&gt; newScriptExtensions) {
+<span class="fc" id="L121">        scriptExtensions = newScriptExtensions;</span>
+<span class="fc" id="L122">        return this;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

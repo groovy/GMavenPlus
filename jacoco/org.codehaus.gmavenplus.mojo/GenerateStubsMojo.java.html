@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateStubsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">GenerateStubsMojo.java</span></div><h1>GenerateStubsMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+
+
+/**
+ * Generates stubs for the main Groovy sources and adds them to Maven's sources for the Maven compiler plugin to find.
+ * Note that this mojo requires Groovy &amp;gt;= 1.8.2.
+ *
+ * @author Keegan Witt
+ * @since 1.0-beta-1
+ */
+@Mojo(name = &quot;generateStubs&quot;, defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
+<span class="fc" id="L40">public class GenerateStubsMojo extends AbstractGenerateStubsMojo {</span>
+
+    /**
+     * The Groovy source files (relative paths).
+     * Default: &quot;${project.basedir}/src/main/groovy/&amp;#42;&amp;#42;/&amp;#42;.groovy&quot;
+     */
+    @Parameter
+    protected FileSet[] sources;
+
+    /**
+     * The location for the compiled classes.
+     */
+    @Parameter(defaultValue = &quot;${project.build.directory}/generated-sources/groovy-stubs/main&quot;)
+    protected File stubsOutputDirectory;
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    @Override
+    public void execute() throws MojoExecutionException {
+<span class="fc" id="L62">        minGroovyVersion = GROOVY_1_8_2;</span>
+
+        try {
+            try {
+<span class="fc" id="L66">                getLog().debug(&quot;Project compile classpath:\n&quot; + project.getCompileClasspathElements());</span>
+<span class="fc" id="L67">            } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L68">                getLog().warn(&quot;Unable to log project compile classpath&quot;, e);</span>
+<span class="fc" id="L69">            }</span>
+
+<span class="fc" id="L71">            doStubGeneration(getFiles(sources, false), project.getCompileClasspathElements(), stubsOutputDirectory);</span>
+<span class="fc" id="L72">            logGeneratedStubs(stubsOutputDirectory);</span>
+<span class="fc" id="L73">            resetStubModifiedDates(getStubs(stubsOutputDirectory));</span>
+
+            // add stubs to project source so the Maven Compiler Plugin can find them
+<span class="fc" id="L76">            project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());</span>
+<span class="fc" id="L77">        } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L78">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
+<span class="fc" id="L79">        } catch (InvocationTargetException e) {</span>
+<span class="fc" id="L80">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L81">        } catch (InstantiationException e) {</span>
+<span class="fc" id="L82">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L83">        } catch (IllegalAccessException e) {</span>
+<span class="fc" id="L84">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L85">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L86">            throw new MojoExecutionException(&quot;Compile dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L87">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L88">            throw new MojoExecutionException(&quot;Unable to add project compile dependencies to classpath.&quot;, e);</span>
+<span class="fc" id="L89">        }</span>
+<span class="fc" id="L90">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

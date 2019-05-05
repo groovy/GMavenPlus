@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> * @author maven-plugin-tools</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  @Mojo( name = <span class="jxr_string">"help"</span>, requiresProject = false, threadSafe = <strong class="jxr_keyword">true</strong> )
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/mojo/HelpMojo.html">HelpMojo</a>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="HelpMojo" href="../../../../org/codehaus/gmavenplus/mojo/HelpMojo.html#HelpMojo">HelpMojo</a>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">extends</strong> AbstractMojo
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <em class="jxr_javadoccomment">/**</em>
@@ -359,7 +359,7 @@
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     * @param indentSize The size of each indentation, must not be negative.</em>
 <a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     * @param lineLength The length of the line, must not be negative.</em>
 <a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     * @return The sequence of display lines, never &lt;code&gt;null&lt;/code&gt;.</em>
-<a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * @throws NegativeArraySizeException if &lt;code&gt;indent &lt; 0&lt;/code&gt;</em>
+<a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * @throws NegativeArraySizeException if &lt;code&gt;indent &amp;lt; 0&lt;/code&gt;</em>
 <a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;String&gt; toLines( String text, <strong class="jxr_keyword">int</strong> indent, <strong class="jxr_keyword">int</strong> indentSize, <strong class="jxr_keyword">int</strong> lineLength )
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>     {

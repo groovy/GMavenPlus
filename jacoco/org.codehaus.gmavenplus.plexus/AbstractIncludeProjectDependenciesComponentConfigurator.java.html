@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractIncludeProjectDependenciesComponentConfigurator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.plexus</a> &gt; <span class="el_source">AbstractIncludeProjectDependenciesComponentConfigurator.java</span></div><h1>AbstractIncludeProjectDependenciesComponentConfigurator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.plexus;
+
+//import org.apache.maven.plugin.logging.Log;
+//import org.apache.maven.plugin.logging.SystemStreamLog;
+
+import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
+import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
+import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * A custom ComponentConfigurator which adds the project's classpath elements to the plugin's ClassRealm.
+ * Note that there are two method signatures for addDependenciesToClassRealm, since different versions of Maven have different expectations.
+ *
+ * @author &lt;a href=&quot;http://stackoverflow.com/a/2659324/160256&quot;&gt;Brian Jackson&lt;/a&gt;
+ * @author Keegan Witt
+ * @since 1.0-beta-3
+ */
+<span class="fc" id="L42">public abstract class AbstractIncludeProjectDependenciesComponentConfigurator extends AbstractComponentConfigurator {</span>
+
+//    private static final Log LOG = new SystemStreamLog();
+
+    /**
+     * Adds the project's compile dependencies to the specified ClassRealm.
+     *
+     * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param classpath The classpath to load into the container realm
+     * @param containerRealm The ClassRealm to add dependencies to
+     * @throws ComponentConfigurationException when parsing components configuration fails
+     */
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
+        List&lt;?&gt; classpathElements;
+
+        try {
+<span class="fc" id="L58">            classpathElements = (List&lt;?&gt;) expressionEvaluator.evaluate(&quot;${project.&quot; + classpath.toString().toLowerCase() + &quot;ClasspathElements}&quot;);</span>
+<span class="nc" id="L59">        } catch (ExpressionEvaluationException e) {</span>
+<span class="nc" id="L60">            throw new ComponentConfigurationException(&quot;There was a problem evaluating: ${project.&quot; + classpath.toString().toLowerCase() + &quot;ClasspathElements}.&quot;, e);</span>
+<span class="fc" id="L61">        }</span>
+
+        // add the project dependencies to the ClassRealm
+<span class="fc" id="L64">        final URL[] urls = buildURLs(classpathElements);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (URL url : urls) {</span>
+<span class="fc" id="L66">            containerRealm.addURL(url);</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Adds the project's compile dependencies to the specified ClassRealm.
+     *
+     * @param expressionEvaluator The expression evaluator to use to get project elements
+     * @param classpath The classpath to load into the container realm
+     * @param containerRealm The ClassRealm to add dependencies to
+     * @throws ComponentConfigurationException when parsing components configuration fails
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
+        List&lt;?&gt; classpathElements;
+
+        try {
+<span class="fc" id="L83">            classpathElements = (List&lt;?&gt;) expressionEvaluator.evaluate(&quot;${project.&quot; + classpath.toString().toLowerCase() + &quot;ClasspathElements}&quot;);</span>
+<span class="nc" id="L84">        } catch (ExpressionEvaluationException e) {</span>
+<span class="nc" id="L85">            throw new ComponentConfigurationException(&quot;There was a problem evaluating: ${project.&quot; + classpath.toString().toLowerCase() + &quot;ClasspathElements}.&quot;, e);</span>
+<span class="fc" id="L86">        }</span>
+
+        // add the project dependencies to the ClassRealm
+<span class="fc" id="L89">        final URL[] urls = buildURLs(classpathElements);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (URL url : urls) {</span>
+<span class="fc" id="L91">            containerRealm.addConstituent(url);</span>
+        }
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Create an array of URLs for all the elements in the classpath.
+     *
+     * @param classpathElements The classpath elements to create URLs for
+     * @return URLs for all the classpath elements
+     * @throws ComponentConfigurationException when parsing components configuration fails
+     */
+    protected URL[] buildURLs(final List&lt;?&gt; classpathElements) throws ComponentConfigurationException {
+<span class="fc" id="L103">        List&lt;URL&gt; urls = new ArrayList&lt;URL&gt;(classpathElements.size());</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        for (Object element : classpathElements) {</span>
+            try {
+<span class="fc" id="L106">                final URL url = new File((String) element).toURI().toURL();</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                if (!urls.contains(url)) {</span>
+<span class="fc" id="L108">                    urls.add(url);</span>
+                }
+                // commented out because debug seems to be on all the time
+//                LOG.debug(&quot;Added to project class loader: &quot; + url);
+<span class="nc" id="L112">            } catch (MalformedURLException e) {</span>
+<span class="nc" id="L113">                throw new ComponentConfigurationException(&quot;Unable to access project dependency: &quot; + element + &quot;.&quot;, e);</span>
+<span class="fc" id="L114">            }</span>
+<span class="fc" id="L115">        }</span>
+
+<span class="fc" id="L117">        return urls.toArray(new URL[0]);</span>
+    }
+
+    /**
+     * Enum of the various possible classpaths.
+     */
+<span class="fc" id="L123">    public enum Classpath {</span>
+
+        /**
+         * Compile classpath.
+         */
+<span class="fc" id="L128">        COMPILE,</span>
+
+        /**
+         * Runtime classpath.
+         */
+<span class="fc" id="L133">        RUNTIME,</span>
+
+        /**
+         * Test classpath.
+         */
+<span class="fc" id="L138">        TEST,</span>
+
+        /**
+         * System classpath.
+         */
+<span class="fc" id="L143">        SYSTEM</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

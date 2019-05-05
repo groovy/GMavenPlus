@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *     <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *     <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html">ReflectionUtilsTest</a> {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ReflectionUtilsTest" href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html#ReflectionUtilsTest">ReflectionUtilsTest</a> {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      @Test
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testHappyPaths() <strong class="jxr_keyword">throws</strong> Exception {
@@ -134,13 +134,13 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(ReflectionUtils.<strong class="jxr_keyword">class</strong>));
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>     }
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> 
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html">TestClass</a> {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestClass {
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String HELLO_WORLD = <span class="jxr_string">"Hello world!"</span>;
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         <strong class="jxr_keyword">public</strong> String stringField;
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> 
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html">TestClass</a>() { }
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         <strong class="jxr_keyword">public</strong> TestClass() { }
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html">TestClass</a>(String newStringField) {
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">public</strong> TestClass(String newStringField) {
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             stringField = newStringField;
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         }
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> 
@@ -156,7 +156,7 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>             <strong class="jxr_keyword">return</strong> HELLO_WORLD;
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         }
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> enum <a href="../../../../org/codehaus/gmavenplus/util/ReflectionUtilsTest.html">ENUM</a> {
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> enum ENUM {
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>             VALUE
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         }
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     }

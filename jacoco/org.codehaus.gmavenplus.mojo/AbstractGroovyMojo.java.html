@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractGroovyMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractGroovyMojo.java</span></div><h1>AbstractGroovyMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.util.ClassWrangler;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.List;
+
+
+/**
+ * The base mojo class, which all other mojos extend.
+ *
+ * @author Keegan Witt
+ * @since 1.0-beta-1
+ */
+<span class="fc" id="L39">public abstract class AbstractGroovyMojo extends AbstractMojo {</span>
+
+    /**
+     * The pattern defining Groovy files.
+     */
+<span class="fc" id="L44">    protected static final String GROOVY_SOURCES_PATTERN = &quot;**&quot; + File.separator + &quot;*.groovy&quot;;</span>
+
+    /**
+     * The pattern defining Java stub files.
+     */
+<span class="fc" id="L49">    protected static final String JAVA_SOURCES_PATTERN = &quot;**&quot; + File.separator + &quot;*.java&quot;;</span>
+
+    /**
+     * Java 1.7 version.
+     */
+<span class="fc" id="L54">    protected static final Version JAVA_1_7 = new Version(1, 7);</span>
+
+    /**
+     * Java 1.8 version.
+     */
+<span class="fc" id="L59">    protected static final Version JAVA_1_8 = new Version(1, 8);</span>
+
+    /**
+     * Groovy 1.5.0 version.
+     */
+<span class="fc" id="L64">    protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);</span>
+
+    /**
+     * The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions.
+     */
+    protected ClassWrangler classWrangler;
+
+    // note that all supported parameter expressions can be found here: https://git-wip-us.apache.org/repos/asf?p=maven.git;a=blob;f=maven-core/src/main/java/org/apache/maven/plugin/PluginParameterExpressionEvaluator.java;hb=HEAD
+
+    /**
+     * The Maven project this plugin is being used on.
+     */
+    @Parameter(property = &quot;project&quot;, required = true, readonly = true)
+    protected MavenProject project;
+
+    /**
+     * The Maven Session this plugin is being used on.
+     */
+    @Parameter(property = &quot;session&quot;, required = true, readonly = true)
+    protected MavenSession session;
+
+    /**
+     * The plugin dependencies.
+     */
+    @Parameter(property = &quot;plugin.artifacts&quot;, required = true, readonly = true)
+    protected List&lt;Artifact&gt; pluginArtifacts;
+
+    /**
+     * The plugin's mojo execution.
+     */
+    @Parameter(property = &quot;mojoExecution&quot;, required = true, readonly = true)
+    protected MojoExecution mojoExecution;
+
+    /**
+     * The minimum version of Groovy that this mojo supports (1.5.0 by
+     * default, but other mojos can override).
+     */
+<span class="fc" id="L101">    protected Version minGroovyVersion = GROOVY_1_5_0;</span>
+
+    /**
+     * Logs the plugin classpath.
+     */
+    protected void logPluginClasspath() {
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L108">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Artifact artifact : pluginArtifacts) {</span>
+<span class="nc" id="L110">                sb.append(artifact.getFile());</span>
+<span class="nc" id="L111">            }</span>
+<span class="nc" id="L112">            getLog().debug(&quot;Plugin classpath:\n&quot; + sb.toString());</span>
+        }
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Determines whether the version of Java executing this mojo supports invokedynamic (is at least 1.7).
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the running Java supports invokedynamic, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean isJavaSupportIndy() {
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        return getJavaVersion().compareTo(JAVA_1_7, false) &gt;= 0;</span>
+    }
+
+    /**
+     * Determines whether the version of Java executing this mojo supports JEP 118 (is at least 1.8).
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the running Java supports parameters, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean isJavaSupportParameters() {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        return getJavaVersion().compareTo(JAVA_1_8, false) &gt;= 0;</span>
+    }
+
+    /**
+     * Gets the version of Java executing this mojo as a Version object.
+     *
+     * @return a Version object of the running Java version
+     */
+    protected Version getJavaVersion() {
+<span class="fc" id="L140">        return Version.parseFromString(getJavaVersionString());</span>
+    }
+
+    /**
+     * Gets the version of Java executing this mojo as a String.
+     *
+     * @return a String of the running Java version
+     */
+    protected String getJavaVersionString() {
+<span class="fc" id="L149">        return System.getProperty(&quot;java.version&quot;);</span>
+    }
+
+    /**
+     * Determines whether this mojo can be run with the version of Groovy supplied.
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo
+     */
+    protected boolean groovyVersionSupportsAction() {
+<span class="pc bpc" id="L158" title="1 of 4 branches missed.">        return classWrangler.getGroovyVersion() != null &amp;&amp; groovyAtLeast(minGroovyVersion);</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version or newer.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version or newer, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean groovyAtLeast(Version version) {
+<span class="fc" id="L168">        return ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), version);</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean groovyIs(Version version) {
+<span class="fc" id="L178">        return ClassWrangler.groovyIs(classWrangler.getGroovyVersion(), version);</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is newer than the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is newer than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean groovyNewerThan(Version version) {
+<span class="nc" id="L188">        return ClassWrangler.groovyNewerThan(classWrangler.getGroovyVersion(), version);</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is older than the specified version.
+     *
+     * @param version the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is older than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean groovyOlderThan(Version version) {
+<span class="fc" id="L198">        return ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), version);</span>
+    }
+
+    /**
+     * Gets whether the version of Groovy on the classpath supports invokedynamic.
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the version of Groovy uses invokedynamic,
+     *         &lt;code&gt;false&lt;/code&gt; if not or Groovy dependency cannot be found
+     */
+    protected boolean isGroovyIndy() {
+<span class="fc" id="L208">        return classWrangler.isGroovyIndy();</span>
+    }
+
+    /**
+     * Instantiate a ClassWrangler.
+     *
+     * @param classpath the classpath to load onto a new classloader (if useSharedClassLoader if &lt;code&gt;false&lt;/code&gt;)
+     * @param useSharedClassLoader whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * @throws MalformedURLException when a classpath element provides a malformed URL
+     */
+    protected void setupClassWrangler(List&lt;?&gt; classpath, boolean useSharedClassLoader) throws MalformedURLException {
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (useSharedClassLoader) {</span>
+<span class="nc" id="L220">            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());</span>
+        } else {
+<span class="fc" id="L222">            classWrangler = new ClassWrangler(classpath, getLog());</span>
+        }
+<span class="fc" id="L224">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

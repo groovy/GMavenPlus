@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *     <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *     <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * @since 1.2</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a> {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ClassWrangler" href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html#ClassWrangler">ClassWrangler</a> {
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">     * Cached Groovy version.</em>
@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">     * @param classLoaderForLoading the ClassLoader to use to load classes</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     * @param pluginLog the Maven log to use for logging</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(<strong class="jxr_keyword">final</strong> ClassLoader classLoaderForLoading, <strong class="jxr_keyword">final</strong> Log pluginLog) {
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">public</strong> <a name="ClassWrangler" href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html#ClassWrangler">ClassWrangler</a>(<strong class="jxr_keyword">final</strong> ClassLoader classLoaderForLoading, <strong class="jxr_keyword">final</strong> Log pluginLog) {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>          log = pluginLog;
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          classLoader = classLoaderForLoading;
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
@@ -86,7 +86,7 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     * @param pluginLog the Maven log to use for logging</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">     * @throws MalformedURLException when a classpath element provides a malformed URL</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html">ClassWrangler</a>(<strong class="jxr_keyword">final</strong> List&lt;?&gt; classpath, <strong class="jxr_keyword">final</strong> Log pluginLog) <strong class="jxr_keyword">throws</strong> MalformedURLException {
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <a name="ClassWrangler" href="../../../../org/codehaus/gmavenplus/util/ClassWrangler.html#ClassWrangler">ClassWrangler</a>(<strong class="jxr_keyword">final</strong> List&lt;?&gt; classpath, <strong class="jxr_keyword">final</strong> Log pluginLog) <strong class="jxr_keyword">throws</strong> MalformedURLException {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          log = pluginLog;
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          <em class="jxr_comment">// create an isolated ClassLoader with all the appropriate project dependencies in it</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          classLoader = createNewClassLoader(classpath);
@@ -140,7 +140,7 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>             <em class="jxr_comment">/*</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_comment">             * This handles the circumstances in which neither the GroovySystem or InvokerHelper methods</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_comment">             * worked (GAE with versions older than 1.6.6 is one example, see</em>
-<a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_comment">             * https://jira.codehaus.org/browse/GROOVY-3884). One case this can't handle properly is uber</em>
+<a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_comment">             * <a href="https://jira.codehaus.org/browse/GROOVY-3884)." target="alexandria_uri">https://jira.codehaus.org/browse/GROOVY-3884).</a> One case this can't handle properly is uber</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_comment">             * jars that include Groovy. It should also be noted this method assumes jars will be named</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_comment">             * in the Maven convention (&lt;artifactId&gt;-&lt;version&gt;-&lt;classifier&gt;.jar).</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_comment">             */</em>
@@ -168,7 +168,7 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * @return The version of Groovy used by the project</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> getGroovyVersion() {
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> getGroovyVersion() {
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             <strong class="jxr_keyword">return</strong> Version.parseFromString(getGroovyVersionString());
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
@@ -184,7 +184,7 @@
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">     * @param compareToVersion the version to compare the detected Groovy version to</em>
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version or newer, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyAtLeast(<a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> detectedVersion, <a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> compareToVersion) {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyAtLeast(<a name="Version" href=".<a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a>/../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> detectedVersion, <a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> compareToVersion) {
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">return</strong> detectedVersion.compareTo(compareToVersion) &gt;= 0;
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     }
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> 
@@ -195,7 +195,7 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">     * @param compareToVersion the version to compare the detected Groovy version to</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyIs(<a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> detectedVersion, <a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> compareToVersion) {
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyIs(<a name="Version" href=".<a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a>/../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> detectedVersion, <a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> compareToVersion) {
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">return</strong> detectedVersion.compareTo(compareToVersion) == 0;
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> 
@@ -206,7 +206,7 @@
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     * @param compareToVersion the version to compare the detected Groovy version to</em>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is newer than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyNewerThan(<a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> detectedVersion, <a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> compareToVersion) {
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyNewerThan(<a name="Version" href=".<a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a>/../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> detectedVersion, <a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> compareToVersion) {
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">return</strong> detectedVersion.compareTo(compareToVersion) &gt; 0;
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 
@@ -217,7 +217,7 @@
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> <em class="jxr_javadoccomment">     * @param compareToVersion the version to compare the detected Groovy version to</em>
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is older than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise</em>
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyOlderThan(<a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> detectedVersion, <a href="../../../../org/codehaus/gmavenplus/model/Version.html">Version</a> compareToVersion) {
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">boolean</strong> groovyOlderThan(<a name="Version" href=".<a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a>/../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> detectedVersion, <a name="Version" href="../../../../org/codehaus/gmavenplus/model/Version.html#Version">Version</a> compareToVersion) {
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">return</strong> detectedVersion.compareTo(compareToVersion) &lt; 0;
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>     }
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
