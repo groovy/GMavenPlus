@@ -11,7 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <mavenVersion>3.0.1</mavenVersion>
-    <coberturaPluginVersion>2.7</coberturaPluginVersion>
+    <jacocoPluginVersion>0.8.3</jacocoPluginVersion>
     <javadocPluginVersion>3.1.0</javadocPluginVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.6</javaVersion>
@@ -377,20 +377,16 @@
         <version>${surefirePluginVersion}</version>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${coberturaPluginVersion}</version>
-        <configuration>
-          <check />
-          <instrumentation>
-            <excludes>
-              <!-- excluded because is a generated class -->
-              <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
-              <!-- excluded because is copied from and maintained in JDK -->
-              <exclude>org/codehaus/gmavenplus/util/JDK5Utils.class</exclude>
-            </excludes>
-          </instrumentation>
-        </configuration>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacocoPluginVersion}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -429,6 +425,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${javadocPluginVersion}</version>
         <configuration>
+          <source>6</source>
           <failOnError>false</failOnError>
         </configuration>
         <executions>
@@ -504,6 +501,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${javadocPluginVersion}</version>
         <configuration>
+          <source>6</source>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
@@ -518,9 +516,22 @@
         <version>${surefirePluginVersion}</version>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${coberturaPluginVersion}</version>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacocoPluginVersion}</version>
+        <configuration>
+          <excludes>
+            <!-- excluded because is a generated class -->
+            <exclude>org/codehaus/gmavenplus/mojo/HelpMojo.class</exclude>
+          </excludes>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
