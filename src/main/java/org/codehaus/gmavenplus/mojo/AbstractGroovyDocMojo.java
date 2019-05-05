@@ -22,7 +22,6 @@ import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.*;
@@ -63,18 +62,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Groovy 1.5.2 version.
      */
     protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
-
-    /**
-     * The location for the generated API docs.
-     */
-    @Parameter(defaultValue = "${project.build.directory}/gapidocs")
-    protected File groovyDocOutputDirectory;
-
-    /**
-     * The location for the generated test API docs.
-     */
-    @Parameter(defaultValue = "${project.build.directory}/testgapidocs")
-    protected File testGroovyDocOutputDirectory;
 
     /**
      * The window title.
@@ -145,20 +132,21 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected List<Link> links;
 
     /**
-     * Whether to include Java sources in GroovyDoc generation.
-     *
-     * @since 1.0-beta-2
-     */
-    @Parameter(defaultValue = "true")
-    protected boolean groovyDocJavaSources;
-
-    /**
      * Flag to allow GroovyDoc generation to be skipped.
      *
      * @since 1.6
      */
     @Parameter(property = "maven.groovydoc.skip", defaultValue = "false")
     protected boolean skipGroovyDoc;
+
+    /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * Use only if you know what you're doing.
+     *
+     * @since 1.6.3
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean useSharedClassLoader;
 
     /**
      * Generates the GroovyDoc for the specified sources.
@@ -183,11 +171,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            classWrangler = new ClassWrangler(classpath, getLog());
-        }
+        setupClassWrangler(classpath, useSharedClassLoader);
 
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();

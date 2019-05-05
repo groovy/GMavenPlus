@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
@@ -45,124 +44,37 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
     protected static final String TEST = "test";
 
     /**
-     * The Groovy source files (relative paths).
-     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
-     */
-    @Parameter
-    protected FileSet[] sources;
-
-    /**
-     * The Groovy test source files (relative paths).
-     * Default: "${project.basedir}/src/test/groovy/&#42;&#42;/&#42;.groovy"
-     */
-    @Parameter
-    protected FileSet[] testSources;
-
-
-    /**
-     * Flag to allow test compilation/GroovyDoc/stub generation to be skipped.
-     */
-    @Parameter(property = "maven.test.skip", defaultValue = "false")
-    protected boolean skipTests;
-
-    /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
-     * Use only if you know what you're doing.
+     * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
-     * @since 1.6.3
-     */
-    @Parameter(defaultValue = "false")
-    protected boolean useSharedClassLoader;
-
-    /**
-     * Gets the filesets of the the main sources.
-     *
+     * @param fromSources The sources to get the included files from
      * @param includeJavaSources Whether to include Java sources
-     * @return The filesets of the the main sources
+     * @return The included files from the specified sources
      */
-    protected FileSet[] getSourceRoots(final boolean includeJavaSources) {
-        return getFilesets(sources, MAIN, includeJavaSources);
-    }
+    protected Set<File> getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
+        Set<File> files = new HashSet<File>();
+        FileSetManager fileSetManager = new FileSetManager(getLog());
 
-    /**
-     * Gets the filesets of the the main sources (not including Java sources).
-     *
-     * @return The filesets of the the main sources
-     */
-    protected FileSet[] getSourceRoots() {
-        return getFilesets(sources, MAIN, false);
-    }
+        for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {
+            for (String include : fileSetManager.getIncludedFiles(fileSet)) {
+                files.add(new File(fileSet.getDirectory(), include));
+            }
+        }
 
-    /**
-     * Gets the set of files of the the main sources.
-     *
-     * @param includeJavaSources Whether to include Java sources
-     * @return The set of files of the the main sources
-     */
-    protected Set<File> getSources(final boolean includeJavaSources) {
-        return getFiles(sources, MAIN, includeJavaSources);
-    }
-
-    /**
-     * Gets the set of files of the the main sources (not including Java sources).
-     *
-     * @return The set of files of the the main sources
-     */
-    protected Set<File> getSources() {
-        return getFiles(sources, MAIN, false);
-    }
-
-    /**
-     * Gets the filesets of the test sources.
-     *
-     * @param includeJavaSources Whether to include Java sources
-     * @return The filesets of the test sources
-     */
-    protected FileSet[] getTestSourceRoots(final boolean includeJavaSources) {
-        return getFilesets(testSources, TEST, includeJavaSources);
-    }
-
-    /**
-     * Gets the filesets of the test sources (not including Java sources).
-     *
-     * @return The filesets of the test sources
-     */
-    protected FileSet[] getTestSourceRoots() {
-        return getFilesets(testSources, TEST, false);
-    }
-
-    /**
-     * Gets the set of files of the test sources.
-     *
-     * @param includeJavaSources Whether to include Java sources
-     * @return The set of files of the test sources
-     */
-    protected Set<File> getTestSources(final boolean includeJavaSources) {
-        return getFiles(testSources, TEST, includeJavaSources);
-    }
-
-    /**
-     * Gets the set of files of the test sources (not including Java sources).
-     *
-     * @return The set of files of the test sources
-     */
-    protected Set<File> getTestSources() {
-        return getFiles(testSources, TEST, false);
+        return files;
     }
 
     /**
      * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
-     * @param defaultSourceDirectory The source directory to fall back on if sources are null
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
-    protected Set<File> getFiles(final FileSet[] fromSources, final String defaultSourceDirectory, final boolean includeJavaSources) {
+    protected Set<File> getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
         Set<File> files = new HashSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
-        for (FileSet fileSet : getFilesets(fromSources, defaultSourceDirectory, includeJavaSources)) {
+        for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {
             for (String include : fileSetManager.getIncludedFiles(fileSet)) {
                 files.add(new File(fileSet.getDirectory(), include));
             }
@@ -175,11 +87,10 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * Gets the set of included filesets from the specified source files or source directory (if sources are null).
      *
      * @param fromSources The sources to get the included files from
-     * @param defaultSubDirectory The source subdirectory to fall back on if sources are null
      * @param includeJavaSources Whether to include Java sources
      * @return The included filesets from the specified sources
      */
-    protected FileSet[] getFilesets(final FileSet[] fromSources, final String defaultSubDirectory, final boolean includeJavaSources) {
+    protected FileSet[] getFilesets(final FileSet[] fromSources, final boolean includeJavaSources) {
         FileSet[] result;
         FileSet[] groovyFileSets;
 
@@ -187,7 +98,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
             groovyFileSets = fromSources;
         } else {
             FileSet groovyFileSet = new FileSet();
-            String groovyDirectory = "src" + File.separator + defaultSubDirectory + File.separator + "groovy";
+            String groovyDirectory = "src" + File.separator + MAIN + File.separator + "groovy";
             groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);
             groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));
             groovyFileSets = new FileSet[] {groovyFileSet};
@@ -195,20 +106,11 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
         if (includeJavaSources) {
             List<FileSet> javaFileSets = new ArrayList<FileSet>();
-            if (TEST.equals(defaultSubDirectory)) {
-                for (Object sourceRoot : project.getTestCompileSourceRoots()) {
-                    FileSet javaFileSet = new FileSet();
-                    javaFileSet.setDirectory((String) sourceRoot);
-                    javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
-                    javaFileSets.add(javaFileSet);
-                }
-            } else {
-                for (Object sourceRoot : project.getCompileSourceRoots()) {
-                    FileSet javaFileSet = new FileSet();
-                    javaFileSet.setDirectory((String) sourceRoot);
-                    javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
-                    javaFileSets.add(javaFileSet);
-                }
+            for (Object sourceRoot : project.getCompileSourceRoots()) {
+                FileSet javaFileSet = new FileSet();
+                javaFileSet.setDirectory((String) sourceRoot);
+                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
+                javaFileSets.add(javaFileSet);
             }
             FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);
             result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
@@ -220,4 +122,42 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
         return result;
     }
 
+    /**
+     * Gets the set of included filesets from the specified source files or source directory (if sources are null).
+     *
+     * @param fromSources The sources to get the included files from
+     * @param includeJavaSources Whether to include Java sources
+     * @return The included filesets from the specified sources
+     */
+    protected FileSet[] getTestFilesets(final FileSet[] fromSources, final boolean includeJavaSources) {
+        FileSet[] result;
+        FileSet[] groovyFileSets;
+
+        if (fromSources != null) {
+            groovyFileSets = fromSources;
+        } else {
+            FileSet groovyFileSet = new FileSet();
+            String groovyDirectory = "src" + File.separator + TEST + File.separator + "groovy";
+            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);
+            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));
+            groovyFileSets = new FileSet[] {groovyFileSet};
+        }
+
+        if (includeJavaSources) {
+            List<FileSet> javaFileSets = new ArrayList<FileSet>();
+            for (Object sourceRoot : project.getTestCompileSourceRoots()) {
+                FileSet javaFileSet = new FileSet();
+                javaFileSet.setDirectory((String) sourceRoot);
+                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
+                javaFileSets.add(javaFileSet);
+            }
+            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);
+            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
+            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
+        } else {
+            result = groovyFileSets;
+        }
+
+        return result;
+    }
 }

@@ -55,7 +55,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
         List<?> classpathElements;
 
         try {
-            classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
+            classpathElements = (List<?>) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
         } catch (ExpressionEvaluationException e) {
             throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }
@@ -80,7 +80,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
         List<?> classpathElements;
 
         try {
-            classpathElements = (List) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
+            classpathElements = (List<?>) expressionEvaluator.evaluate("${project." + classpath.toString().toLowerCase() + "ClasspathElements}");
         } catch (ExpressionEvaluationException e) {
             throw new ComponentConfigurationException("There was a problem evaluating: ${project." + classpath.toString().toLowerCase() + "ClasspathElements}.", e);
         }

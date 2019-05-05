@@ -16,10 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
@@ -27,10 +24,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.File;
-import java.util.Set;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -50,20 +45,6 @@ public class AbstractCompileMojoTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
-    }
-
-    @Test
-    public void testGetSourcesEmpty() {
-        testMojo.sources = new FileSet[] {};
-        Set<File> sources = testMojo.getSources();
-        assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetTestSourcesEmpty() {
-        testMojo.testSources = new FileSet[] {};
-        Set<File> testSources = testMojo.getTestSources();
-        assertEquals(0, testSources.size());
     }
 
     @Test
@@ -325,7 +306,7 @@ public class AbstractCompileMojoTest {
         }
 
         @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
 
     }
 

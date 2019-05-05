@@ -48,7 +48,7 @@ public class AddTestSourcesMojoTest {
     }
 
     @Test
-    public void testAddSourcePathContainsPath() throws Exception {
+    public void testAddSourcePathContainsPath() {
         doReturn(singletonList(PATH)).when(project).getTestCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory(PATH);
@@ -58,7 +58,7 @@ public class AddTestSourcesMojoTest {
     }
 
     @Test
-    public void testAddSourcePathNotContainsPath() throws Exception {
+    public void testAddSourcePathNotContainsPath() {
         doReturn(singletonList(PATH)).when(project).getTestCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory("OTHER PATH");

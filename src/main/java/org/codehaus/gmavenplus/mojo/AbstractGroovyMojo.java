@@ -26,6 +26,7 @@ import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 
 
@@ -207,4 +208,18 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         return classWrangler.isGroovyIndy();
     }
 
+    /**
+     * Instantiate a ClassWrangler.
+     *
+     * @param classpath the classpath to load onto a new classloader (if useSharedClassLoader if <code>false</code>)
+     * @param useSharedClassLoader whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * @throws MalformedURLException when a classpath element provides a malformed URL
+     */
+    protected void setupClassWrangler(List<?> classpath, boolean useSharedClassLoader) throws MalformedURLException {
+        if (useSharedClassLoader) {
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+        } else {
+            classWrangler = new ClassWrangler(classpath, getLog());
+        }
+    }
 }

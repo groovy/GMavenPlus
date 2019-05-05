@@ -20,8 +20,6 @@ import groovy.util.AntBuilder;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
@@ -111,7 +109,7 @@ public class AbstractToolsMojoTest {
 
     protected class TestMojo extends AbstractToolsMojo {
         @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
     }
 
 }

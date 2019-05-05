@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.verify;
  * @author Keegan Witt
  */
 public class AddTestStubSourcesMojoTest {
-    private AddTestStubSourcesMojo mojo;
+    private AddTestStubSourcesMojo addTestStubSourcesMojo;
     @Mock
     private MavenProject project;
     @Mock
@@ -42,15 +43,21 @@ public class AddTestStubSourcesMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mojo = new AddTestStubSourcesMojo();
-        mojo.project = project;
-        mojo.outputDirectory = outputDirectory;
+        addTestStubSourcesMojo = new AddTestStubSourcesMojo();
+        addTestStubSourcesMojo.project = project;
+        addTestStubSourcesMojo.testStubsOutputDirectory = outputDirectory;
     }
 
     @Test
-    public void testAddsTestStubsToSources() throws Exception {
-        mojo.execute();
+    public void testAddsTestStubsToSources() {
+        addTestStubSourcesMojo.execute();
         verify(project).addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
+    @Test
+    public void testDoesNothingWhenSkipFlagIsSet() {
+        addTestStubSourcesMojo.skipTests = true;
+        addTestStubSourcesMojo.execute();
+        verify(project, never()).addTestCompileSourceRoot(outputDirectory.getAbsolutePath());
+    }
 }

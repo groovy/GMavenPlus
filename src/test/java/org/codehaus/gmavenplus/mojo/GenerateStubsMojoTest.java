@@ -16,9 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
@@ -48,10 +50,10 @@ public class GenerateStubsMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(generateStubsMojo).getSources();
+        doReturn(new HashSet<File>()).when(generateStubsMojo).getFiles(any(FileSet[].class), eq(false));
         doReturn(new HashSet<File>()).when(generateStubsMojo).getStubs(any(File.class));
         generateStubsMojo.project = mock(MavenProject.class);
-        generateStubsMojo.outputDirectory = mock(File.class);
+        generateStubsMojo.stubsOutputDirectory = mock(File.class);
         doReturn(mock(Build.class)).when(generateStubsMojo.project).getBuild();
         generateStubsMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 8, 2)).when(generateStubsMojo.classWrangler).getGroovyVersion();
@@ -95,6 +97,12 @@ public class GenerateStubsMojoTest {
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateStubsMojo).groovyVersionSupportsAction();
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        generateStubsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
+        doThrow(mock(DependencyResolutionRequiredException.class)).when(generateStubsMojo.project).getCompileClasspathElements();
         generateStubsMojo.execute();
     }
 

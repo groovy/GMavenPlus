@@ -40,19 +40,19 @@ public class RemoveStubsMojoTest {
         removeStubsMojo = new RemoveStubsMojo();
         project = new MavenProject();
         removeStubsMojo.project = project;
-        removeStubsMojo.outputDirectory = new File(PATH);
+        removeStubsMojo.stubsOutputDirectory = new File(PATH);
     }
 
     @Test
-    public void testRemoveSourcePathContainsPath() throws Exception {
-        project.addCompileSourceRoot(removeStubsMojo.outputDirectory.getAbsolutePath());
+    public void testRemoveSourcePathContainsPath() {
+        project.addCompileSourceRoot(removeStubsMojo.stubsOutputDirectory.getAbsolutePath());
         assertEquals(1, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         assertEquals(0, project.getCompileSourceRoots().size());
     }
 
     @Test
-    public void testRemoveSourcePathNotContainsPath() throws Exception {
+    public void testRemoveSourcePathNotContainsPath() {
         assertEquals(0, project.getCompileSourceRoots().size());
         removeStubsMojo.execute();
         assertEquals(0, project.getCompileSourceRoots().size());

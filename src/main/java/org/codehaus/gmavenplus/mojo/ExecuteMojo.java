@@ -92,7 +92,13 @@ public class ExecuteMojo extends AbstractToolsMojo {
             return;
         }
 
-        classWrangler = setupClasswrangler();
+        try {
+            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);
+        } catch (MalformedURLException e) {
+            throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
+        } catch (DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException("Test dependencies weren't resolved.", e);
+        }
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

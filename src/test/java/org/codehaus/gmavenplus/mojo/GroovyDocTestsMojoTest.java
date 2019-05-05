@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
@@ -51,7 +52,7 @@ public class GroovyDocTestsMojoTest {
         MockitoAnnotations.initMocks(this);
         Set<File> sources = new HashSet<File>();
         sources.add(mock(File.class));
-        doReturn(sources).when(groovyDocTestsMojo).getSources();
+        doReturn(sources).when(groovyDocTestsMojo).getTestFiles(any(FileSet[].class), eq(false));
         groovyDocTestsMojo.testGroovyDocOutputDirectory = mock(File.class);
         groovyDocTestsMojo.project = mock(MavenProject.class);
         doReturn(mock(File.class)).when(groovyDocTestsMojo.project).getBasedir();
@@ -92,6 +93,12 @@ public class GroovyDocTestsMojoTest {
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocTestsMojo).groovyVersionSupportsAction();
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocTestsMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));
+        groovyDocTestsMojo.execute();
+    }
+
+    @Test (expected = MojoExecutionException.class)
+    public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
+        doThrow(mock(DependencyResolutionRequiredException.class)).when(groovyDocTestsMojo.project).getTestClasspathElements();
         groovyDocTestsMojo.execute();
     }
 

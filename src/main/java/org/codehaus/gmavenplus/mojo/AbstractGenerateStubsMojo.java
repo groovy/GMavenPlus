@@ -19,7 +19,6 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.Version;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
@@ -40,9 +39,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
     /*
      * TODO: support Groovy 1.5.0 - 1.8.1?
-     * For some reason, the JavaStubCompilationUnit is silently not creating my
-     * stubs (although it does create the target directory) when I use other
-     * versions.
+     * For some reason, the JavaStubCompilationUnit is silently not creating my stubs
+     * (although it does create the target directory) when I use other versions.
      */
 
     /**
@@ -182,6 +180,15 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected int tolerance;
 
     /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * Use only if you know what you're doing.
+     *
+     * @since 1.6.3
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean useSharedClassLoader;
+
+    /**
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources the sources to perform stub generation on
@@ -199,11 +206,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             return;
         }
 
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            classWrangler = new ClassWrangler(classpath, getLog());
-        }
+        setupClassWrangler(classpath, useSharedClassLoader);
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
@@ -287,8 +290,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (supportsSettingExtensions()) {
                 invokeMethod(addSource, javaStubCompilationUnit, stubSource);
             } else {
-                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource)
-                        .setScriptExtensions(scriptExtensions);
+                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource).setScriptExtensions(scriptExtensions);
                 invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);
             }
         }

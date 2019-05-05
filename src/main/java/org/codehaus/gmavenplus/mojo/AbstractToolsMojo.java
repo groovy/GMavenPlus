@@ -16,15 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.util.Properties;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
@@ -143,25 +139,4 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         getLog().error("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.", e);
     }
 
-    /**
-     * Instantiates the classWrangler, based on the useSharedClassLoader property.
-     * @return the configured ClassWrangler
-     *
-     * @throws MojoExecutionException when a DependencyResolutionRequiredException is thrown (causes a "BUILD ERROR" message to be displayed)
-     */
-    protected ClassWrangler setupClasswrangler() throws MojoExecutionException {
-        ClassWrangler classWrangler;
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            try {
-                classWrangler = new ClassWrangler(project.getTestClasspathElements(), getLog());
-            } catch (DependencyResolutionRequiredException e) {
-                throw new MojoExecutionException("Test dependencies weren't resolved.", e);
-            } catch (MalformedURLException e) {
-                throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
-            }
-        }
-        return classWrangler;
-    }
 }

@@ -22,6 +22,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -39,10 +40,17 @@ import java.net.MalformedURLException;
 public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
 
     /**
+     * The Groovy source files (relative paths).
+     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
+     */
+    @Parameter
+    protected FileSet[] sources;
+
+    /**
      * The location for the compiled classes.
      */
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/main")
-    protected File outputDirectory;
+    protected File stubsOutputDirectory;
 
     /**
      * Executes this mojo.
@@ -60,12 +68,12 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
                 getLog().warn("Unable to log project compile classpath", e);
             }
 
-            doStubGeneration(getSources(), project.getCompileClasspathElements(), outputDirectory);
-            logGeneratedStubs(outputDirectory);
-            resetStubModifiedDates(getStubs(outputDirectory));
+            doStubGeneration(getFiles(sources, false), project.getCompileClasspathElements(), stubsOutputDirectory);
+            logGeneratedStubs(stubsOutputDirectory);
+            resetStubModifiedDates(getStubs(stubsOutputDirectory));
 
             // add stubs to project source so the Maven Compiler Plugin can find them
-            project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+            project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {

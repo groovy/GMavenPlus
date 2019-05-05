@@ -22,6 +22,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -37,6 +38,13 @@ import java.net.MalformedURLException;
  */
 @Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class CompileMojo extends AbstractCompileMojo {
+
+    /**
+     * The Groovy source files (relative paths).
+     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
+     */
+    @Parameter
+    protected FileSet[] sources;
 
     /**
      * The location for the compiled classes.
@@ -57,7 +65,7 @@ public class CompileMojo extends AbstractCompileMojo {
             } catch (DependencyResolutionRequiredException e) {
                 getLog().warn("Unable to log project compile classpath", e);
             }
-            doCompile(getSources(), project.getCompileClasspathElements(), outputDirectory);
+            doCompile(getFiles(sources, false), project.getCompileClasspathElements(), outputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {

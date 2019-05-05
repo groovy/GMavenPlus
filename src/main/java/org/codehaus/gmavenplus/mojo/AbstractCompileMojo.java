@@ -18,7 +18,6 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.Version;
-import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -177,22 +176,31 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
      */
-    @Parameter(property = "invokeDynamic", defaultValue = "false")
+    @Parameter(defaultValue = "false")
     protected boolean invokeDynamic;
 
     /**
      * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a> for tweaking the configuration options
      * (requires Groovy 2.1.0-beta-1 or greater). Note that its encoding must match your source encoding.
      */
-    @Parameter(property = "configScript")
+    @Parameter
     protected File configScript;
 
     /**
      * Generate metadata for reflection on method parameter names using the functionality provided by JEP 118
      * (requires Java 8 or greater and Groovy 2.5.0-alpha-1 or greater).
      */
-    @Parameter(property = "parameters", defaultValue = "false")
+    @Parameter(defaultValue = "false")
     protected boolean parameters;
+
+    /**
+     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * Use only if you know what you're doing.
+     *
+     * @since 1.6.3
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean useSharedClassLoader;
 
     /**
      * Performs compilation of compile mojos.
@@ -214,11 +222,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
-            classWrangler = new ClassWrangler(classpath, getLog());
-        }
+        setupClassWrangler(classpath, useSharedClassLoader);
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());

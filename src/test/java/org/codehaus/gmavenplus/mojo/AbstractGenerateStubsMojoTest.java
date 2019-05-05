@@ -16,8 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.codehaus.gmavenplus.model.Version;
@@ -63,34 +61,6 @@ public class AbstractGenerateStubsMojoTest {
         doReturn(mockBaseDir).when(project).getBasedir();
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.sources = new FileSet[] {};
-        testMojo.testSources = new FileSet[] {};
-    }
-
-    @Test
-    public void testGetSources() {
-        Set<File> sources = testMojo.getSources();
-        assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetTestSources() {
-        Set<File> testSources = testMojo.getTestSources();
-        assertEquals(0, testSources.size());
-    }
-
-    @Test
-    public void testGetSourcesWithNullSources() {
-        testMojo.sources = null;
-        Set<File> sources = testMojo.getSources();
-        assertEquals(0, sources.size());
-    }
-
-    @Test
-    public void testGetTestSourcesWithNullTestSources() {
-        testMojo.testSources = null;
-        Set<File> testSources = testMojo.getTestSources();
-        assertEquals(0, testSources.size());
     }
 
     @Test
@@ -360,7 +330,7 @@ public class AbstractGenerateStubsMojoTest {
         }
 
         @Override
-        public void execute() throws MojoExecutionException, MojoFailureException { }
+        public void execute() { }
 
     }
 

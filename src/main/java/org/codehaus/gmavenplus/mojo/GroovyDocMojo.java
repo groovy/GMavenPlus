@@ -19,8 +19,11 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 
@@ -35,6 +38,27 @@ import java.net.MalformedURLException;
 public class GroovyDocMojo extends AbstractGroovyDocMojo {
 
     /**
+     * The Groovy source files (relative paths).
+     * Default: "${project.basedir}/src/main/groovy/&#42;&#42;/&#42;.groovy"
+     */
+    @Parameter
+    protected FileSet[] sources;
+
+    /**
+     * The location for the generated API docs.
+     */
+    @Parameter(defaultValue = "${project.build.directory}/gapidocs")
+    protected File groovyDocOutputDirectory;
+
+    /**
+     * Whether to include Java sources in GroovyDoc generation.
+     *
+     * @since 1.0-beta-2
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean groovyDocJavaSources;
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
@@ -47,7 +71,7 @@ public class GroovyDocMojo extends AbstractGroovyDocMojo {
             } catch (DependencyResolutionRequiredException e) {
                 getLog().warn("Unable to log project compile classpath", e);
             }
-            doGroovyDocGeneration(getSourceRoots(groovyDocJavaSources), project.getRuntimeClasspathElements(), groovyDocOutputDirectory);
+            doGroovyDocGeneration(getFilesets(sources, groovyDocJavaSources), project.getRuntimeClasspathElements(), groovyDocOutputDirectory);
         } catch (ClassNotFoundException e) {
             throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project?", e);
         } catch (InvocationTargetException e) {
