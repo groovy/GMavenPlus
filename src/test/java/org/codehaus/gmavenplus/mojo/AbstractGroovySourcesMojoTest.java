@@ -47,6 +47,7 @@ public class AbstractGroovySourcesMojoTest {
     }
 
     public class TestMojo extends AbstractGroovySourcesMojo {
+        @Override
         public void execute() { }
     }
 

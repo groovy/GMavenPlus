@@ -56,7 +56,20 @@ public class AbstractGroovyMojoTest {
         assertFalse(testMojo.isJavaSupportIndy());
     }
 
+    @Test
+    public void testIsJavaSupportPreviewFeatures() {
+        doReturn(Version.parseFromString("12.0.1")).when(testMojo).getJavaVersion();
+        assertTrue(testMojo.isJavaSupportPreviewFeatures());
+    }
+
+    @Test
+    public void testIsJavaSupportPreviewFeaturesNo() {
+        doReturn(Version.parseFromString("11.0.3")).when(testMojo).getJavaVersion();
+        assertFalse(testMojo.isJavaSupportPreviewFeatures());
+    }
+
     public static class TestGroovyMojo extends AbstractGroovyMojo {
+        @Override
         public void execute() { }
     }
 
