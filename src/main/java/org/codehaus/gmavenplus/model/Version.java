@@ -238,7 +238,8 @@ public class Version implements Comparable<Version> {
         }
         if (comp == 0) {
             if (tag != null && version.tag != null) {
-                return tag.replace("beta", " beta").compareTo(version.tag.replace("beta", " beta"));
+                return tag.replace("beta", " beta").replace("alpha", " alpha")
+                        .compareTo(version.tag.replace("beta", " beta").replace("alpha", " alpha"));
             } else if (tag == null ^ version.tag == null) {
                 if (tag == null) {
                     return noTagsAreNewer ? 1 : -1;
