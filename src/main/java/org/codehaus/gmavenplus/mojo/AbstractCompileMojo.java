@@ -40,9 +40,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
-     * Groovy 3.0.0 alpha-5 version.
+     * Groovy 3.0.0 beta-1 version.
      */
-    protected static final Version GROOVY_3_0_0_ALPHA5 = new Version(3, 0, 0, "alpha-5");
+    protected static final Version GROOVY_3_0_0_BETA1 = new Version(3, 0, 0, "beta-1");
 
     /**
      * Groovy 3.0.0 alpha-4 version.
@@ -134,7 +134,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 9 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 2.6.0 alpha 4, or Groovy &gt;= 3.0.0 alpha 2.
      * Using 9 with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
-     * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-alpha-5, but not any 2.6 versions.
+     * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-beta-1, but not any 2.6 versions.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -371,8 +371,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
         if ("13".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA5))) {
-                throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_ALPHA5 + " or newer. No 2.6 version is supported.");
+            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
+                throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
             }
         } else if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {

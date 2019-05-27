@@ -278,7 +278,7 @@ public class AbstractCompileMojoTest {
 
     @Test
     public void testJava13WithSupportedGroovy3() {
-        testMojo = new TestMojo("3.0.0-alpha-5");
+        testMojo = new TestMojo("3.0.0-beta-1");
         testMojo.targetBytecode = "13";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
