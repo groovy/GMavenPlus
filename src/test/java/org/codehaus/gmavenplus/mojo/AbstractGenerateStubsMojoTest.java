@@ -309,7 +309,7 @@ public class AbstractGenerateStubsMojoTest {
 
     @Test
     public void testJava13WithSupportedGroovy3() {
-        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-alpha-5");
+        testMojo = new AbstractGenerateStubsMojoTest.TestMojo("3.0.0-beta-1");
         testMojo.targetBytecode = "13";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }

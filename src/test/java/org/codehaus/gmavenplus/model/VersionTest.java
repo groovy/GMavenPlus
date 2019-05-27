@@ -76,19 +76,27 @@ public class VersionTest {
 
     @Test
     public void testSort() {
-        Version v1 = Version.parseFromString("1.0.0-beta-1");
-        Version v2 = Version.parseFromString("1.0.0-beta-2");
-        Version v3 = Version.parseFromString("1.0.0");
-        Version v4 = Version.parseFromString("1.0.1");
-        Version v5 = Version.parseFromString("1.1.0");
-        Version v6 = Version.parseFromString("2.0.0");
+        Version v1 = Version.parseFromString("1.0.0-alpha-1");
+        Version v2 = Version.parseFromString("1.0.0-alpha-2");
+        Version v3 = Version.parseFromString("1.0.0-beta-1");
+        Version v4 = Version.parseFromString("1.0.0-beta-2");
+        Version v5 = Version.parseFromString("1.0.0-rc-1");
+        Version v6 = Version.parseFromString("1.0.0-rc-2");
+        Version v7 = Version.parseFromString("1.0.0");
+        Version v8 = Version.parseFromString("1.0.1");
+        Version v9 = Version.parseFromString("1.1.0");
+        Version v10 = Version.parseFromString("2.0.0");
         List<Version> versions = new ArrayList<Version>();
-        versions.add(v1);
-        versions.add(v2);
-        versions.add(v3);
-        versions.add(v4);
-        versions.add(v5);
+        versions.add(v10);
+        versions.add(v9);
+        versions.add(v8);
+        versions.add(v7);
         versions.add(v6);
+        versions.add(v5);
+        versions.add(v4);
+        versions.add(v3);
+        versions.add(v2);
+        versions.add(v1);
         Collections.sort(versions);
         assertEquals(v1, versions.get(0));
         assertEquals(v2, versions.get(1));
@@ -96,6 +104,10 @@ public class VersionTest {
         assertEquals(v4, versions.get(3));
         assertEquals(v5, versions.get(4));
         assertEquals(v6, versions.get(5));
+        assertEquals(v7, versions.get(6));
+        assertEquals(v8, versions.get(7));
+        assertEquals(v9, versions.get(8));
+        assertEquals(v10, versions.get(9));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -160,6 +172,16 @@ public class VersionTest {
         Version one = new Version(1, 2, 3);
         Version two = new Version(1, 2, 3);
         assertEquals(one.hashCode(), two.hashCode());
+    }
+
+    @Test
+    public void testBetaIsNewerThanAlpha() {
+        Version v1 = Version.parseFromString("1.0.0-alpha-1");
+        Version v2 = Version.parseFromString("1.0.0-beta-2");
+        assertTrue(v1.compareTo(v2) < 0);
+        v1 = Version.parseFromString("1.0.0-alpha-2");
+        v2 = Version.parseFromString("1.0.0-beta-1");
+        assertTrue(v1.compareTo(v2) < 0);
     }
 
 }
