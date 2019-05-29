@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,18 @@
 package org.codehaus.gmavenplus
 
 
+/**
+* Some Example Cass
+*
+* @author Keegan Witt
+* @version super awesome
+*/
 class SomeClass {
 
-    /**
-     * Some groovydoc
-     *
-     * @return
-     */
-    String someMethod() {
-        return "Hello, world."
-    }
+   /**
+    * This method does absolutely nothing
+    * @param unusedParam a useless parameter
+    */
+   void doNothing(String unusedParam) { }
 
 }

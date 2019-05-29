@@ -16,7 +16,7 @@
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.6</javaVersion>
     <dependencyPluginVersion>3.1.1</dependencyPluginVersion>
-    <compilerPluginVersion>3.8.0</compilerPluginVersion>
+    <compilerPluginVersion>3.8.1</compilerPluginVersion>
     <junitVersion>4.12</junitVersion>
     <surefirePluginVersion>2.22.1</surefirePluginVersion>
     <pluginPluginVersion>3.6.0</pluginPluginVersion>
@@ -57,6 +57,11 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-classworlds</artifactId>
       <version>2.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-archiver</artifactId>
+      <version>2.6</version>
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->

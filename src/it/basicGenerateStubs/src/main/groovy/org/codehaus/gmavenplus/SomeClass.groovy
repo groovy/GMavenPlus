@@ -20,7 +20,7 @@ package org.codehaus.gmavenplus
 class SomeClass {
 
     /**
-     * Some javadoc
+     * Some groovydoc
      *
      * @return
      */
