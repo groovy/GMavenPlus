@@ -59,6 +59,11 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected static final Version JAVA_1_8 = new Version(1, 8);
 
     /**
+     * Java 1.8 version.
+     */
+    protected static final Version JAVA_12 = new Version(12);
+
+    /**
      * Groovy 1.5.0 version.
      */
     protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);
@@ -120,6 +125,15 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected boolean isJavaSupportIndy() {
         return getJavaVersion().compareTo(JAVA_1_7, false) >= 0;
+    }
+
+    /**
+     * Determines whether the version of Java executing this mojo supports preview features (is at least 12).
+     *
+     * @return <code>true</code> if the running Java supports preview features, <code>false</code> otherwise
+     */
+    protected boolean isJavaSupportPreviewFeatures() {
+        return getJavaVersion().compareTo(JAVA_12, false) >= 0;
     }
 
     /**

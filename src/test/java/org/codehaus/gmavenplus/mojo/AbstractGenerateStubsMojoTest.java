@@ -331,7 +331,6 @@ public class AbstractGenerateStubsMojoTest {
 
         @Override
         public void execute() { }
-
     }
 
 }

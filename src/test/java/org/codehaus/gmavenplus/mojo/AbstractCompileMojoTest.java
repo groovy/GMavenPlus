@@ -307,7 +307,6 @@ public class AbstractCompileMojoTest {
 
         @Override
         public void execute() { }
-
     }
 
 }
