@@ -76,7 +76,12 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class<?> consoleClass = classWrangler.getClass("groovy.ui.Console");
+                Class<?> consoleClass;
+                try {
+                    consoleClass = classWrangler.getClass("groovy.console.ui.Console");
+                } catch (ClassNotFoundException e) {
+                    consoleClass = classWrangler.getClass("groovy.ui.Console");
+                }
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
 
                 // create console to run
