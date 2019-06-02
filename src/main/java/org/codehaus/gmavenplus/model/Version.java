@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 
 /**
- * Container for Version information in the form of <tt>major.minor.revision-tag</tt>.
+ * Container for Version information in the form of <i>major.minor.revision-tag</i>.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Keegan Witt

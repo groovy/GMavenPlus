@@ -91,7 +91,7 @@ public class DotGroovyFile extends File {
     /**
      * A method to lie about the file extension and say it is ".groovy".
      *
-     * @return Filename with forced <tt>.groovy</tt> extension
+     * @return Filename with forced <i>.groovy</i> extension
      */
     @Override
     public String getName() {
