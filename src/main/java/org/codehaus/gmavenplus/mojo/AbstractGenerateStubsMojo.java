@@ -193,7 +193,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Whether the bytecode version has preview features enabled (JEP 12).
      * Requires Groovy &gt;= 3.0.0-beta-1 or Groovy &gt;= 2.5.7, but not any 2.6 versions and Java &gt;= 12.
      *
-     * @Since 1.7.1
+     * @since 1.7.1
      */
     @Parameter(defaultValue = "false")
     protected boolean previewFeatures;
