@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 
 /**
- * Container for Version information in the form of &lt;tt&gt;major.minor.revision-tag&lt;/tt&gt;.
+ * Container for Version information in the form of &lt;i&gt;major.minor.revision-tag&lt;/i&gt;.
  *
  * @author &lt;a href=&quot;mailto:jason@planet57.com&quot;&gt;Jason Dillon&lt;/a&gt;
  * @author Keegan Witt
@@ -238,18 +238,19 @@ public class Version implements Comparable&lt;Version&gt; {
         }
 <span class="fc bfc" id="L239" title="All 2 branches covered.">        if (comp == 0) {</span>
 <span class="fc bfc" id="L240" title="All 4 branches covered.">            if (tag != null &amp;&amp; version.tag != null) {</span>
-<span class="fc" id="L241">                return tag.replace(&quot;beta&quot;, &quot; beta&quot;).compareTo(version.tag.replace(&quot;beta&quot;, &quot; beta&quot;));</span>
-<span class="fc bfc" id="L242" title="All 6 branches covered.">            } else if (tag == null ^ version.tag == null) {</span>
-<span class="fc bfc" id="L243" title="All 2 branches covered.">                if (tag == null) {</span>
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">                    return noTagsAreNewer ? 1 : -1;</span>
+<span class="fc" id="L241">                return tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;)</span>
+<span class="fc" id="L242">                        .compareTo(version.tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;));</span>
+<span class="fc bfc" id="L243" title="All 6 branches covered.">            } else if (tag == null ^ version.tag == null) {</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">                if (tag == null) {</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">                    return noTagsAreNewer ? 1 : -1;</span>
                 } else {
-<span class="fc bfc" id="L246" title="All 2 branches covered.">                    return noTagsAreNewer ? -1 : 1;</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">                    return noTagsAreNewer ? -1 : 1;</span>
                 }
             } else {
-<span class="fc" id="L249">                return comp;</span>
+<span class="fc" id="L250">                return comp;</span>
             }
         } else {
-<span class="fc" id="L252">            return comp;</span>
+<span class="fc" id="L253">            return comp;</span>
         }
     }
 
@@ -259,7 +260,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The major version number
      */
     public int getMajor() {
-<span class="fc" id="L262">        return major;</span>
+<span class="fc" id="L263">        return major;</span>
     }
 
     /**
@@ -269,8 +270,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setMajor(final int newMajor) {
-<span class="fc" id="L272">        major = newMajor;</span>
-<span class="fc" id="L273">        return this;</span>
+<span class="fc" id="L273">        major = newMajor;</span>
+<span class="fc" id="L274">        return this;</span>
     }
 
     /**
@@ -279,7 +280,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version minor number
      */
     public int getMinor() {
-<span class="fc" id="L282">        return minor;</span>
+<span class="fc" id="L283">        return minor;</span>
     }
 
     /**
@@ -289,8 +290,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setMinor(final int newMinor) {
-<span class="fc" id="L292">        minor = newMinor;</span>
-<span class="fc" id="L293">        return this;</span>
+<span class="fc" id="L293">        minor = newMinor;</span>
+<span class="fc" id="L294">        return this;</span>
     }
 
     /**
@@ -299,7 +300,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version revision number
      */
     public int getRevision() {
-<span class="fc" id="L302">        return revision;</span>
+<span class="fc" id="L303">        return revision;</span>
     }
 
     /**
@@ -309,8 +310,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setRevision(final int newRevision) {
-<span class="fc" id="L312">        revision = newRevision;</span>
-<span class="fc" id="L313">        return this;</span>
+<span class="fc" id="L313">        revision = newRevision;</span>
+<span class="fc" id="L314">        return this;</span>
     }
 
     /**
@@ -319,7 +320,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version tag string
      */
     public String getTag() {
-<span class="fc" id="L322">        return tag;</span>
+<span class="fc" id="L323">        return tag;</span>
     }
 
     /**
@@ -329,8 +330,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setTag(final String newTag) {
-<span class="fc" id="L332">        tag = newTag;</span>
-<span class="fc" id="L333">        return this;</span>
+<span class="fc" id="L333">        tag = newTag;</span>
+<span class="fc" id="L334">        return this;</span>
     }
 
 }

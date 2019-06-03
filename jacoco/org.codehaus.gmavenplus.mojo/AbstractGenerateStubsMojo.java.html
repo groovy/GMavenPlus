@@ -44,9 +44,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      */
 
     /**
-     * Groovy 3.0.0 alpha-5 version.
+     * Groovy 3.0.0 beta-1 version.
      */
-<span class="fc" id="L49">    protected static final Version GROOVY_3_0_0_ALPHA5 = new Version(3, 0, 0, &quot;alpha-5&quot;);</span>
+<span class="fc" id="L49">    protected static final Version GROOVY_3_0_0_BETA1 = new Version(3, 0, 0, &quot;beta-1&quot;);</span>
 
     /**
      * Groovy 3.0.0 alpha-4 version.
@@ -138,7 +138,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Using 9 requires Groovy &amp;gt;= 2.5.3, or Groovy &amp;gt;= 2.6.0 alpha 4, or Groovy &amp;gt;= 3.0.0 alpha 2.
      * Using 9 with invokedynamic requires Groovy &amp;gt;= 2.5.3, or Groovy &amp;gt;= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy &amp;gt;= 2.5.3, or Groovy &amp;gt;= 3.0.0 alpha 4, but not any 2.6 versions.
-     * Using 13 requires Groovy &amp;gt;= 2.5.7, or Groovy &amp;gt;= 3.0.0-alpha-5, but not any 2.6 versions.
+     * Using 13 requires Groovy &amp;gt;= 2.5.7, or Groovy &amp;gt;= 3.0.0-beta-1, but not any 2.6 versions.
      *
      * @since 1.0-beta-3
      */
@@ -188,6 +188,16 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
     @Parameter(defaultValue = &quot;false&quot;)
     protected boolean useSharedClassLoader;
 
+
+    /**
+     * Whether the bytecode version has preview features enabled (JEP 12).
+     * Requires Groovy &amp;gt;= 3.0.0-beta-1 or Groovy &amp;gt;= 2.5.7, but not any 2.6 versions and Java &amp;gt;= 12.
+     *
+     * @since 1.7.1
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean previewFeatures;
+
     /**
      * Performs the stub generation on the specified source files.
      *
@@ -201,39 +211,39 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set&lt;File&gt; stubSources, final List&lt;?&gt; classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-<span class="nc bnc" id="L204" title="All 4 branches missed.">        if (stubSources == null || stubSources.isEmpty()) {</span>
-<span class="nc" id="L205">            getLog().info(&quot;No sources specified for stub generation. Skipping.&quot;);</span>
-<span class="nc" id="L206">            return;</span>
+<span class="nc bnc" id="L214" title="All 4 branches missed.">        if (stubSources == null || stubSources.isEmpty()) {</span>
+<span class="nc" id="L215">            getLog().info(&quot;No sources specified for stub generation. Skipping.&quot;);</span>
+<span class="nc" id="L216">            return;</span>
         }
 
-<span class="nc" id="L209">        setupClassWrangler(classpath, useSharedClassLoader);</span>
+<span class="nc" id="L219">        setupClassWrangler(classpath, useSharedClassLoader);</span>
 
-<span class="nc" id="L211">        logPluginClasspath();</span>
-<span class="nc" id="L212">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+<span class="nc" id="L221">        logPluginClasspath();</span>
+<span class="nc" id="L222">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
 
-<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
-<span class="nc" id="L215">            verifyGroovyVersionSupportsTargetBytecode();</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L225">            verifyGroovyVersionSupportsTargetBytecode();</span>
         } else {
-<span class="nc" id="L217">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support stub generation. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping stub generation.&quot;);</span>
-<span class="nc" id="L218">            return;</span>
+<span class="nc" id="L227">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support stub generation. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping stub generation.&quot;);</span>
+<span class="nc" id="L228">            return;</span>
         }
 
         // get classes we need with reflection
-<span class="nc" id="L222">        Class&lt;?&gt; compilerConfigurationClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;);</span>
-<span class="nc" id="L223">        Class&lt;?&gt; javaStubCompilationUnitClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.javac.JavaStubCompilationUnit&quot;);</span>
-<span class="nc" id="L224">        Class&lt;?&gt; groovyClassLoaderClass = classWrangler.getClass(&quot;groovy.lang.GroovyClassLoader&quot;);</span>
+<span class="nc" id="L232">        Class&lt;?&gt; compilerConfigurationClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;);</span>
+<span class="nc" id="L233">        Class&lt;?&gt; javaStubCompilationUnitClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.javac.JavaStubCompilationUnit&quot;);</span>
+<span class="nc" id="L234">        Class&lt;?&gt; groovyClassLoaderClass = classWrangler.getClass(&quot;groovy.lang.GroovyClassLoader&quot;);</span>
 
         // setup stub generation options
-<span class="nc" id="L227">        Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);</span>
-<span class="nc" id="L228">        Object groovyClassLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);</span>
-<span class="nc" id="L229">        Object javaStubCompilationUnit = invokeConstructor(findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);</span>
+<span class="nc" id="L237">        Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);</span>
+<span class="nc" id="L238">        Object groovyClassLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);</span>
+<span class="nc" id="L239">        Object javaStubCompilationUnit = invokeConstructor(findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);</span>
 
         // add Groovy sources
-<span class="nc" id="L232">        addGroovySources(stubSources, compilerConfigurationClass, javaStubCompilationUnitClass, compilerConfiguration, javaStubCompilationUnit);</span>
+<span class="nc" id="L242">        addGroovySources(stubSources, compilerConfigurationClass, javaStubCompilationUnitClass, compilerConfiguration, javaStubCompilationUnit);</span>
 
         // generate the stubs
-<span class="nc" id="L235">        invokeMethod(findMethod(javaStubCompilationUnitClass, &quot;compile&quot;), javaStubCompilationUnit);</span>
-<span class="nc" id="L236">    }</span>
+<span class="nc" id="L245">        invokeMethod(findMethod(javaStubCompilationUnitClass, &quot;compile&quot;), javaStubCompilationUnit);</span>
+<span class="nc" id="L246">    }</span>
 
     /**
      * Sets up the CompilerConfiguration to use for stub generation.
@@ -246,21 +256,32 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupCompilerConfiguration(final File outputDirectory, final Class&lt;?&gt; compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-<span class="nc" id="L249">        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
-<span class="nc" id="L250">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setDebug&quot;, boolean.class), compilerConfiguration, debug);</span>
-<span class="nc" id="L251">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setVerbose&quot;, boolean.class), compilerConfiguration, verbose);</span>
-<span class="nc" id="L252">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setWarningLevel&quot;, int.class), compilerConfiguration, warningLevel);</span>
-<span class="nc" id="L253">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTolerance&quot;, int.class), compilerConfiguration, tolerance);</span>
-<span class="nc" id="L254">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetBytecode&quot;, String.class), compilerConfiguration, targetBytecode);</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (sourceEncoding != null) {</span>
-<span class="nc" id="L256">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
+<span class="nc" id="L259">        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
+<span class="nc" id="L260">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setDebug&quot;, boolean.class), compilerConfiguration, debug);</span>
+<span class="nc" id="L261">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setVerbose&quot;, boolean.class), compilerConfiguration, verbose);</span>
+<span class="nc" id="L262">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setWarningLevel&quot;, int.class), compilerConfiguration, warningLevel);</span>
+<span class="nc" id="L263">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTolerance&quot;, int.class), compilerConfiguration, tolerance);</span>
+<span class="nc" id="L264">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetBytecode&quot;, String.class), compilerConfiguration, targetBytecode);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (previewFeatures) {</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (isJavaSupportPreviewFeatures()) {</span>
+<span class="nc bnc" id="L267" title="All 6 branches missed.">                if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
+<span class="nc" id="L268">                    getLog().warn(&quot;Requested to use preview features, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.&quot;);</span>
+                } else {
+<span class="nc" id="L270">                    invokeMethod(findMethod(compilerConfigurationClass, &quot;setPreviewFeatures&quot;, boolean.class), compilerConfiguration, previewFeatures);</span>
+                }
+            } else {
+<span class="nc" id="L273">                getLog().warn(&quot;Requested to use to use preview features, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring previewFeatures parameter.&quot;);</span>
+            }
         }
-<span class="nc" id="L258">        Map&lt;String, Object&gt; options = new HashMap&lt;String, Object&gt;();</span>
-<span class="nc" id="L259">        options.put(&quot;stubDir&quot;, outputDirectory);</span>
-<span class="nc" id="L260">        options.put(&quot;keepStubs&quot;, Boolean.TRUE);</span>
-<span class="nc" id="L261">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setJointCompilationOptions&quot;, Map.class), compilerConfiguration, options);</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if (sourceEncoding != null) {</span>
+<span class="nc" id="L277">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
+        }
+<span class="nc" id="L279">        Map&lt;String, Object&gt; options = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L280">        options.put(&quot;stubDir&quot;, outputDirectory);</span>
+<span class="nc" id="L281">        options.put(&quot;keepStubs&quot;, Boolean.TRUE);</span>
+<span class="nc" id="L282">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setJointCompilationOptions&quot;, Map.class), compilerConfiguration, options);</span>
 
-<span class="nc" id="L263">        return compilerConfiguration;</span>
+<span class="nc" id="L284">        return compilerConfiguration;</span>
     }
 
     /**
@@ -275,26 +296,26 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void addGroovySources(final Set&lt;File&gt; stubSources, final Class&lt;?&gt; compilerConfigurationClass, final Class&lt;?&gt; javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
-<span class="nc" id="L278">        Set&lt;String&gt; scriptExtensions = new HashSet&lt;String&gt;();</span>
-<span class="nc bnc" id="L279" title="All 2 branches missed.">        for (File stubSource : stubSources) {</span>
-<span class="nc" id="L280">            scriptExtensions.add(FileUtils.getFileExtension(stubSource));</span>
-<span class="nc" id="L281">        }</span>
-<span class="nc" id="L282">        getLog().debug(&quot;Detected Groovy file extensions: &quot;+ scriptExtensions + &quot;.&quot;);</span>
-<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (supportsSettingExtensions()) {</span>
-<span class="nc" id="L284">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setScriptExtensions&quot;, Set.class), compilerConfiguration, scriptExtensions);</span>
+<span class="nc" id="L299">        Set&lt;String&gt; scriptExtensions = new HashSet&lt;String&gt;();</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">        for (File stubSource : stubSources) {</span>
+<span class="nc" id="L301">            scriptExtensions.add(FileUtils.getFileExtension(stubSource));</span>
+<span class="nc" id="L302">        }</span>
+<span class="nc" id="L303">        getLog().debug(&quot;Detected Groovy file extensions: &quot;+ scriptExtensions + &quot;.&quot;);</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (supportsSettingExtensions()) {</span>
+<span class="nc" id="L305">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setScriptExtensions&quot;, Set.class), compilerConfiguration, scriptExtensions);</span>
         }
-<span class="nc" id="L286">        getLog().debug(&quot;Adding Groovy to generate stubs for:&quot;);</span>
-<span class="nc" id="L287">        Method addSource = findMethod(javaStubCompilationUnitClass, &quot;addSource&quot;, File.class);</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">        for (File stubSource : stubSources) {</span>
-<span class="nc" id="L289">            getLog().debug(&quot;    &quot; + stubSource);</span>
-<span class="nc bnc" id="L290" title="All 2 branches missed.">            if (supportsSettingExtensions()) {</span>
-<span class="nc" id="L291">                invokeMethod(addSource, javaStubCompilationUnit, stubSource);</span>
+<span class="nc" id="L307">        getLog().debug(&quot;Adding Groovy to generate stubs for:&quot;);</span>
+<span class="nc" id="L308">        Method addSource = findMethod(javaStubCompilationUnitClass, &quot;addSource&quot;, File.class);</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        for (File stubSource : stubSources) {</span>
+<span class="nc" id="L310">            getLog().debug(&quot;    &quot; + stubSource);</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">            if (supportsSettingExtensions()) {</span>
+<span class="nc" id="L312">                invokeMethod(addSource, javaStubCompilationUnit, stubSource);</span>
             } else {
-<span class="nc" id="L293">                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource).setScriptExtensions(scriptExtensions);</span>
-<span class="nc" id="L294">                invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);</span>
+<span class="nc" id="L314">                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource).setScriptExtensions(scriptExtensions);</span>
+<span class="nc" id="L315">                invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);</span>
             }
-<span class="nc" id="L296">        }</span>
-<span class="nc" id="L297">    }</span>
+<span class="nc" id="L317">        }</span>
+<span class="nc" id="L318">    }</span>
 
     /**
      * Determines whether the version of Groovy supports stub generation.
@@ -302,7 +323,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @return &lt;code&gt;true&lt;/code&gt; if the version of Groovy supports stub generation, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean supportsSettingExtensions() {
-<span class="nc bnc" id="L305" title="All 6 branches missed.">        return groovyAtLeast(GROOVY_1_8_3) &amp;&amp; (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));</span>
+<span class="nc bnc" id="L326" title="All 6 branches missed.">        return groovyAtLeast(GROOVY_1_8_3) &amp;&amp; (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));</span>
     }
 
     /**
@@ -311,9 +332,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @param outputDirectory the output directory for the stubs
      */
     protected void logGeneratedStubs(File outputDirectory) {
-<span class="fc" id="L314">        Set&lt;File&gt; stubs = getStubs(outputDirectory);</span>
-<span class="pc bpc" id="L315" title="2 of 4 branches missed.">        getLog().info(&quot;Generated &quot; + stubs.size() + &quot; stub&quot; + (stubs.size() &gt; 1 || stubs.size() == 0 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L335">        Set&lt;File&gt; stubs = getStubs(outputDirectory);</span>
+<span class="pc bpc" id="L336" title="2 of 4 branches missed.">        getLog().info(&quot;Generated &quot; + stubs.size() + &quot; stub&quot; + (stubs.size() &gt; 1 || stubs.size() == 0 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
+<span class="fc" id="L337">    }</span>
 
     /**
      * This is a fix for http://jira.codehaus.org/browse/MGROOVY-187
@@ -324,13 +345,13 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @param stubs the files on which to reset the modified date
      */
     protected void resetStubModifiedDates(final Set&lt;File&gt; stubs) {
-<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (File stub : stubs) {</span>
-<span class="fc" id="L328">            boolean success = stub.setLastModified(0L);</span>
-<span class="pc bpc" id="L329" title="1 of 2 branches missed.">            if (!success) {</span>
-<span class="fc" id="L330">                getLog().warn(&quot;Unable to set modified time on stub &quot; + stub.getAbsolutePath() + &quot;.&quot;);</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">        for (File stub : stubs) {</span>
+<span class="fc" id="L349">            boolean success = stub.setLastModified(0L);</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">            if (!success) {</span>
+<span class="fc" id="L351">                getLog().warn(&quot;Unable to set modified time on stub &quot; + stub.getAbsolutePath() + &quot;.&quot;);</span>
             }
-<span class="fc" id="L332">        }</span>
-<span class="fc" id="L333">    }</span>
+<span class="fc" id="L353">        }</span>
+<span class="fc" id="L354">    }</span>
 
     /**
      * Throws an exception if targetBytecode is not supported with this version of Groovy. That is, when Groovy added
@@ -338,34 +359,34 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-<span class="fc bfc" id="L341" title="All 2 branches covered.">        if (&quot;13&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L342" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA5))) {</span>
-<span class="fc" id="L343">                throw new IllegalArgumentException(&quot;Target bytecode 13 requires Groovy &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_ALPHA5 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (&quot;13&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L363" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
+<span class="fc" id="L364">                throw new IllegalArgumentException(&quot;Target bytecode 13 requires Groovy &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L345" title="All 6 branches covered.">        } else if (&quot;12&quot;.equals(targetBytecode) || &quot;11&quot;.equals(targetBytecode) || &quot;10&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L346" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {</span>
-<span class="fc" id="L347">                throw new IllegalArgumentException(&quot;Target bytecode 10, 11, or 12 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L366" title="All 6 branches covered.">        } else if (&quot;12&quot;.equals(targetBytecode) || &quot;11&quot;.equals(targetBytecode) || &quot;10&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L367" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {</span>
+<span class="fc" id="L368">                throw new IllegalArgumentException(&quot;Target bytecode 10, 11, or 12 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L349" title="All 2 branches covered.">        } else if (&quot;9&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L350" title="All 4 branches covered.">            if (!isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3)</span>
-<span class="fc bfc" id="L351" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_2_6_0_ALPHA4))</span>
-<span class="fc bfc" id="L352" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {</span>
-<span class="fc" id="L353">                throw new IllegalArgumentException(&quot;Target bytecode 9 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_2_6_0_ALPHA4 + &quot;/&quot; + GROOVY_3_0_0_ALPHA2 + &quot; or newer.&quot;);</span>
-<span class="fc bfc" id="L354" title="All 8 branches covered.">            } else if (isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {</span>
-<span class="fc" id="L355">                throw new IllegalArgumentException(&quot;Target bytecode 9 with invokedynamic requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        } else if (&quot;9&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L371" title="All 4 branches covered.">            if (!isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3)</span>
+<span class="fc bfc" id="L372" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_2_6_0_ALPHA4))</span>
+<span class="fc bfc" id="L373" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {</span>
+<span class="fc" id="L374">                throw new IllegalArgumentException(&quot;Target bytecode 9 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_2_6_0_ALPHA4 + &quot;/&quot; + GROOVY_3_0_0_ALPHA2 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L375" title="All 8 branches covered.">            } else if (isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {</span>
+<span class="fc" id="L376">                throw new IllegalArgumentException(&quot;Target bytecode 9 with invokedynamic requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L357" title="All 2 branches covered.">        } else if (&quot;1.8&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L358" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_3_3)) {</span>
-<span class="fc" id="L359">                throw new IllegalArgumentException(&quot;Target bytecode 1.8 requires Groovy &quot; + GROOVY_2_3_3 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        } else if (&quot;1.8&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_3_3)) {</span>
+<span class="fc" id="L380">                throw new IllegalArgumentException(&quot;Target bytecode 1.8 requires Groovy &quot; + GROOVY_2_3_3 + &quot; or newer.&quot;);</span>
             }
-<span class="pc bpc" id="L361" title="1 of 4 branches missed.">        } else if (&quot;1.7&quot;.equals(targetBytecode) || &quot;1.6&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L362" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_1_3)) {</span>
-<span class="fc" id="L363">                throw new IllegalArgumentException(&quot;Target bytecode 1.6 and 1.7 require Groovy &quot; + GROOVY_2_1_3 + &quot; or newer.&quot;);</span>
+<span class="pc bpc" id="L382" title="1 of 4 branches missed.">        } else if (&quot;1.7&quot;.equals(targetBytecode) || &quot;1.6&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_1_3)) {</span>
+<span class="fc" id="L384">                throw new IllegalArgumentException(&quot;Target bytecode 1.6 and 1.7 require Groovy &quot; + GROOVY_2_1_3 + &quot; or newer.&quot;);</span>
             }
-<span class="nc bnc" id="L365" title="All 4 branches missed.">        } else if (!&quot;1.5&quot;.equals(targetBytecode) &amp;&amp; !&quot;1.4&quot;.equals(targetBytecode)) {</span>
-<span class="nc" id="L366">            throw new IllegalArgumentException(&quot;Unrecognized target bytecode: '&quot; + targetBytecode + &quot;'.&quot;);</span>
+<span class="nc bnc" id="L386" title="All 4 branches missed.">        } else if (!&quot;1.5&quot;.equals(targetBytecode) &amp;&amp; !&quot;1.4&quot;.equals(targetBytecode)) {</span>
+<span class="nc" id="L387">            throw new IllegalArgumentException(&quot;Unrecognized target bytecode: '&quot; + targetBytecode + &quot;'.&quot;);</span>
         }
-<span class="fc" id="L368">    }</span>
+<span class="fc" id="L389">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

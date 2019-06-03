@@ -59,9 +59,14 @@ import java.util.List;
 <span class="fc" id="L59">    protected static final Version JAVA_1_8 = new Version(1, 8);</span>
 
     /**
+     * Java 1.8 version.
+     */
+<span class="fc" id="L64">    protected static final Version JAVA_12 = new Version(12);</span>
+
+    /**
      * Groovy 1.5.0 version.
      */
-<span class="fc" id="L64">    protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);</span>
+<span class="fc" id="L69">    protected static final Version GROOVY_1_5_0 = new Version(1, 5, 0);</span>
 
     /**
      * The wrangler to use to work with Groovy classes, classpaths, classLoaders, and versions.
@@ -98,20 +103,20 @@ import java.util.List;
      * The minimum version of Groovy that this mojo supports (1.5.0 by
      * default, but other mojos can override).
      */
-<span class="fc" id="L101">    protected Version minGroovyVersion = GROOVY_1_5_0;</span>
+<span class="fc" id="L106">    protected Version minGroovyVersion = GROOVY_1_5_0;</span>
 
     /**
      * Logs the plugin classpath.
      */
     protected void logPluginClasspath() {
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
-<span class="nc" id="L108">            StringBuilder sb = new StringBuilder();</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Artifact artifact : pluginArtifacts) {</span>
-<span class="nc" id="L110">                sb.append(artifact.getFile());</span>
-<span class="nc" id="L111">            }</span>
-<span class="nc" id="L112">            getLog().debug(&quot;Plugin classpath:\n&quot; + sb.toString());</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L113">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            for (Artifact artifact : pluginArtifacts) {</span>
+<span class="nc" id="L115">                sb.append(artifact.getFile());</span>
+<span class="nc" id="L116">            }</span>
+<span class="nc" id="L117">            getLog().debug(&quot;Plugin classpath:\n&quot; + sb.toString());</span>
         }
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Determines whether the version of Java executing this mojo supports invokedynamic (is at least 1.7).
@@ -119,7 +124,16 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the running Java supports invokedynamic, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean isJavaSupportIndy() {
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        return getJavaVersion().compareTo(JAVA_1_7, false) &gt;= 0;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        return getJavaVersion().compareTo(JAVA_1_7, false) &gt;= 0;</span>
+    }
+
+    /**
+     * Determines whether the version of Java executing this mojo supports preview features (is at least 12).
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the running Java supports preview features, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    protected boolean isJavaSupportPreviewFeatures() {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        return getJavaVersion().compareTo(JAVA_12, false) &gt;= 0;</span>
     }
 
     /**
@@ -128,7 +142,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the running Java supports parameters, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean isJavaSupportParameters() {
-<span class="nc bnc" id="L131" title="All 2 branches missed.">        return getJavaVersion().compareTo(JAVA_1_8, false) &gt;= 0;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        return getJavaVersion().compareTo(JAVA_1_8, false) &gt;= 0;</span>
     }
 
     /**
@@ -137,7 +151,7 @@ import java.util.List;
      * @return a Version object of the running Java version
      */
     protected Version getJavaVersion() {
-<span class="fc" id="L140">        return Version.parseFromString(getJavaVersionString());</span>
+<span class="fc" id="L154">        return Version.parseFromString(getJavaVersionString());</span>
     }
 
     /**
@@ -146,7 +160,7 @@ import java.util.List;
      * @return a String of the running Java version
      */
     protected String getJavaVersionString() {
-<span class="fc" id="L149">        return System.getProperty(&quot;java.version&quot;);</span>
+<span class="fc" id="L163">        return System.getProperty(&quot;java.version&quot;);</span>
     }
 
     /**
@@ -155,7 +169,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; only if the version of Groovy supports this mojo
      */
     protected boolean groovyVersionSupportsAction() {
-<span class="pc bpc" id="L158" title="1 of 4 branches missed.">        return classWrangler.getGroovyVersion() != null &amp;&amp; groovyAtLeast(minGroovyVersion);</span>
+<span class="pc bpc" id="L172" title="1 of 4 branches missed.">        return classWrangler.getGroovyVersion() != null &amp;&amp; groovyAtLeast(minGroovyVersion);</span>
     }
 
     /**
@@ -165,7 +179,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version or newer, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean groovyAtLeast(Version version) {
-<span class="fc" id="L168">        return ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), version);</span>
+<span class="fc" id="L182">        return ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), version);</span>
     }
 
     /**
@@ -175,7 +189,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean groovyIs(Version version) {
-<span class="fc" id="L178">        return ClassWrangler.groovyIs(classWrangler.getGroovyVersion(), version);</span>
+<span class="fc" id="L192">        return ClassWrangler.groovyIs(classWrangler.getGroovyVersion(), version);</span>
     }
 
     /**
@@ -185,7 +199,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is newer than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean groovyNewerThan(Version version) {
-<span class="nc" id="L188">        return ClassWrangler.groovyNewerThan(classWrangler.getGroovyVersion(), version);</span>
+<span class="nc" id="L202">        return ClassWrangler.groovyNewerThan(classWrangler.getGroovyVersion(), version);</span>
     }
 
     /**
@@ -195,7 +209,7 @@ import java.util.List;
      * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is older than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
      */
     protected boolean groovyOlderThan(Version version) {
-<span class="fc" id="L198">        return ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), version);</span>
+<span class="fc" id="L212">        return ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), version);</span>
     }
 
     /**
@@ -205,7 +219,7 @@ import java.util.List;
      *         &lt;code&gt;false&lt;/code&gt; if not or Groovy dependency cannot be found
      */
     protected boolean isGroovyIndy() {
-<span class="fc" id="L208">        return classWrangler.isGroovyIndy();</span>
+<span class="fc" id="L222">        return classWrangler.isGroovyIndy();</span>
     }
 
     /**
@@ -216,11 +230,11 @@ import java.util.List;
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected void setupClassWrangler(List&lt;?&gt; classpath, boolean useSharedClassLoader) throws MalformedURLException {
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (useSharedClassLoader) {</span>
-<span class="nc" id="L220">            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">        if (useSharedClassLoader) {</span>
+<span class="nc" id="L234">            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());</span>
         } else {
-<span class="fc" id="L222">            classWrangler = new ClassWrangler(classpath, getLog());</span>
+<span class="fc" id="L236">            classWrangler = new ClassWrangler(classpath, getLog());</span>
         }
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L238">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
