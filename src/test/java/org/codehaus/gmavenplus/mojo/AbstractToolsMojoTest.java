@@ -21,6 +21,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import org.mockito.Spy;
 import java.util.List;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -49,6 +51,8 @@ public class AbstractToolsMojoTest {
     @Mock
     private MavenSession session;
     @Mock
+    private Settings settings;
+    @Mock
     private List<Artifact> pluginArtifacts;
     @Mock
     private MojoExecution mojoExecution;
@@ -61,6 +65,7 @@ public class AbstractToolsMojoTest {
         testMojo = new TestMojo();
         testMojo.project = project;
         testMojo.session= session;
+        when(session.getSettings()).thenReturn(settings);
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
         testMojo.classWrangler = classWrangler;
@@ -73,8 +78,10 @@ public class AbstractToolsMojoTest {
 
         assertNotNull(testMojo.properties.get("project"));
         assertNotNull(testMojo.properties.get("session"));
+        assertNotNull(testMojo.properties.get("settings"));
         assertNotNull(testMojo.properties.get("pluginArtifacts"));
         assertNotNull(testMojo.properties.get("mojoExecution"));
+        assertEquals(FailClosure.INSTANCE, testMojo.properties.get("fail"));
     }
 
     @Test
@@ -89,8 +96,10 @@ public class AbstractToolsMojoTest {
 
         verify(properties, never()).put(eq("project"), any(MavenProject.class));
         verify(properties, never()).put(eq("session"), any(MavenSession.class));
+        verify(properties, never()).put(eq("settings"), any(Settings.class));
         verify(properties, never()).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
         verify(properties, never()).put(eq("mojoExecution"), any(MojoExecution.class));
+        verify(properties, never()).put(eq("fail"), any());
     }
 
     @Test
@@ -103,8 +112,10 @@ public class AbstractToolsMojoTest {
 
         verify(properties, times(1)).put(eq("project"), any(MavenProject.class));
         verify(properties, times(1)).put(eq("session"), any(MavenSession.class));
+        verify(properties, times(1)).put(eq("settings"), any(Settings.class));
         verify(properties, times(1)).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
         verify(properties, times(1)).put(eq("mojoExecution"), any(MojoExecution.class));
+        verify(properties, times(1)).put(eq("fail"), any());
     }
 
     protected class TestMojo extends AbstractToolsMojo {

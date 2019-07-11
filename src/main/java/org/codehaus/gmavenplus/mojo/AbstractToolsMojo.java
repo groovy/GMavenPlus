@@ -99,8 +99,13 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         if (project != null && !properties.containsKey("project")) {
             properties.put("project", project);
         }
-        if (session != null && !properties.containsKey("session")) {
-            properties.put("session", session);
+        if (session != null) {
+            if (!properties.containsKey("session")) {
+                properties.put("session", session);
+            }
+            if (session.getSettings() != null && !properties.containsKey("settings")) {
+                properties.put("settings", session.getSettings());
+            }
         }
         if (pluginArtifacts != null && !properties.containsKey("pluginArtifacts")) {
             properties.put("pluginArtifacts", pluginArtifacts);
@@ -127,6 +132,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             } catch (ClassNotFoundException e) {
                 logUnableToInitializeAntBuilder(e);
             }
+        }
+        if (!properties.containsKey("fail")) {
+            properties.put("fail", FailClosure.INSTANCE);
         }
     }
 
