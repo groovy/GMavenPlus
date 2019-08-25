@@ -195,7 +195,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
-     * Use only if you know what you're doing.
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
      * @since 1.6.3
      */

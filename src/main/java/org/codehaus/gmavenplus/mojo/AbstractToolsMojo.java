@@ -86,6 +86,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 
     /**
      * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
      * @since 1.6.3
      */
