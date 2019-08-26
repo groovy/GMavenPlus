@@ -11,10 +11,10 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>gmavenplus-plugin-it-pluginClasspath</artifactId>
+  <artifactId>gmavenplus-plugin-it-pluginAndProjectClasspath</artifactId>
   <version>testing</version>
-  <name>GMavenPlus Plugin Plugin Classpath test</name>
-  <description>Compiling, generating stubs, and GroovyDoc, using Groovy as a plugin dependency.</description>
+  <name>GMavenPlus Plugin Plugin and Project Classpath test</name>
+  <description>Compiling, generating stubs, and GroovyDoc, using Groovy as a plugin dependency, while also including project dependencies.</description>
 
   <dependencies>
     <dependency>
@@ -166,7 +166,7 @@
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <configuration>
-          <includeClasspath>PLUGIN_ONLY</includeClasspath>
+          <includeClasspath>PROJECT_AND_PLUGIN</includeClasspath>
         </configuration>
         <executions>
           <execution>

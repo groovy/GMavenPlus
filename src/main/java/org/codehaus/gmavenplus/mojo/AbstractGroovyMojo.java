@@ -22,6 +22,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 
@@ -225,15 +226,17 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Instantiate a ClassWrangler.
      *
-     * @param classpath the classpath to load onto a new classloader (if useSharedClassLoader if <code>false</code>)
-     * @param useSharedClassLoader whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * @param classpath the classpath to load onto a new classloader (if includeClasspath is <code>PROJECT_ONLY</code>)
+     * @param includeClasspath whether to use a shared classloader that includes both the project classpath and plugin classpath.
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    protected void setupClassWrangler(List<?> classpath, boolean useSharedClassLoader) throws MalformedURLException {
-        if (useSharedClassLoader) {
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
-        } else {
+    protected void setupClassWrangler(List<?> classpath, IncludeClasspath includeClasspath) throws MalformedURLException {
+        if (IncludeClasspath.PROJECT_ONLY.equals(includeClasspath)) {
+            getLog().info("Using isolated classloader, without GMavenPlus classpath.");
             classWrangler = new ClassWrangler(classpath, getLog());
+        } else {
+            getLog().info("Using plugin classloader, includes GMavenPlus classpath.");
+            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
         }
     }
 }

@@ -93,7 +93,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
         }
 
         try {
-            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);
+            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);
         } catch (MalformedURLException e) {
             throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
         } catch (DependencyResolutionRequiredException e) {

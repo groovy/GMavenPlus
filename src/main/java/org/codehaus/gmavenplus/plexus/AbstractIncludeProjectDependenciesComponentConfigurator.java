@@ -19,10 +19,12 @@ package org.codehaus.gmavenplus.plexus;
 //import org.apache.maven.plugin.logging.Log;
 //import org.apache.maven.plugin.logging.SystemStreamLog;
 
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -51,7 +53,8 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @param containerRealm The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
-    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath,
+                                               final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm) throws ComponentConfigurationException {
         List<?> classpathElements;
 
         try {
@@ -76,7 +79,8 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     @SuppressWarnings("deprecation")
-    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath, final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
+    protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath,
+                                               final org.codehaus.classworlds.ClassRealm containerRealm) throws ComponentConfigurationException {
         List<?> classpathElements;
 
         try {
@@ -120,7 +124,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
     /**
      * Enum of the various possible classpaths.
      */
-    public enum Classpath {
+    protected enum Classpath {
 
         /**
          * Compile classpath.
@@ -143,4 +147,18 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
         SYSTEM
     }
 
+    /**
+     * Determines whether to add project dependencies to the plugin classpath.
+     *
+     * @param configuration the PlexusConfiguration to check for the specified <code>IncludeClasspath</code> option.
+     * @return <code>true</code> if the project dependencies should be added to the plugin classpath, <code>false</code> otherwise.
+     */
+    protected boolean shouldIncludeProjectDependencies(PlexusConfiguration configuration) {
+        PlexusConfiguration includeClasspathConfig = configuration.getChild("includeClasspath");
+        String includeClasspath = includeClasspathConfig.getValue();
+        if (includeClasspath == null) {
+            includeClasspath = includeClasspathConfig.getAttribute("default-value");
+        }
+        return IncludeClasspath.PROJECT_AND_PLUGIN.equals(IncludeClasspath.valueOf(includeClasspath));
+    }
 }

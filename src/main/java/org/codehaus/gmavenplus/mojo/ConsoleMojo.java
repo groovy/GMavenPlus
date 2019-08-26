@@ -52,7 +52,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);
+            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);
         } catch (MalformedURLException e) {
             throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
         } catch (DependencyResolutionRequiredException e) {

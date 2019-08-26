@@ -17,6 +17,7 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Version;
 
 import java.io.File;
@@ -194,13 +195,18 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean parameters;
 
     /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * What classpath to include. One of
+     * <ul>
+     *   <li>PROJECT_ONLY</li>
+     *   <li>PROJECT_AND_PLUGIN</li>
+     *   <li>PLUGIN_ONLY</li>
+     * </ul>
      * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
-     * @since 1.6.3
+     * @since 1.8.0
      */
-    @Parameter(defaultValue = "false")
-    protected boolean useSharedClassLoader;
+    @Parameter(defaultValue = "PROJECT_ONLY")
+    protected IncludeClasspath includeClasspath;
 
     /**
      * Whether the bytecode version has preview features enabled (JEP 12).
@@ -231,7 +237,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        setupClassWrangler(classpath, useSharedClassLoader);
+        setupClassWrangler(classpath, includeClasspath);
 
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
