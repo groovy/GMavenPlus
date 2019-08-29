@@ -23,7 +23,7 @@
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.0.1</sourcePluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
-    <groovyVersion>2.5.7</groovyVersion>
+    <groovyVersion>2.5.8</groovyVersion>
   </properties>
 
   <dependencies>
