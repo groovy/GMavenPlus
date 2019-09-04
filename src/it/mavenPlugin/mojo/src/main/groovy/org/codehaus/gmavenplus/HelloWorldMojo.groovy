@@ -21,9 +21,6 @@ import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 
 
-/**
- * A hello world mojo.
- */
 @Mojo(name="helloworld", defaultPhase=LifecyclePhase.INSTALL)
 class HelloWorldMojo extends AbstractMojo {
 

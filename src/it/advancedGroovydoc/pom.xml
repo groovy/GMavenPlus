@@ -84,6 +84,7 @@
             <goals>
               <goal>generateStubs</goal>
               <goal>groovydoc</goal>
+              <goal>removeStubs</goal>
             </goals>
           </execution>
         </executions>

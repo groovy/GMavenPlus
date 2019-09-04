@@ -170,13 +170,11 @@
         </configuration>
         <executions>
           <execution>
-            <phase>generate-test-sources</phase>
+            <phase>process-test-classes</phase>
             <goals>
-              <goal>addSources</goal>
               <goal>generateStubs</goal>
               <goal>groovydoc</goal>
               <goal>compile</goal>
-              <goal>removeStubs</goal>
             </goals>
           </execution>
         </executions>

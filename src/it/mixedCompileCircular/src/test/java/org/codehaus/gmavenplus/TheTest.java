@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 the original author or authors.
+ * Copyright (C) 2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus
+package org.codehaus.gmavenplus;
+
+import org.codehaus.gmavenplus.groovy.*;
+import org.codehaus.gmavenplus.java.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 
-class SomeClass {
+public class TheTest {
 
-    String someMethod() {
-        return "Hello, world."
+    @Test
+    public void testYetAnotherMethod() {
+        JClass jClass = new JClass();
+        GClass gClass = new GClass();
+        Assert.assertNotNull(jClass.getgObject());
+        Assert.assertNotNull(jClass.getjObject());
+        Assert.assertNotNull(gClass.getgObject());
+        Assert.assertNotNull(gClass.getjObject());
     }
 
 }

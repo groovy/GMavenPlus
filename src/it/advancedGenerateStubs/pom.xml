@@ -72,7 +72,7 @@
           <execution>
             <goals>
               <goal>generateStubs</goal>
-              <goal>generateTestStubs</goal>
+              <goal>removeStubs</goal>
             </goals>
           </execution>
         </executions>

@@ -16,6 +16,13 @@
   <name>GMavenPlus Plugin Clean Classpath Generate Stubs Test</name>
   <description>The simplest generate stubs use case where it would fail if the classpath were polluted with the plugin classpath. This will fail for all versions of Groovy before 1.8.2.</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+
   <profiles>
     <profile>
       <id>indy</id>
@@ -66,7 +73,7 @@
           <execution>
             <goals>
               <goal>generateStubs</goal>
-              <goal>generateTestStubs</goal>
+              <goal>removeStubs</goal>
             </goals>
           </execution>
         </executions>

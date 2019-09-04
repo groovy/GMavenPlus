@@ -85,8 +85,6 @@
             <goals>
               <goal>generateStubs</goal>
               <goal>groovydoc</goal>
-              <goal>generateTestStubs</goal>
-              <goal>groovydocTests</goal>
             </goals>
           </execution>
           <execution>
@@ -94,7 +92,6 @@
             <phase>test</phase>
             <goals>
               <goal>removeStubs</goal>
-              <goal>removeTestStubs</goal>
             </goals>
           </execution>
         </executions>

@@ -16,20 +16,12 @@
 
 package org.codehaus.gmavenplus
 
+import org.apache.maven.project.MavenProject
 
-/**
-* Some Example Cass
-*
-* @author Keegan Witt
-* @version super awesome
-*/
+
 class SomeClass {
 
-   /**
-    * This method does absolutely nothing
-    * @param unusedParam a useless parameter
-    */
-   String someMethod(String unusedParam) {
+   String someMethod(MavenProject project) {
       return "Hello, world."
    }
 
