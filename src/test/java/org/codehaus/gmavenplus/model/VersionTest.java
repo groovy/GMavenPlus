@@ -184,4 +184,11 @@ public class VersionTest {
         assertTrue(v1.compareTo(v2) < 0);
     }
 
+    @Test
+    public void testDotSeparatingQualifierAndVersion() {
+        Version v1 = Version.parseFromString("3.0.0.beta-3");
+        Version v2 = Version.parseFromString("3.0.0-beta-3");
+        assertEquals(v1, v2);
+    }
+
 }
