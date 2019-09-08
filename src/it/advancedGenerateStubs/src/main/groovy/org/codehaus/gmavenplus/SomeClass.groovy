@@ -19,11 +19,6 @@ package org.codehaus.gmavenplus
 
 class SomeClass {
 
-    /**
-     * Some groovydoc
-     *
-     * @return
-     */
     String someMethod() {
         return "Hello, world."
     }

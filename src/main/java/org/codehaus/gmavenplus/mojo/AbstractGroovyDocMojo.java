@@ -20,6 +20,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
@@ -140,13 +141,18 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected boolean skipGroovyDoc;
 
     /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
-     * Use only if you know what you're doing.
+     * What classpath to include. One of
+     * <ul>
+     *   <li>PROJECT_ONLY</li>
+     *   <li>PROJECT_AND_PLUGIN</li>
+     *   <li>PLUGIN_ONLY</li>
+     * </ul>
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
-     * @since 1.6.3
+     * @since 1.8.0
      */
-    @Parameter(defaultValue = "false")
-    protected boolean useSharedClassLoader;
+    @Parameter(defaultValue = "PROJECT_ONLY")
+    protected IncludeClasspath includeClasspath;
 
     /**
      * Generates the GroovyDoc for the specified sources.
@@ -171,7 +177,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        setupClassWrangler(classpath, useSharedClassLoader);
+        setupClassWrangler(classpath, includeClasspath);
 
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();

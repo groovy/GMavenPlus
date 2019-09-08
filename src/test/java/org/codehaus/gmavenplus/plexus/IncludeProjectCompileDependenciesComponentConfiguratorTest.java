@@ -61,6 +61,7 @@ public class IncludeProjectCompileDependenciesComponentConfiguratorTest {
         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
         org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm = mock(org.codehaus.plexus.classworlds.realm.ClassRealm.class);
         ConfigurationListener listener = mock(ConfigurationListener.class);
+        doReturn(true).when(configurator).shouldIncludeProjectDependencies(any(PlexusConfiguration.class));
         doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.plexus.classworlds.realm.ClassRealm.class));
 
         configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);
@@ -81,6 +82,7 @@ public class IncludeProjectCompileDependenciesComponentConfiguratorTest {
         ExpressionEvaluator expressionEvaluator = mock(ExpressionEvaluator.class);
         org.codehaus.classworlds.ClassRealm containerRealm = mock(org.codehaus.classworlds.ClassRealm.class);
         ConfigurationListener listener = mock(ConfigurationListener.class);
+        doReturn(true).when(configurator).shouldIncludeProjectDependencies(any(PlexusConfiguration.class));
         doNothing().when(configurator).addDependenciesToClassRealm(any(ExpressionEvaluator.class), any(AbstractIncludeProjectDependenciesComponentConfigurator.Classpath.class), any(org.codehaus.classworlds.ClassRealm.class));
 
         configurator.configureComponent(component, configuration, expressionEvaluator, containerRealm, listener);

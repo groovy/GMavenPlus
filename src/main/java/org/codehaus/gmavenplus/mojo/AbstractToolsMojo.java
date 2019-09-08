@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -85,12 +86,18 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected boolean bindPropertiesToSeparateVariables;
 
     /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * What classpath to include. One of
+     * <ul>
+     *   <li>PROJECT_ONLY</li>
+     *   <li>PROJECT_AND_PLUGIN</li>
+     *   <li>PLUGIN_ONLY</li>
+     * </ul>
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
-     * @since 1.6.3
+     * @since 1.8.0
      */
-    @Parameter(defaultValue = "true")
-    protected boolean useSharedClassLoader;
+    @Parameter(defaultValue = "PROJECT_AND_PLUGIN")
+    protected IncludeClasspath includeClasspath;
 
     /**
      * Initializes the properties field.

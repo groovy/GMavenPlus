@@ -53,10 +53,11 @@ public class IncludeProjectRuntimeDependenciesComponentConfigurator extends Abst
      */
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);
+        if (shouldIncludeProjectDependencies(configuration)) {
+            addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);
+        }
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
-        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
+        new ObjectWithFieldsConverter().processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);
     }
 
     /**
@@ -72,10 +73,11 @@ public class IncludeProjectRuntimeDependenciesComponentConfigurator extends Abst
     @SuppressWarnings("deprecation")
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-        addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);
+        if (shouldIncludeProjectDependencies(configuration)) {
+            addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);
+        }
         converterLookup.registerConverter(new ClassRealmConverter(containerRealm));
-        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();
-        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
+        new ObjectWithFieldsConverter().processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);
     }
 
 }

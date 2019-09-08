@@ -31,6 +31,11 @@
           <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
+          <classifier>indy</classifier>
+        </dependency>
       </dependencies>
     </profile>
     <profile>
@@ -39,6 +44,10 @@
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-ant</artifactId>
         </dependency>
       </dependencies>
     </profile>
@@ -76,10 +85,7 @@
               <goal>addTestSources</goal>
               <goal>generateStubs</goal>
               <goal>compile</goal>
-              <goal>removeStubs</goal>
               <goal>generateTestStubs</goal>
-              <goal>compileTests</goal>
-              <goal>removeTestStubs</goal>
             </goals>
           </execution>
           <execution>
@@ -93,8 +99,10 @@
                 <script><![CDATA[
                   assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "java")
                   assert project.getCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "main" + File.separator + "groovy")
+                  assert project.getCompileSourceRoots().toString().contains(File.separator + "target" + File.separator + "generated-sources" + File.separator + "groovy-stubs" + File.separator + "main")
                   assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "java")
                   assert project.getTestCompileSourceRoots().toString().contains(File.separator + "src" + File.separator + "test" + File.separator + "groovy")
+                  assert project.getTestCompileSourceRoots().toString().contains(File.separator + "target" + File.separator + "generated-sources" + File.separator + "groovy-stubs" + File.separator + "test")
                 ]]></script>
               </scripts>
             </configuration>

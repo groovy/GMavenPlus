@@ -19,14 +19,10 @@ package org.codehaus.gmavenplus
 import org.apache.maven.project.MavenProject
 
 
-/**
- * Some GroovyDoc.
- */
 class SomeClass {
-    /**
-     * Some more GroovDoc.
-     *
-     * @param project
-     */
-    void someMethod(MavenProject project) { }
+
+    String someMethod(MavenProject project) {
+        return 'Hello, world.'
+    }
+
 }

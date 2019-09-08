@@ -16,6 +16,13 @@
   <name>GMavenPlus Plugin Clean Classpath Compile Test</name>
   <description>The simplest compile use case where it would fail if the classpath were polluted with the plugin classpath.</description>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+
   <profiles>
     <profile>
       <id>indy</id>
@@ -66,7 +73,6 @@
           <execution>
             <goals>
               <goal>compile</goal>
-              <goal>compileTests</goal>
             </goals>
           </execution>
         </executions>

@@ -39,7 +39,6 @@
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy</artifactId>
-          <version>@groovyVersion@</version>
         </dependency>
       </dependencies>
     </profile>

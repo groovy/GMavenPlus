@@ -51,15 +51,10 @@
         <executions>
           <execution>
             <goals>
-              <goal>addSources</goal>
-              <goal>addTestSources</goal>
               <!-- note that stubs are needed so Mojo annotations will work -->
               <goal>generateStubs</goal>
               <goal>compile</goal>
               <goal>removeStubs</goal>
-              <goal>generateTestStubs</goal>
-              <goal>compileTests</goal>
-              <goal>removeTestStubs</goal>
             </goals>
           </execution>
         </executions>
