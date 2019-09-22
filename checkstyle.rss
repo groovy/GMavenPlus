@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2011 - 2019</copyright>
     <item>
-      <title>File: 43,
-             Errors: 1516,
+      <title>File: 44,
+             Errors: 1531,
              Warnings: 0,
              Infos: 0
       </title>
@@ -97,7 +97,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  19
+                  29
                 </td>
               </tr>
                           <tr>
@@ -294,6 +294,20 @@ under the License.
                 </td>
                 <td>
                   0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.IncludeClasspath.java">org/codehaus/gmavenplus/model/IncludeClasspath.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
                 </td>
               </tr>
                           <tr>
@@ -559,7 +573,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  55
+                  57
                 </td>
               </tr>
                           <tr>

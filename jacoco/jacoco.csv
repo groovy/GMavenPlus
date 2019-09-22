@@ -1,18 +1,19 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectRuntimeDependenciesComponentConfigurator,0,57,0,0,0,11,0,3,0,3
+GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectRuntimeDependenciesComponentConfigurator,0,61,2,2,0,11,2,3,0,3
 GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,AbstractIncludeProjectDependenciesComponentConfigurator.Classpath,0,44,0,0,0,5,0,1,0,1
-GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectCompileDependenciesComponentConfigurator,0,57,0,0,0,11,0,3,0,3
-GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,AbstractIncludeProjectDependenciesComponentConfigurator,52,124,1,7,6,21,1,7,0,4
-GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectTestDependenciesComponentConfigurator,0,57,0,0,0,11,0,3,0,3
-GMavenPlus Plugin,org.codehaus.gmavenplus.model,Version,19,383,10,58,4,85,8,44,0,18
+GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectCompileDependenciesComponentConfigurator,0,61,2,2,0,11,2,3,0,3
+GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,AbstractIncludeProjectDependenciesComponentConfigurator,70,124,3,7,11,21,3,7,1,4
+GMavenPlus Plugin,org.codehaus.gmavenplus.plexus,IncludeProjectTestDependenciesComponentConfigurator,0,61,2,2,0,11,2,3,0,3
+GMavenPlus Plugin,org.codehaus.gmavenplus.model,IncludeClasspath,0,34,0,0,0,4,0,1,0,1
+GMavenPlus Plugin,org.codehaus.gmavenplus.model,Version,6,396,7,61,2,87,7,45,0,18
 GMavenPlus Plugin,org.codehaus.gmavenplus.model,Scopes,0,44,0,0,0,5,0,1,0,1
 GMavenPlus Plugin,org.codehaus.gmavenplus.util,ReflectionUtils,81,404,21,63,13,73,17,36,0,11
-GMavenPlus Plugin,org.codehaus.gmavenplus.util,ClassWrangler,112,253,19,23,28,58,17,19,3,12
+GMavenPlus Plugin,org.codehaus.gmavenplus.util,ClassWrangler,155,210,20,22,37,49,19,17,5,10
 GMavenPlus Plugin,org.codehaus.gmavenplus.util,NoExitSecurityManager,9,14,1,1,2,7,2,3,1,3
 GMavenPlus Plugin,org.codehaus.gmavenplus.util,FileUtils,13,62,6,6,6,22,6,8,0,8
 GMavenPlus Plugin,org.codehaus.gmavenplus.groovyworkarounds,GroovyDocTemplateInfo,0,641,0,14,0,25,0,12,0,5
 GMavenPlus Plugin,org.codehaus.gmavenplus.groovyworkarounds,DotGroovyFile,0,84,2,4,0,17,2,9,0,8
-GMavenPlus Plugin,org.codehaus.gmavenplus.mojo,AbstractGroovyMojo,59,131,7,9,8,22,7,16,2,13
+GMavenPlus Plugin,org.codehaus.gmavenplus.mojo,AbstractGroovyMojo,62,138,7,9,9,23,7,16,2,13
 GMavenPlus Plugin,org.codehaus.gmavenplus.mojo,ConsoleMojo,411,0,24,0,73,0,17,0,5,0
 GMavenPlus Plugin,org.codehaus.gmavenplus.mojo,RemoveStubsMojo,0,12,0,0,0,3,0,2,0,2
 GMavenPlus Plugin,org.codehaus.gmavenplus.mojo,AbstractToolsMojo,37,107,4,20,11,18,4,11,1,2

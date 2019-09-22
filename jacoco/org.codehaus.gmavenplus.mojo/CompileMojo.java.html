@@ -36,8 +36,9 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = &quot;compile&quot;, defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
-<span class="fc" id="L40">public class CompileMojo extends AbstractCompileMojo {</span>
+@Mojo(name = &quot;compile&quot;, defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true,
+        configurator = &quot;include-project-compile-dependencies&quot;)
+<span class="fc" id="L41">public class CompileMojo extends AbstractCompileMojo {</span>
 
     /**
      * The Groovy source files (relative paths).
@@ -61,25 +62,25 @@ import java.net.MalformedURLException;
     public void execute() throws MojoExecutionException {
         try {
             try {
-<span class="fc" id="L64">                getLog().debug(&quot;Project compile classpath:\n&quot; + project.getCompileClasspathElements());</span>
-<span class="fc" id="L65">            } catch (DependencyResolutionRequiredException e) {</span>
-<span class="fc" id="L66">                getLog().warn(&quot;Unable to log project compile classpath&quot;, e);</span>
-<span class="fc" id="L67">            }</span>
-<span class="fc" id="L68">            doCompile(getFiles(sources, false), project.getCompileClasspathElements(), outputDirectory);</span>
-<span class="fc" id="L69">        } catch (ClassNotFoundException e) {</span>
-<span class="fc" id="L70">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
-<span class="fc" id="L71">        } catch (InvocationTargetException e) {</span>
-<span class="fc" id="L72">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L73">        } catch (InstantiationException e) {</span>
-<span class="fc" id="L74">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L75">        } catch (IllegalAccessException e) {</span>
-<span class="fc" id="L76">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L77">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="fc" id="L78">            throw new MojoExecutionException(&quot;Compile dependencies weren't resolved.&quot;, e);</span>
-<span class="fc" id="L79">        } catch (MalformedURLException e) {</span>
-<span class="fc" id="L80">            throw new MojoExecutionException(&quot;Unable to add project compile dependencies to classpath.&quot;, e);</span>
-<span class="fc" id="L81">        }</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L65">                getLog().debug(&quot;Project compile classpath:\n&quot; + project.getCompileClasspathElements());</span>
+<span class="fc" id="L66">            } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L67">                getLog().warn(&quot;Unable to log project compile classpath&quot;, e);</span>
+<span class="fc" id="L68">            }</span>
+<span class="fc" id="L69">            doCompile(getFiles(sources, false), project.getCompileClasspathElements(), outputDirectory);</span>
+<span class="fc" id="L70">        } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L71">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
+<span class="fc" id="L72">        } catch (InvocationTargetException e) {</span>
+<span class="fc" id="L73">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L74">        } catch (InstantiationException e) {</span>
+<span class="fc" id="L75">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L76">        } catch (IllegalAccessException e) {</span>
+<span class="fc" id="L77">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L78">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L79">            throw new MojoExecutionException(&quot;Compile dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L80">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L81">            throw new MojoExecutionException(&quot;Unable to add project compile dependencies to classpath.&quot;, e);</span>
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

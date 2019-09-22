@@ -176,13 +176,13 @@ public class Version implements Comparable&lt;Version&gt; {
 <span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (obj == null) {</span>
 <span class="nc" id="L177">            return false;</span>
         }
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (obj == this) {</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (obj == this) {</span>
 <span class="fc" id="L180">            return true;</span>
         }
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (obj.getClass() != getClass()) {</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (obj.getClass() != getClass()) {</span>
 <span class="nc" id="L183">            return false;</span>
         }
-<span class="nc bnc" id="L185" title="All 2 branches missed.">        return compareTo((Version) obj) == 0;</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        return compareTo((Version) obj) == 0;</span>
     }
 
     /**

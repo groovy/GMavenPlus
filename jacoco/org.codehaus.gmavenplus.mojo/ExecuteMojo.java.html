@@ -93,7 +93,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
         }
 
         try {
-<span class="fc" id="L96">            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);</span>
+<span class="fc" id="L96">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
 <span class="nc" id="L97">        } catch (MalformedURLException e) {</span>
 <span class="nc" id="L98">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
 <span class="nc" id="L99">        } catch (DependencyResolutionRequiredException e) {</span>

@@ -34,7 +34,7 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = &quot;groovydoc&quot;, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true)
+@Mojo(name = &quot;groovydoc&quot;, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true, configurator = &quot;include-project-compile-dependencies&quot;)
 <span class="fc" id="L38">public class GroovyDocMojo extends AbstractGroovyDocMojo {</span>
 
     /**

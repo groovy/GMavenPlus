@@ -53,11 +53,12 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
      */
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.plexus.classworlds.realm.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-<span class="fc" id="L56">        addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);</span>
-<span class="fc" id="L57">        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));</span>
-<span class="fc" id="L58">        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();</span>
-<span class="fc" id="L59">        converter.processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);</span>
-<span class="fc" id="L60">    }</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (shouldIncludeProjectDependencies(configuration)) {</span>
+<span class="fc" id="L57">            addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);</span>
+        }
+<span class="fc" id="L59">        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));</span>
+<span class="fc" id="L60">        new ObjectWithFieldsConverter().processConfiguration(converterLookup, component, containerRealm.getParentClassLoader(), configuration, expressionEvaluator, listener);</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Configures the specified component.
@@ -72,11 +73,12 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
     @SuppressWarnings(&quot;deprecation&quot;)
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
                                    final org.codehaus.classworlds.ClassRealm containerRealm, final ConfigurationListener listener) throws ComponentConfigurationException {
-<span class="fc" id="L75">        addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);</span>
-<span class="fc" id="L76">        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));</span>
-<span class="fc" id="L77">        ObjectWithFieldsConverter converter = new ObjectWithFieldsConverter();</span>
-<span class="fc" id="L78">        converter.processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);</span>
-<span class="fc" id="L79">    }</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (shouldIncludeProjectDependencies(configuration)) {</span>
+<span class="fc" id="L77">            addDependenciesToClassRealm(expressionEvaluator, Classpath.RUNTIME, containerRealm);</span>
+        }
+<span class="fc" id="L79">        converterLookup.registerConverter(new ClassRealmConverter(containerRealm));</span>
+<span class="fc" id="L80">        new ObjectWithFieldsConverter().processConfiguration(converterLookup, component, containerRealm.getClassLoader(), configuration, expressionEvaluator, listener);</span>
+<span class="fc" id="L81">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

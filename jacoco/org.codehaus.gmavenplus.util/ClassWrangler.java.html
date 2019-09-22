@@ -43,12 +43,12 @@ public class ClassWrangler {
     /**
      * Cached Groovy version.
      */
-<span class="fc" id="L46">    private String groovyVersion = null;</span>
+<span class="pc" id="L46">    private String groovyVersion = null;</span>
 
     /**
      * Cached whether Groovy supports invokedynamic (indy jar).
      */
-<span class="fc" id="L51">    private Boolean isIndy = null;</span>
+<span class="pc" id="L51">    private Boolean isIndy = null;</span>
 
     /**
      * ClassLoader to use for class wrangling.
@@ -78,12 +78,12 @@ public class ClassWrangler {
      * @param pluginLog the Maven log to use for logging
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-<span class="fc" id="L81">    public ClassWrangler(final List&lt;?&gt; classpath, final Log pluginLog) throws MalformedURLException {</span>
-<span class="fc" id="L82">        log = pluginLog;</span>
+<span class="nc" id="L81">    public ClassWrangler(final List&lt;?&gt; classpath, final Log pluginLog) throws MalformedURLException {</span>
+<span class="nc" id="L82">        log = pluginLog;</span>
         // create an isolated ClassLoader with all the appropriate project dependencies in it
-<span class="fc" id="L84">        classLoader = createNewClassLoader(classpath);</span>
-<span class="fc" id="L85">        Thread.currentThread().setContextClassLoader(classLoader);</span>
-<span class="fc" id="L86">    }</span>
+<span class="nc" id="L84">        classLoader = createNewClassLoader(classpath);</span>
+<span class="nc" id="L85">        Thread.currentThread().setContextClassLoader(classLoader);</span>
+<span class="nc" id="L86">    }</span>
 
     /**
      * Gets the version string of Groovy used from classpath.
@@ -290,13 +290,13 @@ public class ClassWrangler {
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     public ClassLoader createNewClassLoader(final List&lt;?&gt; classpath) throws MalformedURLException {
-<span class="fc" id="L293">        List&lt;URL&gt; urlsList = new ArrayList&lt;URL&gt;();</span>
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">        for (Object classPathObject : classpath) {</span>
+<span class="nc" id="L293">        List&lt;URL&gt; urlsList = new ArrayList&lt;URL&gt;();</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        for (Object classPathObject : classpath) {</span>
 <span class="nc" id="L295">            String path = (String) classPathObject;</span>
 <span class="nc" id="L296">            urlsList.add(new File(path).toURI().toURL());</span>
 <span class="nc" id="L297">        }</span>
-<span class="fc" id="L298">        URL[] urlsArray = urlsList.toArray(new URL[0]);</span>
-<span class="fc" id="L299">        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());</span>
+<span class="nc" id="L298">        URL[] urlsArray = urlsList.toArray(new URL[0]);</span>
+<span class="nc" id="L299">        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());</span>
     }
 
     /**

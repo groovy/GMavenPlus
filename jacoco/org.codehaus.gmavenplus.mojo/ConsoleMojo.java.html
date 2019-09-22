@@ -52,7 +52,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-<span class="nc" id="L55">            setupClassWrangler(project.getTestClasspathElements(), useSharedClassLoader);</span>
+<span class="nc" id="L55">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
 <span class="nc" id="L56">        } catch (MalformedURLException e) {</span>
 <span class="nc" id="L57">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
 <span class="nc" id="L58">        } catch (DependencyResolutionRequiredException e) {</span>

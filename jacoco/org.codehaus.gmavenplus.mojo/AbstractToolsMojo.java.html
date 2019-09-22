@@ -19,6 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -35,7 +36,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
  * @author Keegan Witt
  * @since 1.1
  */
-<span class="fc" id="L38">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
+<span class="fc" id="L39">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
 
     /**
      * Maven ProjectHelper to use in properties.
@@ -65,7 +66,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      *
      * @since 1.0-beta-3
      */
-<span class="fc" id="L68">    @Parameter</span>
+<span class="fc" id="L69">    @Parameter</span>
     protected Properties properties = new Properties();
 
     /**
@@ -85,50 +86,56 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
     protected boolean bindPropertiesToSeparateVariables;
 
     /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
+     * What classpath to include. One of
+     * &lt;ul&gt;
+     *   &lt;li&gt;PROJECT_ONLY&lt;/li&gt;
+     *   &lt;li&gt;PROJECT_AND_PLUGIN&lt;/li&gt;
+     *   &lt;li&gt;PLUGIN_ONLY&lt;/li&gt;
+     * &lt;/ul&gt;
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
-     * @since 1.6.3
+     * @since 1.8.0
      */
-    @Parameter(defaultValue = &quot;true&quot;)
-    protected boolean useSharedClassLoader;
+    @Parameter(defaultValue = &quot;PROJECT_AND_PLUGIN&quot;)
+    protected IncludeClasspath includeClasspath;
 
     /**
      * Initializes the properties field.
      */
     protected void initializeProperties() {
-<span class="fc bfc" id="L99" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
-<span class="fc" id="L100">            properties.put(&quot;project&quot;, project);</span>
+<span class="fc bfc" id="L106" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
+<span class="fc" id="L107">            properties.put(&quot;project&quot;, project);</span>
         }
-<span class="fc bfc" id="L102" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
-<span class="fc" id="L103">            properties.put(&quot;session&quot;, session);</span>
+<span class="fc bfc" id="L109" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
+<span class="fc" id="L110">            properties.put(&quot;session&quot;, session);</span>
         }
-<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
-<span class="fc" id="L106">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
+<span class="fc bfc" id="L112" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
+<span class="fc" id="L113">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
         }
-<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
-<span class="fc" id="L109">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
+<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
+<span class="fc" id="L116">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
         }
-<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
-<span class="fc" id="L112">            properties.put(&quot;log&quot;, getLog());</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
+<span class="fc" id="L119">            properties.put(&quot;log&quot;, getLog());</span>
         }
-<span class="pc bpc" id="L114" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
-<span class="nc" id="L115">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
+<span class="pc bpc" id="L121" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
+<span class="nc" id="L122">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
         }
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
             try {
-<span class="fc" id="L119">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
-<span class="fc" id="L120">                properties.put(&quot;ant&quot;, antBuilder);</span>
-<span class="nc" id="L121">            } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L122">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L123">            } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L124">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L125">            } catch (InstantiationException e) {</span>
-<span class="nc" id="L126">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L127">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L128">                logUnableToInitializeAntBuilder(e);</span>
-<span class="pc" id="L129">            }</span>
+<span class="fc" id="L126">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="fc" id="L127">                properties.put(&quot;ant&quot;, antBuilder);</span>
+<span class="nc" id="L128">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L129">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L130">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L131">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L132">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L133">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L134">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L135">                logUnableToInitializeAntBuilder(e);</span>
+<span class="pc" id="L136">            }</span>
         }
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L138">    }</span>
 
     /**
      * Logs errors that caused the 'ant' object to not be populated.
@@ -136,8 +143,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-<span class="nc" id="L139">        getLog().error(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;, e);</span>
-<span class="nc" id="L140">    }</span>
+<span class="nc" id="L146">        getLog().error(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;, e);</span>
+<span class="nc" id="L147">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

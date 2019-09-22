@@ -20,6 +20,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
@@ -41,27 +42,27 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-<span class="fc" id="L44">public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {</span>
+<span class="fc" id="L45">public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {</span>
 
     /**
      * Groovy 1.6.0 RC-2 version.
      */
-<span class="fc" id="L49">    protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, &quot;RC-2&quot;);</span>
+<span class="fc" id="L50">    protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, &quot;RC-2&quot;);</span>
 
     /**
      * Groovy 1.6.0 RC-1 version.
      */
-<span class="fc" id="L54">    protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, &quot;RC-1&quot;);</span>
+<span class="fc" id="L55">    protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, &quot;RC-1&quot;);</span>
 
     /**
      * Groovy 1.5.8 version.
      */
-<span class="fc" id="L59">    protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);</span>
+<span class="fc" id="L60">    protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);</span>
 
     /**
      * Groovy 1.5.2 version.
      */
-<span class="fc" id="L64">    protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);</span>
+<span class="fc" id="L65">    protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);</span>
 
     /**
      * The window title.
@@ -140,13 +141,18 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
     protected boolean skipGroovyDoc;
 
     /**
-     * Whether to use a shared classloader that includes both the project classpath and plugin classpath.
-     * Use only if you know what you're doing.
+     * What classpath to include. One of
+     * &lt;ul&gt;
+     *   &lt;li&gt;PROJECT_ONLY&lt;/li&gt;
+     *   &lt;li&gt;PROJECT_AND_PLUGIN&lt;/li&gt;
+     *   &lt;li&gt;PLUGIN_ONLY&lt;/li&gt;
+     * &lt;/ul&gt;
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
      *
-     * @since 1.6.3
+     * @since 1.8.0
      */
-    @Parameter(defaultValue = &quot;false&quot;)
-    protected boolean useSharedClassLoader;
+    @Parameter(defaultValue = &quot;PROJECT_ONLY&quot;)
+    protected IncludeClasspath includeClasspath;
 
     /**
      * Generates the GroovyDoc for the specified sources.
@@ -161,67 +167,67 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List&lt;?&gt; classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (skipGroovyDoc) {</span>
-<span class="fc" id="L165">            getLog().info(&quot;Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.&quot;);</span>
-<span class="fc" id="L166">            return;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (skipGroovyDoc) {</span>
+<span class="fc" id="L171">            getLog().info(&quot;Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.&quot;);</span>
+<span class="fc" id="L172">            return;</span>
         }
 
-<span class="pc bpc" id="L169" title="2 of 4 branches missed.">        if (sourceDirectories == null || sourceDirectories.length == 0) {</span>
-<span class="nc" id="L170">            getLog().info(&quot;No source directories specified for GroovyDoc generation. Skipping.&quot;);</span>
-<span class="nc" id="L171">            return;</span>
+<span class="pc bpc" id="L175" title="2 of 4 branches missed.">        if (sourceDirectories == null || sourceDirectories.length == 0) {</span>
+<span class="nc" id="L176">            getLog().info(&quot;No source directories specified for GroovyDoc generation. Skipping.&quot;);</span>
+<span class="nc" id="L177">            return;</span>
         }
 
-<span class="fc" id="L174">        setupClassWrangler(classpath, useSharedClassLoader);</span>
+<span class="fc" id="L180">        setupClassWrangler(classpath, includeClasspath);</span>
 
-<span class="fc" id="L176">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
-<span class="fc" id="L177">        logPluginClasspath();</span>
+<span class="fc" id="L182">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+<span class="fc" id="L183">        logPluginClasspath();</span>
 
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
-<span class="nc" id="L180">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping GroovyDoc generation.&quot;);</span>
-<span class="nc" id="L181">            return;</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L186">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping GroovyDoc generation.&quot;);</span>
+<span class="nc" id="L187">            return;</span>
         }
-<span class="pc bpc" id="L183" title="2 of 4 branches missed.">        if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {</span>
+<span class="pc bpc" id="L189" title="2 of 4 branches missed.">        if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {</span>
             // Groovy 1.5.8 and 1.6-RC-1 are blacklisted because of their dependency on org.apache.tools.ant.types.Path in GroovyDocTool constructor
-<span class="nc" id="L185">            getLog().warn(&quot;Groovy &quot; + GROOVY_1_5_8 + &quot; and &quot; + GROOVY_1_6_0_RC1 + &quot; are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.&quot;);</span>
-<span class="nc" id="L186">            return;</span>
+<span class="nc" id="L191">            getLog().warn(&quot;Groovy &quot; + GROOVY_1_5_8 + &quot; and &quot; + GROOVY_1_6_0_RC1 + &quot; are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.&quot;);</span>
+<span class="nc" id="L192">            return;</span>
         }
 
         // get classes we need with reflection
-<span class="fc" id="L190">        Class&lt;?&gt; groovyDocToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.GroovyDocTool&quot;);</span>
-<span class="fc" id="L191">        Class&lt;?&gt; outputToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.OutputTool&quot;);</span>
-<span class="fc" id="L192">        Class&lt;?&gt; fileOutputToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.FileOutputTool&quot;);</span>
-<span class="fc" id="L193">        Class&lt;?&gt; resourceManagerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.ResourceManager&quot;);</span>
-<span class="fc" id="L194">        Class&lt;?&gt; classpathResourceManagerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager&quot;);</span>
+<span class="fc" id="L196">        Class&lt;?&gt; groovyDocToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.GroovyDocTool&quot;);</span>
+<span class="fc" id="L197">        Class&lt;?&gt; outputToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.OutputTool&quot;);</span>
+<span class="fc" id="L198">        Class&lt;?&gt; fileOutputToolClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.FileOutputTool&quot;);</span>
+<span class="fc" id="L199">        Class&lt;?&gt; resourceManagerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.ResourceManager&quot;);</span>
+<span class="fc" id="L200">        Class&lt;?&gt; classpathResourceManagerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager&quot;);</span>
 
         // set up GroovyDoc options
-<span class="fc" id="L197">        Properties docProperties = setupProperties();</span>
-<span class="fc" id="L198">        Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));</span>
-<span class="fc" id="L199">        Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));</span>
-<span class="fc" id="L200">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
-<span class="fc" id="L201">        List&lt;String&gt; sourceDirectoriesStrings = new ArrayList&lt;String&gt;();</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
-<span class="fc" id="L203">            sourceDirectoriesStrings.add(sourceDirectory.getDirectory());</span>
+<span class="fc" id="L203">        Properties docProperties = setupProperties();</span>
+<span class="fc" id="L204">        Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));</span>
+<span class="fc" id="L205">        Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));</span>
+<span class="fc" id="L206">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
+<span class="fc" id="L207">        List&lt;String&gt; sourceDirectoriesStrings = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
+<span class="fc" id="L209">            sourceDirectoriesStrings.add(sourceDirectory.getDirectory());</span>
         }
-<span class="fc" id="L205">        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());</span>
-<span class="fc" id="L206">        List&lt;?&gt; groovyDocLinks = setupLinks();</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        if (groovyOlderThan(GROOVY_1_6_0_RC2)) {</span>
-<span class="nc" id="L208">            getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.&quot;);</span>
+<span class="fc" id="L211">        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());</span>
+<span class="fc" id="L212">        List&lt;?&gt; groovyDocLinks = setupLinks();</span>
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">        if (groovyOlderThan(GROOVY_1_6_0_RC2)) {</span>
+<span class="nc" id="L214">            getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.&quot;);</span>
         }
 
         // prevent Java stubs (which lack Javadoc) from overwriting GroovyDoc by removing Java sources
-<span class="fc" id="L212">        List&lt;String&gt; groovyDocSources = setupGroovyDocSources(sourceDirectories, fileSetManager);</span>
+<span class="fc" id="L218">        List&lt;String&gt; groovyDocSources = setupGroovyDocSources(sourceDirectories, fileSetManager);</span>
 
         // instantiate GroovyDocTool
-<span class="fc" id="L215">        Object groovyDocTool = createGroovyDocTool(groovyDocToolClass, resourceManagerClass, docProperties, classpathResourceManager, sourceDirectoriesStrings, groovyDocTemplateInfo, groovyDocLinks);</span>
+<span class="fc" id="L221">        Object groovyDocTool = createGroovyDocTool(groovyDocToolClass, resourceManagerClass, docProperties, classpathResourceManager, sourceDirectoriesStrings, groovyDocTemplateInfo, groovyDocLinks);</span>
 
         // generate GroovyDoc
-<span class="fc" id="L218">        generateGroovyDoc(outputDirectory, groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);</span>
+<span class="fc" id="L224">        generateGroovyDoc(outputDirectory, groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);</span>
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">        if (stylesheetFile != null) {</span>
-<span class="nc" id="L222">            copyStylesheet(outputDirectory);</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (stylesheetFile != null) {</span>
+<span class="nc" id="L228">            copyStylesheet(outputDirectory);</span>
         }
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Sets up the documentation properties.
@@ -229,29 +235,29 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @return the documentation properties
      */
     protected Properties setupProperties() {
-<span class="nc" id="L232">        Properties properties = new Properties();</span>
-<span class="nc" id="L233">        properties.setProperty(&quot;windowTitle&quot;, windowTitle);</span>
-<span class="nc" id="L234">        properties.setProperty(&quot;docTitle&quot;, docTitle);</span>
-<span class="nc" id="L235">        properties.setProperty(&quot;footer&quot;, footer);</span>
-<span class="nc" id="L236">        properties.setProperty(&quot;header&quot;, header);</span>
-<span class="nc" id="L237">        properties.setProperty(&quot;author&quot;, Boolean.toString(displayAuthor));</span>
-<span class="nc bnc" id="L238" title="All 2 branches missed.">        properties.setProperty(&quot;overviewFile&quot;, overviewFile != null ? overviewFile.getAbsolutePath() : &quot;&quot;);</span>
+<span class="nc" id="L238">        Properties properties = new Properties();</span>
+<span class="nc" id="L239">        properties.setProperty(&quot;windowTitle&quot;, windowTitle);</span>
+<span class="nc" id="L240">        properties.setProperty(&quot;docTitle&quot;, docTitle);</span>
+<span class="nc" id="L241">        properties.setProperty(&quot;footer&quot;, footer);</span>
+<span class="nc" id="L242">        properties.setProperty(&quot;header&quot;, header);</span>
+<span class="nc" id="L243">        properties.setProperty(&quot;author&quot;, Boolean.toString(displayAuthor));</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        properties.setProperty(&quot;overviewFile&quot;, overviewFile != null ? overviewFile.getAbsolutePath() : &quot;&quot;);</span>
         try {
-<span class="nc" id="L240">            Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (scopeVal.equals(Scopes.PUBLIC)) {</span>
-<span class="nc" id="L242">                properties.setProperty(&quot;publicScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PROTECTED)) {</span>
-<span class="nc" id="L244">                properties.setProperty(&quot;protectedScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L245" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PACKAGE)) {</span>
-<span class="nc" id="L246">                properties.setProperty(&quot;packageScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PRIVATE)) {</span>
-<span class="nc" id="L248">                properties.setProperty(&quot;privateScope&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L246">            Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (scopeVal.equals(Scopes.PUBLIC)) {</span>
+<span class="nc" id="L248">                properties.setProperty(&quot;publicScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PROTECTED)) {</span>
+<span class="nc" id="L250">                properties.setProperty(&quot;protectedScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PACKAGE)) {</span>
+<span class="nc" id="L252">                properties.setProperty(&quot;packageScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PRIVATE)) {</span>
+<span class="nc" id="L254">                properties.setProperty(&quot;privateScope&quot;, &quot;true&quot;);</span>
             }
-<span class="nc" id="L250">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L251">            getLog().warn(&quot;Scope (&quot; + scope + &quot;) was not recognized. Skipping argument.&quot;);</span>
-<span class="nc" id="L252">        }</span>
+<span class="nc" id="L256">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L257">            getLog().warn(&quot;Scope (&quot; + scope + &quot;) was not recognized. Skipping argument.&quot;);</span>
+<span class="nc" id="L258">        }</span>
 
-<span class="nc" id="L254">        return properties;</span>
+<span class="nc" id="L260">        return properties;</span>
     }
 
     /**
@@ -265,29 +271,29 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      */
     @SuppressWarnings({&quot;rawtypes&quot;, &quot;unchecked&quot;})
     protected List&lt;?&gt; setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-<span class="fc" id="L268">        List linksList = new ArrayList();</span>
-<span class="pc bpc" id="L269" title="3 of 4 branches missed.">        if (links != null &amp;&amp; links.size() &gt; 0) {</span>
-<span class="nc" id="L270">            Class&lt;?&gt; linkArgumentClass = null;</span>
-<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
-<span class="nc" id="L272">                linkArgumentClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.LinkArgument&quot;);</span>
-<span class="nc bnc" id="L273" title="All 2 branches missed.">            } else if (groovyAtLeast(GROOVY_1_5_2)) {</span>
-<span class="nc" id="L274">                linkArgumentClass = classWrangler.getClass(&quot;org.codehaus.groovy.ant.Groovydoc$LinkArgument&quot;);</span>
+<span class="fc" id="L274">        List linksList = new ArrayList();</span>
+<span class="pc bpc" id="L275" title="3 of 4 branches missed.">        if (links != null &amp;&amp; links.size() &gt; 0) {</span>
+<span class="nc" id="L276">            Class&lt;?&gt; linkArgumentClass = null;</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
+<span class="nc" id="L278">                linkArgumentClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.groovydoc.LinkArgument&quot;);</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            } else if (groovyAtLeast(GROOVY_1_5_2)) {</span>
+<span class="nc" id="L280">                linkArgumentClass = classWrangler.getClass(&quot;org.codehaus.groovy.ant.Groovydoc$LinkArgument&quot;);</span>
             }
-<span class="nc bnc" id="L276" title="All 2 branches missed.">            if (linkArgumentClass != null) {</span>
-<span class="nc" id="L277">                Method setHref = findMethod(linkArgumentClass, &quot;setHref&quot;, String.class);</span>
-<span class="nc" id="L278">                Method setPackages = findMethod(linkArgumentClass, &quot;setPackages&quot;, String.class);</span>
-<span class="nc bnc" id="L279" title="All 2 branches missed.">                for (Link link : links) {</span>
-<span class="nc" id="L280">                    Object linkArgument = invokeConstructor(findConstructor(linkArgumentClass));</span>
-<span class="nc" id="L281">                    invokeMethod(setHref, linkArgument, link.getHref());</span>
-<span class="nc" id="L282">                    invokeMethod(setPackages, linkArgument, link.getPackages());</span>
-<span class="nc" id="L283">                    linksList.add(linkArgument);</span>
-<span class="nc" id="L284">                }</span>
-<span class="nc" id="L285">            } else {</span>
-<span class="nc" id="L286">                getLog().warn(&quot;Requested to use GroovyDoc links, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be 1.5.2 or newer). Ignoring links parameter.&quot;);</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            if (linkArgumentClass != null) {</span>
+<span class="nc" id="L283">                Method setHref = findMethod(linkArgumentClass, &quot;setHref&quot;, String.class);</span>
+<span class="nc" id="L284">                Method setPackages = findMethod(linkArgumentClass, &quot;setPackages&quot;, String.class);</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">                for (Link link : links) {</span>
+<span class="nc" id="L286">                    Object linkArgument = invokeConstructor(findConstructor(linkArgumentClass));</span>
+<span class="nc" id="L287">                    invokeMethod(setHref, linkArgument, link.getHref());</span>
+<span class="nc" id="L288">                    invokeMethod(setPackages, linkArgument, link.getPackages());</span>
+<span class="nc" id="L289">                    linksList.add(linkArgument);</span>
+<span class="nc" id="L290">                }</span>
+<span class="nc" id="L291">            } else {</span>
+<span class="nc" id="L292">                getLog().warn(&quot;Requested to use GroovyDoc links, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be 1.5.2 or newer). Ignoring links parameter.&quot;);</span>
             }
         }
 
-<span class="fc" id="L290">        return linksList;</span>
+<span class="fc" id="L296">        return linksList;</span>
     }
 
     /**
@@ -307,42 +313,42 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      */
     protected Object createGroovyDocTool(final Class&lt;?&gt; groovyDocToolClass, final Class&lt;?&gt; resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List&lt;String&gt; sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List&lt;?&gt; groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
-<span class="fc" id="L311">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
+<span class="fc" id="L317">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),</span>
                     classpathResourceManager,
-<span class="fc" id="L313">                    sourceDirectories.toArray(new String[0]),</span>
-<span class="fc" id="L314">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
-<span class="fc" id="L315">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
-<span class="fc" id="L316">                    groovyDocTemplateInfo.defaultClassTemplates(),</span>
+<span class="fc" id="L319">                    sourceDirectories.toArray(new String[0]),</span>
+<span class="fc" id="L320">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
+<span class="fc" id="L321">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
+<span class="fc" id="L322">                    groovyDocTemplateInfo.defaultClassTemplates(),</span>
                     groovyDocLinks,
                     docProperties
             );
-<span class="nc bnc" id="L320" title="All 2 branches missed.">        } else if (groovyAtLeast(GROOVY_1_5_2)) {</span>
-<span class="nc" id="L321">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        } else if (groovyAtLeast(GROOVY_1_5_2)) {</span>
+<span class="nc" id="L327">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),</span>
                     classpathResourceManager,
-<span class="nc" id="L323">                    sourceDirectories.get(0),</span>
-<span class="nc" id="L324">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
-<span class="nc" id="L325">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
-<span class="nc" id="L326">                    groovyDocTemplateInfo.defaultClassTemplates(),</span>
+<span class="nc" id="L329">                    sourceDirectories.get(0),</span>
+<span class="nc" id="L330">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
+<span class="nc" id="L331">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
+<span class="nc" id="L332">                    groovyDocTemplateInfo.defaultClassTemplates(),</span>
                     groovyDocLinks
             );
-<span class="nc bnc" id="L329" title="All 2 branches missed.">            if (sourceDirectories.size() &gt; 1) {</span>
-<span class="nc" id="L330">                getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (&quot; + sourceDirectories.get(0) + &quot;).&quot;);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">            if (sourceDirectories.size() &gt; 1) {</span>
+<span class="nc" id="L336">                getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (&quot; + sourceDirectories.get(0) + &quot;).&quot;);</span>
             }
         } else {
-<span class="nc" id="L333">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),</span>
+<span class="nc" id="L339">            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),</span>
                     classpathResourceManager,
-<span class="nc" id="L335">                    sourceDirectories.get(0),</span>
-<span class="nc" id="L336">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
-<span class="nc" id="L337">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
-<span class="nc" id="L338">                    groovyDocTemplateInfo.defaultClassTemplates()</span>
+<span class="nc" id="L341">                    sourceDirectories.get(0),</span>
+<span class="nc" id="L342">                    groovyDocTemplateInfo.defaultDocTemplates(),</span>
+<span class="nc" id="L343">                    groovyDocTemplateInfo.defaultPackageTemplates(),</span>
+<span class="nc" id="L344">                    groovyDocTemplateInfo.defaultClassTemplates()</span>
             );
-<span class="nc bnc" id="L340" title="All 2 branches missed.">            if (sourceDirectories.size() &gt; 1) {</span>
-<span class="nc" id="L341">                getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (&quot; + sourceDirectories.get(0) + &quot;).&quot;);</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">            if (sourceDirectories.size() &gt; 1) {</span>
+<span class="nc" id="L347">                getLog().warn(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (&quot; + sourceDirectories.get(0) + &quot;).&quot;);</span>
             }
         }
 
-<span class="fc" id="L345">        return groovyDocTool;</span>
+<span class="fc" id="L351">        return groovyDocTool;</span>
     }
 
     /**
@@ -353,26 +359,26 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @return the groovy sources
      */
     protected List&lt;String&gt; setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
-<span class="nc" id="L356">        List&lt;String&gt; javaSources = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L357">        List&lt;String&gt; groovySources = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L358">        List&lt;String&gt; possibleGroovyStubs = new ArrayList&lt;String&gt;();</span>
-<span class="nc bnc" id="L359" title="All 2 branches missed.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
-<span class="nc" id="L360">            String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);</span>
-<span class="nc bnc" id="L361" title="All 2 branches missed.">            for (String source : sources) {</span>
-<span class="nc bnc" id="L362" title="All 4 branches missed.">                if (source.endsWith(&quot;.java&quot;) &amp;&amp; !javaSources.contains(source)) {</span>
-<span class="nc" id="L363">                    javaSources.add(source);</span>
-<span class="nc bnc" id="L364" title="All 2 branches missed.">                } else if (!groovySources.contains(source)) {</span>
-<span class="nc" id="L365">                    groovySources.add(source);</span>
-<span class="nc" id="L366">                    possibleGroovyStubs.add(source.replaceFirst(&quot;\\.&quot; + FileUtils.getFileExtension(source), &quot;.java&quot;));</span>
+<span class="nc" id="L362">        List&lt;String&gt; javaSources = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L363">        List&lt;String&gt; groovySources = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L364">        List&lt;String&gt; possibleGroovyStubs = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
+<span class="nc" id="L366">            String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">            for (String source : sources) {</span>
+<span class="nc bnc" id="L368" title="All 4 branches missed.">                if (source.endsWith(&quot;.java&quot;) &amp;&amp; !javaSources.contains(source)) {</span>
+<span class="nc" id="L369">                    javaSources.add(source);</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">                } else if (!groovySources.contains(source)) {</span>
+<span class="nc" id="L371">                    groovySources.add(source);</span>
+<span class="nc" id="L372">                    possibleGroovyStubs.add(source.replaceFirst(&quot;\\.&quot; + FileUtils.getFileExtension(source), &quot;.java&quot;));</span>
                 }
             }
         }
-<span class="nc" id="L370">        javaSources.removeAll(possibleGroovyStubs);</span>
-<span class="nc" id="L371">        List&lt;String&gt; groovyDocSources = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L372">        groovyDocSources.addAll(javaSources);</span>
-<span class="nc" id="L373">        groovyDocSources.addAll(groovySources);</span>
+<span class="nc" id="L376">        javaSources.removeAll(possibleGroovyStubs);</span>
+<span class="nc" id="L377">        List&lt;String&gt; groovyDocSources = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L378">        groovyDocSources.addAll(javaSources);</span>
+<span class="nc" id="L379">        groovyDocSources.addAll(groovySources);</span>
 
-<span class="nc" id="L375">        return groovyDocSources;</span>
+<span class="nc" id="L381">        return groovyDocSources;</span>
     }
 
     /**
@@ -388,22 +394,22 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      */
     protected void generateGroovyDoc(final File outputDirectory, final Class&lt;?&gt; groovyDocToolClass, final Class&lt;?&gt; outputToolClass, final Object fileOutputTool, final List&lt;String&gt; groovyDocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
-<span class="nc" id="L391">        getLog().debug(&quot;Adding sources to generate GroovyDoc for:&quot;);</span>
-<span class="nc bnc" id="L392" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
-<span class="nc bnc" id="L393" title="All 2 branches missed.">            for (String groovyDocSource : groovyDocSources) {</span>
-<span class="nc" id="L394">                getLog().debug(&quot;    &quot; + groovyDocSource);</span>
-<span class="nc" id="L395">            }</span>
+<span class="nc" id="L397">        getLog().debug(&quot;Adding sources to generate GroovyDoc for:&quot;);</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">            for (String groovyDocSource : groovyDocSources) {</span>
+<span class="nc" id="L400">                getLog().debug(&quot;    &quot; + groovyDocSource);</span>
+<span class="nc" id="L401">            }</span>
         }
-<span class="nc bnc" id="L397" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
-<span class="nc" id="L398">            invokeMethod(findMethod(groovyDocToolClass, &quot;add&quot;, List.class), groovyDocTool, groovyDocSources);</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {</span>
+<span class="nc" id="L404">            invokeMethod(findMethod(groovyDocToolClass, &quot;add&quot;, List.class), groovyDocTool, groovyDocSources);</span>
         } else {
-<span class="nc" id="L400">            Method add = findMethod(groovyDocToolClass, &quot;add&quot;, String.class);</span>
-<span class="nc bnc" id="L401" title="All 2 branches missed.">            for (String groovyDocSource : groovyDocSources) {</span>
-<span class="nc" id="L402">                invokeMethod(add, groovyDocTool, groovyDocSource);</span>
-<span class="nc" id="L403">            }</span>
+<span class="nc" id="L406">            Method add = findMethod(groovyDocToolClass, &quot;add&quot;, String.class);</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">            for (String groovyDocSource : groovyDocSources) {</span>
+<span class="nc" id="L408">                invokeMethod(add, groovyDocTool, groovyDocSource);</span>
+<span class="nc" id="L409">            }</span>
         }
-<span class="nc" id="L405">        invokeMethod(findMethod(groovyDocToolClass, &quot;renderToOutput&quot;, outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());</span>
-<span class="nc" id="L406">    }</span>
+<span class="nc" id="L411">        invokeMethod(findMethod(groovyDocToolClass, &quot;renderToOutput&quot;, outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());</span>
+<span class="nc" id="L412">    }</span>
 
     /**
      * Copies the stylesheet to the specified output directory.
@@ -411,36 +417,36 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @param outputDirectory The output directory to copy the stylesheet to
      */
     protected void copyStylesheet(final File outputDirectory) {
-<span class="nc" id="L414">        getLog().info(&quot;Using stylesheet from &quot; + stylesheetFile.getAbsolutePath() + &quot;.&quot;);</span>
+<span class="nc" id="L420">        getLog().info(&quot;Using stylesheet from &quot; + stylesheetFile.getAbsolutePath() + &quot;.&quot;);</span>
         try {
-<span class="nc" id="L416">            BufferedReader bufferedReader = null;</span>
-<span class="nc" id="L417">            BufferedWriter bufferedWriter = null;</span>
+<span class="nc" id="L422">            BufferedReader bufferedReader = null;</span>
+<span class="nc" id="L423">            BufferedWriter bufferedWriter = null;</span>
             try {
-<span class="nc bnc" id="L419" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
-<span class="nc" id="L420">                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
+<span class="nc" id="L426">                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));</span>
                 } else {
-<span class="nc" id="L422">                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile)));</span>
+<span class="nc" id="L428">                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile)));</span>
                 }
-<span class="nc" id="L424">                StringBuilder css = new StringBuilder();</span>
+<span class="nc" id="L430">                StringBuilder css = new StringBuilder();</span>
                 String line;
-<span class="nc bnc" id="L426" title="All 2 branches missed.">                while ((line = bufferedReader.readLine()) != null) {</span>
-<span class="nc" id="L427">                    css.append(line).append(&quot;\n&quot;);</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">                while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc" id="L433">                    css.append(line).append(&quot;\n&quot;);</span>
                 }
-<span class="nc" id="L429">                File outfile = new File(outputDirectory, &quot;stylesheet.css&quot;);</span>
-<span class="nc bnc" id="L430" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
-<span class="nc" id="L431">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));</span>
+<span class="nc" id="L435">                File outfile = new File(outputDirectory, &quot;stylesheet.css&quot;);</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
+<span class="nc" id="L437">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));</span>
                 } else {
-<span class="nc" id="L433">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile)));</span>
+<span class="nc" id="L439">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile)));</span>
                 }
-<span class="nc" id="L435">                bufferedWriter.write(css.toString());</span>
+<span class="nc" id="L441">                bufferedWriter.write(css.toString());</span>
             } finally {
-<span class="nc" id="L437">                FileUtils.closeQuietly(bufferedReader);</span>
-<span class="nc" id="L438">                FileUtils.closeQuietly(bufferedWriter);</span>
+<span class="nc" id="L443">                FileUtils.closeQuietly(bufferedReader);</span>
+<span class="nc" id="L444">                FileUtils.closeQuietly(bufferedWriter);</span>
             }
-<span class="nc" id="L440">        } catch (IOException e) {</span>
-<span class="nc" id="L441">            getLog().warn(&quot;Unable to copy specified stylesheet (&quot; + stylesheetFile.getAbsolutePath() + &quot;).&quot;);</span>
-<span class="nc" id="L442">        }</span>
-<span class="nc" id="L443">    }</span>
+<span class="nc" id="L446">        } catch (IOException e) {</span>
+<span class="nc" id="L447">            getLog().warn(&quot;Unable to copy specified stylesheet (&quot; + stylesheetFile.getAbsolutePath() + &quot;).&quot;);</span>
+<span class="nc" id="L448">        }</span>
+<span class="nc" id="L449">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

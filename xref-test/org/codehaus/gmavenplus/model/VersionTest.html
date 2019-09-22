@@ -192,7 +192,14 @@
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         assertTrue(v1.compareTo(v2) &lt; 0);
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>     }
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> 
-<a class="jxr_linenumber" name="L187" href="#L187">187</a> }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     @Test
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDotSeparatingQualifierAndVersion() {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         Version v1 = Version.parseFromString(<span class="jxr_string">"3.0.0.beta-3"</span>);
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         Version v2 = Version.parseFromString(<span class="jxr_string">"3.0.0-beta-3"</span>);
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         assertEquals(v1, v2);
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
