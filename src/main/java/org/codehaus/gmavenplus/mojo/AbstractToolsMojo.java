@@ -60,7 +60,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *   <dt>log</dt>
      *     <dd>A org.apache.maven.plugin.logging.Log object of Maven's log.</dd>
      *   <dt>ant</dt>
-     *     <dd>A groovy.util.AntBuilder object.</dd>
+     *     <dd>A groovy.util.AntBuilder object (if groovy.util.AntBuilder is available).</dd>
      * </dl>
      * These can be overridden.
      *
@@ -143,7 +143,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-        getLog().error("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.", e);
+        getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
     }
 
 }

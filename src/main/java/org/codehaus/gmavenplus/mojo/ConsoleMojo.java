@@ -158,11 +158,21 @@ public class ConsoleMojo extends AbstractToolsMojo {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
-            Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-            if (bindPropertiesToSeparateVariables) {
-                invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
-            } else {
-                properties.put("ant", antBuilder);
+            try {
+                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+                if (bindPropertiesToSeparateVariables) {
+                    invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
+                } else {
+                    properties.put("ant", antBuilder);
+                }
+            } catch (InvocationTargetException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (IllegalAccessException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (InstantiationException e) {
+                logUnableToInitializeAntBuilder(e);
+            } catch (ClassNotFoundException e) {
+                logUnableToInitializeAntBuilder(e);
             }
         }
     }
