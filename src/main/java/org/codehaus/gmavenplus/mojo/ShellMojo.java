@@ -75,7 +75,7 @@ public class ShellMojo extends AbstractToolsMojo {
         try {
             getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
-            getLog().warn("Unable to log project test classpath", e);
+            getLog().debug("Unable to log project test classpath");
         }
 
         if (groovyVersionSupportsAction()) {

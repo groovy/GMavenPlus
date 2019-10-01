@@ -71,7 +71,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 try {
                     getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
                 } catch (DependencyResolutionRequiredException e) {
-                    getLog().warn("Unable to log project test classpath", e);
+                    getLog().debug("Unable to log project test classpath");
                 }
                 doCompile(getTestFiles(testSources, false), project.getTestClasspathElements(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
