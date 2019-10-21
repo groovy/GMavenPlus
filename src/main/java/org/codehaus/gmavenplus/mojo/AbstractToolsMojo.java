@@ -70,11 +70,12 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected Properties properties = new Properties();
 
     /**
-     * Whether to allow System.exit() to be used.
+     * Whether to allow System.exit() to be used. Should not be set to <code>false</code> when using parallel
+     * execution, as it isn't thread-safe.
      *
      * @since 1.2
      */
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = "true")
     protected boolean allowSystemExits;
 
     /**
