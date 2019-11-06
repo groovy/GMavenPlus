@@ -31,8 +31,8 @@ import org.mockito.Spy;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -51,7 +51,7 @@ public class CompileMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        Set<File> sources = new HashSet<File>();
+        Set<File> sources = new TreeSet<File>();
         sources.add(mock(File.class));
         doReturn(sources).when(compileMojo).getTestFiles(any(FileSet[].class), eq(false));
         compileMojo.outputDirectory = mock(File.class);

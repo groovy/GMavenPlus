@@ -31,7 +31,7 @@ import org.mockito.Spy;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,8 +50,8 @@ public class GenerateTestStubsMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].class), eq(false));
-        doReturn(new HashSet<File>()).when(generateTestStubsMojo).getStubs(any(File.class));
+        doReturn(new TreeSet<File>()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].class), eq(false));
+        doReturn(new TreeSet<File>()).when(generateTestStubsMojo).getStubs(any(File.class));
         generateTestStubsMojo.project = mock(MavenProject.class);
         generateTestStubsMojo.testStubsOutputDirectory = mock(File.class);
         doReturn(mock(Build.class)).when(generateTestStubsMojo.project).getBuild();
