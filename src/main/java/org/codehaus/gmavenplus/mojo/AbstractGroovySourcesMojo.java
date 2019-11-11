@@ -50,8 +50,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
-    protected Set<File> getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-        Set<File> files = new HashSet<File>();
+    protected SortedSet<File> getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
+        SortedSet<File> files = new TreeSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {
@@ -70,8 +70,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
-    protected Set<File> getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-        Set<File> files = new HashSet<File>();
+    protected SortedSet<File> getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
+        SortedSet<File> files = new TreeSet<File>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {
