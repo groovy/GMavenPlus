@@ -69,7 +69,7 @@ import java.net.MalformedURLException;
             try {
 <span class="fc" id="L70">                getLog().debug(&quot;Project compile classpath:\n&quot; + project.getCompileClasspathElements());</span>
 <span class="nc" id="L71">            } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L72">                getLog().warn(&quot;Unable to log project compile classpath&quot;, e);</span>
+<span class="nc" id="L72">                getLog().debug(&quot;Unable to log project compile classpath&quot;);</span>
 <span class="fc" id="L73">            }</span>
 <span class="fc" id="L74">            doGroovyDocGeneration(getFilesets(sources, groovyDocJavaSources), project.getRuntimeClasspathElements(), groovyDocOutputDirectory);</span>
 <span class="fc" id="L75">        } catch (ClassNotFoundException e) {</span>

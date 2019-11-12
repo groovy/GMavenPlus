@@ -114,7 +114,7 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>             getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getTestClasspathElements());
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>             getLog().warn(<span class="jxr_string">"Unable to log project test classpath"</span>, e);
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>             getLog().debug(<span class="jxr_string">"Unable to log project test classpath"</span>);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         }
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">if</strong> (groovyVersionSupportsAction()) {

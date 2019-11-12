@@ -50,8 +50,8 @@ import static java.util.Collections.singletonList;
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
-    protected Set&lt;File&gt; getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L54">        Set&lt;File&gt; files = new HashSet&lt;File&gt;();</span>
+    protected SortedSet&lt;File&gt; getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
+<span class="fc" id="L54">        SortedSet&lt;File&gt; files = new TreeSet&lt;File&gt;();</span>
 <span class="fc" id="L55">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
 
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {</span>
@@ -70,8 +70,8 @@ import static java.util.Collections.singletonList;
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
-    protected Set&lt;File&gt; getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L74">        Set&lt;File&gt; files = new HashSet&lt;File&gt;();</span>
+    protected SortedSet&lt;File&gt; getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
+<span class="fc" id="L74">        SortedSet&lt;File&gt; files = new TreeSet&lt;File&gt;();</span>
 <span class="fc" id="L75">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
 
 <span class="fc bfc" id="L77" title="All 2 branches covered.">        for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {</span>

@@ -71,7 +71,7 @@ import java.net.MalformedURLException;
                 try {
 <span class="fc" id="L72">                    getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
 <span class="fc" id="L73">                } catch (DependencyResolutionRequiredException e) {</span>
-<span class="fc" id="L74">                    getLog().warn(&quot;Unable to log project test classpath&quot;, e);</span>
+<span class="fc" id="L74">                    getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
 <span class="fc" id="L75">                }</span>
 <span class="fc" id="L76">                doCompile(getTestFiles(testSources, false), project.getTestClasspathElements(), testOutputDirectory);</span>
 <span class="fc" id="L77">            } catch (ClassNotFoundException e) {</span>

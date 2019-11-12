@@ -60,7 +60,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      *   &lt;dt&gt;log&lt;/dt&gt;
      *     &lt;dd&gt;A org.apache.maven.plugin.logging.Log object of Maven's log.&lt;/dd&gt;
      *   &lt;dt&gt;ant&lt;/dt&gt;
-     *     &lt;dd&gt;A groovy.util.AntBuilder object.&lt;/dd&gt;
+     *     &lt;dd&gt;A groovy.util.AntBuilder object (if groovy.util.AntBuilder is available).&lt;/dd&gt;
      * &lt;/dl&gt;
      * These can be overridden.
      *
@@ -70,11 +70,12 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
     protected Properties properties = new Properties();
 
     /**
-     * Whether to allow System.exit() to be used.
+     * Whether to allow System.exit() to be used. Should not be set to &lt;code&gt;false&lt;/code&gt; when using parallel
+     * execution, as it isn't thread-safe.
      *
      * @since 1.2
      */
-    @Parameter(defaultValue = &quot;false&quot;)
+    @Parameter(defaultValue = &quot;true&quot;)
     protected boolean allowSystemExits;
 
     /**
@@ -103,39 +104,39 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * Initializes the properties field.
      */
     protected void initializeProperties() {
-<span class="fc bfc" id="L106" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
-<span class="fc" id="L107">            properties.put(&quot;project&quot;, project);</span>
+<span class="fc bfc" id="L107" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
+<span class="fc" id="L108">            properties.put(&quot;project&quot;, project);</span>
         }
-<span class="fc bfc" id="L109" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
-<span class="fc" id="L110">            properties.put(&quot;session&quot;, session);</span>
+<span class="fc bfc" id="L110" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
+<span class="fc" id="L111">            properties.put(&quot;session&quot;, session);</span>
         }
-<span class="fc bfc" id="L112" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
-<span class="fc" id="L113">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
+<span class="fc bfc" id="L113" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
+<span class="fc" id="L114">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
         }
-<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
-<span class="fc" id="L116">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
+<span class="pc bpc" id="L116" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
+<span class="fc" id="L117">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
         }
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
-<span class="fc" id="L119">            properties.put(&quot;log&quot;, getLog());</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
+<span class="fc" id="L120">            properties.put(&quot;log&quot;, getLog());</span>
         }
-<span class="pc bpc" id="L121" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
-<span class="nc" id="L122">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
+<span class="pc bpc" id="L122" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
+<span class="nc" id="L123">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
         }
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
             try {
-<span class="fc" id="L126">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
-<span class="fc" id="L127">                properties.put(&quot;ant&quot;, antBuilder);</span>
-<span class="nc" id="L128">            } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L129">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L130">            } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L131">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L132">            } catch (InstantiationException e) {</span>
-<span class="nc" id="L133">                logUnableToInitializeAntBuilder(e);</span>
-<span class="nc" id="L134">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L135">                logUnableToInitializeAntBuilder(e);</span>
-<span class="pc" id="L136">            }</span>
+<span class="fc" id="L127">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="fc" id="L128">                properties.put(&quot;ant&quot;, antBuilder);</span>
+<span class="nc" id="L129">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L130">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L131">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L132">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L133">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L134">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L135">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L136">                logUnableToInitializeAntBuilder(e);</span>
+<span class="pc" id="L137">            }</span>
         }
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L139">    }</span>
 
     /**
      * Logs errors that caused the 'ant' object to not be populated.
@@ -143,8 +144,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-<span class="nc" id="L146">        getLog().error(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;, e);</span>
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L147">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
+<span class="nc" id="L148">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

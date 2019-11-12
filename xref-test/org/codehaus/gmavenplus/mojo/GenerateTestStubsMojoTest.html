@@ -39,7 +39,7 @@
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.lang.reflect.InvocationTargetException;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.net.MalformedURLException;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.HashSet;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.TreeSet;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertFalse;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
@@ -58,8 +58,8 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Before
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          MockitoAnnotations.initMocks(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          doReturn(<strong class="jxr_keyword">new</strong> HashSet&lt;File&gt;()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].<strong class="jxr_keyword">class</strong>), eq(false));
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          doReturn(<strong class="jxr_keyword">new</strong> HashSet&lt;File&gt;()).when(generateTestStubsMojo).getStubs(any(File.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          doReturn(<strong class="jxr_keyword">new</strong> TreeSet&lt;File&gt;()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].<strong class="jxr_keyword">class</strong>), eq(false));
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          doReturn(<strong class="jxr_keyword">new</strong> TreeSet&lt;File&gt;()).when(generateTestStubsMojo).getStubs(any(File.<strong class="jxr_keyword">class</strong>));
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          generateTestStubsMojo.project = mock(MavenProject.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          generateTestStubsMojo.testStubsOutputDirectory = mock(File.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          doReturn(mock(Build.<strong class="jxr_keyword">class</strong>)).when(generateTestStubsMojo.project).getBuild();

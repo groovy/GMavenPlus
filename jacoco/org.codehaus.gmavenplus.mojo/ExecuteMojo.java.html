@@ -106,7 +106,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
         try {
 <span class="fc" id="L107">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
 <span class="nc" id="L108">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L109">            getLog().warn(&quot;Unable to log project test classpath&quot;, e);</span>
+<span class="nc" id="L109">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
 <span class="fc" id="L110">        }</span>
 
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>

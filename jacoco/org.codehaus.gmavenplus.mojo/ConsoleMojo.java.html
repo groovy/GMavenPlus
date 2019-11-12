@@ -65,7 +65,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
         try {
 <span class="nc" id="L66">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
 <span class="nc" id="L67">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L68">            getLog().warn(&quot;Unable to log project test classpath&quot;, e);</span>
+<span class="nc" id="L68">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
 <span class="nc" id="L69">        }</span>
 
 <span class="nc bnc" id="L71" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
@@ -158,14 +158,24 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="nc" id="L158">            Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
 <span class="nc" id="L159">            Object shell = getField(findField(consoleClass, &quot;shell&quot;, groovyShellClass), console);</span>
 <span class="nc" id="L160">            Object binding = invokeMethod(findMethod(groovyShellClass, &quot;getContext&quot;), shell);</span>
-<span class="nc" id="L161">            Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (bindPropertiesToSeparateVariables) {</span>
-<span class="nc" id="L163">                invokeMethod(findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class), binding, &quot;ant&quot;, antBuilder);</span>
-            } else {
-<span class="nc" id="L165">                properties.put(&quot;ant&quot;, antBuilder);</span>
-            }
+            try {
+<span class="nc" id="L162">                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc" id="L164">                    invokeMethod(findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class), binding, &quot;ant&quot;, antBuilder);</span>
+                } else {
+<span class="nc" id="L166">                    properties.put(&quot;ant&quot;, antBuilder);</span>
+                }
+<span class="nc" id="L168">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L169">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L170">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L171">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L172">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L173">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L174">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L175">                logUnableToInitializeAntBuilder(e);</span>
+<span class="nc" id="L176">            }</span>
         }
-<span class="nc" id="L168">    }</span>
+<span class="nc" id="L178">    }</span>
 
     /**
      * Waits for the console in use to be closed.
@@ -173,25 +183,25 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws MojoFailureException if the execution was interrupted while running or it was unable to find the console thread to wait on
      */
     protected void waitForConsoleClose() throws MojoFailureException {
-<span class="nc" id="L176">        Set&lt;Thread&gt; threadSet = Thread.getAllStackTraces().keySet();</span>
-<span class="nc" id="L177">        Thread[] threadArray = threadSet.toArray(new Thread[0]);</span>
-<span class="nc" id="L178">        Thread consoleThread = null;</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        for (Thread thread : threadArray) {</span>
-<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (&quot;AWT-Shutdown&quot;.equals(thread.getName())) {</span>
-<span class="nc" id="L181">                consoleThread = thread;</span>
-<span class="nc" id="L182">                break;</span>
+<span class="nc" id="L186">        Set&lt;Thread&gt; threadSet = Thread.getAllStackTraces().keySet();</span>
+<span class="nc" id="L187">        Thread[] threadArray = threadSet.toArray(new Thread[0]);</span>
+<span class="nc" id="L188">        Thread consoleThread = null;</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        for (Thread thread : threadArray) {</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">            if (&quot;AWT-Shutdown&quot;.equals(thread.getName())) {</span>
+<span class="nc" id="L191">                consoleThread = thread;</span>
+<span class="nc" id="L192">                break;</span>
             }
         }
-<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (consoleThread != null) {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (consoleThread != null) {</span>
             try {
-<span class="nc" id="L187">                consoleThread.join();</span>
-<span class="nc" id="L188">            } catch (InterruptedException e) {</span>
-<span class="nc" id="L189">                throw new MojoFailureException(&quot;Mojo interrupted while waiting for Console thread to end.&quot;, e);</span>
-<span class="nc" id="L190">            }</span>
+<span class="nc" id="L197">                consoleThread.join();</span>
+<span class="nc" id="L198">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L199">                throw new MojoFailureException(&quot;Mojo interrupted while waiting for Console thread to end.&quot;, e);</span>
+<span class="nc" id="L200">            }</span>
         } else {
-<span class="nc" id="L192">            throw new MojoFailureException(&quot;Unable to locate Console thread to wait on.&quot;);</span>
+<span class="nc" id="L202">            throw new MojoFailureException(&quot;Unable to locate Console thread to wait on.&quot;);</span>
         }
-<span class="nc" id="L194">    }</span>
+<span class="nc" id="L204">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
