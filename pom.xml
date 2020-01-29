@@ -284,10 +284,26 @@
                 <requireJavaVersion>
                   <version>[1.11,)</version>
                 </requireJavaVersion>
+                <enforceBytecodeVersion>
+                  <maxJdkVersion>${javaVersion}</maxJdkVersion>
+                  <ignoredScopes>
+                    <ignoredScope>test</ignoredScope>
+                  </ignoredScopes>
+                  <excludes>
+                    <exclude>org.apache.ant:*</exclude>
+                  </excludes>
+                </enforceBytecodeVersion>
               </rules>
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>extra-enforcer-rules</artifactId>
+            <version>1.2</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -356,7 +372,7 @@
         <version>1.18</version>
         <executions>
           <execution>
-            <id>sniffClasses</id>
+            <id>check</id>
             <goals>
               <goal>check</goal>
             </goals>
@@ -370,7 +386,8 @@
           </signature>
           <ignoreDependencies>false</ignoreDependencies>
           <ignores>
-            <!-- these are ignored because they seem to be pulled in from Maven's bootstrap even though the bootstrap version may not match the compilation version -->
+            <!-- these are ignored because they seem to be pulled in from Maven's bootstrap even though the bootstrap
+            version may not match the compilation version -->
             <ignore>org/apache/maven/*</ignore>
             <ignore>org/codehaus/plexus/*</ignore>
             <ignore>org/codehaus/classworlds/*</ignore>

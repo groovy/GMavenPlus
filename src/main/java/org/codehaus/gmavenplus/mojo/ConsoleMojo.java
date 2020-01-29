@@ -36,6 +36,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
  * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
  * @since 1.1
