@@ -1,6 +1,6 @@
+dist: bionic
 language: java
-#jdk: openjdk12
-jdk: oraclejdk11
+jdk: openjdk11
 sudo: false
 
 # unit test
