@@ -32,7 +32,7 @@ public class TheTest {
         Assert.assertTrue(generatedGroovyDoc + " does not exist.", generatedGroovyDoc.exists());
         Assert.assertTrue(generatedGroovyDoc + " is empty.", generatedGroovyDoc.length() > 0);
         Assert.assertTrue(generatedGroovyDoc + " does not contain Java 5 links.", readFileToString(generatedGroovyDoc)
-                .contains("http://docs.oracle.com/javase/5/docs/api/"));
+                .contains("https://docs.oracle.com/en/java/javase/11/docs/api/"));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class TheTest {
         Assert.assertTrue(generatedGroovyDoc + " does not exist.", generatedGroovyDoc.exists());
         Assert.assertTrue(generatedGroovyDoc + " is empty.", generatedGroovyDoc.length() > 0);
         Assert.assertTrue(generatedGroovyDoc + " does not contain Java 5 links.", readFileToString(generatedGroovyDoc)
-                .contains("http://docs.oracle.com/javase/5/docs/api/"));
+                .contains("https://docs.oracle.com/en/java/javase/11/docs/api/"));
     }
 
     @Test
