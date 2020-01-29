@@ -81,7 +81,7 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
               </dependency>
@@ -100,7 +100,7 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
             </dependencies>

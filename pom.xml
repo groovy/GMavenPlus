@@ -10,20 +10,21 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenVersion>3.0.1</mavenVersion>
-    <jacocoPluginVersion>0.8.3</jacocoPluginVersion>
-    <javadocPluginVersion>3.1.0</javadocPluginVersion>
+    <mavenVersion>3.0</mavenVersion>
+    <jacocoPluginVersion>0.8.5</jacocoPluginVersion>
+    <javadocPluginVersion>3.1.1</javadocPluginVersion>
+    <shortJavaVersion>7</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
-    <javaVersion>1.6</javaVersion>
+    <javaVersion>1.${shortJavaVersion}</javaVersion>
     <dependencyPluginVersion>3.1.1</dependencyPluginVersion>
     <compilerPluginVersion>3.8.1</compilerPluginVersion>
-    <junitVersion>4.12</junitVersion>
-    <surefirePluginVersion>2.22.1</surefirePluginVersion>
+    <junitVersion>4.13</junitVersion>
+    <surefirePluginVersion>3.0.0-M4</surefirePluginVersion>
     <pluginPluginVersion>3.6.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
-    <sourcePluginVersion>3.0.1</sourcePluginVersion>
+    <sourcePluginVersion>3.2.1</sourcePluginVersion>
     <!-- this is a property so that site generation and integration tests can use it -->
-    <groovyVersion>2.5.8</groovyVersion>
+    <groovyVersion>2.5.9</groovyVersion>
   </properties>
 
   <dependencies>
@@ -61,7 +62,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>2.6</version>
+      <version>3.3.0</version>
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
@@ -101,7 +102,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.27.0</version>
+      <version>3.2.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -187,7 +188,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <classifier>indy</classifier>
           <scope>test</scope>
@@ -212,7 +213,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
         </dependency>
@@ -268,7 +269,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>3.0.0-M3</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -278,10 +279,10 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.0.1,)</version>
+                  <version>[3.3.9,)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[1.8,)</version>
+                  <version>[1.11,)</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -318,7 +319,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
         <executions>
           <execution>
             <goals>
@@ -352,7 +353,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.17</version>
+        <version>1.18</version>
         <executions>
           <execution>
             <id>sniffClasses</id>
@@ -364,7 +365,7 @@
         <configuration>
           <signature>
             <groupId>org.codehaus.mojo.signature</groupId>
-            <artifactId>java16</artifactId>
+            <artifactId>java1${shortJavaVersion}</artifactId>
             <version>1.0</version>
           </signature>
           <ignoreDependencies>false</ignoreDependencies>
@@ -396,12 +397,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.2.1</version>
         <configuration>
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -430,7 +431,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${javadocPluginVersion}</version>
         <configuration>
-          <source>6</source>
+          <source>${shortJavaVersion}</source>
           <failOnError>false</failOnError>
         </configuration>
         <executions>
@@ -445,22 +446,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>3.0.0-M1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>3.0.0-M1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version>
+        <version>3.8.2</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
+        <version>3.0.0-M1</version>
       </plugin>
     </plugins>
 
@@ -506,7 +507,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${javadocPluginVersion}</version>
         <configuration>
-          <source>6</source>
+          <source>${shortJavaVersion}</source>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
@@ -571,7 +572,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -590,7 +591,7 @@
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-changes-plugin</artifactId>-->
-        <!--<version>2.11</version>-->
+        <!--<version>2.12.1</version>-->
         <!--<reportSets>-->
           <!--<reportSet>-->
             <!--<reports>-->
