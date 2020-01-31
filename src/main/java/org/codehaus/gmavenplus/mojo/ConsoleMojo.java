@@ -48,7 +48,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
-     * @throws MojoFailureException If unable to await console exit
+     * @throws MojoFailureException   If unable to await console exit
      */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -125,8 +125,8 @@ public class ConsoleMojo extends AbstractToolsMojo {
      * @param bindingClass the groovy.lang.Binding class to use
      * @return a new groovy.ui.Console object
      * @throws InvocationTargetException when a reflection invocation needed for instantiating a console object cannot be completed
-     * @throws IllegalAccessException when a method needed for instantiating a console object cannot be accessed
-     * @throws InstantiationException when a class needed for instantiating a console object cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for instantiating a console object cannot be accessed
+     * @throws InstantiationException    when a class needed for instantiating a console object cannot be instantiated
      */
     protected Object setupConsole(final Class<?> consoleClass, final Class<?> bindingClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object binding = invokeConstructor(findConstructor(bindingClass));
@@ -148,13 +148,12 @@ public class ConsoleMojo extends AbstractToolsMojo {
      *
      * @param consoleClass the groovy.ui.Console class to use
      * @param bindingClass the groovy.lang.Binding class to use
-     * @param console the groovy.ui.Console object to use
-     * @throws ClassNotFoundException when a class needed for binding an AntBuilder object cannot be found
-     * @throws IllegalAccessException when a method needed for binding an AntBuilder object cannot be accessed
+     * @param console      the groovy.ui.Console object to use
+     * @throws ClassNotFoundException    when a class needed for binding an AntBuilder object cannot be found
+     * @throws IllegalAccessException    when a method needed for binding an AntBuilder object cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for binding an AntBuilder object cannot be completed
-     * @throws InstantiationException when a class needed for binding an AntBuilder object cannot be instantiated
      */
-    protected void bindAntBuilder(Class<?> consoleClass, Class<?> bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    protected void bindAntBuilder(Class<?> consoleClass, Class<?> bindingClass, Object console) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException {
         if (properties.containsKey("ant")) {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
@@ -166,13 +165,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 } else {
                     properties.put("ant", antBuilder);
                 }
-            } catch (InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (IllegalAccessException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (InstantiationException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (ClassNotFoundException e) {
+            } catch (InvocationTargetException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
                 logUnableToInitializeAntBuilder(e);
             }
         }

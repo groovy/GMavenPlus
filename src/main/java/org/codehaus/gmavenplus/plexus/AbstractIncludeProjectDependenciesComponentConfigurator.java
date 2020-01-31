@@ -49,8 +49,8 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
-     * @param classpath The classpath to load into the container realm
-     * @param containerRealm The ClassRealm to add dependencies to
+     * @param classpath           The classpath to load into the container realm
+     * @param containerRealm      The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath,
@@ -74,8 +74,8 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
-     * @param classpath The classpath to load into the container realm
-     * @param containerRealm The ClassRealm to add dependencies to
+     * @param classpath           The classpath to load into the container realm
+     * @param containerRealm      The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     @SuppressWarnings("deprecation")
@@ -104,7 +104,7 @@ public abstract class AbstractIncludeProjectDependenciesComponentConfigurator ex
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     protected URL[] buildURLs(final List<?> classpathElements) throws ComponentConfigurationException {
-        List<URL> urls = new ArrayList<URL>(classpathElements.size());
+        List<URL> urls = new ArrayList<>(classpathElements.size());
         for (Object element : classpathElements) {
             try {
                 final URL url = new File((String) element).toURI().toURL();

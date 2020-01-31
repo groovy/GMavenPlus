@@ -53,8 +53,7 @@ public class ExecuteMojoTest {
         MockitoAnnotations.initMocks(this);
         executeMojo = new ExecuteMojo();
         executeMojo.mojoExecution = mock(MojoExecution.class);
-        MavenProject project = mock(MavenProject.class);
-        executeMojo.project = project;
+        executeMojo.project = mock(MavenProject.class);
         MojoDescriptor mockMojoDescriptor = mock(MojoDescriptor.class);
         doReturn(mockMojoDescriptor).when(executeMojo.mojoExecution).getMojoDescriptor();
         doReturn("execute").when(mockMojoDescriptor).getGoal();
@@ -64,7 +63,7 @@ public class ExecuteMojoTest {
     public void testScriptString() throws Exception {
         File file = tmpDir.newFile();
         String line = "hello world";
-        executeMojo.scripts = new String[] {"new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line +"' }"};
+        executeMojo.scripts = new String[]{"new File('" + file.getAbsolutePath().replaceAll("\\\\", "/") + "').withWriter { w -> w << '" + line + "' }"};
 
         executeMojo.execute();
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -79,7 +78,7 @@ public class ExecuteMojoTest {
         executeMojo.sourceEncoding = "UTF-8";
         File file = new File("target/testFile.txt");
         String line = "Hello world!";
-        executeMojo.scripts = new String[] {new File("src/test/resources/testScript.groovy").getCanonicalPath()};
+        executeMojo.scripts = new String[]{new File("src/test/resources/testScript.groovy").getCanonicalPath()};
 
         String actualLine;
         try {
@@ -99,7 +98,7 @@ public class ExecuteMojoTest {
         executeMojo.sourceEncoding = "UTF-8";
         File file = new File("target/testFile.txt");
         String line = "Hello world!";
-        executeMojo.scripts = new String[] {new File("src/test/resources/testScript.groovy").toURI().toURL().toString()};
+        executeMojo.scripts = new String[]{new File("src/test/resources/testScript.groovy").toURI().toURL().toString()};
 
         String actualLine;
         try {

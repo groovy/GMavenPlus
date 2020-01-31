@@ -220,14 +220,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Performs compilation of compile mojos.
      *
-     * @param sources the sources to compile
-     * @param classpath the classpath to use for compilation
+     * @param sources                the sources to compile
+     * @param classpath              the classpath to use for compilation
      * @param compileOutputDirectory the directory to write the compiled class files to
-     * @throws ClassNotFoundException when a class needed for compilation cannot be found
-     * @throws InstantiationException when a class needed for compilation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for compilation cannot be accessed
+     * @throws ClassNotFoundException    when a class needed for compilation cannot be found
+     * @throws InstantiationException    when a class needed for compilation cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for compilation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
-     * @throws MalformedURLException when a classpath element provides a malformed URL
+     * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     @SuppressWarnings({"rawtypes"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
@@ -267,22 +267,22 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
         // log compiled classes
         List classes = (List) invokeMethod(findMethod(compilationUnitClass, "getClasses"), compilationUnit);
-        getLog().info("Compiled " + classes.size() + " file" + (classes.size() > 1 || classes.size() == 0 ? "s" : "") + ".");
+        getLog().info("Compiled " + classes.size() + " file" + (classes.size() != 1 ? "s" : "") + ".");
     }
 
     /**
      * Sets up the CompilationUnit to use for compilation.
      *
-     * @param sources the sources to compile
+     * @param sources                    the sources to compile
      * @param compilerConfigurationClass the CompilerConfiguration class
-     * @param compilationUnitClass the CompilationUnit class
-     * @param groovyClassLoaderClass the GroovyClassLoader class
-     * @param compilerConfiguration the CompilerConfiguration
-     * @param groovyClassLoader the GroovyClassLoader
-     * @param transformLoader the GroovyClassLoader to use for transformation
+     * @param compilationUnitClass       the CompilationUnit class
+     * @param groovyClassLoaderClass     the GroovyClassLoader class
+     * @param compilerConfiguration      the CompilerConfiguration
+     * @param groovyClassLoader          the GroovyClassLoader
+     * @param transformLoader            the GroovyClassLoader to use for transformation
      * @return the CompilationUnit
-     * @throws InstantiationException when a class needed for setting up compilation unit cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up compilation unit cannot be accessed
+     * @throws InstantiationException    when a class needed for setting up compilation unit cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up compilation unit cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up compilation unit cannot be completed
      */
     protected Object setupCompilationUnit(final Set<File> sources, final Class<?> compilerConfigurationClass, final Class<?> compilationUnitClass, final Class<?> groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -305,12 +305,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Sets up the CompilationConfiguration to use for compilation.
      *
-     * @param compileOutputDirectory the directory to write the compiled classes to
+     * @param compileOutputDirectory     the directory to write the compiled classes to
      * @param compilerConfigurationClass the CompilerConfiguration class
      * @return the CompilerConfiguration
-     * @throws ClassNotFoundException when a class needed for setting up CompilerConfiguration cannot be found
-     * @throws InstantiationException when a class needed for setting up CompilerConfiguration cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up CompilerConfiguration cannot be accessed
+     * @throws ClassNotFoundException    when a class needed for setting up CompilerConfiguration cannot be found
+     * @throws InstantiationException    when a class needed for setting up CompilerConfiguration cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up CompilerConfiguration cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up CompilerConfiguration cannot be completed
      */
     @SuppressWarnings({"rawtypes", "unchecked"})

@@ -36,12 +36,12 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
 
     /**
      * Gets the set of stub files in specified directory.
-     * @param outputDirectory the directory to write stubs to
      *
+     * @param outputDirectory the directory to write stubs to
      * @return The set of stub files in specified directory
      */
     protected Set<File> getStubs(File outputDirectory) {
-        Set<File> files = new HashSet<File>();
+        Set<File> files = new HashSet<>();
         FileSetManager fileSetManager = new FileSetManager(getLog());
 
         FileSet fileSet = new FileSet();

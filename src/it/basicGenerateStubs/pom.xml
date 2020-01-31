@@ -14,7 +14,8 @@
   <artifactId>gmavenplus-plugin-it-basicGenerateStubs</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Basic Generate Stubs Test</name>
-  <description>The simplest generate stubs use case. This will fail for all versions of Groovy before 1.8.2.</description>
+  <description>The simplest generate stubs use case. This will fail for all versions of Groovy before 1.8.2.
+  </description>
 
   <dependencies>
     <dependency>

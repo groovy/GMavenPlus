@@ -36,13 +36,14 @@ import java.util.List;
  */
 public class ReflectionUtils {
 
-    private ReflectionUtils() { }
+    private ReflectionUtils() {
+    }
 
     /**
      * Attempt to find a {@link Constructor} on the supplied class with the supplied parameter types.
      * Searches all superclasses up to <code>Object</code>.
      *
-     * @param clazz The class to introspect
+     * @param clazz      The class to introspect
      * @param paramTypes The parameter types of the method (may be <code>null</code> to indicate any signature)
      * @return The Constructor object
      */
@@ -68,8 +69,8 @@ public class ReflectionUtils {
      * Searches all superclasses up to {@link Object}.
      *
      * @param clazz The class to introspect
-     * @param name The name of the field (may be <code>null</code> if type is specified)
-     * @param type The type of the field (may be <code>null</code> if name is specified)
+     * @param name  The name of the field (may be <code>null</code> if type is specified)
+     * @param type  The type of the field (may be <code>null</code> if name is specified)
      * @return The corresponding Field object
      */
     public static Field findField(final Class<?> clazz, final String name, final Class<?> type) {
@@ -127,7 +128,7 @@ public class ReflectionUtils {
     /**
      * Find and return the specified value from the specified enum class.
      *
-     * @param clazz The enum class to introspect
+     * @param clazz     The enum class to introspect
      * @param valueName The name of the enum value to get
      * @return The enum value
      */
@@ -148,7 +149,7 @@ public class ReflectionUtils {
      * Get the field represented by the supplied {@link Field field object} on the specified {@link Object target object}.
      * In accordance with {@link Field#get(Object)} semantics, the returned value is automatically wrapped if the underlying field has a primitive type.
      *
-     * @param field The field to get
+     * @param field  The field to get
      * @param target The target object from which to get the field
      * @return The field's current value
      * @throws IllegalAccessException when unable to access the specified field because access modifiers prevent it
@@ -177,11 +178,11 @@ public class ReflectionUtils {
      * Invoke the specified {@link Constructor}  with the supplied arguments.
      *
      * @param constructor The method to invoke
-     * @param args The invocation arguments (may be <code>null</code>)
+     * @param args        The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException when unable to access the specified constructor because access modifiers prevent it
+     * @throws IllegalAccessException                      when unable to access the specified constructor because access modifiers prevent it
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
-     * @throws InstantiationException when an instantiation fails
+     * @throws InstantiationException                      when an instantiation fails
      */
     public static Object invokeConstructor(final Constructor<?> constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (constructor == null) {
@@ -197,9 +198,9 @@ public class ReflectionUtils {
      *
      * @param method The method to invoke
      * @param target The target object to invoke the method on
-     * @param args The invocation arguments (may be <code>null</code>)
+     * @param args   The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException when unable to access the specified method because access modifiers prevent it
+     * @throws IllegalAccessException                      when unable to access the specified method because access modifiers prevent it
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeMethod(final Method method, final Object target, final Object... args) throws InvocationTargetException, IllegalAccessException {
@@ -217,9 +218,9 @@ public class ReflectionUtils {
      * Invoke the specified static {@link Method} with the supplied arguments.
      *
      * @param method The method to invoke
-     * @param args The invocation arguments (may be <code>null</code>)
+     * @param args   The invocation arguments (may be <code>null</code>)
      * @return The invocation result, if any
-     * @throws IllegalAccessException when unable to access the specified method because access modifiers prevent it
+     * @throws IllegalAccessException                      when unable to access the specified method because access modifiers prevent it
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeStaticMethod(final Method method, final Object... args) throws InvocationTargetException, IllegalAccessException {
@@ -265,7 +266,7 @@ public class ReflectionUtils {
             for (Method ifcMethod : ifc.getMethods()) {
                 if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
                     if (result == null) {
-                        result = new LinkedList<Method>();
+                        result = new LinkedList<>();
                     }
                     result.add(ifcMethod);
                 }

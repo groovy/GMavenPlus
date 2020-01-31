@@ -86,7 +86,7 @@ public class VersionTest {
         Version v8 = Version.parseFromString("1.0.1");
         Version v9 = Version.parseFromString("1.1.0");
         Version v10 = Version.parseFromString("2.0.0");
-        List<Version> versions = new ArrayList<Version>();
+        List<Version> versions = new ArrayList<>();
         versions.add(v10);
         versions.add(v9);
         versions.add(v8);
@@ -118,7 +118,7 @@ public class VersionTest {
     @Test
     public void testNotEqualsWithNonVersion() {
         Version version = new Version(0);
-        assertFalse(version.toString().equals(""));
+        assertNotEquals("", version.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)

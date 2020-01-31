@@ -39,7 +39,7 @@ public class DotGroovyFile extends File {
     /**
      * The file extensions to consider as Groovy files.
      */
-    private Set<String> scriptExtensions = new HashSet<String>();
+    private Set<String> scriptExtensions = new HashSet<>();
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -54,7 +54,7 @@ public class DotGroovyFile extends File {
      * Constructs a new DotGroovyFile object with the specified parameters.
      *
      * @param parent Parent pathname to use to create DotGroovyFile
-     * @param child Child pathname to use to create DotGroovyFile
+     * @param child  Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(final String parent, final String child) {
         super(parent, child);
@@ -64,7 +64,7 @@ public class DotGroovyFile extends File {
      * Constructs a new DotGroovyFile object with the specified parameters.
      *
      * @param parent Parent file to use to create DotGroovyFile
-     * @param child Child pathname to use to create DotGroovyFile
+     * @param child  Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(final File parent, final String child) {
         super(parent, child);

@@ -14,7 +14,8 @@
   <artifactId>gmavenplus-plugin-it-mixedCompile2</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Mixed Compile Test 2</name>
-  <description>This tests mixed Java/Groovy compilation. This will fail for all versions of Groovy before 1.8.2.</description>
+  <description>This tests mixed Java/Groovy compilation. This will fail for all versions of Groovy before 1.8.2.
+  </description>
 
   <dependencies>
     <dependency>

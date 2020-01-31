@@ -51,12 +51,12 @@ public class GroovyDocTemplateInfo {
     /**
      * The version of Groovy whose locations to use for GroovyDoc templates.
      */
-    protected Version groovyVersion;
+    protected final Version groovyVersion;
 
     /**
      * Base directory of templates.
      */
-    protected String templateBaseDir;
+    protected final String templateBaseDir;
 
     /**
      * Constructs a new GroovyDocTemplateInfo using the specified Groovy version to determine templates location.
@@ -74,7 +74,7 @@ public class GroovyDocTemplateInfo {
 
     public String[] defaultDocTemplates() {
         if (groovyAtLeast(groovyVersion, GROOVY_2_5_0)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "topLevel/index.html",
                     templateBaseDir + "topLevel/overview-frame.html",
                     templateBaseDir + "topLevel/allclasses-frame.html",
@@ -87,7 +87,7 @@ public class GroovyDocTemplateInfo {
                     "org/apache/groovy/docgenerator/groovy.ico"
             };
         } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "topLevel/index.html",
                     templateBaseDir + "topLevel/overview-frame.html",
                     templateBaseDir + "topLevel/allclasses-frame.html",
@@ -100,7 +100,7 @@ public class GroovyDocTemplateInfo {
                     "org/codehaus/groovy/tools/groovy.ico"
             };
         } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_0)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
                     templateBaseDir + "top-level/allclasses-frame.html",
@@ -112,7 +112,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "top-level/inherit.gif"
             };
         } else if (groovyAtLeast(groovyVersion, GROOVY_1_6_0_RC2)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
                     templateBaseDir + "top-level/allclasses-frame.html",
@@ -121,7 +121,7 @@ public class GroovyDocTemplateInfo {
                     templateBaseDir + "top-level/inherit.gif"
             };
         } else {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "top-level/index.html",
                     templateBaseDir + "top-level/overview-frame.html",
                     templateBaseDir + "top-level/allclasses-frame.html",
@@ -133,12 +133,12 @@ public class GroovyDocTemplateInfo {
 
     public String[] defaultPackageTemplates() {
         if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "packageLevel/package-frame.html",
                     templateBaseDir + "packageLevel/package-summary.html"
             };
         } else {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "package-level/package-frame.html",
                     templateBaseDir + "package-level/package-summary.html"
             };
@@ -147,11 +147,11 @@ public class GroovyDocTemplateInfo {
 
     public String[] defaultClassTemplates() {
         if (groovyAtLeast(groovyVersion, GROOVY_1_6_2)) {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "classLevel/classDocName.html"
             };
         } else {
-            return new String[] {
+            return new String[]{
                     templateBaseDir + "class-level/classDocName.html"
             };
         }

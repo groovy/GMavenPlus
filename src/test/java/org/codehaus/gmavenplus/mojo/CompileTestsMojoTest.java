@@ -51,7 +51,7 @@ public class CompileTestsMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        Set<File> sources = new TreeSet<File>();
+        Set<File> sources = new TreeSet<>();
         sources.add(mock(File.class));
         doReturn(sources).when(compileTestsMojo).getTestFiles(any(FileSet[].class), eq(false));
         compileTestsMojo.testOutputDirectory = mock(File.class);
@@ -78,41 +78,41 @@ public class CompileTestsMojoTest {
         verify(compileTestsMojo, never()).doCompile(anySetOf(File.class), anyList(), any(File.class));
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));
         compileTestsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(mock(DependencyResolutionRequiredException.class)).when(compileTestsMojo.project).getTestClasspathElements();
         compileTestsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(compileTestsMojo).doCompile(anySetOf(File.class), anyList(), any(File.class));

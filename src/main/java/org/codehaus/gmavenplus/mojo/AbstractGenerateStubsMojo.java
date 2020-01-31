@@ -206,14 +206,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     /**
      * Performs the stub generation on the specified source files.
      *
-     * @param stubSources the sources to perform stub generation on
-     * @param classpath The classpath to use for compilation
+     * @param stubSources     the sources to perform stub generation on
+     * @param classpath       The classpath to use for compilation
      * @param outputDirectory the directory to write the stub files to
-     * @throws ClassNotFoundException when a class needed for stub generation cannot be found
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws ClassNotFoundException    when a class needed for stub generation cannot be found
+     * @throws InstantiationException    when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
-     * @throws MalformedURLException when a classpath element provides a malformed URL
+     * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
@@ -253,11 +253,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     /**
      * Sets up the CompilerConfiguration to use for stub generation.
      *
-     * @param outputDirectory the directory to write the stub files to
+     * @param outputDirectory            the directory to write the stub files to
      * @param compilerConfigurationClass the CompilerConfiguration class
      * @return the CompilerConfiguration to use for stub generation
-     * @throws InstantiationException when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @throws InstantiationException    when a class needed for stub generation cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected Object setupCompilerConfiguration(final File outputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -281,7 +281,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (sourceEncoding != null) {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put("stubDir", outputDirectory);
         options.put("keepStubs", Boolean.TRUE);
         invokeMethod(findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
@@ -292,20 +292,20 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     /**
      * Adds the Groovy sources to the CompilationUnit.
      *
-     * @param stubSources the sources to perform stub generation on
-     * @param compilerConfigurationClass the CompilerConfiguration class
+     * @param stubSources                  the sources to perform stub generation on
+     * @param compilerConfigurationClass   the CompilerConfiguration class
      * @param javaStubCompilationUnitClass the JavaStubCompilationUnit class
-     * @param compilerConfiguration the CompilerConfiguration to use for stub generation
-     * @param javaStubCompilationUnit the JavaStubCompilationUnit to use for stub generation
-     * @throws IllegalAccessException when a method needed for stub generation cannot be accessed
+     * @param compilerConfiguration        the CompilerConfiguration to use for stub generation
+     * @param javaStubCompilationUnit      the JavaStubCompilationUnit to use for stub generation
+     * @throws IllegalAccessException    when a method needed for stub generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
      */
     protected void addGroovySources(final Set<File> stubSources, final Class<?> compilerConfigurationClass, final Class<?> javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
-        Set<String> scriptExtensions = new HashSet<String>();
+        Set<String> scriptExtensions = new HashSet<>();
         for (File stubSource : stubSources) {
             scriptExtensions.add(FileUtils.getFileExtension(stubSource));
         }
-        getLog().debug("Detected Groovy file extensions: "+ scriptExtensions + ".");
+        getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
         if (supportsSettingExtensions()) {
             invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
         }
@@ -338,7 +338,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected void logGeneratedStubs(File outputDirectory) {
         Set<File> stubs = getStubs(outputDirectory);
-        getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() > 1 || stubs.size() == 0 ? "s" : "") + ".");
+        getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() != 1 ? "s" : "") + ".");
     }
 
     /**

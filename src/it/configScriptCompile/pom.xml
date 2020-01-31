@@ -14,7 +14,9 @@
   <artifactId>gmavenplus-plugin-it-configScriptCompile</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Configuration Script Compile Test</name>
-  <description>The simplest compile use case with a configuration script. This will fail for all Groovy versions before 2.1.0-rc-2.</description>
+  <description>The simplest compile use case with a configuration script. This will fail for all Groovy versions
+    before 2.1.0-rc-2.
+  </description>
 
   <dependencies>
     <dependency>

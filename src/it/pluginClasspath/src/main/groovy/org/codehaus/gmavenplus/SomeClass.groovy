@@ -21,8 +21,8 @@ import org.apache.maven.project.MavenProject
 
 class SomeClass {
 
-   String someMethod(MavenProject project) {
-      return "Hello, world."
-   }
+    String someMethod(MavenProject project) {
+        return "Hello, world."
+    }
 
 }

@@ -1,8 +1,10 @@
+import groovy.io.FileType
+
 // Note Groovy 1.7.1 has a bad dependency on Jansi 1.1. You have to manually install it into your local cache for the tests to work. You can download it at http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/jansi/jansi/1.1/.
 
 // Remember to test the console and shell goals. There are currently no integration tests for these.
 
-new File(System.getProperty("user.dir")).eachFileMatch groovy.io.FileType.FILES, ~/groovy-.+\.log/, { it.delete() }
+new File(System.getProperty("user.dir")).eachFileMatch FileType.FILES, ~/groovy-.+\.log/, { it.delete() }
 println "Installing plugin..."
 quietlyRunCommand "${mvn()} -B -P nonindy clean install invoker:install"
 // TODO: fix joint compilation failures with Groovy 1.9-beta-1 and 1.9-beta-2
@@ -57,18 +59,18 @@ def runCommand(def command) {
     proc.waitFor()
 }
 
-def quietlyRunCommand(def command) {
+static def quietlyRunCommand(def command) {
     def proc = command.execute()
     proc.consumeProcessOutput()
     proc.waitFor()
 }
 
-def mvn() {
+static def mvn() {
     if (System.getProperty('os.name').contains('Windows')) {
         try {
             quietlyRunCommand("mvn.bat -v")
             return "mvn.bat"
-        } catch (IOException ioe) {
+        } catch (IOException ignored) {
             return "mvn.cmd"
         }
     } else {

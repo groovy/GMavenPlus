@@ -127,13 +127,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             try {
                 Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 properties.put("ant", antBuilder);
-            } catch (InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (IllegalAccessException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (InstantiationException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (ClassNotFoundException e) {
+            } catch (InvocationTargetException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 logUnableToInitializeAntBuilder(e);
             }
         }

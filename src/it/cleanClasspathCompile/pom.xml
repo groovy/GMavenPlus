@@ -14,7 +14,9 @@
   <artifactId>gmavenplus-plugin-it-cleanClasspathCompile</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Clean Classpath Compile Test</name>
-  <description>The simplest compile use case where it would fail if the classpath were polluted with the plugin classpath.</description>
+  <description>The simplest compile use case where it would fail if the classpath were polluted with the plugin
+    classpath.
+  </description>
 
   <dependencies>
     <dependency>
