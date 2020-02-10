@@ -32,6 +32,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
  * The base tools mojo, which all tool mojos extend.
  * Note that it references the plugin classloader to pull in dependencies
  * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -126,13 +127,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             try {
                 Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 properties.put("ant", antBuilder);
-            } catch (InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (IllegalAccessException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (InstantiationException e) {
-                logUnableToInitializeAntBuilder(e);
-            } catch (ClassNotFoundException e) {
+            } catch (InvocationTargetException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 logUnableToInitializeAntBuilder(e);
             }
         }

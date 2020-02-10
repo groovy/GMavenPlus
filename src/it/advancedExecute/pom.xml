@@ -14,7 +14,9 @@
   <artifactId>gmavenplus-plugin-it-advancedExecute</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Execute Test</name>
-  <description>The kitchen sink of script executions. Because this uses Grapes, it will fail for all versions of Groovy before 1.7-beta-1.</description>
+  <description>The kitchen sink of script executions. Because this uses Grapes, it will fail for all versions of
+    Groovy before 1.7-beta-1.
+  </description>
 
   <properties>
     <projectProp>yetAnotherValue</projectProp>
@@ -24,11 +26,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <!-- this is only needed because the script uses it -->
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
     </dependency>
   </dependencies>
 
@@ -91,7 +88,7 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
               </dependency>
@@ -110,7 +107,7 @@
             <dependencies>
               <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
             </dependencies>

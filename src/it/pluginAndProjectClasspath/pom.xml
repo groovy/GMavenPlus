@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -14,7 +14,9 @@
   <artifactId>gmavenplus-plugin-it-pluginAndProjectClasspath</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Plugin and Project Classpath test</name>
-  <description>Compiling, generating stubs, and GroovyDoc, using Groovy as a plugin dependency, while also including project dependencies.</description>
+  <description>Compiling, generating stubs, and GroovyDoc, using Groovy as a plugin dependency, while also including
+    project dependencies.
+  </description>
 
   <dependencies>
     <dependency>
@@ -107,7 +109,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
           <scope>runtime</scope>
         </dependency>
@@ -121,7 +123,7 @@
               <dependencies>
                 <dependency>
                   <groupId>org.codehaus.groovy</groupId>
-                  <artifactId>groovy-all</artifactId>
+                  <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                   <classifier>indy</classifier>
                 </dependency>
@@ -136,7 +138,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <scope>runtime</scope>
         </dependency>
       </dependencies>
@@ -149,7 +151,7 @@
               <dependencies>
                 <dependency>
                   <groupId>org.codehaus.groovy</groupId>
-                  <artifactId>groovy-all</artifactId>
+                  <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                 </dependency>
               </dependencies>

@@ -66,7 +66,7 @@ public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
      * See <a href="http://maven.apache.org/shared/maven-archiver/index.html">Maven Archiver Reference</a>.
      */
     @Parameter
-    protected MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
+    protected final MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
 
     /**
      * Specifies whether to attach the generated artifact to the project helper.
@@ -136,10 +136,10 @@ public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
      * Method that creates the jar file
      *
      * @param groovydocFiles the directory where the generated jar file will be put
-     * @param jarFileName the filename of the generated jar file
+     * @param jarFileName    the filename of the generated jar file
      * @return a File object that contains the generated jar file
-     * @throws ArchiverException {@link ArchiverException}
-     * @throws IOException {@link IOException}
+     * @throws ArchiverException When an issue occurs preventing Maven Archiver from creating the jar file
+     * @throws IOException       When an IO issue occurs preventing Maven Archiver from creating the jar file
      */
     protected File generateArchive(File groovydocFiles, String jarFileName) throws ArchiverException, IOException {
         File groovydocJar = new File(jarOutputDirectory, jarFileName);

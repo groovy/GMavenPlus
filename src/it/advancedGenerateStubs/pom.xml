@@ -13,7 +13,9 @@
 
   <artifactId>gmavenplus-plugin-it-advancedGenerateStubs</artifactId>
   <name>GMavenPlus Plugin Advanced Generate Stubs Test</name>
-  <description>The kitchen sink of stub generation use cases. This will fail for all versions of Groovy before 1.8.2.</description>
+  <description>The kitchen sink of stub generation use cases. This will fail for all versions of Groovy before
+    1.8.2.
+  </description>
 
   <dependencies>
     <dependency>
@@ -47,7 +49,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
       </dependencies>
@@ -57,7 +59,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
         </dependency>
       </dependencies>
     </profile>

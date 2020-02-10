@@ -52,7 +52,7 @@ public class AddTestSourcesMojoTest {
         doReturn(singletonList(PATH)).when(project).getTestCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory(PATH);
-        addTestSourcesMojo.testSources = new FileSet[] {fs};
+        addTestSourcesMojo.testSources = new FileSet[]{fs};
         addTestSourcesMojo.execute();
         verify(project, never()).addTestCompileSourceRoot(anyString());
     }
@@ -62,7 +62,7 @@ public class AddTestSourcesMojoTest {
         doReturn(singletonList(PATH)).when(project).getTestCompileSourceRoots();
         FileSet fs = new FileSet();
         fs.setDirectory("OTHER PATH");
-        addTestSourcesMojo.testSources = new FileSet[] {fs};
+        addTestSourcesMojo.testSources = new FileSet[]{fs};
         addTestSourcesMojo.execute();
         verify(project, times(1)).addTestCompileSourceRoot(anyString());
     }

@@ -148,9 +148,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @param groovyShellClass the groovy.lang.GroovyShell class
      * @return a new groovy.lang.GroovyShell object
      * @throws InvocationTargetException when a reflection invocation needed for shell configuration cannot be completed
-     * @throws IllegalAccessException when a method needed for shell configuration cannot be accessed
-     * @throws InstantiationException when a class needed for shell configuration cannot be instantiated
-     * @throws ClassNotFoundException when a class needed for shell configuration cannot be found
+     * @throws IllegalAccessException    when a method needed for shell configuration cannot be accessed
+     * @throws InstantiationException    when a class needed for shell configuration cannot be instantiated
+     * @throws ClassNotFoundException    when a class needed for shell configuration cannot be found
      */
     protected Object setupShell(final Class<?> groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object shell;
@@ -179,10 +179,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * Executes the configured scripts.
      *
      * @param groovyShellClass the groovy.lang.GroovyShell class
-     * @param shell a groovy.lag.GroovyShell object
+     * @param shell            a groovy.lag.GroovyShell object
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
-     * @throws MojoExecutionException when an exception occurred during script execution (causes a "BUILD ERROR" message to be displayed)
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
+     * @throws MojoExecutionException    when an exception occurred during script execution (causes a "BUILD ERROR" message to be displayed)
      */
     protected void executeScripts(final Class<?> groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
         int scriptNum = 1;
@@ -220,11 +220,11 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * Executes a script at a URL location.
      *
      * @param groovyShellClass the GroovyShell class
-     * @param shell a groovy.lag.GroovyShell object
-     * @param script the script URL to execute
-     * @throws IOException when the stream can't be opened on the URL
+     * @param shell            a groovy.lag.GroovyShell object
+     * @param script           the script URL to execute
+     * @throws IOException               when the stream can't be opened on the URL
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
      */
     protected void executeScriptFromUrl(Class<?> groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
         URL url = new URL(script);

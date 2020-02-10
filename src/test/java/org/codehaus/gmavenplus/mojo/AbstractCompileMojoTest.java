@@ -16,12 +16,10 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertFalse;
@@ -37,9 +35,6 @@ import static org.mockito.Mockito.mock;
  */
 public class AbstractCompileMojoTest {
     private TestMojo testMojo;
-
-    @Mock
-    private MavenProject project;
 
     @Before
     public void setup() {
@@ -290,7 +285,7 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
-    protected class TestMojo extends AbstractCompileMojo {
+    protected static class TestMojo extends AbstractCompileMojo {
         protected TestMojo() {
             this(GROOVY_1_5_0.toString(), false);
         }
@@ -306,7 +301,8 @@ public class AbstractCompileMojoTest {
         }
 
         @Override
-        public void execute() { }
+        public void execute() {
+        }
     }
 
 }

@@ -17,4 +17,5 @@
 package org.codehaus.gmavenplus.java;
 
 
-public class JObject { }
+public class JObject {
+}

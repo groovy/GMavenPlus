@@ -37,7 +37,7 @@ public class ReflectionUtilsTest {
         assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.invokeStaticMethod(ReflectionUtils.findMethod(TestClass.class, "helloWorld")));
         assertEquals(TestClass.ENUM.VALUE, ReflectionUtils.getEnumValue(TestClass.ENUM.class, "VALUE"));
         assertEquals(TestClass.HELLO_WORLD, ReflectionUtils.getStaticField(ReflectionUtils.findField(TestClass.class, "HELLO_WORLD", null)));
-        Object test2 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class, String.class), expectedString );
+        Object test2 = ReflectionUtils.invokeConstructor(ReflectionUtils.findConstructor(TestClass.class, String.class), expectedString);
         assertEquals(expectedString, ReflectionUtils.getField(ReflectionUtils.findField(TestClass.class, "stringField", String.class), test2));
     }
 
@@ -130,7 +130,8 @@ public class ReflectionUtilsTest {
         public static final String HELLO_WORLD = "Hello world!";
         public String stringField;
 
-        public TestClass() { }
+        public TestClass() {
+        }
 
         public TestClass(String newStringField) {
             stringField = newStringField;
@@ -148,7 +149,7 @@ public class ReflectionUtilsTest {
             return HELLO_WORLD;
         }
 
-        protected static enum ENUM {
+        protected enum ENUM {
             VALUE
         }
     }

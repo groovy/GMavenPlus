@@ -15,7 +15,6 @@ import java.io.File;
 import java.util.Properties;
 
 import static java.util.Collections.emptyList;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -65,7 +64,8 @@ public class AbstractGroovyDocMojoTest {
 
     public static class TestMojo extends AbstractGroovyDocMojo {
         @Override
-        public void execute() { }
+        public void execute() {
+        }
     }
 
 }

@@ -70,7 +70,8 @@ public class AbstractGroovyMojoTest {
 
     public static class TestGroovyMojo extends AbstractGroovyMojo {
         @Override
-        public void execute() { }
+        public void execute() {
+        }
     }
 
 }

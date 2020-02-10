@@ -116,7 +116,7 @@ public class IncludeProjectRuntimeDependenciesComponentConfiguratorTest {
 
     @Test
     public void testBuildURLs() throws Exception {
-        List<String> elements = new ArrayList<String>();
+        List<String> elements = new ArrayList<>();
         elements.add("ELEMENT_1");
         URL[] urls = configurator.buildURLs(elements);
         assertEquals(elements.size(), urls.length);

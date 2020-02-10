@@ -60,7 +60,7 @@ public class AbstractToolsMojoTest {
         MockitoAnnotations.initMocks(this);
         testMojo = new TestMojo();
         testMojo.project = project;
-        testMojo.session= session;
+        testMojo.session = session;
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
         testMojo.classWrangler = classWrangler;
@@ -81,7 +81,7 @@ public class AbstractToolsMojoTest {
     @SuppressWarnings("deprecation")
     public void testInitializePropertiesNull() {
         testMojo.project = null;
-        testMojo.session= null;
+        testMojo.session = null;
         testMojo.pluginArtifacts = null;
         testMojo.mojoExecution = mojoExecution;
 
@@ -107,9 +107,10 @@ public class AbstractToolsMojoTest {
         verify(properties, times(1)).put(eq("mojoExecution"), any(MojoExecution.class));
     }
 
-    protected class TestMojo extends AbstractToolsMojo {
+    protected static class TestMojo extends AbstractToolsMojo {
         @Override
-        public void execute() { }
+        public void execute() {
+        }
     }
 
 }

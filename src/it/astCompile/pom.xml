@@ -14,7 +14,8 @@
   <artifactId>gmavenplus-plugin-it-astCompile</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin AST Compile Test</name>
-  <description>A test of an AST transformation. This will fail for all Groovy versions before 1.6-beta-2.</description>
+  <description>A test of an AST transformation. This will fail for all Groovy versions before 1.6-beta-2.
+  </description>
 
   <dependencies>
     <dependency>
@@ -48,7 +49,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
       </dependencies>
@@ -58,7 +59,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
         </dependency>
       </dependencies>
     </profile>

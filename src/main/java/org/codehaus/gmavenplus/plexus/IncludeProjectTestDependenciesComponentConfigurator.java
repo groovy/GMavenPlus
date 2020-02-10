@@ -44,11 +44,11 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
     /**
      * Configures the specified component.
      *
-     * @param component the Component to configure
-     * @param configuration the Configuration to use to configure the component
+     * @param component           the Component to configure
+     * @param configuration       the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator
-     * @param containerRealm the Classrealm to use to configure the component
-     * @param listener the component's Listener
+     * @param containerRealm      the Classrealm to use to configure the component
+     * @param listener            the component's Listener
      * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
     public void configureComponent(final Object component, final PlexusConfiguration configuration, final ExpressionEvaluator expressionEvaluator,
@@ -63,11 +63,11 @@ public class IncludeProjectTestDependenciesComponentConfigurator extends Abstrac
     /**
      * Configures the specified component.
      *
-     * @param component the Component to configure
-     * @param configuration the Configuration to use to configure the component
+     * @param component           the Component to configure
+     * @param configuration       the Configuration to use to configure the component
      * @param expressionEvaluator the ExpressionEvaluator
-     * @param containerRealm the Classrealm to use to configure the component
-     * @param listener the component's Listener
+     * @param containerRealm      the Classrealm to use to configure the component
+     * @param listener            the component's Listener
      * @throws ComponentConfigurationException when an exception occurs in component configuration
      */
     @SuppressWarnings("deprecation")

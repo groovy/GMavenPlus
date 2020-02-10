@@ -50,7 +50,7 @@ public class GroovyDocMojoTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        Set<File> sources = new TreeSet<File>();
+        Set<File> sources = new TreeSet<>();
         sources.add(mock(File.class));
         doReturn(sources).when(groovyDocMojo).getTestFiles(any(FileSet[].class), eq(false));
         groovyDocMojo.groovyDocOutputDirectory = mock(File.class);
@@ -70,42 +70,41 @@ public class GroovyDocMojoTest {
         doReturn(new Version(1, 5, 0)).when(groovyDocMojo.classWrangler).getGroovyVersion();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocMojo).groovyVersionSupportsAction();
         doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));
         groovyDocMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocMojo).groovyVersionSupportsAction();
         doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));
         groovyDocMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocMojo).groovyVersionSupportsAction();
         doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));
         groovyDocMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocMojo).groovyVersionSupportsAction();
         doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));
         groovyDocMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(mock(DependencyResolutionRequiredException.class)).when(groovyDocMojo.project).getRuntimeClasspathElements();
         groovyDocMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
-    @SuppressWarnings("unchecked")
+    @Test(expected = MojoExecutionException.class)
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(groovyDocMojo).groovyVersionSupportsAction();
         doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(groovyDocMojo).doGroovyDocGeneration(any(FileSet[].class), anyList(), any(File.class));

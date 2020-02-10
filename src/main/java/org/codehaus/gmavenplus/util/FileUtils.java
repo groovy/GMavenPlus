@@ -27,7 +27,8 @@ import java.io.*;
  */
 public class FileUtils {
 
-    private FileUtils() { }
+    private FileUtils() {
+    }
 
     /**
      * Returns the file extension without the '.' for the given filename, or the empty string if the file has no extension.

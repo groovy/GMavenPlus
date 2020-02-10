@@ -58,13 +58,13 @@ public class ClassWrangler {
     /**
      * Plugin log.
      */
-    private Log log;
+    private final Log log;
 
     /**
      * Creates a new ClassWrangler using the specified ClassLoader.
      *
      * @param classLoaderForLoading the ClassLoader to use to load classes
-     * @param pluginLog the Maven log to use for logging
+     * @param pluginLog             the Maven log to use for logging
      */
     public ClassWrangler(final ClassLoader classLoaderForLoading, final Log pluginLog) {
         log = pluginLog;
@@ -99,13 +99,7 @@ public class ClassWrangler {
                 if (ver != null && ver.length() > 0) {
                     groovyVersion = ver;
                 }
-            } catch (ClassNotFoundException e) {
-                // do nothing, will try another way
-            } catch (IllegalAccessException e) {
-                // do nothing, will try another way
-            } catch (InvocationTargetException e) {
-                // do nothing, will try another way
-            } catch (IllegalArgumentException e) {
+            } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
                 // do nothing, will try another way
             }
 
@@ -118,13 +112,7 @@ public class ClassWrangler {
                     if (ver != null && ver.length() > 0) {
                         groovyVersion = ver;
                     }
-                } catch (ClassNotFoundException e) {
-                    // do nothing, will try another way
-                } catch (IllegalAccessException e) {
-                    // do nothing, will try another way
-                } catch (InvocationTargetException e) {
-                    // do nothing, will try another way
-                } catch (IllegalArgumentException e) {
+                } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
                     // do nothing, will try another way
                 }
             }
@@ -172,7 +160,7 @@ public class ClassWrangler {
     /**
      * Determines whether the detected Groovy version is the specified version or newer.
      *
-     * @param detectedVersion the detected Groovy version
+     * @param detectedVersion  the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is the specified version or newer, <code>false</code> otherwise
      */
@@ -183,7 +171,7 @@ public class ClassWrangler {
     /**
      * Determines whether the detected Groovy version is the specified version.
      *
-     * @param detectedVersion the detected Groovy version
+     * @param detectedVersion  the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is the specified version, <code>false</code> otherwise
      */
@@ -194,7 +182,7 @@ public class ClassWrangler {
     /**
      * Determines whether the detected Groovy version is newer than the specified version.
      *
-     * @param detectedVersion the detected Groovy version
+     * @param detectedVersion  the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is newer than the specified version, <code>false</code> otherwise
      */
@@ -205,7 +193,7 @@ public class ClassWrangler {
     /**
      * Determines whether the detected Groovy version is older than the specified version.
      *
-     * @param detectedVersion the detected Groovy version
+     * @param detectedVersion  the detected Groovy version
      * @param compareToVersion the version to compare the detected Groovy version to
      * @return <code>true</code> if the detected Groovy version is older than the specified version, <code>false</code> otherwise
      */
@@ -217,7 +205,7 @@ public class ClassWrangler {
      * Gets whether the version of Groovy on the classpath supports invokedynamic.
      *
      * @return <code>true</code> if the version of Groovy uses invokedynamic,
-     *         <code>false</code> if not or Groovy dependency cannot be found.
+     * <code>false</code> if not or Groovy dependency cannot be found.
      */
     public boolean isGroovyIndy() {
         if (isIndy == null) {
@@ -290,7 +278,7 @@ public class ClassWrangler {
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     public ClassLoader createNewClassLoader(final List<?> classpath) throws MalformedURLException {
-        List<URL> urlsList = new ArrayList<URL>();
+        List<URL> urlsList = new ArrayList<>();
         for (Object classPathObject : classpath) {
             String path = (String) classPathObject;
             urlsList.add(new File(path).toURI().toURL());

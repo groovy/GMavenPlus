@@ -217,7 +217,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * Gets whether the version of Groovy on the classpath supports invokedynamic.
      *
      * @return <code>true</code> if the version of Groovy uses invokedynamic,
-     *         <code>false</code> if not or Groovy dependency cannot be found
+     * <code>false</code> if not or Groovy dependency cannot be found
      */
     protected boolean isGroovyIndy() {
         return classWrangler.isGroovyIndy();
@@ -226,7 +226,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     /**
      * Instantiate a ClassWrangler.
      *
-     * @param classpath the classpath to load onto a new classloader (if includeClasspath is <code>PROJECT_ONLY</code>)
+     * @param classpath        the classpath to load onto a new classloader (if includeClasspath is <code>PROJECT_ONLY</code>)
      * @param includeClasspath whether to use a shared classloader that includes both the project classpath and plugin classpath.
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */

@@ -14,7 +14,9 @@
   <artifactId>gmavenplus-plugin-it-cleanClasspathGenerateStubs</artifactId>
   <version>testing</version>
   <name>GMavenPlus Plugin Clean Classpath Generate Stubs Test</name>
-  <description>The simplest generate stubs use case where it would fail if the classpath were polluted with the plugin classpath. This will fail for all versions of Groovy before 1.8.2.</description>
+  <description>The simplest generate stubs use case where it would fail if the classpath were polluted with the plugin
+    classpath. This will fail for all versions of Groovy before 1.8.2.
+  </description>
 
   <dependencies>
     <dependency>
@@ -48,7 +50,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
       </dependencies>
@@ -58,7 +60,7 @@
       <dependencies>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
-          <artifactId>groovy-all</artifactId>
+          <artifactId>groovy</artifactId>
         </dependency>
       </dependencies>
     </profile>

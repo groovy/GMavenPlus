@@ -19,7 +19,6 @@ package org.codehaus.gmavenplus.mojo;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -32,8 +31,8 @@ public class LinkTest {
         String packages = "PACKAGES";
         String href = "HREF";
         Link link = new Link();
-        assertTrue(link.getPackages().length() == 0);
-        assertTrue(link.getHref().length() == 0);
+        assertEquals(0, link.getPackages().length());
+        assertEquals(0, link.getHref().length());
         link.setPackages(packages);
         link.setHref(href);
         assertEquals(packages, link.getPackages());

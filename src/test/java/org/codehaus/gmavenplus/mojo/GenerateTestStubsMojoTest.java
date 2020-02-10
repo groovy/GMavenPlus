@@ -77,7 +77,7 @@ public class GenerateTestStubsMojoTest {
         verify(generateTestStubsMojo, never()).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
@@ -85,7 +85,7 @@ public class GenerateTestStubsMojoTest {
         generateTestStubsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
@@ -93,7 +93,7 @@ public class GenerateTestStubsMojoTest {
         generateTestStubsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
@@ -101,7 +101,7 @@ public class GenerateTestStubsMojoTest {
         generateTestStubsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
@@ -109,13 +109,13 @@ public class GenerateTestStubsMojoTest {
         generateTestStubsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     public void testDependencyResolutionRequiredExceptionThrowsMojoExecutionException() throws Exception {
         doThrow(mock(DependencyResolutionRequiredException.class)).when(generateTestStubsMojo.project).getTestClasspathElements();
         generateTestStubsMojo.execute();
     }
 
-    @Test (expected = MojoExecutionException.class)
+    @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();

@@ -158,13 +158,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
-     * @param classpath The classpath to use for compilation
-     * @param outputDirectory The directory to save the generated GroovyDoc in
-     * @throws ClassNotFoundException when a class needed for GroovyDoc generation cannot be found
-     * @throws InstantiationException when a class needed for GroovyDoc generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed
+     * @param classpath         The classpath to use for compilation
+     * @param outputDirectory   The directory to save the generated GroovyDoc in
+     * @throws ClassNotFoundException    when a class needed for GroovyDoc generation cannot be found
+     * @throws InstantiationException    when a class needed for GroovyDoc generation cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
-     * @throws MalformedURLException when a classpath element provides a malformed URL
+     * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (skipGroovyDoc) {
@@ -204,7 +204,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));
         Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));
         FileSetManager fileSetManager = new FileSetManager(getLog());
-        List<String> sourceDirectoriesStrings = new ArrayList<String>();
+        List<String> sourceDirectoriesStrings = new ArrayList<>();
         for (FileSet sourceDirectory : sourceDirectories) {
             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
         }
@@ -264,9 +264,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Sets up the GroovyDoc links.
      *
      * @return the GroovyDoc links
-     * @throws ClassNotFoundException when a class needed for setting up GroovyDoc links cannot be found
-     * @throws InstantiationException when a class needed for setting up GroovyDoc links cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up GroovyDoc links cannot be accessed
+     * @throws ClassNotFoundException    when a class needed for setting up GroovyDoc links cannot be found
+     * @throws InstantiationException    when a class needed for setting up GroovyDoc links cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc links cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc links cannot be completed
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -299,16 +299,16 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Instantiates a new GroovyDocTool.
      *
-     * @param groovyDocToolClass the GroovyDocTool class
-     * @param resourceManagerClass the ResourceManager lass
-     * @param docProperties the documentation properties
+     * @param groovyDocToolClass       the GroovyDocTool class
+     * @param resourceManagerClass     the ResourceManager lass
+     * @param docProperties            the documentation properties
      * @param classpathResourceManager the ClasspathResourceManager for the GroovyDocTool
-     * @param sourceDirectories the source directories for the GroovyDocTool
-     * @param groovyDocTemplateInfo the GroovyDocTemplateInfo for the GroovyDocTool
-     * @param groovyDocLinks the GroovyDoc links
+     * @param sourceDirectories        the source directories for the GroovyDocTool
+     * @param groovyDocTemplateInfo    the GroovyDocTemplateInfo for the GroovyDocTool
+     * @param groovyDocLinks           the GroovyDoc links
      * @return the GroovyDocTool to use in GroovyDoc generation
-     * @throws InstantiationException when a class needed for setting up GroovyDoc tool cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up GroovyDoc tool cannot be accessed
+     * @throws InstantiationException    when a class needed for setting up GroovyDoc tool cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc tool cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc tool cannot be completed
      */
     protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List<?> groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -355,13 +355,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Gets the Groovy sources without the Java sources (since the Java sources don't have Javadoc).
      *
      * @param sourceDirectories the source directories to get the Groovy sources from
-     * @param fileSetManager the FileSetmanager to use to get the included files
+     * @param fileSetManager    the FileSetmanager to use to get the included files
      * @return the groovy sources
      */
     protected List<String> setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
-        List<String> javaSources = new ArrayList<String>();
-        List<String> groovySources = new ArrayList<String>();
-        List<String> possibleGroovyStubs = new ArrayList<String>();
+        List<String> javaSources = new ArrayList<>();
+        List<String> groovySources = new ArrayList<>();
+        List<String> possibleGroovyStubs = new ArrayList<>();
         for (FileSet sourceDirectory : sourceDirectories) {
             String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);
             for (String source : sources) {
@@ -374,7 +374,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             }
         }
         javaSources.removeAll(possibleGroovyStubs);
-        List<String> groovyDocSources = new ArrayList<String>();
+        List<String> groovyDocSources = new ArrayList<>();
         groovyDocSources.addAll(javaSources);
         groovyDocSources.addAll(groovySources);
 
@@ -384,13 +384,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Performs the GroovyDoc generation.
      *
-     * @param outputDirectory the directory to output the GroovyDoc to
+     * @param outputDirectory    the directory to output the GroovyDoc to
      * @param groovyDocToolClass the GroovyDocTool class
-     * @param outputToolClass the OutputTool class
-     * @param fileOutputTool the FileOutputTool to use for GroovyDoc generation
-     * @param groovyDocSources the sources to
-     * @param groovyDocTool the GroovyDocTool to use for GroovyDoc generation
-     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed
+     * @param outputToolClass    the OutputTool class
+     * @param fileOutputTool     the FileOutputTool to use for GroovyDoc generation
+     * @param groovyDocSources   the sources to
+     * @param groovyDocTool      the GroovyDocTool to use for GroovyDoc generation
+     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      */
     protected void generateGroovyDoc(final File outputDirectory, final Class<?> groovyDocToolClass, final Class<?> outputToolClass, final Object fileOutputTool, final List<String> groovyDocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {

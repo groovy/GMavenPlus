@@ -50,9 +50,10 @@ public class AbstractGroovyStubSourcesMojoTest {
         assertEquals(0, testMojo.getStubs(outputDirectory).size());
     }
 
-    protected class TestMojo extends AbstractGroovyStubSourcesMojo {
+    protected static class TestMojo extends AbstractGroovyStubSourcesMojo {
         @Override
-        public void execute() { }
+        public void execute() {
+        }
     }
 
 }
