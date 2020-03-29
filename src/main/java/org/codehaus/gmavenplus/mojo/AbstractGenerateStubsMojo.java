@@ -161,6 +161,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected String targetBytecode;
 
     /**
+     * Whether to check that the version of Groovy used is able to use the requested <code>targetBytecode</code>.
+     *
+     * @since 1.9.0
+     */
+    @Parameter(property = "skipBytecodeCheck", defaultValue = "false")
+    protected boolean skipBytecodeCheck;
+
+    /**
      * Whether Groovy compiler should be set to debug.
      */
     @Parameter(defaultValue = "false")
@@ -240,7 +248,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (groovyVersionSupportsAction()) {
+        if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");

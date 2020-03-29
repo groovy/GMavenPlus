@@ -155,6 +155,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected String targetBytecode;
 
     /**
+     * Whether to check that the version of Groovy used is able to use the requested <code>targetBytecode</code>.
+     *
+     * @since 1.9.0
+     */
+    @Parameter(property = "skipBytecodeCheck", defaultValue = "false")
+    protected boolean skipBytecodeCheck;
+
+    /**
      * Whether Groovy compiler should be set to debug.
      */
     @Parameter(defaultValue = "false")
@@ -256,7 +264,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (groovyVersionSupportsAction()) {
+        if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
