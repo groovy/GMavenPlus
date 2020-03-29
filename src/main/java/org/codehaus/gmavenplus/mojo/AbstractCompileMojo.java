@@ -41,6 +41,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 3.0.3 version.
+     */
+    protected static final Version GROOVY_3_0_3 = new Version(3, 0, 3);
+
+    /**
      * Groovy 3.0.0 beta-2 version.
      */
     protected static final Version GROOVY_3_0_0_BETA2 = new Version(3, 0, 0, "beta-2");
@@ -135,6 +140,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>12</li>
      *   <li>13</li>
      *   <li>14</li>
+     *   <li>15</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -143,6 +149,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
      * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-beta-1, but not any 2.6 versions.
      * Using 14 requires Groovy &gt;= 3.0.0 beta-2.
+     * Using 15 requires Groovy &gt;= 3.0.3.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -403,7 +410,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("14".equals(targetBytecode)) {
+        if ("15".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_3)) {
+                throw new IllegalArgumentException("Target bytecode 15 requires Groovy " + GROOVY_3_0_3 + " or newer.");
+            }
+        } else if ("14".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {
                 throw new IllegalArgumentException("Target bytecode 14 requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
             }

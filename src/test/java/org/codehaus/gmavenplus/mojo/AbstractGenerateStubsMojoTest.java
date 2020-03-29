@@ -328,6 +328,20 @@ public class AbstractGenerateStubsMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava15WithUnsupportedGroovy() {
+        testMojo = new TestMojo("3.0.2");
+        testMojo.targetBytecode = "15";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava15WithSupportedGroovy() {
+        testMojo = new TestMojo("3.0.3");
+        testMojo.targetBytecode = "15";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
     protected static class TestMojo extends AbstractGenerateStubsMojo {
         protected TestMojo() {
             this(GROOVY_1_8_2.toString(), false);
