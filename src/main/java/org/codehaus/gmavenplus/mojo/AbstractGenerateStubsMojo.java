@@ -45,6 +45,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
 
     /**
+     * Groovy 3.0.0 beta-2 version.
+     */
+    protected static final Version GROOVY_3_0_0_BETA2 = new Version(3, 0, 0, "beta-2");
+
+    /**
      * Groovy 3.0.0 beta-1 version.
      */
     protected static final Version GROOVY_3_0_0_BETA1 = new Version(3, 0, 0, "beta-1");
@@ -133,6 +138,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>11</li>
      *   <li>12</li>
      *   <li>13</li>
+     *   <li>14</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -140,6 +146,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 9 with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
      * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-beta-1, but not any 2.6 versions.
+     * Using 14 requires Groovy &gt;= 3.0.0 beta-2.
      *
      * @since 1.0-beta-3
      */
@@ -364,7 +371,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("13".equals(targetBytecode)) {
+        if ("14".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {
+                throw new IllegalArgumentException("Target bytecode 14 requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
+            }
+        } else if ("13".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
                 throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
             }
