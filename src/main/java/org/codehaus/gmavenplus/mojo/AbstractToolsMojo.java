@@ -61,7 +61,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      *   <dt>log</dt>
      *     <dd>A org.apache.maven.plugin.logging.Log object of Maven's log.</dd>
      *   <dt>ant</dt>
-     *     <dd>A groovy.util.AntBuilder object (if groovy.util.AntBuilder is available).</dd>
+     *     <dd>A groovy.util.AntBuilder object (if groovy.ant.AntBuilder or groovy.util.AntBuilder is available).</dd>
      * </dl>
      * These can be overridden.
      *
@@ -124,11 +124,21 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             properties.put("projectHelper", projectHelper);
         }
         if (!properties.containsKey("ant")) {
+            Object antBuilder = null;
             try {
-                Object antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                properties.put("ant", antBuilder);
-            } catch (InvocationTargetException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
+            } catch (ClassNotFoundException e1) {
+                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                try {
+                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {
+                    logUnableToInitializeAntBuilder(e2);
+                }
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 logUnableToInitializeAntBuilder(e);
+            }
+            if (antBuilder != null) {
+                properties.put("ant", antBuilder);
             }
         }
     }
