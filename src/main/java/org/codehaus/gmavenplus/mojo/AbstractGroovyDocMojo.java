@@ -137,7 +137,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      *
      * @since 1.6
      */
-    @Parameter(property = "maven.groovydoc.skip", defaultValue = "false")
+    @Parameter(property = "skipGroovydoc", defaultValue = "false")
     protected boolean skipGroovyDoc;
 
     /**
@@ -168,7 +168,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (skipGroovyDoc) {
-            getLog().info("Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.");
+            getLog().info("Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.");
             return;
         }
 
