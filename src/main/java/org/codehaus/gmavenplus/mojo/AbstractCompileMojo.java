@@ -41,6 +41,16 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 3.0.3 version.
+     */
+    protected static final Version GROOVY_3_0_3 = new Version(3, 0, 3);
+
+    /**
+     * Groovy 3.0.0 beta-2 version.
+     */
+    protected static final Version GROOVY_3_0_0_BETA2 = new Version(3, 0, 0, "beta-2");
+
+    /**
      * Groovy 3.0.0 beta-1 version.
      */
     protected static final Version GROOVY_3_0_0_BETA1 = new Version(3, 0, 0, "beta-1");
@@ -129,6 +139,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>11</li>
      *   <li>12</li>
      *   <li>13</li>
+     *   <li>14</li>
+     *   <li>15</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -136,9 +148,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 9 with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
      * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-beta-1, but not any 2.6 versions.
+     * Using 14 requires Groovy &gt;= 3.0.0 beta-2.
+     * Using 15 requires Groovy &gt;= 3.0.3.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
+
+    /**
+     * Whether to check that the version of Groovy used is able to use the requested <code>targetBytecode</code>.
+     *
+     * @since 1.9.0
+     */
+    @Parameter(property = "skipBytecodeCheck", defaultValue = "false")
+    protected boolean skipBytecodeCheck;
 
     /**
      * Whether Groovy compiler should be set to debug.
@@ -242,7 +264,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (groovyVersionSupportsAction()) {
+        if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
@@ -396,7 +418,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("13".equals(targetBytecode)) {
+        if ("15".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_3)) {
+                throw new IllegalArgumentException("Target bytecode 15 requires Groovy " + GROOVY_3_0_3 + " or newer.");
+            }
+        } else if ("14".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {
+                throw new IllegalArgumentException("Target bytecode 14 requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
+            }
+        } else if ("13".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
                 throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
             }
