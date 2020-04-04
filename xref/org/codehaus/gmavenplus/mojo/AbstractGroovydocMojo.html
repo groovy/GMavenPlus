@@ -145,7 +145,7 @@
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     * @since 1.6</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>     @Parameter(property = <span class="jxr_string">"maven.groovydoc.skip"</span>, defaultValue = <span class="jxr_string">"false"</span>)
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     @Parameter(property = <span class="jxr_string">"skipGroovydoc"</span>, defaultValue = <span class="jxr_string">"false"</span>)
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> skipGroovyDoc;
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> 
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     <em class="jxr_javadoccomment">/**</em>
@@ -166,17 +166,17 @@
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     * Generates the GroovyDoc for the specified sources.</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">     * @param sourceDirectories The source directories to generate GroovyDoc for</em>
-<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * @param classpath The classpath to use for compilation</em>
-<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     * @param outputDirectory The directory to save the generated GroovyDoc in</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException when a class needed for GroovyDoc generation cannot be found</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for GroovyDoc generation cannot be instantiated</em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed</em>
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * @param classpath         The classpath to use for compilation</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     * @param outputDirectory   The directory to save the generated GroovyDoc in</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException    when a class needed for GroovyDoc generation cannot be found</em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * @throws InstantiationException    when a class needed for GroovyDoc generation cannot be instantiated</em>
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed</em>
 <a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     * @throws MalformedURLException when a classpath element provides a malformed URL</em>
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     * @throws MalformedURLException     when a classpath element provides a malformed URL</em>
 <a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">synchronized</strong> <strong class="jxr_keyword">void</strong> doGroovyDocGeneration(<strong class="jxr_keyword">final</strong> FileSet[] sourceDirectories, <strong class="jxr_keyword">final</strong> List&lt;?&gt; classpath, <strong class="jxr_keyword">final</strong> File outputDirectory) <strong class="jxr_keyword">throws</strong> ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">if</strong> (skipGroovyDoc) {
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>             getLog().info(<span class="jxr_string">"Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true."</span>);
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             getLog().info(<span class="jxr_string">"Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true."</span>);
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>             <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L173" href="#L173">173</a>         }
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> 
@@ -212,7 +212,7 @@
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         FileSetManager fileSetManager = <strong class="jxr_keyword">new</strong> FileSetManager(getLog());
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         List&lt;String&gt; sourceDirectoriesStrings = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         List&lt;String&gt; sourceDirectoriesStrings = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>         }
@@ -272,9 +272,9 @@
 <a class="jxr_linenumber" name="L264" href="#L264">264</a> <em class="jxr_javadoccomment">     * Sets up the GroovyDoc links.</em>
 <a class="jxr_linenumber" name="L265" href="#L265">265</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">     * @return the GroovyDoc links</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException when a class needed for setting up GroovyDoc links cannot be found</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for setting up GroovyDoc links cannot be instantiated</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for setting up GroovyDoc links cannot be accessed</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">     * @throws ClassNotFoundException    when a class needed for setting up GroovyDoc links cannot be found</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * @throws InstantiationException    when a class needed for setting up GroovyDoc links cannot be instantiated</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc links cannot be accessed</em>
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc links cannot be completed</em>
 <a class="jxr_linenumber" name="L271" href="#L271">271</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>     @SuppressWarnings({<span class="jxr_string">"rawtypes"</span>, <span class="jxr_string">"unchecked"</span>})
@@ -307,16 +307,16 @@
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L300" href="#L300">300</a> <em class="jxr_javadoccomment">     * Instantiates a new GroovyDocTool.</em>
 <a class="jxr_linenumber" name="L301" href="#L301">301</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L302" href="#L302">302</a> <em class="jxr_javadoccomment">     * @param groovyDocToolClass the GroovyDocTool class</em>
-<a class="jxr_linenumber" name="L303" href="#L303">303</a> <em class="jxr_javadoccomment">     * @param resourceManagerClass the ResourceManager lass</em>
-<a class="jxr_linenumber" name="L304" href="#L304">304</a> <em class="jxr_javadoccomment">     * @param docProperties the documentation properties</em>
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> <em class="jxr_javadoccomment">     * @param groovyDocToolClass       the GroovyDocTool class</em>
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> <em class="jxr_javadoccomment">     * @param resourceManagerClass     the ResourceManager lass</em>
+<a class="jxr_linenumber" name="L304" href="#L304">304</a> <em class="jxr_javadoccomment">     * @param docProperties            the documentation properties</em>
 <a class="jxr_linenumber" name="L305" href="#L305">305</a> <em class="jxr_javadoccomment">     * @param classpathResourceManager the ClasspathResourceManager for the GroovyDocTool</em>
-<a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     * @param sourceDirectories the source directories for the GroovyDocTool</em>
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @param groovyDocTemplateInfo the GroovyDocTemplateInfo for the GroovyDocTool</em>
-<a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     * @param groovyDocLinks the GroovyDoc links</em>
+<a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     * @param sourceDirectories        the source directories for the GroovyDocTool</em>
+<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @param groovyDocTemplateInfo    the GroovyDocTemplateInfo for the GroovyDocTool</em>
+<a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     * @param groovyDocLinks           the GroovyDoc links</em>
 <a class="jxr_linenumber" name="L309" href="#L309">309</a> <em class="jxr_javadoccomment">     * @return the GroovyDocTool to use in GroovyDoc generation</em>
-<a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     * @throws InstantiationException when a class needed for setting up GroovyDoc tool cannot be instantiated</em>
-<a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for setting up GroovyDoc tool cannot be accessed</em>
+<a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     * @throws InstantiationException    when a class needed for setting up GroovyDoc tool cannot be instantiated</em>
+<a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc tool cannot be accessed</em>
 <a class="jxr_linenumber" name="L312" href="#L312">312</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc tool cannot be completed</em>
 <a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>     <strong class="jxr_keyword">protected</strong> Object createGroovyDocTool(<strong class="jxr_keyword">final</strong> Class&lt;?&gt; groovyDocToolClass, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; resourceManagerClass, <strong class="jxr_keyword">final</strong> Properties docProperties, <strong class="jxr_keyword">final</strong> Object classpathResourceManager, <strong class="jxr_keyword">final</strong> List&lt;String&gt; sourceDirectories, <strong class="jxr_keyword">final</strong> <a name="GroovyDocTemplateInfo" href="../../../../org/codehaus/gmavenplus/groovyworkarounds/GroovyDocTemplateInfo.html#GroovyDocTemplateInfo">GroovyDocTemplateInfo</a> groovyDocTemplateInfo, <strong class="jxr_keyword">final</strong> List&lt;?&gt; groovyDocLinks) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -363,13 +363,13 @@
 <a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     * Gets the Groovy sources without the Java sources (since the Java sources don't have Javadoc).</em>
 <a class="jxr_linenumber" name="L356" href="#L356">356</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L357" href="#L357">357</a> <em class="jxr_javadoccomment">     * @param sourceDirectories the source directories to get the Groovy sources from</em>
-<a class="jxr_linenumber" name="L358" href="#L358">358</a> <em class="jxr_javadoccomment">     * @param fileSetManager the FileSetmanager to use to get the included files</em>
+<a class="jxr_linenumber" name="L358" href="#L358">358</a> <em class="jxr_javadoccomment">     * @param fileSetManager    the FileSetmanager to use to get the included files</em>
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> <em class="jxr_javadoccomment">     * @return the groovy sources</em>
 <a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">protected</strong> List&lt;String&gt; setupGroovyDocSources(<strong class="jxr_keyword">final</strong> FileSet[] sourceDirectories, <strong class="jxr_keyword">final</strong> FileSetManager fileSetManager) {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         List&lt;String&gt; javaSources = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         List&lt;String&gt; groovySources = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>         List&lt;String&gt; possibleGroovyStubs = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>         List&lt;String&gt; javaSources = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>         List&lt;String&gt; groovySources = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>         List&lt;String&gt; possibleGroovyStubs = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>         <strong class="jxr_keyword">for</strong> (FileSet sourceDirectory : sourceDirectories) {
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>             String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>             <strong class="jxr_keyword">for</strong> (String source : sources) {
@@ -382,7 +382,7 @@
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>             }
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>         }
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>         javaSources.removeAll(possibleGroovyStubs);
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         List&lt;String&gt; groovyDocSources = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>         List&lt;String&gt; groovyDocSources = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>         groovyDocSources.addAll(javaSources);
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>         groovyDocSources.addAll(groovySources);
 <a class="jxr_linenumber" name="L380" href="#L380">380</a> 
@@ -392,13 +392,13 @@
 <a class="jxr_linenumber" name="L384" href="#L384">384</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L385" href="#L385">385</a> <em class="jxr_javadoccomment">     * Performs the GroovyDoc generation.</em>
 <a class="jxr_linenumber" name="L386" href="#L386">386</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">     * @param outputDirectory the directory to output the GroovyDoc to</em>
+<a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">     * @param outputDirectory    the directory to output the GroovyDoc to</em>
 <a class="jxr_linenumber" name="L388" href="#L388">388</a> <em class="jxr_javadoccomment">     * @param groovyDocToolClass the GroovyDocTool class</em>
-<a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">     * @param outputToolClass the OutputTool class</em>
-<a class="jxr_linenumber" name="L390" href="#L390">390</a> <em class="jxr_javadoccomment">     * @param fileOutputTool the FileOutputTool to use for GroovyDoc generation</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a> <em class="jxr_javadoccomment">     * @param groovyDocSources the sources to</em>
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> <em class="jxr_javadoccomment">     * @param groovyDocTool the GroovyDocTool to use for GroovyDoc generation</em>
-<a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed</em>
+<a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">     * @param outputToolClass    the OutputTool class</em>
+<a class="jxr_linenumber" name="L390" href="#L390">390</a> <em class="jxr_javadoccomment">     * @param fileOutputTool     the FileOutputTool to use for GroovyDoc generation</em>
+<a class="jxr_linenumber" name="L391" href="#L391">391</a> <em class="jxr_javadoccomment">     * @param groovyDocSources   the sources to</em>
+<a class="jxr_linenumber" name="L392" href="#L392">392</a> <em class="jxr_javadoccomment">     * @param groovyDocTool      the GroovyDocTool to use for GroovyDoc generation</em>
+<a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed</em>
 <a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed</em>
 <a class="jxr_linenumber" name="L395" href="#L395">395</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> generateGroovyDoc(<strong class="jxr_keyword">final</strong> File outputDirectory, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; groovyDocToolClass, <strong class="jxr_keyword">final</strong> Class&lt;?&gt; outputToolClass, <strong class="jxr_keyword">final</strong> Object fileOutputTool, <strong class="jxr_keyword">final</strong> List&lt;String&gt; groovyDocSources, <strong class="jxr_keyword">final</strong> Object groovyDocTool) <strong class="jxr_keyword">throws</strong> InvocationTargetException, IllegalAccessException {
@@ -459,6 +459,6 @@
 <a class="jxr_linenumber" name="L451" href="#L451">451</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>
 </body>
 </html>

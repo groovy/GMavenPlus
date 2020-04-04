@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">     * See &lt;a href="<a href="http://maven.apache.org/shared/maven-archiver/index.html" target="alexandria_uri">http://maven.apache.org/shared/maven-archiver/index.html</a>"&gt;Maven Archiver Reference&lt;/a&gt;.</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      @Parameter
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">protected</strong> MavenArchiveConfiguration archive = <strong class="jxr_keyword">new</strong> MavenArchiveConfiguration();
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> MavenArchiveConfiguration archive = <strong class="jxr_keyword">new</strong> MavenArchiveConfiguration();
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">     * Specifies whether to attach the generated artifact to the project helper.</em>
@@ -144,10 +144,10 @@
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * Method that creates the jar file</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     * @param groovydocFiles the directory where the generated jar file will be put</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * @param jarFileName the filename of the generated jar file</em>
+<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * @param jarFileName    the filename of the generated jar file</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * @return a File object that contains the generated jar file</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * @throws ArchiverException {@link ArchiverException}</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * @throws IOException {@link IOException}</em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * @throws ArchiverException When an issue occurs preventing Maven Archiver from creating the jar file</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * @throws IOException       When an IO issue occurs preventing Maven Archiver from creating the jar file</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     <strong class="jxr_keyword">protected</strong> File generateArchive(File groovydocFiles, String jarFileName) <strong class="jxr_keyword">throws</strong> ArchiverException, IOException {
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>         File groovydocJar = <strong class="jxr_keyword">new</strong> File(jarOutputDirectory, jarFileName);
@@ -185,6 +185,6 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>
 </body>
 </html>

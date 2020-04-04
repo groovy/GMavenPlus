@@ -49,8 +49,8 @@ import java.util.List;
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
-     * @param classpath The classpath to load into the container realm
-     * @param containerRealm The ClassRealm to add dependencies to
+     * @param classpath           The classpath to load into the container realm
+     * @param containerRealm      The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     protected void addDependenciesToClassRealm(final ExpressionEvaluator expressionEvaluator, final Classpath classpath,
@@ -74,8 +74,8 @@ import java.util.List;
      * Adds the project's compile dependencies to the specified ClassRealm.
      *
      * @param expressionEvaluator The expression evaluator to use to get project elements
-     * @param classpath The classpath to load into the container realm
-     * @param containerRealm The ClassRealm to add dependencies to
+     * @param classpath           The classpath to load into the container realm
+     * @param containerRealm      The ClassRealm to add dependencies to
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     @SuppressWarnings(&quot;deprecation&quot;)
@@ -104,7 +104,7 @@ import java.util.List;
      * @throws ComponentConfigurationException when parsing components configuration fails
      */
     protected URL[] buildURLs(final List&lt;?&gt; classpathElements) throws ComponentConfigurationException {
-<span class="fc" id="L107">        List&lt;URL&gt; urls = new ArrayList&lt;URL&gt;(classpathElements.size());</span>
+<span class="fc" id="L107">        List&lt;URL&gt; urls = new ArrayList&lt;&gt;(classpathElements.size());</span>
 <span class="fc bfc" id="L108" title="All 2 branches covered.">        for (Object element : classpathElements) {</span>
             try {
 <span class="fc" id="L110">                final URL url = new File((String) element).toURI().toURL();</span>
@@ -162,4 +162,4 @@ import java.util.List;
 <span class="nc" id="L162">        return IncludeClasspath.PROJECT_AND_PLUGIN.equals(IncludeClasspath.valueOf(includeClasspath));</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

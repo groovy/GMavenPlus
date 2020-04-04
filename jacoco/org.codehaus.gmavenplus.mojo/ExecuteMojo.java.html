@@ -148,9 +148,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @param groovyShellClass the groovy.lang.GroovyShell class
      * @return a new groovy.lang.GroovyShell object
      * @throws InvocationTargetException when a reflection invocation needed for shell configuration cannot be completed
-     * @throws IllegalAccessException when a method needed for shell configuration cannot be accessed
-     * @throws InstantiationException when a class needed for shell configuration cannot be instantiated
-     * @throws ClassNotFoundException when a class needed for shell configuration cannot be found
+     * @throws IllegalAccessException    when a method needed for shell configuration cannot be accessed
+     * @throws InstantiationException    when a class needed for shell configuration cannot be instantiated
+     * @throws ClassNotFoundException    when a class needed for shell configuration cannot be found
      */
     protected Object setupShell(final Class&lt;?&gt; groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object shell;
@@ -179,10 +179,10 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Executes the configured scripts.
      *
      * @param groovyShellClass the groovy.lang.GroovyShell class
-     * @param shell a groovy.lag.GroovyShell object
+     * @param shell            a groovy.lag.GroovyShell object
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
-     * @throws MojoExecutionException when an exception occurred during script execution (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
+     * @throws MojoExecutionException    when an exception occurred during script execution (causes a &quot;BUILD ERROR&quot; message to be displayed)
      */
     protected void executeScripts(final Class&lt;?&gt; groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
 <span class="fc" id="L188">        int scriptNum = 1;</span>
@@ -220,11 +220,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Executes a script at a URL location.
      *
      * @param groovyShellClass the GroovyShell class
-     * @param shell a groovy.lag.GroovyShell object
-     * @param script the script URL to execute
-     * @throws IOException when the stream can't be opened on the URL
+     * @param shell            a groovy.lag.GroovyShell object
+     * @param script           the script URL to execute
+     * @throws IOException               when the stream can't be opened on the URL
      * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
-     * @throws IllegalAccessException when a method needed for script execution cannot be accessed
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
      */
     protected void executeScriptFromUrl(Class&lt;?&gt; groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
 <span class="fc" id="L230">        URL url = new URL(script);</span>
@@ -258,4 +258,4 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="fc" id="L258">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

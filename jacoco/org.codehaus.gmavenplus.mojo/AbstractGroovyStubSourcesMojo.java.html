@@ -36,12 +36,12 @@ import static java.util.Collections.singletonList;
 
     /**
      * Gets the set of stub files in specified directory.
-     * @param outputDirectory the directory to write stubs to
      *
+     * @param outputDirectory the directory to write stubs to
      * @return The set of stub files in specified directory
      */
     protected Set&lt;File&gt; getStubs(File outputDirectory) {
-<span class="fc" id="L44">        Set&lt;File&gt; files = new HashSet&lt;File&gt;();</span>
+<span class="fc" id="L44">        Set&lt;File&gt; files = new HashSet&lt;&gt;();</span>
 <span class="fc" id="L45">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
 
 <span class="fc" id="L47">        FileSet fileSet = new FileSet();</span>
@@ -55,4 +55,4 @@ import static java.util.Collections.singletonList;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

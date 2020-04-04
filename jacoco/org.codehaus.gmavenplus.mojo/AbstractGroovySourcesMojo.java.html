@@ -46,12 +46,12 @@ import static java.util.Collections.singletonList;
     /**
      * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
-     * @param fromSources The sources to get the included files from
+     * @param fromSources        The sources to get the included files from
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
     protected SortedSet&lt;File&gt; getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L54">        SortedSet&lt;File&gt; files = new TreeSet&lt;File&gt;();</span>
+<span class="fc" id="L54">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
 <span class="fc" id="L55">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
 
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {</span>
@@ -66,12 +66,12 @@ import static java.util.Collections.singletonList;
     /**
      * Gets the set of included files from the specified source files or source directory (if sources are null).
      *
-     * @param fromSources The sources to get the included files from
+     * @param fromSources        The sources to get the included files from
      * @param includeJavaSources Whether to include Java sources
      * @return The included files from the specified sources
      */
     protected SortedSet&lt;File&gt; getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L74">        SortedSet&lt;File&gt; files = new TreeSet&lt;File&gt;();</span>
+<span class="fc" id="L74">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
 <span class="fc" id="L75">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
 
 <span class="fc bfc" id="L77" title="All 2 branches covered.">        for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {</span>
@@ -86,7 +86,7 @@ import static java.util.Collections.singletonList;
     /**
      * Gets the set of included filesets from the specified source files or source directory (if sources are null).
      *
-     * @param fromSources The sources to get the included files from
+     * @param fromSources        The sources to get the included files from
      * @param includeJavaSources Whether to include Java sources
      * @return The included filesets from the specified sources
      */
@@ -101,11 +101,11 @@ import static java.util.Collections.singletonList;
 <span class="fc" id="L101">            String groovyDirectory = &quot;src&quot; + File.separator + MAIN + File.separator + &quot;groovy&quot;;</span>
 <span class="fc" id="L102">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
 <span class="fc" id="L103">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
-<span class="fc" id="L104">            groovyFileSets = new FileSet[] {groovyFileSet};</span>
+<span class="fc" id="L104">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
 <span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (includeJavaSources) {</span>
-<span class="nc" id="L108">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;FileSet&gt;();</span>
+<span class="nc" id="L108">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Object sourceRoot : project.getCompileSourceRoots()) {</span>
 <span class="nc" id="L110">                FileSet javaFileSet = new FileSet();</span>
 <span class="nc" id="L111">                javaFileSet.setDirectory((String) sourceRoot);</span>
@@ -125,7 +125,7 @@ import static java.util.Collections.singletonList;
     /**
      * Gets the set of included filesets from the specified source files or source directory (if sources are null).
      *
-     * @param fromSources The sources to get the included files from
+     * @param fromSources        The sources to get the included files from
      * @param includeJavaSources Whether to include Java sources
      * @return The included filesets from the specified sources
      */
@@ -140,11 +140,11 @@ import static java.util.Collections.singletonList;
 <span class="fc" id="L140">            String groovyDirectory = &quot;src&quot; + File.separator + TEST + File.separator + &quot;groovy&quot;;</span>
 <span class="fc" id="L141">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
 <span class="fc" id="L142">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
-<span class="fc" id="L143">            groovyFileSets = new FileSet[] {groovyFileSet};</span>
+<span class="fc" id="L143">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
 <span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (includeJavaSources) {</span>
-<span class="nc" id="L147">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;FileSet&gt;();</span>
+<span class="nc" id="L147">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L148" title="All 2 branches missed.">            for (Object sourceRoot : project.getTestCompileSourceRoots()) {</span>
 <span class="nc" id="L149">                FileSet javaFileSet = new FileSet();</span>
 <span class="nc" id="L150">                javaFileSet.setDirectory((String) sourceRoot);</span>
@@ -161,4 +161,4 @@ import static java.util.Collections.singletonList;
 <span class="fc" id="L161">        return result;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

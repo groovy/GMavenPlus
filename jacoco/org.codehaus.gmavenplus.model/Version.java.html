@@ -51,10 +51,10 @@ public class Version implements Comparable&lt;Version&gt; {
     /**
      * Constructs a new version object with the specified parameters.
      *
-     * @param newMajor The version major number
-     * @param newMinor The version minor number
+     * @param newMajor    The version major number
+     * @param newMinor    The version minor number
      * @param newRevision The version revision number
-     * @param newTag The version tag string
+     * @param newTag      The version tag string
      */
 <span class="fc" id="L59">    public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {</span>
 <span class="pc bpc" id="L60" title="2 of 6 branches missed.">        if (newMajor &lt; 0 || newMinor &lt; 0 || newRevision &lt; 0) {</span>
@@ -75,8 +75,8 @@ public class Version implements Comparable&lt;Version&gt; {
     /**
      * Constructs a new Version object with the specified parameters.
      *
-     * @param newMajor The version major number
-     * @param newMinor The version minor number
+     * @param newMajor    The version major number
+     * @param newMinor    The version minor number
      * @param newRevision The version revision number
      */
     public Version(final int newMajor, final int newMinor, final int newRevision) {
@@ -161,7 +161,7 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     @Override
     public final int hashCode() {
-<span class="fc" id="L164">        return Arrays.hashCode(new Object[] {major, minor, revision, tag});</span>
+<span class="fc" id="L164">        return Arrays.hashCode(new Object[]{major, minor, revision, tag});</span>
     }
 
     /**
@@ -211,7 +211,7 @@ public class Version implements Comparable&lt;Version&gt; {
      *
      * @param version The version to compare this version to
      * @return &lt;code&gt;0&lt;/code&gt; if the version is equal to this version, &lt;code&gt;1&lt;/code&gt; if the version is greater than
-     *         this version, or &lt;code&gt;-1&lt;/code&gt; if the version is lower than this version.
+     * this version, or &lt;code&gt;-1&lt;/code&gt; if the version is lower than this version.
      */
     @Override
     public final int compareTo(final Version version) {
@@ -222,19 +222,19 @@ public class Version implements Comparable&lt;Version&gt; {
      * Compares two versions objects. Note that if the major, minor, and revision are all the same, tags are compared with
      * {@link java.lang.String#compareTo(String) String.compareTo()}.
      *
-     * @param version The version to compare this version to
+     * @param version        The version to compare this version to
      * @param noTagsAreNewer Whether versions with no tag are considered newer than those that have tags
      * @return &lt;code&gt;0&lt;/code&gt; if the version is equal to this version, &lt;code&gt;1&lt;/code&gt; if the version is greater than
-     *         this version, or &lt;code&gt;-1&lt;/code&gt; if the version is lower than this version.
+     * this version, or &lt;code&gt;-1&lt;/code&gt; if the version is lower than this version.
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
         // &quot;beta&quot; is replaced with &quot; beta&quot; to make sure RCs are considered newer than betas (by moving beta to back of order)
-<span class="fc bfc" id="L232" title="All 4 branches covered.">        int comp = major &lt; version.major ? -1 : (major == version.major ? 0 : 1);</span>
+<span class="fc" id="L232">        int comp = Integer.compare(major, version.major);</span>
 <span class="fc bfc" id="L233" title="All 2 branches covered.">        if (comp == 0) {</span>
-<span class="fc bfc" id="L234" title="All 4 branches covered.">            comp = minor &lt; version.minor ? -1 : (minor == version.minor ? 0 : 1);</span>
+<span class="fc" id="L234">            comp = Integer.compare(minor, version.minor);</span>
         }
 <span class="fc bfc" id="L236" title="All 2 branches covered.">        if (comp == 0) {</span>
-<span class="fc bfc" id="L237" title="All 4 branches covered.">            comp = revision &lt; version.revision ? -1 : (revision == version.revision ? 0 : 1);</span>
+<span class="fc" id="L237">            comp = Integer.compare(revision, version.revision);</span>
         }
 <span class="fc bfc" id="L239" title="All 2 branches covered.">        if (comp == 0) {</span>
 <span class="fc bfc" id="L240" title="All 4 branches covered.">            if (tag != null &amp;&amp; version.tag != null) {</span>
@@ -335,4 +335,4 @@ public class Version implements Comparable&lt;Version&gt; {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

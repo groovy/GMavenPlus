@@ -66,7 +66,7 @@ import java.io.IOException;
      * See &lt;a href=&quot;http://maven.apache.org/shared/maven-archiver/index.html&quot;&gt;Maven Archiver Reference&lt;/a&gt;.
      */
 <span class="nc" id="L68">    @Parameter</span>
-    protected MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
+    protected final MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
 
     /**
      * Specifies whether to attach the generated artifact to the project helper.
@@ -136,10 +136,10 @@ import java.io.IOException;
      * Method that creates the jar file
      *
      * @param groovydocFiles the directory where the generated jar file will be put
-     * @param jarFileName the filename of the generated jar file
+     * @param jarFileName    the filename of the generated jar file
      * @return a File object that contains the generated jar file
-     * @throws ArchiverException {@link ArchiverException}
-     * @throws IOException {@link IOException}
+     * @throws ArchiverException When an issue occurs preventing Maven Archiver from creating the jar file
+     * @throws IOException       When an IO issue occurs preventing Maven Archiver from creating the jar file
      */
     protected File generateArchive(File groovydocFiles, String jarFileName) throws ArchiverException, IOException {
 <span class="nc" id="L145">        File groovydocJar = new File(jarOutputDirectory, jarFileName);</span>
@@ -175,4 +175,4 @@ import java.io.IOException;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

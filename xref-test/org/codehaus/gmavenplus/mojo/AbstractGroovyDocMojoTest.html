@@ -23,62 +23,62 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> java.util.Collections.emptyList;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.ArgumentMatchers.*;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> * Unit tests for the AbstractGroovyDocMojo class.</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> * @author Rick Venutolo</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractGroovyDocMojoTest" href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojoTest.html#AbstractGroovyDocMojoTest">AbstractGroovyDocMojoTest</a> {
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>      @Spy
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> TestMojo testMojo;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      @Mock
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> MojoExecution mojoExecution;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Mock
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> MojoDescriptor mojoDescriptor;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      @Mock
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> MavenProject project;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      @Before
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          MockitoAnnotations.initMocks(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          testMojo.mojoExecution = mojoExecution;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          testMojo.project = project;
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          doReturn(<strong class="jxr_keyword">new</strong> Properties()).when(testMojo).setupProperties();
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          doReturn(emptyList()).when(testMojo).setupGroovyDocSources(any(FileSet[].<strong class="jxr_keyword">class</strong>), any(FileSetManager.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          doNothing().when(testMojo).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      @Test
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDontSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          verify(testMojo, times(1)).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Test
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          testMojo.skipGroovyDoc = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          verify(testMojo, never()).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      }
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractGroovyDocMojo {
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          @Override
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() { }
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * Unit tests for the AbstractGroovyDocMojo class.</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * @author Rick Venutolo</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractGroovyDocMojoTest" href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojoTest.html#AbstractGroovyDocMojoTest">AbstractGroovyDocMojoTest</a> {
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      @Spy
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> TestMojo testMojo;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      @Mock
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> MojoExecution mojoExecution;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      @Mock
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> MojoDescriptor mojoDescriptor;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      @Mock
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> MavenProject project;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      @Before
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          MockitoAnnotations.initMocks(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          testMojo.mojoExecution = mojoExecution;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          testMojo.project = project;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          doReturn(<strong class="jxr_keyword">new</strong> Properties()).when(testMojo).setupProperties();
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          doReturn(emptyList()).when(testMojo).setupGroovyDocSources(any(FileSet[].<strong class="jxr_keyword">class</strong>), any(FileSetManager.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          doNothing().when(testMojo).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDontSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          verify(testMojo, times(1)).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      }
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      @Test
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      @SuppressWarnings(<span class="jxr_string">"deprecation"</span>)
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          testMojo.skipGroovyDoc = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          verify(testMojo, never()).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), anyObject(), anyListOf(String.<strong class="jxr_keyword">class</strong>), anyObject());
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractGroovyDocMojo {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          @Override
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          }
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>
 </body>
 </html>

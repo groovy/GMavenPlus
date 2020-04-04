@@ -43,12 +43,12 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      @Test
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGroovyWithCustomExtension() {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          DotGroovyFile[] dotGroovyFiles = <strong class="jxr_keyword">new</strong> DotGroovyFile[] {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"pathname.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"parent"</span>, <span class="jxr_string">"child.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"parent"</span>), <span class="jxr_string">"child.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"filename.ext"</span>)).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"filename.ext"</span>).toURI()).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;(singletonList(<span class="jxr_string">"ext"</span>)))
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          DotGroovyFile[] dotGroovyFiles = <strong class="jxr_keyword">new</strong> DotGroovyFile[]{
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"pathname.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"parent"</span>, <span class="jxr_string">"child.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"parent"</span>), <span class="jxr_string">"child.ext"</span>).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"filename.ext"</span>)).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(singletonList(<span class="jxr_string">"ext"</span>))),
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"filename.ext"</span>).toURI()).setScriptExtensions(<strong class="jxr_keyword">new</strong> HashSet&lt;&gt;(singletonList(<span class="jxr_string">"ext"</span>)))
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          };
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">for</strong> (DotGroovyFile dotGroovyFile : dotGroovyFiles) {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>              assertTrue(dotGroovyFile.getName() + <span class="jxr_string">" doesn't end with .groovy"</span>, dotGroovyFile.getName().endsWith(<span class="jxr_string">".groovy"</span>));
@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testNonGroovyFile() {
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          DotGroovyFile[] dotGroovyFiles = <strong class="jxr_keyword">new</strong> DotGroovyFile[] {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          DotGroovyFile[] dotGroovyFiles = <strong class="jxr_keyword">new</strong> DotGroovyFile[]{
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"pathname.ext"</span>),
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">"parent"</span>, <span class="jxr_string">"child.ext"</span>),
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>                  <strong class="jxr_keyword">new</strong> DotGroovyFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"parent"</span>), <span class="jxr_string">"child.ext"</span>),
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Test
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGettersAndSetters() {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          Set&lt;String&gt; extensions = <strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;();
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          Set&lt;String&gt; extensions = <strong class="jxr_keyword">new</strong> HashSet&lt;&gt;();
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          extensions.add(<span class="jxr_string">"ext"</span>);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          DotGroovyFile dotGroovyFile = <strong class="jxr_keyword">new</strong> DotGroovyFile(<span class="jxr_string">""</span>)
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                  .setScriptExtensions(extensions);
@@ -81,6 +81,6 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2019. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>
 </body>
 </html>

@@ -137,7 +137,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      *
      * @since 1.6
      */
-    @Parameter(property = &quot;maven.groovydoc.skip&quot;, defaultValue = &quot;false&quot;)
+    @Parameter(property = &quot;skipGroovydoc&quot;, defaultValue = &quot;false&quot;)
     protected boolean skipGroovyDoc;
 
     /**
@@ -158,17 +158,17 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
-     * @param classpath The classpath to use for compilation
-     * @param outputDirectory The directory to save the generated GroovyDoc in
-     * @throws ClassNotFoundException when a class needed for GroovyDoc generation cannot be found
-     * @throws InstantiationException when a class needed for GroovyDoc generation cannot be instantiated
-     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed
+     * @param classpath         The classpath to use for compilation
+     * @param outputDirectory   The directory to save the generated GroovyDoc in
+     * @throws ClassNotFoundException    when a class needed for GroovyDoc generation cannot be found
+     * @throws InstantiationException    when a class needed for GroovyDoc generation cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
-     * @throws MalformedURLException when a classpath element provides a malformed URL
+     * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List&lt;?&gt; classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
 <span class="fc bfc" id="L170" title="All 2 branches covered.">        if (skipGroovyDoc) {</span>
-<span class="fc" id="L171">            getLog().info(&quot;Skipping generation of GroovyDoc because ${maven.groovydoc.skip} was set to true.&quot;);</span>
+<span class="fc" id="L171">            getLog().info(&quot;Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.&quot;);</span>
 <span class="fc" id="L172">            return;</span>
         }
 
@@ -204,7 +204,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="fc" id="L204">        Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));</span>
 <span class="fc" id="L205">        Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));</span>
 <span class="fc" id="L206">        FileSetManager fileSetManager = new FileSetManager(getLog());</span>
-<span class="fc" id="L207">        List&lt;String&gt; sourceDirectoriesStrings = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L207">        List&lt;String&gt; sourceDirectoriesStrings = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L208" title="All 2 branches covered.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
 <span class="fc" id="L209">            sourceDirectoriesStrings.add(sourceDirectory.getDirectory());</span>
         }
@@ -264,9 +264,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Sets up the GroovyDoc links.
      *
      * @return the GroovyDoc links
-     * @throws ClassNotFoundException when a class needed for setting up GroovyDoc links cannot be found
-     * @throws InstantiationException when a class needed for setting up GroovyDoc links cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up GroovyDoc links cannot be accessed
+     * @throws ClassNotFoundException    when a class needed for setting up GroovyDoc links cannot be found
+     * @throws InstantiationException    when a class needed for setting up GroovyDoc links cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc links cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc links cannot be completed
      */
     @SuppressWarnings({&quot;rawtypes&quot;, &quot;unchecked&quot;})
@@ -299,16 +299,16 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
     /**
      * Instantiates a new GroovyDocTool.
      *
-     * @param groovyDocToolClass the GroovyDocTool class
-     * @param resourceManagerClass the ResourceManager lass
-     * @param docProperties the documentation properties
+     * @param groovyDocToolClass       the GroovyDocTool class
+     * @param resourceManagerClass     the ResourceManager lass
+     * @param docProperties            the documentation properties
      * @param classpathResourceManager the ClasspathResourceManager for the GroovyDocTool
-     * @param sourceDirectories the source directories for the GroovyDocTool
-     * @param groovyDocTemplateInfo the GroovyDocTemplateInfo for the GroovyDocTool
-     * @param groovyDocLinks the GroovyDoc links
+     * @param sourceDirectories        the source directories for the GroovyDocTool
+     * @param groovyDocTemplateInfo    the GroovyDocTemplateInfo for the GroovyDocTool
+     * @param groovyDocLinks           the GroovyDoc links
      * @return the GroovyDocTool to use in GroovyDoc generation
-     * @throws InstantiationException when a class needed for setting up GroovyDoc tool cannot be instantiated
-     * @throws IllegalAccessException when a method needed for setting up GroovyDoc tool cannot be accessed
+     * @throws InstantiationException    when a class needed for setting up GroovyDoc tool cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc tool cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc tool cannot be completed
      */
     protected Object createGroovyDocTool(final Class&lt;?&gt; groovyDocToolClass, final Class&lt;?&gt; resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List&lt;String&gt; sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List&lt;?&gt; groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -355,13 +355,13 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * Gets the Groovy sources without the Java sources (since the Java sources don't have Javadoc).
      *
      * @param sourceDirectories the source directories to get the Groovy sources from
-     * @param fileSetManager the FileSetmanager to use to get the included files
+     * @param fileSetManager    the FileSetmanager to use to get the included files
      * @return the groovy sources
      */
     protected List&lt;String&gt; setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
-<span class="nc" id="L362">        List&lt;String&gt; javaSources = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L363">        List&lt;String&gt; groovySources = new ArrayList&lt;String&gt;();</span>
-<span class="nc" id="L364">        List&lt;String&gt; possibleGroovyStubs = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L362">        List&lt;String&gt; javaSources = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L363">        List&lt;String&gt; groovySources = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L364">        List&lt;String&gt; possibleGroovyStubs = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L365" title="All 2 branches missed.">        for (FileSet sourceDirectory : sourceDirectories) {</span>
 <span class="nc" id="L366">            String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);</span>
 <span class="nc bnc" id="L367" title="All 2 branches missed.">            for (String source : sources) {</span>
@@ -374,7 +374,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
             }
         }
 <span class="nc" id="L376">        javaSources.removeAll(possibleGroovyStubs);</span>
-<span class="nc" id="L377">        List&lt;String&gt; groovyDocSources = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L377">        List&lt;String&gt; groovyDocSources = new ArrayList&lt;&gt;();</span>
 <span class="nc" id="L378">        groovyDocSources.addAll(javaSources);</span>
 <span class="nc" id="L379">        groovyDocSources.addAll(groovySources);</span>
 
@@ -384,13 +384,13 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
     /**
      * Performs the GroovyDoc generation.
      *
-     * @param outputDirectory the directory to output the GroovyDoc to
+     * @param outputDirectory    the directory to output the GroovyDoc to
      * @param groovyDocToolClass the GroovyDocTool class
-     * @param outputToolClass the OutputTool class
-     * @param fileOutputTool the FileOutputTool to use for GroovyDoc generation
-     * @param groovyDocSources the sources to
-     * @param groovyDocTool the GroovyDocTool to use for GroovyDoc generation
-     * @throws IllegalAccessException when a method needed for GroovyDoc generation cannot be accessed
+     * @param outputToolClass    the OutputTool class
+     * @param fileOutputTool     the FileOutputTool to use for GroovyDoc generation
+     * @param groovyDocSources   the sources to
+     * @param groovyDocTool      the GroovyDocTool to use for GroovyDoc generation
+     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      */
     protected void generateGroovyDoc(final File outputDirectory, final Class&lt;?&gt; groovyDocToolClass, final Class&lt;?&gt; outputToolClass, final Object fileOutputTool, final List&lt;String&gt; groovyDocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
@@ -449,4 +449,4 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="nc" id="L449">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
