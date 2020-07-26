@@ -72,6 +72,14 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected String sourceEncoding;
 
     /**
+     * Flag to allow script execution to be skipped.
+     *
+     * @since 1.9.1
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean skipScriptExecution;
+
+    /**
      * Executes this mojo.
      *
      * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
@@ -87,6 +95,11 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws MojoExecutionException If an unexpected problem occurs (causes a "BUILD ERROR" message to be displayed)
      */
     protected synchronized void doExecute() throws MojoExecutionException {
+        if (skipScriptExecution) {
+            getLog().info("Skipping script execution because ${skipScriptExecution} was set to true.");
+            return;
+        }
+
         if (scripts == null || scripts.length == 0) {
             getLog().info("No scripts specified for execution. Skipping.");
             return;
