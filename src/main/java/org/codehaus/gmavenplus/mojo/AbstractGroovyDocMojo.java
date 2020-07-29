@@ -155,6 +155,22 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected IncludeClasspath includeClasspath;
 
     /**
+     * Whether to process Groovy Scripts.
+     *
+     * @since 1.8.2
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean processScripts;
+
+    /**
+     * Whether to include the implicit <code>public static void main</code> method for scripts.
+     *
+     * @since 1.8.2
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean includeMainForScripts;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -236,22 +252,24 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     protected Properties setupProperties() {
         Properties properties = new Properties();
-        properties.setProperty("windowTitle", windowTitle);
-        properties.setProperty("docTitle", docTitle);
-        properties.setProperty("footer", footer);
-        properties.setProperty("header", header);
-        properties.setProperty("author", Boolean.toString(displayAuthor));
-        properties.setProperty("overviewFile", overviewFile != null ? overviewFile.getAbsolutePath() : "");
+        properties.put("windowTitle", windowTitle);
+        properties.put("docTitle", docTitle);
+        properties.put("footer", footer);
+        properties.put("header", header);
+        properties.put("author", Boolean.toString(displayAuthor));
+        properties.put("overviewFile", overviewFile != null ? overviewFile.getAbsolutePath() : "");
+        properties.put("processScripts", Boolean.toString(processScripts));
+        properties.put("includeMainForScripts", Boolean.toString(includeMainForScripts));
         try {
             Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());
             if (scopeVal.equals(Scopes.PUBLIC)) {
-                properties.setProperty("publicScope", "true");
+                properties.put("publicScope", "true");
             } else if (scopeVal.equals(Scopes.PROTECTED)) {
-                properties.setProperty("protectedScope", "true");
+                properties.put("protectedScope", "true");
             } else if (scopeVal.equals(Scopes.PACKAGE)) {
-                properties.setProperty("packageScope", "true");
+                properties.put("packageScope", "true");
             } else if (scopeVal.equals(Scopes.PRIVATE)) {
-                properties.setProperty("privateScope", "true");
+                properties.put("privateScope", "true");
             }
         } catch (IllegalArgumentException e) {
             getLog().warn("Scope (" + scope + ") was not recognized. Skipping argument.");
