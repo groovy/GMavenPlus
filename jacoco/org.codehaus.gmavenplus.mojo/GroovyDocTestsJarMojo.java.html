@@ -96,8 +96,16 @@ import java.io.IOException;
     /**
      * The classifier for the test GroovyDoc jar.
      */
-    @Parameter(defaultValue = &quot;test-groovydoc&quot;, required = true)
+    @Parameter(defaultValue = &quot;test-groovydoc&quot;)
     private String testClassifier;
+
+    /**
+     * The artifact type for the test GroovyDoc jar.
+     *
+     * @since 1.10.0
+     */
+    @Parameter(defaultValue = &quot;javadoc&quot;)
+    private String testArtifactType;
 
     /**
      * Whether to invoke the &lt;code&gt;groovydocTests&lt;/code&gt; goal before creating jar.
@@ -110,27 +118,27 @@ import java.io.IOException;
      */
     @Override
     public void execute() throws MojoExecutionException {
-<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (invokeGroovyDoc) {</span>
-            // generate the test GroovyDoc
-<span class="nc" id="L115">            super.execute();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (invokeGroovyDoc) {</span>
+            // invoke the test GroovyDoc mojo
+<span class="nc" id="L123">            super.execute();</span>
         }
 
         try {
-<span class="nc" id="L119">            File outputFile = generateArchive(testGroovyDocOutputDirectory, finalName + &quot;-&quot; + testClassifier + &quot;.jar&quot;);</span>
+<span class="nc" id="L127">            File outputFile = generateArchive(testGroovyDocOutputDirectory, finalName + &quot;-&quot; + testClassifier + &quot;.jar&quot;);</span>
 
-<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!attach) {</span>
-<span class="nc" id="L122">                getLog().info(&quot;NOT adding GroovyDoc to attached artifacts list.&quot;);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (attach) {</span>
+<span class="nc" id="L130">                projectHelper.attachArtifact(project, testArtifactType, testClassifier, outputFile);</span>
             } else {
-<span class="nc" id="L124">                projectHelper.attachArtifact(project, &quot;groovydoc&quot;, testClassifier, outputFile);</span>
+<span class="nc" id="L132">                getLog().info(&quot;Not adding test GroovyDoc jar to attached artifacts list.&quot;);</span>
             }
-<span class="nc" id="L126">        } catch (ArchiverException e) {</span>
-<span class="nc" id="L127">            throw new MojoExecutionException(&quot;ArchiverException: Error while creating archive&quot;, e);</span>
-<span class="nc" id="L128">        } catch (IOException e) {</span>
-<span class="nc" id="L129">            throw new MojoExecutionException(&quot;IOException: Error while creating archive&quot;, e);</span>
-<span class="nc" id="L130">        } catch (RuntimeException e) {</span>
-<span class="nc" id="L131">            throw new MojoExecutionException(&quot;RuntimeException: Error while creating archive&quot;, e);</span>
-<span class="nc" id="L132">        }</span>
-<span class="nc" id="L133">    }</span>
+<span class="nc" id="L134">        } catch (ArchiverException e) {</span>
+<span class="nc" id="L135">            throw new MojoExecutionException(&quot;ArchiverException: Error while creating archive&quot;, e);</span>
+<span class="nc" id="L136">        } catch (IOException e) {</span>
+<span class="nc" id="L137">            throw new MojoExecutionException(&quot;IOException: Error while creating archive&quot;, e);</span>
+<span class="nc" id="L138">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L139">            throw new MojoExecutionException(&quot;RuntimeException: Error while creating archive&quot;, e);</span>
+<span class="nc" id="L140">        }</span>
+<span class="nc" id="L141">    }</span>
 
     /**
      * Method that creates the jar file
@@ -142,36 +150,36 @@ import java.io.IOException;
      * @throws IOException       When an IO issue occurs preventing Maven Archiver from creating the jar file
      */
     protected File generateArchive(File groovydocFiles, String jarFileName) throws ArchiverException, IOException {
-<span class="nc" id="L145">        File groovydocJar = new File(jarOutputDirectory, jarFileName);</span>
+<span class="nc" id="L153">        File groovydocJar = new File(jarOutputDirectory, jarFileName);</span>
 
-<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (groovydocJar.exists()) {</span>
-<span class="nc" id="L148">            groovydocJar.delete();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (groovydocJar.exists()) {</span>
+<span class="nc" id="L156">            groovydocJar.delete();</span>
         }
 
-<span class="nc" id="L151">        MavenArchiver archiver = new MavenArchiver();</span>
-<span class="nc" id="L152">        archiver.setArchiver(jarArchiver);</span>
-<span class="nc" id="L153">        archiver.setOutputFile(groovydocJar);</span>
+<span class="nc" id="L159">        MavenArchiver archiver = new MavenArchiver();</span>
+<span class="nc" id="L160">        archiver.setArchiver(jarArchiver);</span>
+<span class="nc" id="L161">        archiver.setOutputFile(groovydocJar);</span>
 
-<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (!groovydocFiles.exists()) {</span>
-<span class="nc" id="L156">            getLog().warn(&quot;JAR will be empty - no content was marked for inclusion!&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (!groovydocFiles.exists()) {</span>
+<span class="nc" id="L164">            getLog().warn(&quot;JAR will be empty - no content was marked for inclusion!&quot;);</span>
         } else {
-<span class="nc" id="L158">            archiver.getArchiver().addDirectory(groovydocFiles);</span>
+<span class="nc" id="L166">            archiver.getArchiver().addDirectory(groovydocFiles);</span>
         }
 
-<span class="nc bnc" id="L161" title="All 6 branches missed.">        if (useDefaultManifestFile &amp;&amp; defaultManifestFile.exists() &amp;&amp; archive.getManifestFile() == null) {</span>
-<span class="nc" id="L162">            getLog().info(&quot;Adding existing MANIFEST to archive. Found under: &quot; + defaultManifestFile.getPath());</span>
-<span class="nc" id="L163">            archive.setManifestFile(defaultManifestFile);</span>
+<span class="nc bnc" id="L169" title="All 6 branches missed.">        if (useDefaultManifestFile &amp;&amp; defaultManifestFile.exists() &amp;&amp; archive.getManifestFile() == null) {</span>
+<span class="nc" id="L170">            getLog().info(&quot;Adding existing MANIFEST to archive. Found under: &quot; + defaultManifestFile.getPath());</span>
+<span class="nc" id="L171">            archive.setManifestFile(defaultManifestFile);</span>
         }
 
         try {
-<span class="nc" id="L167">            archiver.createArchive(session, project, archive);</span>
-<span class="nc" id="L168">        } catch (ManifestException e) {</span>
-<span class="nc" id="L169">            throw new ArchiverException(&quot;ManifestException: &quot; + e.getMessage(), e);</span>
-<span class="nc" id="L170">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L171">            throw new ArchiverException(&quot;DependencyResolutionRequiredException: &quot; + e.getMessage(), e);</span>
-<span class="nc" id="L172">        }</span>
+<span class="nc" id="L175">            archiver.createArchive(session, project, archive);</span>
+<span class="nc" id="L176">        } catch (ManifestException e) {</span>
+<span class="nc" id="L177">            throw new ArchiverException(&quot;ManifestException: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L178">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L179">            throw new ArchiverException(&quot;DependencyResolutionRequiredException: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L180">        }</span>
 
-<span class="nc" id="L174">        return groovydocJar;</span>
+<span class="nc" id="L182">        return groovydocJar;</span>
     }
 
 }
