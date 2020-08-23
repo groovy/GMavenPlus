@@ -52,7 +52,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected static final Version GROOVY_1_7_0 = new Version(1, 7, 0);
 
     /**
-     * Groovy scripts to run (in order). Can be an actual Groovy script or a {@link java.net.URL URL} to a Groovy script (local or remote).
+     * Groovy scripts to run (in order). Can be a script body, a {@link java.net.URL URL} to a script
+     * (local or remote), or a filename.
      */
     @Parameter(required = true)
     protected String[] scripts;
