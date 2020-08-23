@@ -524,7 +524,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${javadocPluginVersion}</version>
         <configuration>
-          <source>${shortJavaVersion}</source>
+          <source>${javaVersion}</source>
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
