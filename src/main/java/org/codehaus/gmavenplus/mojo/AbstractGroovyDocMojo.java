@@ -155,6 +155,30 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected IncludeClasspath includeClasspath;
 
     /**
+     * Override the default Groovydoc default top-level templates.  Uses Groovy's standard templates by default.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String[] defaultDocTemplates;
+
+    /**
+     * Override the default Groovydoc package-level templates.  Uses Groovy's standard templates by default.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String[] defaultPackageTemplates;
+
+    /**
+     * Override the default Groovydoc class-level templates.  Uses Groovy's standard templates by default.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String[] defaultClassTemplates;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -317,9 +341,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     sourceDirectories.toArray(new String[0]),
-                    groovyDocTemplateInfo.defaultDocTemplates(),
-                    groovyDocTemplateInfo.defaultPackageTemplates(),
-                    groovyDocTemplateInfo.defaultClassTemplates(),
+                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
+                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
+                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
                     groovyDocLinks,
                     docProperties
             );
@@ -327,9 +351,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),
                     classpathResourceManager,
                     sourceDirectories.get(0),
-                    groovyDocTemplateInfo.defaultDocTemplates(),
-                    groovyDocTemplateInfo.defaultPackageTemplates(),
-                    groovyDocTemplateInfo.defaultClassTemplates(),
+                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
+                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
+                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
                     groovyDocLinks
             );
             if (sourceDirectories.size() > 1) {
@@ -339,9 +363,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),
                     classpathResourceManager,
                     sourceDirectories.get(0),
-                    groovyDocTemplateInfo.defaultDocTemplates(),
-                    groovyDocTemplateInfo.defaultPackageTemplates(),
-                    groovyDocTemplateInfo.defaultClassTemplates()
+                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
+                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
+                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates
             );
             if (sourceDirectories.size() > 1) {
                 getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
