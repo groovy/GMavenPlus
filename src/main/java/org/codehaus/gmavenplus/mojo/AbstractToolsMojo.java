@@ -102,6 +102,24 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected IncludeClasspath includeClasspath;
 
     /**
+     * Whether to add all properties from <code>project.properties</code> into properties.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean bindAllProjectProperties;
+
+    /**
+     * Whether to add all properties from <code>session.userProperties</code> into properties.  If both
+     * <code>bindAllProjectProperties</code> and <code>bindAllSessionUserProperties</code> are specified, the session
+     * properties will override the project properties.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean bindAllSessionUserProperties;
+
+    /**
      * Initializes the properties field.
      */
     protected void initializeProperties() {
@@ -140,6 +158,12 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             if (antBuilder != null) {
                 properties.put("ant", antBuilder);
             }
+        }
+        if (bindAllProjectProperties && project != null) {
+            properties.putAll(project.getProperties());
+        }
+        if (bindAllSessionUserProperties && session != null) {
+            properties.putAll(session.getUserProperties());
         }
     }
 
