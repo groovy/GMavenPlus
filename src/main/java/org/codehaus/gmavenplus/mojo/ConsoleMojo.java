@@ -20,9 +20,11 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -43,6 +45,14 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  */
 @Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
 public class ConsoleMojo extends AbstractToolsMojo {
+
+    /**
+     * Script file to load into console. Can also be a project property referring to a file.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(property = "consoleScript")
+    protected String consoleScript;
 
     /**
      * Executes this mojo.
@@ -93,6 +103,24 @@ public class ConsoleMojo extends AbstractToolsMojo {
 
                 // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
                 bindAntBuilder(consoleClass, bindingClass, console);
+
+                // open script file
+                if (consoleScript != null) {
+                    Method loadScriptFile = findMethod(consoleClass, "loadScriptFile", File.class);
+                    File consoleScriptFile = new File(consoleScript);
+                    if (consoleScriptFile.isFile()) {
+                        invokeMethod(loadScriptFile, console, consoleScriptFile);
+                    } else if (project.getProperties().containsKey(consoleScript)) {
+                        consoleScriptFile = new File(project.getProperties().getProperty(consoleScript));
+                        if (consoleScriptFile.isFile()) {
+                            invokeMethod(loadScriptFile, consoleScriptFile);
+                        } else {
+                            getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                        }
+                    } else {
+                        getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                    }
+                }
 
                 // wait for console to be closed
                 waitForConsoleClose();
