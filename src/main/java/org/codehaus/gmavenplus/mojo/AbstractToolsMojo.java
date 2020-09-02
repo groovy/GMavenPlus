@@ -110,9 +110,21 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     protected boolean bindAllProjectProperties;
 
     /**
-     * Whether to add all properties from <code>session.userProperties</code> into properties.  If both
+     * Whether to add user session properties from <code>session.userProperties</code> that override project properties
+     * into properties. <code>bindAllSessionUserProperties</code> takes priority over this property if present. Has no
+     * effect if <code>bindAllProjectProperties</code> is <code>false</code>.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean bindSessionUserOverrideProperties;
+
+    /**
+     * Whether to add all properties from <code>session.userProperties</code> into properties. If both
      * <code>bindAllProjectProperties</code> and <code>bindAllSessionUserProperties</code> are specified, the session
-     * properties will override the project properties.
+     * properties will override the project properties, but it will also include properties not present in project
+     * properties. To only include user session properties that are also in project properties, use
+     * <code>bindSessionUserOverrideProperties</code>.
      *
      * @since 1.10.1
      */
@@ -159,11 +171,23 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
                 properties.put("ant", antBuilder);
             }
         }
+        if (bindSessionUserOverrideProperties && !bindAllProjectProperties) {
+            getLog().warn("bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.");
+        }
+        if (bindAllSessionUserProperties && bindSessionUserOverrideProperties) {
+            getLog().warn("bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.");
+        }
         if (bindAllProjectProperties && project != null) {
             properties.putAll(project.getProperties());
         }
-        if (bindAllSessionUserProperties && session != null) {
-            properties.putAll(session.getUserProperties());
+        if (session != null) {
+            if (bindAllSessionUserProperties) {
+                properties.putAll(session.getUserProperties());
+            } else if (bindAllProjectProperties && bindSessionUserOverrideProperties && project != null) {
+                for (Object key : project.getProperties().keySet()) {
+                    properties.put(key, session.getUserProperties().get(key));
+                }
+            }
         }
     }
 

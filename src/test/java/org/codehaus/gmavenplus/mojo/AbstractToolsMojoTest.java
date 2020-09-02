@@ -18,20 +18,25 @@ package org.codehaus.gmavenplus.mojo;
 
 import groovy.util.AntBuilder;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenExecutionRequest;
+import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.codehaus.plexus.PlexusContainer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.sonatype.aether.RepositorySystemSession;
 
 import java.util.List;
 import java.util.Properties;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
@@ -105,6 +110,76 @@ public class AbstractToolsMojoTest {
         verify(properties, times(1)).put(eq("session"), any(MavenSession.class));
         verify(properties, times(1)).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
         verify(properties, times(1)).put(eq("mojoExecution"), any(MojoExecution.class));
+    }
+
+    @Test
+    public void testAddAllProjectProperties() {
+        Properties projectProperties = new Properties();
+        projectProperties.put("foo", "bar");
+        Model model = new Model();
+        model.setProperties(projectProperties);
+        testMojo.project = new MavenProject(model);
+        testMojo.bindAllProjectProperties = true;
+
+        testMojo.initializeProperties();
+
+        assertEquals("bar", testMojo.properties.get("foo"));
+    }
+
+    @Test
+    public void testAddAllSessionUserProperties() {
+        MavenSession session = mock(MavenSession.class);
+        Properties sessionProperties = new Properties();
+        sessionProperties.put("foo", "bar");
+        doReturn(sessionProperties).when(session).getUserProperties();
+        testMojo.session = session;
+        testMojo.bindAllSessionUserProperties = true;
+
+        testMojo.initializeProperties();
+
+        assertEquals("bar", testMojo.properties.get("foo"));
+    }
+
+    @Test
+    public void testSessionPropertiesOverrideProjectPropertiesAndIncludesOthers() {
+        Properties projectProperties = new Properties();
+        projectProperties.put("foo", "bar");
+        Model model = new Model();
+        model.setProperties(projectProperties);
+        testMojo.project = new MavenProject(model);
+        MavenSession session = mock(MavenSession.class);
+        Properties sessionProperties = new Properties();
+        sessionProperties.put("foo", "baz");
+        sessionProperties.put("bar", "foo");
+        doReturn(sessionProperties).when(session).getUserProperties();
+        testMojo.session = session;
+        testMojo.bindAllProjectProperties = true;
+        testMojo.bindAllSessionUserProperties = true;
+
+        testMojo.initializeProperties();
+        assertEquals("baz", testMojo.properties.get("foo"));
+        assertEquals("foo", testMojo.properties.get("bar"));
+    }
+
+    @Test
+    public void testSessionPropertiesOverrideProjectProperties() {
+        Properties projectProperties = new Properties();
+        projectProperties.put("foo", "bar");
+        Model model = new Model();
+        model.setProperties(projectProperties);
+        testMojo.project = new MavenProject(model);
+        MavenSession session = mock(MavenSession.class);
+        Properties sessionProperties = new Properties();
+        sessionProperties.put("foo", "baz");
+        sessionProperties.put("bar", "foo");
+        doReturn(sessionProperties).when(session).getUserProperties();
+        testMojo.session = session;
+        testMojo.bindAllProjectProperties = true;
+        testMojo.bindSessionUserOverrideProperties = true;
+
+        testMojo.initializeProperties();
+        assertEquals("baz", testMojo.properties.get("foo"));
+        assertNull(testMojo.properties.get("bar"));
     }
 
     protected static class TestMojo extends AbstractToolsMojo {
