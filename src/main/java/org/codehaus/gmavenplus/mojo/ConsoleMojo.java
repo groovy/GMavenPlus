@@ -105,22 +105,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 bindAntBuilder(consoleClass, bindingClass, console);
 
                 // open script file
-                if (consoleScript != null) {
-                    Method loadScriptFile = findMethod(consoleClass, "loadScriptFile", File.class);
-                    File consoleScriptFile = new File(consoleScript);
-                    if (consoleScriptFile.isFile()) {
-                        invokeMethod(loadScriptFile, console, consoleScriptFile);
-                    } else if (project.getProperties().containsKey(consoleScript)) {
-                        consoleScriptFile = new File(project.getProperties().getProperty(consoleScript));
-                        if (consoleScriptFile.isFile()) {
-                            invokeMethod(loadScriptFile, consoleScriptFile);
-                        } else {
-                            getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
-                        }
-                    } else {
-                        getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
-                    }
-                }
+                loadScript(consoleClass, console);
 
                 // wait for console to be closed
                 waitForConsoleClose();
@@ -143,6 +128,25 @@ public class ConsoleMojo extends AbstractToolsMojo {
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+        }
+    }
+
+    protected void loadScript(Class<?> consoleClass, Object console) throws InvocationTargetException, IllegalAccessException {
+        if (consoleScript != null) {
+            Method loadScriptFile = findMethod(consoleClass, "loadScriptFile", File.class);
+            File consoleScriptFile = new File(consoleScript);
+            if (consoleScriptFile.isFile()) {
+                invokeMethod(loadScriptFile, console, consoleScriptFile);
+            } else if (project.getProperties().containsKey(consoleScript)) {
+                consoleScriptFile = new File(project.getProperties().getProperty(consoleScript));
+                if (consoleScriptFile.isFile()) {
+                    invokeMethod(loadScriptFile, consoleScriptFile);
+                } else {
+                    getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                }
+            } else {
+                getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+            }
         }
     }
 
