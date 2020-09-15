@@ -179,6 +179,60 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected String[] defaultClassTemplates;
 
     /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.GroovyDocTool, for use when
+     * creating custom GroovyDoc implementations.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String groovyDocToolClass = null;
+
+    /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.OutputTool, for use when
+     * creating custom GroovyDoc implementations.
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String outputToolClass = null;
+
+    /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.FileOutputTool, for use
+     * when creating custom GroovyDoc implementations.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String fileOutputToolClass = null;
+
+    /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.ResourceManager, for use
+     * when creating custom GroovyDoc implementations.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String resourceManagerClass = null;
+
+    /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager,
+     * for use when creating custom GroovyDoc implementations.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String classpathResourceManagerClass = null;
+
+    /**
+     * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.LinkArgument (or
+     * org.codehaus.groovy.ant.Groovydoc$LinkArgument for Groovy older than 1.6-RC-2), for use when creating custom
+     * GroovyDoc implementations.
+     *
+     * @since 1.10.1
+     */
+    @Parameter
+    protected String linkArgumentClass = null;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -217,11 +271,11 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         }
 
         // get classes we need with reflection
-        Class<?> groovyDocToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.GroovyDocTool");
-        Class<?> outputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.OutputTool");
-        Class<?> fileOutputToolClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.FileOutputTool");
-        Class<?> resourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ResourceManager");
-        Class<?> classpathResourceManagerClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager");
+        Class<?> groovyDocToolClass = classWrangler.getClass(this.groovyDocToolClass == null ? "org.codehaus.groovy.tools.groovydoc.GroovyDocTool" : this.groovyDocToolClass);
+        Class<?> outputToolClass = classWrangler.getClass(this.outputToolClass == null ? "org.codehaus.groovy.tools.groovydoc.OutputTool" : this.outputToolClass);
+        Class<?> fileOutputToolClass = classWrangler.getClass(this.fileOutputToolClass == null ? "org.codehaus.groovy.tools.groovydoc.FileOutputTool" : this.fileOutputToolClass);
+        Class<?> resourceManagerClass = classWrangler.getClass(this.resourceManagerClass == null ? "org.codehaus.groovy.tools.groovydoc.ResourceManager" : this.resourceManagerClass);
+        Class<?> classpathResourceManagerClass = classWrangler.getClass(this.classpathResourceManagerClass == null ? "org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager" : this.classpathResourceManagerClass);
 
         // set up GroovyDoc options
         Properties docProperties = setupProperties();
@@ -298,10 +352,14 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         List linksList = new ArrayList();
         if (links != null && links.size() > 0) {
             Class<?> linkArgumentClass = null;
-            if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
-                linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
-            } else if (groovyAtLeast(GROOVY_1_5_2)) {
-                linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
+            if (this.linkArgumentClass == null) {
+                if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
+                    linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
+                } else if (groovyAtLeast(GROOVY_1_5_2)) {
+                    linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
+                }
+            } else {
+                linkArgumentClass = classWrangler.getClass(this.linkArgumentClass);
             }
             if (linkArgumentClass != null) {
                 Method setHref = findMethod(linkArgumentClass, "setHref", String.class);
