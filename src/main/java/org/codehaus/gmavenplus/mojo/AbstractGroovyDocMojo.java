@@ -160,7 +160,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @since 1.10.1
      */
     @Parameter
-    protected String[] defaultDocTemplates;
+    protected String[] defaultDocTemplates = null;
 
     /**
      * Override the default Groovydoc package-level templates. Uses Groovy's standard templates by default.
@@ -168,7 +168,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @since 1.10.1
      */
     @Parameter
-    protected String[] defaultPackageTemplates;
+    protected String[] defaultPackageTemplates = null;
 
     /**
      * Override the default Groovydoc class-level templates. Uses Groovy's standard templates by default.
@@ -176,7 +176,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @since 1.10.1
      */
     @Parameter
-    protected String[] defaultClassTemplates;
+    protected String[] defaultClassTemplates = null;
 
     /**
      * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.GroovyDocTool, for use when
