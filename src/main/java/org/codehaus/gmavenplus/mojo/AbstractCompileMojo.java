@@ -41,6 +41,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 3.0.6 version.
+     */
+    protected static final Version GROOVY_3_0_6 = new Version(3, 0, 6);
+
+    /**
      * Groovy 3.0.3 version.
      */
     protected static final Version GROOVY_3_0_3 = new Version(3, 0, 3);
@@ -418,7 +423,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("15".equals(targetBytecode)) {
+        if ("16".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_6)) {
+                throw new IllegalArgumentException("Target bytecode 16 requires Groovy " + GROOVY_3_0_6 + " or newer.");
+            }
+        } else if ("15".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_3)) {
                 throw new IllegalArgumentException("Target bytecode 15 requires Groovy " + GROOVY_3_0_3 + " or newer.");
             }
