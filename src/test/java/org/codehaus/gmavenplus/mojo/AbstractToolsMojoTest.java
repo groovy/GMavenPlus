@@ -16,7 +16,6 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import groovy.util.AntBuilder;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Model;
@@ -65,7 +64,14 @@ public class AbstractToolsMojoTest {
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
         testMojo.classWrangler = classWrangler;
-        doReturn(AntBuilder.class).when(classWrangler).getClass(anyString());
+        Class<?> antBuilderClass;
+        try {
+            antBuilderClass = Class.forName("groovy.ant.AntBuilder");
+        } catch (ClassNotFoundException e) {
+            antBuilderClass = Class.forName("groovy.util.AntBuilder");
+        }
+
+        doReturn(antBuilderClass).when(classWrangler).getClass(anyString());
     }
 
     @Test

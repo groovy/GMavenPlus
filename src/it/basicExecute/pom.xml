@@ -32,13 +32,13 @@
             <artifactId>gmavenplus-plugin</artifactId>
             <dependencies>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
               </dependency>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy-ant</artifactId>
                 <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
@@ -57,12 +57,12 @@
             <artifactId>gmavenplus-plugin</artifactId>
             <dependencies>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy-ant</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>
@@ -80,7 +80,7 @@
             <artifactId>gmavenplus-plugin</artifactId>
             <dependencies>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
                 <classifier>indy</classifier>
@@ -99,7 +99,7 @@
             <artifactId>gmavenplus-plugin</artifactId>
             <dependencies>
               <dependency>
-                <groupId>org.codehaus.groovy</groupId>
+                <groupId>@groovyGroupId@</groupId>
                 <artifactId>groovy</artifactId>
                 <version>@groovyVersion@</version>
               </dependency>

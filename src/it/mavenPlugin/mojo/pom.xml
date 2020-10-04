@@ -20,7 +20,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.groovy</groupId>
+      <groupId>@groovyGroupId@</groupId>
       <artifactId>groovy</artifactId>
       <version>@groovyVersion@</version>
       <!-- note that indy versions don't work with the help mojo -->

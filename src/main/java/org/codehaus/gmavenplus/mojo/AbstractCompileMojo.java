@@ -41,6 +41,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 4.0.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, "alpha-1");
+
+    /**
      * Groovy 3.0.6 version.
      */
     protected static final Version GROOVY_3_0_6 = new Version(3, 0, 6);
@@ -209,17 +214,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
+     * Has no effect for Groovy 4, as it is always enabled.
      */
     @Parameter(defaultValue = "false")
     protected boolean invokeDynamic;
 
     /**
      * Whether to enable Groovy's parallel parsing. Requires Groovy 3.0.5.
+     * Is enabled by default for Groovy 4.0.0-alpha-1 or newer.
      *
      * @since 1.10.2
      */
-    @Parameter(defaultValue = "false")
-    protected boolean parallelParsing;
+    @Parameter
+    protected Boolean parallelParsing = null;
 
     /**
      * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a> for tweaking the configuration options
@@ -399,7 +406,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         invokeMethod(findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-        if (invokeDynamic) {
+        if (invokeDynamic || groovyAtLeast(GROOVY_4_0_0_ALPHA1)) {
             if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
@@ -429,7 +436,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
         if (groovyAtLeast(GROOVY_3_0_5)) {
-            if (parallelParsing) {
+            if ((parallelParsing == null && groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null && parallelParsing)) {
                 Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("parallelParse", true);
                 getLog().info("Parallel parsing enabled.");
