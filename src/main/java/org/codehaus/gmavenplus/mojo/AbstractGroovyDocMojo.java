@@ -45,6 +45,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 3.0.0 alpha-4 version.
+     */
+    protected static final Version GROOVY_3_0_0_ALPHA_4 = new Version(3, 0, 0, "alpha-4");
+
+    /**
      * Groovy 1.6.0 RC-2 version.
      */
     protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
@@ -234,6 +239,14 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected String linkArgumentClass = null;
 
     /**
+     * Enable attaching GroovyDoc annotation. Requires Groovy 3.0.0 alpha-4 or newer.
+     *
+     * @since 1.10.2
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean attachGroovyDocAnnotation;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -279,6 +292,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         Class<?> classpathResourceManagerClass = classWrangler.getClass(this.classpathResourceManagerClass == null ? "org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager" : this.classpathResourceManagerClass);
 
         // set up GroovyDoc options
+        if (attachGroovyDocAnnotation) {
+            if (groovyAtLeast(GROOVY_3_0_0_ALPHA_4)) {
+                System.setProperty("runtimeGroovydoc", "true");
+            } else {
+                getLog().warn("Requested to enable attaching GroovyDoc annotation, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_3_0_0_ALPHA_4 + " or newer). Ignoring enableGroovyDocAnnotation parameter.");
+            }
+        }
         Properties docProperties = setupProperties();
         Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));
         Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));
