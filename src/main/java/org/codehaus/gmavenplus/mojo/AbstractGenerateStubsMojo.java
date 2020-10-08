@@ -223,15 +223,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected IncludeClasspath includeClasspath;
 
     /**
-     * Whether the bytecode version has preview features enabled (JEP 12).
-     * Requires Groovy &gt;= 3.0.0-beta-1 or Groovy &gt;= 2.5.7, but not any 2.6 versions and Java &gt;= 12.
-     *
-     * @since 1.7.1
-     */
-    @Parameter(defaultValue = "false")
-    protected boolean previewFeatures;
-
-    /**
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources     the sources to perform stub generation on
@@ -295,17 +286,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         invokeMethod(findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         invokeMethod(findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
         invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
-        if (previewFeatures) {
-            if (isJavaSupportPreviewFeatures()) {
-                if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
-                    getLog().warn("Requested to use preview features, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.");
-                } else {
-                    invokeMethod(findMethod(compilerConfigurationClass, "setPreviewFeatures", boolean.class), compilerConfiguration, previewFeatures);
-                }
-            } else {
-                getLog().warn("Requested to use to use preview features, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring previewFeatures parameter.");
-            }
-        }
         if (sourceEncoding != null) {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }

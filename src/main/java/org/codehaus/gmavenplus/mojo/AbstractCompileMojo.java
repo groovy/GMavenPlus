@@ -223,7 +223,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Whether to enable Groovy's parallel parsing. Requires Groovy 3.0.5.
      * Is enabled by default for Groovy 4.0.0-alpha-1 or newer.
      *
-     * @since 1.10.2
+     * @since 1.11.0
      */
     @Parameter
     protected Boolean parallelParsing = null;

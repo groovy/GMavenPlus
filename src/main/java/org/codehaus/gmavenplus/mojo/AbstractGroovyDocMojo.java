@@ -241,7 +241,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Enable attaching GroovyDoc annotation. Requires Groovy 3.0.0 alpha-4 or newer.
      *
-     * @since 1.10.2
+     * @since 1.11.0
      */
     @Parameter(defaultValue = "false")
     protected boolean attachGroovyDocAnnotation;
