@@ -450,6 +450,9 @@
         <configuration>
           <source>${shortJavaVersion}</source>
           <failOnError>false</failOnError>
+          <links>
+            <link>https://docs.groovy-lang.org/latest/html/api/</link>
+          </links>
         </configuration>
         <executions>
           <execution>
@@ -526,6 +529,9 @@
         <configuration>
           <source>${javaVersion}</source>
           <failOnError>false</failOnError>
+          <links>
+            <link>https://docs.groovy-lang.org/latest/html/api/</link>
+          </links>
         </configuration>
       </plugin>
       <plugin>

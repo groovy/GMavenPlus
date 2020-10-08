@@ -190,6 +190,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Allows you to override the class that is normally org.codehaus.groovy.tools.groovydoc.OutputTool, for use when
      * creating custom GroovyDoc implementations.
+     *
      * @since 1.10.1
      */
     @Parameter
