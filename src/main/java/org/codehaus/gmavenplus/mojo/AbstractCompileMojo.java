@@ -146,6 +146,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>13</li>
      *   <li>14</li>
      *   <li>15</li>
+     *   <li>16</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
