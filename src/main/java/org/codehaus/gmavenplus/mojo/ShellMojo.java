@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
@@ -41,6 +42,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  */
 @Mojo(name = "shell", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
 public class ShellMojo extends AbstractToolsMojo {
+
+    /**
+     * Groovy 4.0.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, "alpha-1");
 
     /**
      * Groovy shell verbosity level. Should be one of:
@@ -86,7 +92,7 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
 
                 // get classes we need with reflection
-                Class<?> shellClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.Groovysh");
+                Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class<?> ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
                 Class<?> verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");

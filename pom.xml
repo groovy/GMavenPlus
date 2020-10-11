@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.codehaus.gmavenplus</groupId>
   <artifactId>gmavenplus-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.10.2-SNAPSHOT</version>
+  <version>1.11.0-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,7 +24,8 @@
     <pluginPluginVersion>3.6.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.2.1</sourcePluginVersion>
-    <!-- this is a property so that site generation and integration tests can use it -->
+    <!-- these are properties so that site generation and integration tests can use it -->
+    <groovyGroupId>org.codehaus.groovy</groovyGroupId>
     <groovyVersion>3.0.6</groovyVersion>
   </properties>
 
@@ -112,21 +114,21 @@
       <id>indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <classifier>indy</classifier>
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy-ant</artifactId>
           <version>${groovyVersion}</version>
           <classifier>indy</classifier>
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy-groovydoc</artifactId>
           <version>${groovyVersion}</version>
           <classifier>indy</classifier>
@@ -151,19 +153,19 @@
       <id>nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy-ant</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy-groovydoc</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
@@ -187,7 +189,7 @@
       <id>pre2.3-indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <classifier>indy</classifier>
@@ -212,7 +214,7 @@
       <id>pre2.3-nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>${groovyGroupId}</groupId>
           <artifactId>groovy</artifactId>
           <version>${groovyVersion}</version>
           <scope>test</scope>
@@ -450,6 +452,9 @@
         <configuration>
           <source>${shortJavaVersion}</source>
           <failOnError>false</failOnError>
+          <links>
+            <link>https://docs.groovy-lang.org/latest/html/api/</link>
+          </links>
         </configuration>
         <executions>
           <execution>
@@ -526,6 +531,9 @@
         <configuration>
           <source>${javaVersion}</source>
           <failOnError>false</failOnError>
+          <links>
+            <link>https://docs.groovy-lang.org/latest/html/api/</link>
+          </links>
         </configuration>
       </plugin>
       <plugin>

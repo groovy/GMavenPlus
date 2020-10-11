@@ -6,7 +6,7 @@ import groovy.io.FileType
 
 new File(System.getProperty("user.dir")).eachFileMatch FileType.FILES, ~/groovy-.+\.log/, { it.delete() }
 println "Installing plugin..."
-quietlyRunCommand "${mvn()} -B -P nonindy clean install invoker:install"
+quietlyRunCommand "${mvn()} -B -P nonindy -Dmaven.test.skip=true -Dinvoker.skip=true clean install invoker:install"
 // TODO: fix joint compilation failures with Groovy 1.9-beta-1 and 1.9-beta-2
 groovyVersions = ["1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5", "1.5.6", "1.5.7", "1.5.8",
                   "1.6-beta-1", "1.6-beta-2", "1.6-RC-1", "1.6-RC-2", "1.6-RC-3", "1.6.0", "1.6.1", "1.6.2", "1.6.3", "1.6.4", "1.6.5", "1.6.6", "1.6.7", "1.6.8", "1.6.9",
@@ -24,26 +24,27 @@ groovyVersions = ["1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4", "1.5.5", "1.5.6",
                   "4.0.0-alpha-1"]
 for (int i = 0; i < groovyVersions.size(); i++) {
     def groovyVersion = groovyVersions[i]
+
     System.out.print "Testing Groovy ${groovyVersion}..."
-    def pom = new File("pom.xml")
-    pom.write((pom.text =~ /<groovyVersion>.+/).replaceFirst("<groovyVersion>${groovyVersion}</groovyVersion>"))
     testLabel = groovyVersion
     os = new FileOutputStream(new File("groovy-${testLabel}.log"))
-    profile = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}nonindy"
+    profiles = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}nonindy"
+    properties = "-DgroovyVersion=${groovyVersion} -DgroovyGroupId=${i >= groovyVersions.indexOf("4.0.0-alpha-1") ? 'org.apache.groovy' : 'org.codehaus.groovy'}"
     testVersion()
-    if (i >= groovyVersions.indexOf("2.0.0-beta-3")) {
+
+    if (i >= groovyVersions.indexOf("2.0.0-beta-3") && i < groovyVersions.indexOf("4.0.0-alpha-1")) {
         System.out.print "Testing Groovy ${groovyVersion}-indy..."
         testLabel = "${groovyVersion}-indy"
         os = new FileOutputStream(new File("groovy-${testLabel}.log"))
-        profile = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}indy"
+        profiles = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}indy"
+        properties = "-DgroovyVersion=${groovyVersion} -DgroovyGroupId=${i >= groovyVersions.indexOf("4.0.0-alpha-1") ? 'org.apache.groovy' : 'org.codehaus.groovy'}"
         testVersion()
     }
 }
-quietlyRunCommand "git checkout pom.xml"
 quietlyRunCommand "${mvn()} -B clean"
 
 void testVersion() {
-    def exitCode = runCommand "${mvn()} -B -P $profile -Dinvoker.streamLogs=true invoker:run"
+    def exitCode = runCommand "${mvn()} -B -P ${profiles} -Dinvoker.streamLogs=true ${properties} invoker:run"
     os.flush()
     os.close()
     if (exitCode != 0) {

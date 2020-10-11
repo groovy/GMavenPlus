@@ -28,13 +28,13 @@
       <id>indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
           <scope>runtime</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy-groovydoc</artifactId>
           <classifier>indy</classifier>
           <scope>runtime</scope>
@@ -48,13 +48,13 @@
               <artifactId>gmavenplus-plugin</artifactId>
               <dependencies>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                   <classifier>indy</classifier>
                 </dependency>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy-groovydoc</artifactId>
                   <version>@groovyVersion@</version>
                   <classifier>indy</classifier>
@@ -69,12 +69,12 @@
       <id>nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <scope>runtime</scope>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy-groovydoc</artifactId>
           <scope>runtime</scope>
         </dependency>
@@ -87,12 +87,12 @@
               <artifactId>gmavenplus-plugin</artifactId>
               <dependencies>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                 </dependency>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy-groovydoc</artifactId>
                   <version>@groovyVersion@</version>
                 </dependency>
@@ -106,7 +106,7 @@
       <id>pre2.3-indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
           <scope>runtime</scope>
@@ -120,7 +120,7 @@
               <artifactId>gmavenplus-plugin</artifactId>
               <dependencies>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                   <classifier>indy</classifier>
@@ -135,7 +135,7 @@
       <id>pre2.3-nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <scope>runtime</scope>
         </dependency>
@@ -148,7 +148,7 @@
               <artifactId>gmavenplus-plugin</artifactId>
               <dependencies>
                 <dependency>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>@groovyGroupId@</groupId>
                   <artifactId>groovy</artifactId>
                   <version>@groovyVersion@</version>
                 </dependency>

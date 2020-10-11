@@ -41,9 +41,19 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 4.0.0 alpha-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, "alpha-1");
+
+    /**
      * Groovy 3.0.6 version.
      */
     protected static final Version GROOVY_3_0_6 = new Version(3, 0, 6);
+
+    /**
+     * Groovy 3.0.5 version.
+     */
+    protected static final Version GROOVY_3_0_5 = new Version(3, 0, 5);
 
     /**
      * Groovy 3.0.3 version.
@@ -146,6 +156,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>13</li>
      *   <li>14</li>
      *   <li>15</li>
+     *   <li>16</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -203,9 +214,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
      * Whether to support invokeDynamic (requires Java 7 or greater and Groovy indy 2.0.0-beta-3 or greater).
+     * Has no effect for Groovy 4, as it is always enabled.
      */
     @Parameter(defaultValue = "false")
     protected boolean invokeDynamic;
+
+    /**
+     * Whether to enable Groovy's parallel parsing. Requires Groovy 3.0.5.
+     * Is enabled by default for Groovy 4.0.0-alpha-1 or newer.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected Boolean parallelParsing = null;
 
     /**
      * A <a href="http://groovy-lang.org/dsls.html#compilation-customizers">script</a> for tweaking the configuration options
@@ -385,13 +406,14 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         invokeMethod(findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-        if (invokeDynamic) {
+        if (invokeDynamic || groovyAtLeast(GROOVY_4_0_0_ALPHA1)) {
             if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
+                        getLog().info("invokedynamic enabled.");
                     } else {
                         getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring invokeDynamic parameter.");
                     }
@@ -411,6 +433,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 }
             } else {
                 getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer). Ignoring parameters parameter.");
+            }
+        }
+        if (groovyAtLeast(GROOVY_3_0_5)) {
+            if ((parallelParsing == null && groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null && parallelParsing)) {
+                Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
+                optimizationOptions.put("parallelParse", true);
+                getLog().info("Parallel parsing enabled.");
+            } else {
+                getLog().info("Parallel parsing disabled.");
             }
         }
 

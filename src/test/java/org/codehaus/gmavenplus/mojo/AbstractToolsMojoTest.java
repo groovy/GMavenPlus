@@ -16,22 +16,17 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import groovy.util.AntBuilder;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.execution.MavenExecutionRequest;
-import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.codehaus.plexus.PlexusContainer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.sonatype.aether.RepositorySystemSession;
 
 import java.util.List;
 import java.util.Properties;
@@ -69,7 +64,14 @@ public class AbstractToolsMojoTest {
         testMojo.pluginArtifacts = pluginArtifacts;
         testMojo.mojoExecution = mojoExecution;
         testMojo.classWrangler = classWrangler;
-        doReturn(AntBuilder.class).when(classWrangler).getClass(anyString());
+        Class<?> antBuilderClass;
+        try {
+            antBuilderClass = Class.forName("groovy.ant.AntBuilder");
+        } catch (ClassNotFoundException e) {
+            antBuilderClass = Class.forName("groovy.util.AntBuilder");
+        }
+
+        doReturn(antBuilderClass).when(classWrangler).getClass(anyString());
     }
 
     @Test

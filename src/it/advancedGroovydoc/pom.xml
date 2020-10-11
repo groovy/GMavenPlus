@@ -28,12 +28,12 @@
       <id>indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy-groovydoc</artifactId>
           <classifier>indy</classifier>
         </dependency>
@@ -43,11 +43,11 @@
       <id>nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
         </dependency>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy-groovydoc</artifactId>
         </dependency>
       </dependencies>
@@ -56,7 +56,7 @@
       <id>pre2.3-indy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
           <classifier>indy</classifier>
         </dependency>
@@ -66,7 +66,7 @@
       <id>pre2.3-nonindy</id>
       <dependencies>
         <dependency>
-          <groupId>org.codehaus.groovy</groupId>
+          <groupId>@groovyGroupId@</groupId>
           <artifactId>groovy</artifactId>
         </dependency>
       </dependencies>

@@ -210,10 +210,15 @@ public class ClassWrangler {
     public boolean isGroovyIndy() {
         if (isIndy == null) {
             try {
-                getClass("org.codehaus.groovy.vmplugin.v7.IndyInterface");
+                getClass("org.codehaus.groovy.vmplugin.v8.IndyInterface");
                 isIndy = true;
-            } catch (ClassNotFoundException e) {
-                isIndy = false;
+            } catch (ClassNotFoundException e1) {
+                try {
+                    getClass("org.codehaus.groovy.vmplugin.v7.IndyInterface");
+                    isIndy = true;
+                } catch (ClassNotFoundException e2) {
+                    isIndy = false;
+                }
             }
         }
 
