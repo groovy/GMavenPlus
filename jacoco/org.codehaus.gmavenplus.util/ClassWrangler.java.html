@@ -210,14 +210,19 @@ public class ClassWrangler {
     public boolean isGroovyIndy() {
 <span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (isIndy == null) {</span>
             try {
-<span class="fc" id="L213">                getClass(&quot;org.codehaus.groovy.vmplugin.v7.IndyInterface&quot;);</span>
+<span class="fc" id="L213">                getClass(&quot;org.codehaus.groovy.vmplugin.v8.IndyInterface&quot;);</span>
 <span class="fc" id="L214">                isIndy = true;</span>
-<span class="fc" id="L215">            } catch (ClassNotFoundException e) {</span>
-<span class="fc" id="L216">                isIndy = false;</span>
-<span class="fc" id="L217">            }</span>
+<span class="fc" id="L215">            } catch (ClassNotFoundException e1) {</span>
+                try {
+<span class="nc" id="L217">                    getClass(&quot;org.codehaus.groovy.vmplugin.v7.IndyInterface&quot;);</span>
+<span class="nc" id="L218">                    isIndy = true;</span>
+<span class="fc" id="L219">                } catch (ClassNotFoundException e2) {</span>
+<span class="fc" id="L220">                    isIndy = false;</span>
+<span class="nc" id="L221">                }</span>
+<span class="fc" id="L222">            }</span>
         }
 
-<span class="fc" id="L220">        return isIndy;</span>
+<span class="fc" id="L225">        return isIndy;</span>
     }
 
     /**
@@ -227,17 +232,17 @@ public class ClassWrangler {
      */
     public String getGroovyJar() {
         try {
-<span class="fc" id="L230">            String groovyObjectClassPath = getJarPath();</span>
-<span class="fc" id="L231">            String groovyJar = null;</span>
-<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            if (groovyObjectClassPath != null) {</span>
-<span class="fc" id="L233">                groovyJar = groovyObjectClassPath.replaceAll(&quot;!.+&quot;, &quot;&quot;);</span>
-<span class="fc" id="L234">                groovyJar = groovyJar.substring(groovyJar.lastIndexOf(&quot;/&quot;) + 1);</span>
+<span class="fc" id="L235">            String groovyObjectClassPath = getJarPath();</span>
+<span class="fc" id="L236">            String groovyJar = null;</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">            if (groovyObjectClassPath != null) {</span>
+<span class="fc" id="L238">                groovyJar = groovyObjectClassPath.replaceAll(&quot;!.+&quot;, &quot;&quot;);</span>
+<span class="fc" id="L239">                groovyJar = groovyJar.substring(groovyJar.lastIndexOf(&quot;/&quot;) + 1);</span>
             }
 
-<span class="fc" id="L237">            return groovyJar;</span>
-<span class="nc" id="L238">        } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L239">            log.error(&quot;Unable to determine Groovy version. Is Groovy declared as a dependency?&quot;);</span>
-<span class="nc" id="L240">            return null;</span>
+<span class="fc" id="L242">            return groovyJar;</span>
+<span class="nc" id="L243">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L244">            log.error(&quot;Unable to determine Groovy version. Is Groovy declared as a dependency?&quot;);</span>
+<span class="nc" id="L245">            return null;</span>
         }
     }
 
@@ -248,15 +253,15 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when Groovy couldn't be found on the classpath
      */
     protected String getJarPath() throws ClassNotFoundException {
-<span class="nc" id="L251">        Class&lt;?&gt; groovyObjectClass = getClass(&quot;groovy.lang.GroovyObject&quot;);</span>
-<span class="nc" id="L252">        String groovyObjectClassPath = String.valueOf(groovyObjectClass.getResource(&quot;/&quot; + groovyObjectClass.getName().replace('.', '/') + &quot;.class&quot;));</span>
-<span class="nc bnc" id="L253" title="All 2 branches missed.">        if (groovyObjectClassPath == null) {</span>
-<span class="nc" id="L254">            CodeSource codeSource = groovyObjectClass.getProtectionDomain().getCodeSource();</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">            if (codeSource != null) {</span>
-<span class="nc" id="L256">                groovyObjectClassPath = String.valueOf(codeSource.getLocation());</span>
+<span class="nc" id="L256">        Class&lt;?&gt; groovyObjectClass = getClass(&quot;groovy.lang.GroovyObject&quot;);</span>
+<span class="nc" id="L257">        String groovyObjectClassPath = String.valueOf(groovyObjectClass.getResource(&quot;/&quot; + groovyObjectClass.getName().replace('.', '/') + &quot;.class&quot;));</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">        if (groovyObjectClassPath == null) {</span>
+<span class="nc" id="L259">            CodeSource codeSource = groovyObjectClass.getProtectionDomain().getCodeSource();</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if (codeSource != null) {</span>
+<span class="nc" id="L261">                groovyObjectClassPath = String.valueOf(codeSource.getLocation());</span>
             }
         }
-<span class="nc" id="L259">        return groovyObjectClassPath;</span>
+<span class="nc" id="L264">        return groovyObjectClassPath;</span>
     }
 
     /**
@@ -265,10 +270,10 @@ public class ClassWrangler {
      * @param goal The goal to mention in the log statement showing Groovy version
      */
     public void logGroovyVersion(final String goal) {
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">        if (log.isInfoEnabled()) {</span>
-<span class="fc" id="L269">            log.info(&quot;Using Groovy &quot; + getGroovyVersionString() + &quot; to perform &quot; + goal + &quot;.&quot;);</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">        if (log.isInfoEnabled()) {</span>
+<span class="fc" id="L274">            log.info(&quot;Using Groovy &quot; + getGroovyVersionString() + &quot; to perform &quot; + goal + &quot;.&quot;);</span>
         }
-<span class="fc" id="L271">    }</span>
+<span class="fc" id="L276">    }</span>
 
     /**
      * Creates a new ClassLoader with the specified classpath.
@@ -278,13 +283,13 @@ public class ClassWrangler {
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     public ClassLoader createNewClassLoader(final List&lt;?&gt; classpath) throws MalformedURLException {
-<span class="nc" id="L281">        List&lt;URL&gt; urlsList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L282" title="All 2 branches missed.">        for (Object classPathObject : classpath) {</span>
-<span class="nc" id="L283">            String path = (String) classPathObject;</span>
-<span class="nc" id="L284">            urlsList.add(new File(path).toURI().toURL());</span>
-<span class="nc" id="L285">        }</span>
-<span class="nc" id="L286">        URL[] urlsArray = urlsList.toArray(new URL[0]);</span>
-<span class="nc" id="L287">        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());</span>
+<span class="nc" id="L286">        List&lt;URL&gt; urlsList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">        for (Object classPathObject : classpath) {</span>
+<span class="nc" id="L288">            String path = (String) classPathObject;</span>
+<span class="nc" id="L289">            urlsList.add(new File(path).toURI().toURL());</span>
+<span class="nc" id="L290">        }</span>
+<span class="nc" id="L291">        URL[] urlsArray = urlsList.toArray(new URL[0]);</span>
+<span class="nc" id="L292">        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());</span>
     }
 
     /**
@@ -295,7 +300,7 @@ public class ClassWrangler {
      * @throws ClassNotFoundException when a class for the specified class name cannot be found
      */
     public Class&lt;?&gt; getClass(final String className) throws ClassNotFoundException {
-<span class="fc" id="L298">        return Class.forName(className, true, classLoader);</span>
+<span class="fc" id="L303">        return Class.forName(className, true, classLoader);</span>
     }
 
     /**
@@ -304,7 +309,7 @@ public class ClassWrangler {
      * @return the classloader used for loading classes
      */
     public ClassLoader getClassLoader() {
-<span class="nc" id="L307">        return classLoader;</span>
+<span class="nc" id="L312">        return classLoader;</span>
     }
 
 }
