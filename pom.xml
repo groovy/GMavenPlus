@@ -18,7 +18,7 @@
     <javaVersion>1.${shortJavaVersion}</javaVersion>
     <dependencyPluginVersion>3.1.1</dependencyPluginVersion>
     <compilerPluginVersion>3.8.1</compilerPluginVersion>
-    <junitVersion>4.13</junitVersion>
+    <junitVersion>4.13.1</junitVersion>
     <surefirePluginVersion>3.0.0-M4</surefirePluginVersion>
     <pluginPluginVersion>3.6.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
