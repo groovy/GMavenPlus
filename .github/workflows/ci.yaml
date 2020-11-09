@@ -1,0 +1,22 @@
+name: GitHub CI
+
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: jdk setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+          java-package: jdk
+          architecture: x64
+#      - name: unit test
+#        run: ./mvnw --batch-mode --activate-profiles indy clean test
+#      - name: integration test
+#        run: ./mvnw --batch-mode --activate-profiles indy -Dmaven.test.skip=true clean install invoker:install invoker:run
+      - name: full test
+        run: ./mvnw --batch-mode --activate-profiles indy clean install invoker:install invoker:run

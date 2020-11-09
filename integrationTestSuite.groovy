@@ -44,7 +44,7 @@ for (int i = 0; i < groovyVersions.size(); i++) {
 quietlyRunCommand "${mvn()} -B clean"
 
 void testVersion() {
-    def exitCode = runCommand "${mvn()} -B -P ${profiles} -Dinvoker.streamLogs=true ${properties} invoker:run"
+    def exitCode = runCommand "${mvn()} --batch-mode --activate-profiles ${profiles} -Dinvoker.streamLogs=true ${properties} invoker:run"
     os.flush()
     os.close()
     if (exitCode != 0) {
