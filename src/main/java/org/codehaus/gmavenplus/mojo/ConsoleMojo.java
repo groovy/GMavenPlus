@@ -140,7 +140,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             } else if (project.getProperties().containsKey(consoleScript)) {
                 consoleScriptFile = new File(project.getProperties().getProperty(consoleScript));
                 if (consoleScriptFile.isFile()) {
-                    invokeMethod(loadScriptFile, consoleScriptFile);
+                    invokeMethod(loadScriptFile, console, consoleScriptFile);
                 } else {
                     getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
                 }
