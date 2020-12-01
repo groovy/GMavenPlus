@@ -140,7 +140,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="nc bnc" id="L140" title="All 2 branches missed.">            } else if (project.getProperties().containsKey(consoleScript)) {</span>
 <span class="nc" id="L141">                consoleScriptFile = new File(project.getProperties().getProperty(consoleScript));</span>
 <span class="nc bnc" id="L142" title="All 2 branches missed.">                if (consoleScriptFile.isFile()) {</span>
-<span class="nc" id="L143">                    invokeMethod(loadScriptFile, consoleScriptFile);</span>
+<span class="nc" id="L143">                    invokeMethod(loadScriptFile, console, consoleScriptFile);</span>
                 } else {
 <span class="nc" id="L145">                    getLog().warn(&quot;consoleScript ('&quot; + consoleScript + &quot;') doesn't exist in project properties or as a file.&quot;);</span>
                 }

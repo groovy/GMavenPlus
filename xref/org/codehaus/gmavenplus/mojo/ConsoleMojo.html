@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (project.getProperties().containsKey(consoleScript)) {
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>                 consoleScriptFile = <strong class="jxr_keyword">new</strong> File(project.getProperties().getProperty(consoleScript));
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>                 <strong class="jxr_keyword">if</strong> (consoleScriptFile.isFile()) {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>                     invokeMethod(loadScriptFile, consoleScriptFile);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>                     invokeMethod(loadScriptFile, console, consoleScriptFile);
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>                 } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>                     getLog().warn(<span class="jxr_string">"consoleScript ('"</span> + consoleScript + <span class="jxr_string">"') doesn't exist in project properties or as a file."</span>);
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>                 }
