@@ -114,6 +114,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             StringBuilder sb = new StringBuilder();
             for (Artifact artifact : pluginArtifacts) {
                 sb.append(artifact.getFile());
+                sb.append(", ");
             }
             getLog().debug("Plugin classpath:\n" + sb.toString());
         }
