@@ -167,7 +167,9 @@ public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
         }
 
         if (useDefaultManifestFile && defaultManifestFile.exists() && archive.getManifestFile() == null) {
-            getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile.getPath());
+            if (getLog().isInfoEnabled()) {
+                getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile.getPath());
+            }
             archive.setManifestFile(defaultManifestFile);
         }
 

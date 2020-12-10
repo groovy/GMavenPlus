@@ -280,7 +280,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         }
         if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {
             // Groovy 1.5.8 and 1.6-RC-1 are blacklisted because of their dependency on org.apache.tools.ant.types.Path in GroovyDocTool constructor
-            getLog().warn("Groovy " + GROOVY_1_5_8 + " and " + GROOVY_1_6_0_RC1 + " are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("Groovy " + GROOVY_1_5_8 + " and " + GROOVY_1_6_0_RC1 + " are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.");
+            }
             return;
         }
 
@@ -296,7 +298,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             if (groovyAtLeast(GROOVY_3_0_0_ALPHA_4)) {
                 System.setProperty("runtimeGroovydoc", "true");
             } else {
-                getLog().warn("Requested to enable attaching GroovyDoc annotation, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_3_0_0_ALPHA_4 + " or newer). Ignoring enableGroovyDocAnnotation parameter.");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("Requested to enable attaching GroovyDoc annotation, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_3_0_0_ALPHA_4 + " or newer). Ignoring enableGroovyDocAnnotation parameter.");
+                }
             }
         }
         Properties docProperties = setupProperties();
@@ -310,7 +314,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
         List<?> groovyDocLinks = setupLinks();
         if (groovyOlderThan(GROOVY_1_6_0_RC2)) {
-            getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
+            }
         }
 
         // prevent Java stubs (which lack Javadoc) from overwriting GroovyDoc by removing Java sources
@@ -353,7 +359,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                 properties.setProperty("privateScope", "true");
             }
         } catch (IllegalArgumentException e) {
-            getLog().warn("Scope (" + scope + ") was not recognized. Skipping argument.");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("Scope (" + scope + ") was not recognized. Skipping argument.");
+            }
         }
 
         return properties;
@@ -392,7 +400,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                     linksList.add(linkArgument);
                 }
             } else {
-                getLog().warn("Requested to use GroovyDoc links, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 1.5.2 or newer). Ignoring links parameter.");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("Requested to use GroovyDoc links, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 1.5.2 or newer). Ignoring links parameter.");
+                }
             }
         }
 
@@ -436,7 +446,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                     groovyDocLinks
             );
             if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
+                }
             }
         } else {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),
@@ -447,7 +459,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                     defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates
             );
             if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
+                }
             }
         }
 
@@ -500,7 +514,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         getLog().debug("Adding sources to generate GroovyDoc for:");
         if (getLog().isDebugEnabled()) {
             for (String groovyDocSource : groovyDocSources) {
-                getLog().debug("    " + groovyDocSource);
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("    " + groovyDocSource);
+                }
             }
         }
         if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
@@ -520,7 +536,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @param outputDirectory The output directory to copy the stylesheet to
      */
     protected void copyStylesheet(final File outputDirectory) {
-        getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
+        if (getLog().isInfoEnabled()) {
+            getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
+        }
         try {
             BufferedReader bufferedReader = null;
             BufferedWriter bufferedWriter = null;
@@ -547,7 +565,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                 FileUtils.closeQuietly(bufferedWriter);
             }
         } catch (IOException e) {
-            getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").");
+            }
         }
     }
 

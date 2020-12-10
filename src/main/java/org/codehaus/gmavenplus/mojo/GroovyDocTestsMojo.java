@@ -67,7 +67,9 @@ public class GroovyDocTestsMojo extends AbstractGroovyDocMojo {
     public void execute() throws MojoExecutionException {
         try {
             try {
-                getLog().debug("Project test classpath:\n" + project.getCompileClasspathElements());
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("Project test classpath:\n" + project.getCompileClasspathElements());
+                }
             } catch (DependencyResolutionRequiredException e) {
                 getLog().debug("Unable to log project tset classpath");
             }
