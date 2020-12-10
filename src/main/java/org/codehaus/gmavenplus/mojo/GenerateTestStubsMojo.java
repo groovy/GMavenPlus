@@ -70,7 +70,9 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
             minGroovyVersion = GROOVY_1_8_2;
             try {
                 try {
-                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                    if (getLog().isDebugEnabled()) {
+                        getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+                    }
                 } catch (DependencyResolutionRequiredException e) {
                     getLog().debug("Unable to log project test classpath");
                 }

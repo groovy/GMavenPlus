@@ -118,7 +118,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         try {
-            getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+            }
         } catch (DependencyResolutionRequiredException e) {
             getLog().debug("Unable to log project test classpath");
         }
@@ -210,7 +212,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
                     // it's not a URL to a script, try as a filename
                     File scriptFile = new File(script);
                     if (scriptFile.isFile()) {
-                        getLog().info("Running Groovy script from " + scriptFile.getCanonicalPath() + ".");
+                        if (getLog().isInfoEnabled()) {
+                            getLog().info("Running Groovy script from " + scriptFile.getCanonicalPath() + ".");
+                        }
                         Method evaluateFile = findMethod(groovyShellClass, "evaluate", File.class);
                         invokeMethod(evaluateFile, shell, scriptFile);
                     } else {
@@ -242,7 +246,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
      */
     protected void executeScriptFromUrl(Class<?> groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
         URL url = new URL(script);
-        getLog().info("Running Groovy script from " + url + ".");
+        if (getLog().isInfoEnabled()) {
+            getLog().info("Running Groovy script from " + url + ".");
+        }
         if (groovyAtLeast(GROOVY_1_7_0)) {
             Method evaluateUrlWithReader = findMethod(groovyShellClass, "evaluate", Reader.class);
             BufferedReader reader = null;

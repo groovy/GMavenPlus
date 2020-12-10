@@ -313,14 +313,18 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         for (File stubSource : stubSources) {
             scriptExtensions.add(FileUtils.getFileExtension(stubSource));
         }
-        getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
+        }
         if (supportsSettingExtensions()) {
             invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
         }
         getLog().debug("Adding Groovy to generate stubs for:");
         Method addSource = findMethod(javaStubCompilationUnitClass, "addSource", File.class);
         for (File stubSource : stubSources) {
-            getLog().debug("    " + stubSource);
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("    " + stubSource);
+            }
             if (supportsSettingExtensions()) {
                 invokeMethod(addSource, javaStubCompilationUnit, stubSource);
             } else {
@@ -346,7 +350,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected void logGeneratedStubs(File outputDirectory) {
         Set<File> stubs = getStubs(outputDirectory);
-        getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() != 1 ? "s" : "") + ".");
+        if (getLog().isInfoEnabled()) {
+            getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() != 1 ? "s" : "") + ".");
+        }
     }
 
     /**
@@ -361,7 +367,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         for (File stub : stubs) {
             boolean success = stub.setLastModified(0L);
             if (!success) {
-                getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
+                }
             }
         }
     }

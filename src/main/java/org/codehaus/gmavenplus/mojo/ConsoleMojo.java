@@ -74,7 +74,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         try {
-            getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
+            }
         } catch (DependencyResolutionRequiredException e) {
             getLog().debug("Unable to log project test classpath");
         }
@@ -142,10 +144,14 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 if (consoleScriptFile.isFile()) {
                     invokeMethod(loadScriptFile, console, consoleScriptFile);
                 } else {
-                    getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                    if (getLog().isWarnEnabled()) {
+                        getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                    }
                 }
             } else {
-                getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                if (getLog().isWarnEnabled()) {
+                    getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
+                }
             }
         }
     }

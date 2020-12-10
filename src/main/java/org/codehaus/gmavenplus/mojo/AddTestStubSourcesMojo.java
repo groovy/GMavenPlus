@@ -49,7 +49,9 @@ public class AddTestStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
     @Override
     public void execute() {
         if (!skipTests) {
-            getLog().debug("Added test stub directory " + testStubsOutputDirectory.getAbsolutePath() + " to project test sources.");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Added test stub directory " + testStubsOutputDirectory.getAbsolutePath() + " to project test sources.");
+            }
             project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());
         }
     }
