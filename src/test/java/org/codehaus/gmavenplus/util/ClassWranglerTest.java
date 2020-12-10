@@ -20,6 +20,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -33,7 +34,7 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyJar() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
         doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
         assertEquals("groovy-all-1.5.0.jar", classWrangler.getGroovyJar());
@@ -41,7 +42,7 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyVersionStringFromGroovySystemThenFromInvokerHelper() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to try other methods."))
                 .when(classWrangler).getClass(anyString());
         doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
@@ -54,7 +55,7 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyVersionStringFromJar() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
         doReturn("some/path/groovy-all-1.5.0.jar").when(classWrangler).getJarPath();
         assertEquals("1.5.0", classWrangler.getGroovyVersionString());
@@ -62,7 +63,7 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyVersionWithIndyFromJar() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
         doReturn("some/path/groovy-all-2.4.0-indy.jar").when(classWrangler).getJarPath();
         assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
@@ -70,7 +71,7 @@ public class ClassWranglerTest {
 
     @Test
     public void testGetGroovyVersionWithGrooidFromJar() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to force GMavenPlus to get version from jar.")).when(classWrangler).getClass(anyString());
         doReturn("some/path/groovy-all-2.4.0-grooid.jar").when(classWrangler).getJarPath();
         assertEquals("2.4.0", classWrangler.getGroovyVersion().toString());
@@ -78,14 +79,14 @@ public class ClassWranglerTest {
 
     @Test
     public void testIsGroovyIndyTrue() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doReturn(null).when(classWrangler).getClass(anyString());  // make it appear Groovy is indy
         assertTrue(classWrangler.isGroovyIndy());
     }
 
     @Test
     public void testIsGroovyIndyFalse() throws Exception {
-        ClassWrangler classWrangler = spy(new ClassWrangler((ClassLoader) null, mock(Log.class)));
+        ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to make it appear Groovy is not indy.")).when(classWrangler).getClass(anyString());
         assertFalse(classWrangler.isGroovyIndy());
     }

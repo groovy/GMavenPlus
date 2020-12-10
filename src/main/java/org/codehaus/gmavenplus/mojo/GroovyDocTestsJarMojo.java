@@ -38,8 +38,7 @@ import java.io.IOException;
  * @author Keegan Witt
  * @since 1.7.1
  */
-@Mojo(name = "groovydocTests-jar", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true,
-        configurator = "include-project-test-dependencies")
+@Mojo(name = "groovydocTests-jar", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
 
     /**

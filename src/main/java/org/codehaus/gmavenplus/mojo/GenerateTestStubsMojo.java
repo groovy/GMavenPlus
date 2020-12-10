@@ -36,8 +36,7 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = "generateTestStubs", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true,
-        configurator = "include-project-test-dependencies")
+@Mojo(name = "generateTestStubs", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
 
     /**

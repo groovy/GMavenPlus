@@ -38,8 +38,7 @@ import java.io.IOException;
  * @author Keegan Witt
  * @since 1.7.1
  */
-@Mojo(name = "groovydoc-jar", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true,
-        configurator = "include-project-compile-dependencies")
+@Mojo(name = "groovydoc-jar", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class GroovyDocJarMojo extends GroovyDocMojo {
 
     /**

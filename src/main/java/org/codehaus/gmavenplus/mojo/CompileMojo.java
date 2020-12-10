@@ -36,8 +36,7 @@ import java.net.MalformedURLException;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true,
-        configurator = "include-project-compile-dependencies")
+@Mojo(name = "compile", defaultPhase = LifecyclePhase.COMPILE, requiresDependencyResolution = ResolutionScope.COMPILE, threadSafe = true)
 public class CompileMojo extends AbstractCompileMojo {
 
     /**

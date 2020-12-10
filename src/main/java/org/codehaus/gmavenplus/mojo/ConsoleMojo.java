@@ -43,7 +43,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.1
  */
-@Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
+@Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST)
 public class ConsoleMojo extends AbstractToolsMojo {
 
     /**
@@ -178,7 +178,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             invokeMethod(setVariable, binding, "properties", properties);
         }
 
-        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), Thread.currentThread().getContextClassLoader(), binding);
+        return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), classWrangler.getClassLoader(), binding);
     }
 
     /**

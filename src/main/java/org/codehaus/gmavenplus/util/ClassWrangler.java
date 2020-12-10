@@ -53,7 +53,7 @@ public class ClassWrangler {
     /**
      * ClassLoader to use for class wrangling.
      */
-    private ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
     /**
      * Plugin log.
@@ -61,28 +61,16 @@ public class ClassWrangler {
     private final Log log;
 
     /**
-     * Creates a new ClassWrangler using the specified ClassLoader.
+     * Creates a new ClassWrangler using the specified parent ClassLoader, loaded with the items from the specified classpath.
      *
-     * @param classLoaderForLoading the ClassLoader to use to load classes
-     * @param pluginLog             the Maven log to use for logging
-     */
-    public ClassWrangler(final ClassLoader classLoaderForLoading, final Log pluginLog) {
-        log = pluginLog;
-        classLoader = classLoaderForLoading;
-    }
-
-    /**
-     * Creates a new ClassWrangler using a new ClassLoader, loaded with the items from the specified classpath.
-     *
-     * @param classpath the classpath to load the new ClassLoader with
-     * @param pluginLog the Maven log to use for logging
+     * @param classpath         the classpath to load the new ClassLoader with
+     * @param parentClassLoader the parent for the new ClassLoader used to use to load classes
+     * @param pluginLog         the Maven log to use for logging
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
-    public ClassWrangler(final List<?> classpath, final Log pluginLog) throws MalformedURLException {
+    public ClassWrangler(final List<?> classpath, final ClassLoader parentClassLoader, final Log pluginLog) throws MalformedURLException {
         log = pluginLog;
-        // create an isolated ClassLoader with all the appropriate project dependencies in it
-        classLoader = createNewClassLoader(classpath);
-        Thread.currentThread().setContextClassLoader(classLoader);
+        classLoader = createNewClassLoader(classpath, parentClassLoader);
     }
 
     /**
@@ -226,11 +214,60 @@ public class ClassWrangler {
     }
 
     /**
+     * Logs the version of groovy used by this mojo.
+     *
+     * @param goal The goal to mention in the log statement showing Groovy version
+     */
+    public void logGroovyVersion(final String goal) {
+        if (log.isInfoEnabled()) {
+            log.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
+        }
+    }
+
+    /**
+     * Gets a class for the given class name.
+     *
+     * @param className the class name to retrieve the class for
+     * @return the class for the given class name
+     * @throws ClassNotFoundException when a class for the specified class name cannot be found
+     */
+    public Class<?> getClass(final String className) throws ClassNotFoundException {
+        return Class.forName(className, true, classLoader);
+    }
+
+    /**
+     * Returns the classloader used for loading classes.
+     *
+     * @return the classloader used for loading classes
+     */
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    /**
+     * Creates a new ClassLoader with the specified classpath.
+     *
+     * @param classpath   the classpath (a list of file path Strings) to include in the new loader
+     * @param classLoader the ClassLoader to use as the parent for the new CLassLoader
+     * @return the new ClassLoader
+     * @throws MalformedURLException when a classpath element provides a malformed URL
+     */
+    protected ClassLoader createNewClassLoader(final List<?> classpath, final ClassLoader classLoader) throws MalformedURLException {
+        List<URL> urlsList = new ArrayList<>();
+        for (Object classPathObject : classpath) {
+            String path = (String) classPathObject;
+            urlsList.add(new File(path).toURI().toURL());
+        }
+        URL[] urlsArray = urlsList.toArray(new URL[0]);
+        return new URLClassLoader(urlsArray, classLoader);
+    }
+
+    /**
      * Returns the filename of the Groovy jar on the classpath.
      *
      * @return the Groovy jar filename
      */
-    public String getGroovyJar() {
+    protected String getGroovyJar() {
         try {
             String groovyObjectClassPath = getJarPath();
             String groovyJar = null;
@@ -263,53 +300,4 @@ public class ClassWrangler {
         }
         return groovyObjectClassPath;
     }
-
-    /**
-     * Logs the version of groovy used by this mojo.
-     *
-     * @param goal The goal to mention in the log statement showing Groovy version
-     */
-    public void logGroovyVersion(final String goal) {
-        if (log.isInfoEnabled()) {
-            log.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
-        }
-    }
-
-    /**
-     * Creates a new ClassLoader with the specified classpath.
-     *
-     * @param classpath the classpath (a list of file path Strings) to include in the new loader
-     * @return the new ClassLoader
-     * @throws MalformedURLException when a classpath element provides a malformed URL
-     */
-    public ClassLoader createNewClassLoader(final List<?> classpath) throws MalformedURLException {
-        List<URL> urlsList = new ArrayList<>();
-        for (Object classPathObject : classpath) {
-            String path = (String) classPathObject;
-            urlsList.add(new File(path).toURI().toURL());
-        }
-        URL[] urlsArray = urlsList.toArray(new URL[0]);
-        return new URLClassLoader(urlsArray, ClassLoader.getSystemClassLoader());
-    }
-
-    /**
-     * Gets a class for the given class name.
-     *
-     * @param className the class name to retrieve the class for
-     * @return the class for the given class name
-     * @throws ClassNotFoundException when a class for the specified class name cannot be found
-     */
-    public Class<?> getClass(final String className) throws ClassNotFoundException {
-        return Class.forName(className, true, classLoader);
-    }
-
-    /**
-     * Returns the classloader used for loading classes.
-     *
-     * @return the classloader used for loading classes
-     */
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
 }
