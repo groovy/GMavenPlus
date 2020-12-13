@@ -40,7 +40,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.1
  */
-@Mojo(name = "shell", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies")
+@Mojo(name = "shell", requiresDependencyResolution = ResolutionScope.TEST)
 public class ShellMojo extends AbstractToolsMojo {
 
     /**
@@ -155,7 +155,7 @@ public class ShellMojo extends AbstractToolsMojo {
         invokeMethod(findMethod(ioClass, "setVerbosity", verbosityClass), io, invokeStaticMethod(findMethod(verbosityClass, "forName", String.class), verbosity));
         findField(loggerClass, "io", ioClass).set(null, io);
 
-        return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);
+        return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), classWrangler.getClassLoader(), binding, io);
     }
 
 }

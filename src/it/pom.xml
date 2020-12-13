@@ -13,6 +13,7 @@
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
     <commonsLang3Version>3.7</commonsLang3Version>
     <mavenVersion>3.6.3</mavenVersion>
+    <junit5Version>5.7.0</junit5Version>
   </properties>
 
   <dependencyManagement>
@@ -22,6 +23,13 @@
         <artifactId>junit</artifactId>
         <version>@junitVersion@</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit5Version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>

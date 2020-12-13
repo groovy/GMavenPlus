@@ -30,6 +30,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 
 /**
  * The base mojo class, which all other mojos extend.
@@ -238,10 +240,13 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
     protected void setupClassWrangler(List<?> classpath, IncludeClasspath includeClasspath) throws MalformedURLException {
         if (IncludeClasspath.PROJECT_ONLY.equals(includeClasspath)) {
             getLog().info("Using isolated classloader, without GMavenPlus classpath.");
-            classWrangler = new ClassWrangler(classpath, getLog());
+            classWrangler = new ClassWrangler(classpath, ClassLoader.getSystemClassLoader(), getLog());
+        } else if (IncludeClasspath.PROJECT_AND_PLUGIN.equals(includeClasspath)) {
+            getLog().info("Using plugin classloader, includes GMavenPlus and project classpath.");
+            classWrangler = new ClassWrangler(classpath, getClass().getClassLoader(), getLog());
         } else {
-            getLog().info("Using plugin classloader, includes GMavenPlus classpath.");
-            classWrangler = new ClassWrangler(Thread.currentThread().getContextClassLoader(), getLog());
+            getLog().info("Using plugin classloader, includes GMavenPlus classpath, but not project classpath.");
+            classWrangler = new ClassWrangler(emptyList(), getClass().getClassLoader(), getLog());
         }
     }
 }

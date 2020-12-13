@@ -43,7 +43,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = "execute", requiresDependencyResolution = ResolutionScope.TEST, configurator = "include-project-test-dependencies", threadSafe = true)
+@Mojo(name = "execute", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 public class ExecuteMojo extends AbstractToolsMojo {
 
     /**
@@ -174,9 +174,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
             Class<?> compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
             Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
-            shell = invokeConstructor(findConstructor(groovyShellClass, compilerConfigurationClass), compilerConfiguration);
+            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
         } else {
-            shell = invokeConstructor(findConstructor(groovyShellClass));
+            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class), classWrangler.getClassLoader());
         }
         initializeProperties();
         Method setProperty = findMethod(groovyShellClass, "setProperty", String.class, Object.class);
