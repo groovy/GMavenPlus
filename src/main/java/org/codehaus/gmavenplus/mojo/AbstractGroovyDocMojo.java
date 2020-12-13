@@ -21,6 +21,7 @@ import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
+import org.codehaus.gmavenplus.model.Link;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.Version;
 import org.codehaus.gmavenplus.util.FileUtils;

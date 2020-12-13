@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.mojo;
+package org.codehaus.gmavenplus.model;
 
 import org.junit.Test;
 
