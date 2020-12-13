@@ -21,7 +21,7 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.junit.Before;
 import org.junit.Test;

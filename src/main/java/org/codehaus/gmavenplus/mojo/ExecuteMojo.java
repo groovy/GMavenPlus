@@ -21,7 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 

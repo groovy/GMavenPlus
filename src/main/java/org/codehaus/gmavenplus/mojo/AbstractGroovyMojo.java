@@ -23,7 +23,7 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 
 import java.io.File;

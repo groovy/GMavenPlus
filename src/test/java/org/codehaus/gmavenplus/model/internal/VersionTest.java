@@ -1,4 +1,4 @@
-package org.codehaus.gmavenplus.model;
+package org.codehaus.gmavenplus.model.internal;
 
 import org.junit.Test;
 

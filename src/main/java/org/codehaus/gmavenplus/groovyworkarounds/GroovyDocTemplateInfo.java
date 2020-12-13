@@ -16,7 +16,7 @@
 
 package org.codehaus.gmavenplus.groovyworkarounds;
 
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 
 import static org.codehaus.gmavenplus.util.ClassWrangler.groovyAtLeast;
 

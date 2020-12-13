@@ -1,6 +1,6 @@
 package org.codehaus.gmavenplus.groovyworkarounds;
 
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

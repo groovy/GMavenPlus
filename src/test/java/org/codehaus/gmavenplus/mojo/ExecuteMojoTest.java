@@ -19,7 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.junit.Before;

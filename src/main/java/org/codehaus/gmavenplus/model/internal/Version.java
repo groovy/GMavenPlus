@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.gmavenplus.model;
+package org.codehaus.gmavenplus.model.internal;
 
 import java.util.Arrays;
 

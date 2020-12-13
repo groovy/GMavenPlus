@@ -23,7 +23,7 @@ import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Link;
 import org.codehaus.gmavenplus.model.Scopes;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.*;

@@ -16,7 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -17,7 +17,7 @@
 package org.codehaus.gmavenplus.util;
 
 import org.apache.maven.plugin.logging.Log;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;

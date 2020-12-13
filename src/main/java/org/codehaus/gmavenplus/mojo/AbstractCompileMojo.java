@@ -18,7 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;

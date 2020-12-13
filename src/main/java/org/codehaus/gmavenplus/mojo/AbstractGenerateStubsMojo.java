@@ -19,7 +19,7 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 
 import java.io.File;
