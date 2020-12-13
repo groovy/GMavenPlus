@@ -42,7 +42,7 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * @author Keegan Witt</em>
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * @since 1.0-beta-1</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  @Mojo(name = <span class="jxr_string">"groovydocTests"</span>, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = <strong class="jxr_keyword">true</strong>, configurator = <span class="jxr_string">"include-project-test-dependencies"</span>)
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  @Mojo(name = <span class="jxr_string">"groovydocTests"</span>, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = <strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="GroovyDocTestsMojo" href="../../../../org/codehaus/gmavenplus/mojo/GroovyDocTestsMojo.html#GroovyDocTestsMojo">GroovyDocTestsMojo</a> <strong class="jxr_keyword">extends</strong> <a name="AbstractGroovyDocMojo" href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojo.html#AbstractGroovyDocMojo">AbstractGroovyDocMojo</a> {
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      <em class="jxr_javadoccomment">/**</em>
@@ -75,27 +75,29 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() <strong class="jxr_keyword">throws</strong> MojoExecutionException {
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getCompileClasspathElements());
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>                  getLog().debug(<span class="jxr_string">"Unable to log project tset classpath"</span>);
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>              }
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>              doGroovyDocGeneration(getTestFilesets(testSources, testGroovyDocJavaSources), project.getTestClasspathElements(), testGroovyDocOutputDirectory);
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath ("</span> + e.getMessage() + <span class="jxr_string">"). Do you have Groovy as a compile dependency in your project?"</span>, e);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Test dependencies weren't resolved."</span>, e);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          } <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to add project test dependencies to classpath."</span>, e);
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          }
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      }
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>  
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>  }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>                      getLog().debug(<span class="jxr_string">"Project test classpath:\n"</span> + project.getCompileClasspathElements());
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>                  }
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  getLog().debug(<span class="jxr_string">"Unable to log project tset classpath"</span>);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>              }
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>              doGroovyDocGeneration(getTestFilesets(testSources, testGroovyDocJavaSources), project.getTestClasspathElements(), testGroovyDocOutputDirectory);
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          } <strong class="jxr_keyword">catch</strong> (ClassNotFoundException e) {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to get a Groovy class from classpath ("</span> + e.getMessage() + <span class="jxr_string">"). Do you have Groovy as a compile dependency in your project?"</span>, e);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          } <strong class="jxr_keyword">catch</strong> (InvocationTargetException e) {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while calling a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          } <strong class="jxr_keyword">catch</strong> (InstantiationException e) {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Error occurred while instantiating a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          } <strong class="jxr_keyword">catch</strong> (IllegalAccessException e) {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to access a method on a Groovy class from classpath."</span>, e);
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          } <strong class="jxr_keyword">catch</strong> (DependencyResolutionRequiredException e) {
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Test dependencies weren't resolved."</span>, e);
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          } <strong class="jxr_keyword">catch</strong> (MalformedURLException e) {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoExecutionException(<span class="jxr_string">"Unable to add project test dependencies to classpath."</span>, e);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          }
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      }
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>

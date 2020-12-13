@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2011 - 2020</copyright>
     <item>
-      <title>File: 44,
-             Errors: 1524,
+      <title>File: 40,
+             Errors: 1445,
              Warnings: 0,
              Infos: 0
       </title>
@@ -84,20 +84,6 @@ under the License.
                 </td>
                 <td>
                   17
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.AbstractIncludeProjectDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/AbstractIncludeProjectDependenciesComponentConfigurator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  25
                 </td>
               </tr>
                           <tr>
@@ -186,6 +172,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.internal.package-info.java">org/codehaus/gmavenplus/model/internal/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AbstractGroovyDocMojo.java">org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojo.java</a>
                 </td>
                 <td>
@@ -251,21 +251,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  57
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectRuntimeDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectRuntimeDependenciesComponentConfigurator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  19
+                  56
                 </td>
               </tr>
                           <tr>
@@ -308,20 +294,6 @@ under the License.
                 </td>
                 <td>
                   3
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectCompileDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectCompileDependenciesComponentConfigurator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  19
                 </td>
               </tr>
                           <tr>
@@ -377,7 +349,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  57
+                  58
                 </td>
               </tr>
                           <tr>
@@ -424,20 +396,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.package-info.java">org/codehaus/gmavenplus/plexus/package-info.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.util.ReflectionUtils.java">org/codehaus/gmavenplus/util/ReflectionUtils.java</a>
                 </td>
                 <td>
@@ -480,34 +438,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.Version.java">org/codehaus/gmavenplus/model/Version.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  24
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.plexus.IncludeProjectTestDependenciesComponentConfigurator.java">org/codehaus/gmavenplus/plexus/IncludeProjectTestDependenciesComponentConfigurator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  19
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.GroovyDocJarMojo.java">org/codehaus/gmavenplus/mojo/GroovyDocJarMojo.java</a>
                 </td>
                 <td>
@@ -536,6 +466,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.Link.java">org/codehaus/gmavenplus/model/Link.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.AbstractToolsMojo.java">org/codehaus/gmavenplus/mojo/AbstractToolsMojo.java</a>
                 </td>
                 <td>
@@ -550,6 +494,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.model.internal.Version.java">org/codehaus/gmavenplus/model/internal/Version.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  24
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.ShellMojo.java">org/codehaus/gmavenplus/mojo/ShellMojo.java</a>
                 </td>
                 <td>
@@ -559,7 +517,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  32
+                  31
                 </td>
               </tr>
                           <tr>
@@ -573,7 +531,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  44
+                  48
                 </td>
               </tr>
                           <tr>
@@ -644,20 +602,6 @@ under the License.
                 </td>
                 <td>
                   5
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://groovy.github.io/GMavenPlus//checkstyle.html#org.codehaus.gmavenplus.mojo.Link.java">org/codehaus/gmavenplus/mojo/Link.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  4
                 </td>
               </tr>
                       </tbody>

@@ -63,12 +63,14 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> addSourcePath(<strong class="jxr_keyword">final</strong> String path) {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">if</strong> (!project.getCompileSourceRoots().contains(path)) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>              getLog().debug(<span class="jxr_string">"Added source directory: "</span> + path);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              project.addCompileSourceRoot(path);
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          }
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  }
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>              <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>                  getLog().debug(<span class="jxr_string">"Added source directory: "</span> + path);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>              }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>              project.addCompileSourceRoot(path);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          }
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>

@@ -21,7 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,7 +40,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  * @author Keegan Witt
  * @since 1.1
  */
-@Mojo(name = &quot;shell&quot;, requiresDependencyResolution = ResolutionScope.TEST, configurator = &quot;include-project-test-dependencies&quot;)
+@Mojo(name = &quot;shell&quot;, requiresDependencyResolution = ResolutionScope.TEST)
 <span class="nc" id="L44">public class ShellMojo extends AbstractToolsMojo {</span>
 
     /**
@@ -79,51 +79,53 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="nc" id="L79">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
 
         try {
-<span class="nc" id="L82">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
-<span class="nc" id="L83">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L84">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
-<span class="nc" id="L85">        }</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L83">                getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+            }
+<span class="nc" id="L85">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L86">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="nc" id="L87">        }</span>
 
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
-<span class="nc" id="L88">            final SecurityManager sm = System.getSecurityManager();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L90">            final SecurityManager sm = System.getSecurityManager();</span>
             try {
-<span class="nc bnc" id="L90" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
-<span class="nc" id="L91">                    System.setSecurityManager(new NoExitSecurityManager());</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L93">                    System.setSecurityManager(new NoExitSecurityManager());</span>
                 }
 
                 // get classes we need with reflection
-<span class="nc bnc" id="L95" title="All 2 branches missed.">                Class&lt;?&gt; shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? &quot;org.apache.groovy.groovysh.Groovysh&quot; : &quot;org.codehaus.groovy.tools.shell.Groovysh&quot;);</span>
-<span class="nc" id="L96">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
-<span class="nc" id="L97">                Class&lt;?&gt; ioClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO&quot;);</span>
-<span class="nc" id="L98">                Class&lt;?&gt; verbosityClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO$Verbosity&quot;);</span>
-<span class="nc" id="L99">                Class&lt;?&gt; loggerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.util.Logger&quot;);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                Class&lt;?&gt; shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? &quot;org.apache.groovy.groovysh.Groovysh&quot; : &quot;org.codehaus.groovy.tools.shell.Groovysh&quot;);</span>
+<span class="nc" id="L98">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
+<span class="nc" id="L99">                Class&lt;?&gt; ioClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO&quot;);</span>
+<span class="nc" id="L100">                Class&lt;?&gt; verbosityClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO$Verbosity&quot;);</span>
+<span class="nc" id="L101">                Class&lt;?&gt; loggerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.util.Logger&quot;);</span>
 
                 // create shell to run
-<span class="nc" id="L102">                Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);</span>
+<span class="nc" id="L104">                Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);</span>
 
                 // run the shell
-<span class="nc" id="L105">                invokeMethod(findMethod(shellClass, &quot;run&quot;, String.class), shell, (String) null);</span>
-<span class="nc" id="L106">            } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L107">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
-<span class="nc" id="L108">            } catch (InvocationTargetException e) {</span>
-<span class="nc bnc" id="L109" title="All 6 branches missed.">                if (e.getCause() instanceof NoClassDefFoundError &amp;&amp; e.getCause().getMessage() != null &amp;&amp; e.getCause().getMessage().contains(&quot;jline&quot;)) {</span>
-<span class="nc" id="L110">                    throw new MojoExecutionException(&quot;Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy &lt; 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.&quot;, e);</span>
+<span class="nc" id="L107">                invokeMethod(findMethod(shellClass, &quot;run&quot;, String.class), shell, (String) null);</span>
+<span class="nc" id="L108">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L109">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
+<span class="nc" id="L110">            } catch (InvocationTargetException e) {</span>
+<span class="nc bnc" id="L111" title="All 6 branches missed.">                if (e.getCause() instanceof NoClassDefFoundError &amp;&amp; e.getCause().getMessage() != null &amp;&amp; e.getCause().getMessage().contains(&quot;jline&quot;)) {</span>
+<span class="nc" id="L112">                    throw new MojoExecutionException(&quot;Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy &lt; 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.&quot;, e);</span>
                 } else {
-<span class="nc" id="L112">                    throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L114">                    throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
                 }
-<span class="nc" id="L114">            } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L115">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="nc" id="L116">            } catch (InstantiationException e) {</span>
-<span class="nc" id="L117">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L116">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L117">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L118">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L119">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
             } finally {
-<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
-<span class="nc" id="L120">                    System.setSecurityManager(sm);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L122">                    System.setSecurityManager(sm);</span>
                 }
             }
-<span class="nc" id="L123">        } else {</span>
-<span class="nc" id="L124">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support running a shell. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping shell startup.&quot;);</span>
+<span class="nc" id="L125">        } else {</span>
+<span class="nc" id="L126">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support running a shell. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping shell startup.&quot;);</span>
         }
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L128">    }</span>
 
     /**
      * Creates the Groovysh to run.
@@ -139,21 +141,21 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed
      */
     protected Object setupShell(final Class&lt;?&gt; shellClass, final Class&lt;?&gt; bindingClass, final Class&lt;?&gt; ioClass, final Class&lt;?&gt; verbosityClass, final Class&lt;?&gt; loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-<span class="nc" id="L142">        Object binding = invokeConstructor(findConstructor(bindingClass));</span>
-<span class="nc" id="L143">        initializeProperties();</span>
-<span class="nc" id="L144">        Method setVariable = findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class);</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">            for (Object k : properties.keySet()) {</span>
-<span class="nc" id="L147">                invokeMethod(setVariable, binding, k, properties.get(k));</span>
-<span class="nc" id="L148">            }</span>
+<span class="nc" id="L144">        Object binding = invokeConstructor(findConstructor(bindingClass));</span>
+<span class="nc" id="L145">        initializeProperties();</span>
+<span class="nc" id="L146">        Method setVariable = findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class);</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            for (Object k : properties.keySet()) {</span>
+<span class="nc" id="L149">                invokeMethod(setVariable, binding, k, properties.get(k));</span>
+<span class="nc" id="L150">            }</span>
         } else {
-<span class="nc" id="L150">            invokeMethod(setVariable, binding, &quot;properties&quot;, properties);</span>
+<span class="nc" id="L152">            invokeMethod(setVariable, binding, &quot;properties&quot;, properties);</span>
         }
-<span class="nc" id="L152">        Object io = invokeConstructor(findConstructor(ioClass));</span>
-<span class="nc" id="L153">        invokeMethod(findMethod(ioClass, &quot;setVerbosity&quot;, verbosityClass), io, invokeStaticMethod(findMethod(verbosityClass, &quot;forName&quot;, String.class), verbosity));</span>
-<span class="nc" id="L154">        findField(loggerClass, &quot;io&quot;, ioClass).set(null, io);</span>
+<span class="nc" id="L154">        Object io = invokeConstructor(findConstructor(ioClass));</span>
+<span class="nc" id="L155">        invokeMethod(findMethod(ioClass, &quot;setVerbosity&quot;, verbosityClass), io, invokeStaticMethod(findMethod(verbosityClass, &quot;forName&quot;, String.class), verbosity));</span>
+<span class="nc" id="L156">        findField(loggerClass, &quot;io&quot;, ioClass).set(null, io);</span>
 
-<span class="nc" id="L156">        return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), Thread.currentThread().getContextClassLoader(), binding, io);</span>
+<span class="nc" id="L158">        return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), classWrangler.getClassLoader(), binding, io);</span>
     }
 
 }

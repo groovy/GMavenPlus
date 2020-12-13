@@ -18,7 +18,7 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
-import org.codehaus.gmavenplus.model.Version;
+import org.codehaus.gmavenplus.model.internal.Version;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -315,8 +315,10 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 
         // log compiled classes
 <span class="nc" id="L317">        List classes = (List) invokeMethod(findMethod(compilationUnitClass, &quot;getClasses&quot;), compilationUnit);</span>
-<span class="nc bnc" id="L318" title="All 2 branches missed.">        getLog().info(&quot;Compiled &quot; + classes.size() + &quot; file&quot; + (classes.size() != 1 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
-<span class="nc" id="L319">    }</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        if (getLog().isInfoEnabled()) {</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">            getLog().info(&quot;Compiled &quot; + classes.size() + &quot; file&quot; + (classes.size() != 1 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
+        }
+<span class="nc" id="L321">    }</span>
 
     /**
      * Sets up the CompilationUnit to use for compilation.
@@ -335,19 +337,21 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      */
     protected Object setupCompilationUnit(final Set&lt;File&gt; sources, final Class&lt;?&gt; compilerConfigurationClass, final Class&lt;?&gt; compilationUnitClass, final Class&lt;?&gt; groovyClassLoaderClass, final Object compilerConfiguration, final Object groovyClassLoader, final Object transformLoader) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object compilationUnit;
-<span class="nc bnc" id="L338" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0)) {</span>
-<span class="nc" id="L339">            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_1_6_0)) {</span>
+<span class="nc" id="L341">            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader, transformLoader);</span>
         } else {
-<span class="nc" id="L341">            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);</span>
+<span class="nc" id="L343">            compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);</span>
         }
-<span class="nc" id="L343">        getLog().debug(&quot;Adding Groovy to compile:&quot;);</span>
-<span class="nc" id="L344">        Method addSourceMethod = findMethod(compilationUnitClass, &quot;addSource&quot;, File.class);</span>
-<span class="nc bnc" id="L345" title="All 2 branches missed.">        for (File source : sources) {</span>
-<span class="nc" id="L346">            getLog().debug(&quot;    &quot; + source);</span>
-<span class="nc" id="L347">            invokeMethod(addSourceMethod, compilationUnit, source);</span>
-<span class="nc" id="L348">        }</span>
+<span class="nc" id="L345">        getLog().debug(&quot;Adding Groovy to compile:&quot;);</span>
+<span class="nc" id="L346">        Method addSourceMethod = findMethod(compilationUnitClass, &quot;addSource&quot;, File.class);</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">        for (File source : sources) {</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L349">                getLog().debug(&quot;    &quot; + source);</span>
+            }
+<span class="nc" id="L351">            invokeMethod(addSourceMethod, compilationUnit, source);</span>
+<span class="nc" id="L352">        }</span>
 
-<span class="nc" id="L350">        return compilationUnit;</span>
+<span class="nc" id="L354">        return compilationUnit;</span>
     }
 
     /**
@@ -363,89 +367,107 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      */
     @SuppressWarnings({&quot;rawtypes&quot;, &quot;unchecked&quot;})
     protected Object setupCompilerConfiguration(final File compileOutputDirectory, final Class&lt;?&gt; compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-<span class="nc" id="L366">        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
-<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (configScript != null) {</span>
-<span class="nc bnc" id="L368" title="All 2 branches missed.">            if (!configScript.exists()) {</span>
-<span class="nc" id="L369">                getLog().warn(&quot;Configuration script file (&quot; + configScript.getAbsolutePath() + &quot;) doesn't exist. Ignoring configScript parameter.&quot;);</span>
-<span class="nc bnc" id="L370" title="All 2 branches missed.">            } else if (groovyOlderThan(GROOVY_2_1_0_BETA1)) {</span>
-<span class="nc" id="L371">                getLog().warn(&quot;Requested to use configScript, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_1_0_BETA1 + &quot; or newer). Ignoring configScript parameter.&quot;);</span>
-            } else {
-<span class="nc" id="L373">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
-<span class="nc" id="L374">                Class&lt;?&gt; importCustomizerClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.customizers.ImportCustomizer&quot;);</span>
-<span class="nc" id="L375">                Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
-
-<span class="nc" id="L377">                Object binding = invokeConstructor(findConstructor(bindingClass));</span>
-<span class="nc" id="L378">                invokeMethod(findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class), binding, &quot;configuration&quot;, compilerConfiguration);</span>
-<span class="nc" id="L379">                Object shellCompilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
-<span class="nc" id="L380">                Object importCustomizer = invokeConstructor(findConstructor(importCustomizerClass));</span>
-<span class="nc" id="L381">                invokeMethod(findMethod(importCustomizerClass, &quot;addStaticStar&quot;, String.class), importCustomizer, &quot;org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder&quot;);</span>
-<span class="nc" id="L382">                List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, &quot;getCompilationCustomizers&quot;), shellCompilerConfiguration);</span>
-<span class="nc" id="L383">                compilationCustomizers.add(importCustomizer);</span>
-<span class="nc" id="L384">                Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);</span>
-<span class="nc" id="L385">                getLog().debug(&quot;Using configuration script &quot; + configScript + &quot; for compilation.&quot;);</span>
-<span class="nc" id="L386">                invokeMethod(findMethod(groovyShellClass, &quot;evaluate&quot;, File.class), shell, configScript);</span>
-            }
-        }
-<span class="nc" id="L389">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setDebug&quot;, boolean.class), compilerConfiguration, debug);</span>
-<span class="nc" id="L390">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setVerbose&quot;, boolean.class), compilerConfiguration, verbose);</span>
-<span class="nc" id="L391">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setWarningLevel&quot;, int.class), compilerConfiguration, warningLevel);</span>
-<span class="nc" id="L392">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTolerance&quot;, int.class), compilerConfiguration, tolerance);</span>
-<span class="nc" id="L393">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetBytecode&quot;, String.class), compilerConfiguration, targetBytecode);</span>
-<span class="nc bnc" id="L394" title="All 2 branches missed.">        if (previewFeatures) {</span>
-<span class="nc bnc" id="L395" title="All 2 branches missed.">            if (isJavaSupportPreviewFeatures()) {</span>
-<span class="nc bnc" id="L396" title="All 6 branches missed.">                if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
-<span class="nc" id="L397">                    getLog().warn(&quot;Requested to use preview features, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.&quot;);</span>
-                } else {
-<span class="nc" id="L399">                    invokeMethod(findMethod(compilerConfigurationClass, &quot;setPreviewFeatures&quot;, boolean.class), compilerConfiguration, previewFeatures);</span>
+<span class="nc" id="L370">        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        if (configScript != null) {</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">            if (!configScript.exists()) {</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L374">                    getLog().warn(&quot;Configuration script file (&quot; + configScript.getAbsolutePath() + &quot;) doesn't exist. Ignoring configScript parameter.&quot;);</span>
+                }
+<span class="nc bnc" id="L376" title="All 2 branches missed.">            } else if (groovyOlderThan(GROOVY_2_1_0_BETA1)) {</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">                if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L378">                    getLog().warn(&quot;Requested to use configScript, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_1_0_BETA1 + &quot; or newer). Ignoring configScript parameter.&quot;);</span>
                 }
             } else {
-<span class="nc" id="L402">                getLog().warn(&quot;Requested to use to use preview features, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring previewFeatures parameter.&quot;);</span>
+<span class="nc" id="L381">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
+<span class="nc" id="L382">                Class&lt;?&gt; importCustomizerClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.customizers.ImportCustomizer&quot;);</span>
+<span class="nc" id="L383">                Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
+
+<span class="nc" id="L385">                Object binding = invokeConstructor(findConstructor(bindingClass));</span>
+<span class="nc" id="L386">                invokeMethod(findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class), binding, &quot;configuration&quot;, compilerConfiguration);</span>
+<span class="nc" id="L387">                Object shellCompilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
+<span class="nc" id="L388">                Object importCustomizer = invokeConstructor(findConstructor(importCustomizerClass));</span>
+<span class="nc" id="L389">                invokeMethod(findMethod(importCustomizerClass, &quot;addStaticStar&quot;, String.class), importCustomizer, &quot;org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder&quot;);</span>
+<span class="nc" id="L390">                List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, &quot;getCompilationCustomizers&quot;), shellCompilerConfiguration);</span>
+<span class="nc" id="L391">                compilationCustomizers.add(importCustomizer);</span>
+<span class="nc" id="L392">                Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">                if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L394">                    getLog().debug(&quot;Using configuration script &quot; + configScript + &quot; for compilation.&quot;);</span>
+                }
+<span class="nc" id="L396">                invokeMethod(findMethod(groovyShellClass, &quot;evaluate&quot;, File.class), shell, configScript);</span>
             }
         }
-<span class="nc bnc" id="L405" title="All 2 branches missed.">        if (sourceEncoding != null) {</span>
-<span class="nc" id="L406">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
-        }
-<span class="nc" id="L408">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetDirectory&quot;, String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());</span>
-<span class="nc bnc" id="L409" title="All 4 branches missed.">        if (invokeDynamic || groovyAtLeast(GROOVY_4_0_0_ALPHA1)) {</span>
-<span class="nc bnc" id="L410" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {</span>
-<span class="nc bnc" id="L411" title="All 2 branches missed.">                if (classWrangler.isGroovyIndy()) {</span>
-<span class="nc bnc" id="L412" title="All 2 branches missed.">                    if (isJavaSupportIndy()) {</span>
-<span class="nc" id="L413">                        Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, &quot;getOptimizationOptions&quot;), compilerConfiguration);</span>
-<span class="nc" id="L414">                        optimizationOptions.put(&quot;indy&quot;, true);</span>
-<span class="nc" id="L415">                        optimizationOptions.put(&quot;int&quot;, false);</span>
-<span class="nc" id="L416">                        getLog().info(&quot;invokedynamic enabled.&quot;);</span>
-<span class="nc" id="L417">                    } else {</span>
-<span class="nc" id="L418">                        getLog().warn(&quot;Requested to use to use invokedynamic, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring invokeDynamic parameter.&quot;);</span>
+<span class="nc" id="L399">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setDebug&quot;, boolean.class), compilerConfiguration, debug);</span>
+<span class="nc" id="L400">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setVerbose&quot;, boolean.class), compilerConfiguration, verbose);</span>
+<span class="nc" id="L401">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setWarningLevel&quot;, int.class), compilerConfiguration, warningLevel);</span>
+<span class="nc" id="L402">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTolerance&quot;, int.class), compilerConfiguration, tolerance);</span>
+<span class="nc" id="L403">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetBytecode&quot;, String.class), compilerConfiguration, targetBytecode);</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">        if (previewFeatures) {</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">            if (isJavaSupportPreviewFeatures()) {</span>
+<span class="nc bnc" id="L406" title="All 6 branches missed.">                if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                    if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L408">                        getLog().warn(&quot;Requested to use preview features, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.&quot;);</span>
                     }
                 } else {
-<span class="nc" id="L421">                    getLog().warn(&quot;Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.&quot;);</span>
+<span class="nc" id="L411">                    invokeMethod(findMethod(compilerConfigurationClass, &quot;setPreviewFeatures&quot;, boolean.class), compilerConfiguration, previewFeatures);</span>
                 }
             } else {
-<span class="nc" id="L424">                getLog().warn(&quot;Requested to use invokeDynamic, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_0_0_BETA3 + &quot; or newer). Ignoring invokeDynamic parameter.&quot;);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">                if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L415">                    getLog().warn(&quot;Requested to use to use preview features, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring previewFeatures parameter.&quot;);</span>
+                }
             }
         }
-<span class="nc bnc" id="L427" title="All 2 branches missed.">        if (parameters) {</span>
-<span class="nc bnc" id="L428" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_2_5_0_ALPHA1)) {</span>
-<span class="nc bnc" id="L429" title="All 2 branches missed.">                if (isJavaSupportParameters()) {</span>
-<span class="nc" id="L430">                    invokeMethod(findMethod(compilerConfigurationClass, &quot;setParameters&quot;, boolean.class), compilerConfiguration, parameters);</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        if (sourceEncoding != null) {</span>
+<span class="nc" id="L420">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
+        }
+<span class="nc" id="L422">        invokeMethod(findMethod(compilerConfigurationClass, &quot;setTargetDirectory&quot;, String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());</span>
+<span class="nc bnc" id="L423" title="All 4 branches missed.">        if (invokeDynamic || groovyAtLeast(GROOVY_4_0_0_ALPHA1)) {</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                if (classWrangler.isGroovyIndy()) {</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                    if (isJavaSupportIndy()) {</span>
+<span class="nc" id="L427">                        Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, &quot;getOptimizationOptions&quot;), compilerConfiguration);</span>
+<span class="nc" id="L428">                        optimizationOptions.put(&quot;indy&quot;, true);</span>
+<span class="nc" id="L429">                        optimizationOptions.put(&quot;int&quot;, false);</span>
+<span class="nc" id="L430">                        getLog().info(&quot;invokedynamic enabled.&quot;);</span>
+<span class="nc" id="L431">                    } else {</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">                        if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L433">                            getLog().warn(&quot;Requested to use to use invokedynamic, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring invokeDynamic parameter.&quot;);</span>
+                        }
+                    }
                 } else {
-<span class="nc" id="L432">                    getLog().warn(&quot;Requested to use to use parameters, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring parameters parameter.&quot;);</span>
+<span class="nc" id="L437">                    getLog().warn(&quot;Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.&quot;);</span>
                 }
             } else {
-<span class="nc" id="L435">                getLog().warn(&quot;Requested to use parameters, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_5_0_ALPHA1 + &quot; or newer). Ignoring parameters parameter.&quot;);</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L441">                    getLog().warn(&quot;Requested to use invokeDynamic, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_0_0_BETA3 + &quot; or newer). Ignoring invokeDynamic parameter.&quot;);</span>
+                }
             }
         }
-<span class="nc bnc" id="L438" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_3_0_5)) {</span>
-<span class="nc bnc" id="L439" title="All 8 branches missed.">            if ((parallelParsing == null &amp;&amp; groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null &amp;&amp; parallelParsing)) {</span>
-<span class="nc" id="L440">                Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, &quot;getOptimizationOptions&quot;), compilerConfiguration);</span>
-<span class="nc" id="L441">                optimizationOptions.put(&quot;parallelParse&quot;, true);</span>
-<span class="nc" id="L442">                getLog().info(&quot;Parallel parsing enabled.&quot;);</span>
-<span class="nc" id="L443">            } else {</span>
-<span class="nc" id="L444">                getLog().info(&quot;Parallel parsing disabled.&quot;);</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">        if (parameters) {</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">            if (groovyAtLeast(GROOVY_2_5_0_ALPHA1)) {</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">                if (isJavaSupportParameters()) {</span>
+<span class="nc" id="L448">                    invokeMethod(findMethod(compilerConfigurationClass, &quot;setParameters&quot;, boolean.class), compilerConfiguration, parameters);</span>
+                } else {
+<span class="nc bnc" id="L450" title="All 2 branches missed.">                    if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L451">                        getLog().warn(&quot;Requested to use to use parameters, but your Java version (&quot; + getJavaVersionString() + &quot;) doesn't support it. Ignoring parameters parameter.&quot;);</span>
+                    }
+                }
+            } else {
+<span class="nc bnc" id="L455" title="All 2 branches missed.">                if (getLog().isWarnEnabled()) {</span>
+<span class="nc" id="L456">                    getLog().warn(&quot;Requested to use parameters, but your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support it (must be &quot; + GROOVY_2_5_0_ALPHA1 + &quot; or newer). Ignoring parameters parameter.&quot;);</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L460" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_3_0_5)) {</span>
+<span class="nc bnc" id="L461" title="All 8 branches missed.">            if ((parallelParsing == null &amp;&amp; groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null &amp;&amp; parallelParsing)) {</span>
+<span class="nc" id="L462">                Map&lt;String, Boolean&gt; optimizationOptions = (Map&lt;String, Boolean&gt;) invokeMethod(findMethod(compilerConfigurationClass, &quot;getOptimizationOptions&quot;), compilerConfiguration);</span>
+<span class="nc" id="L463">                optimizationOptions.put(&quot;parallelParse&quot;, true);</span>
+<span class="nc" id="L464">                getLog().info(&quot;Parallel parsing enabled.&quot;);</span>
+<span class="nc" id="L465">            } else {</span>
+<span class="nc" id="L466">                getLog().info(&quot;Parallel parsing disabled.&quot;);</span>
             }
         }
 
-<span class="nc" id="L448">        return compilerConfiguration;</span>
+<span class="nc" id="L470">        return compilerConfiguration;</span>
     }
 
     /**
@@ -454,46 +476,46 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-<span class="fc bfc" id="L457" title="All 2 branches covered.">        if (&quot;16&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L458" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_6)) {</span>
-<span class="fc" id="L459">                throw new IllegalArgumentException(&quot;Target bytecode 16 requires Groovy &quot; + GROOVY_3_0_6 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">        if (&quot;16&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L480" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_6)) {</span>
+<span class="fc" id="L481">                throw new IllegalArgumentException(&quot;Target bytecode 16 requires Groovy &quot; + GROOVY_3_0_6 + &quot; or newer.&quot;);</span>
             }
-<span class="fc bfc" id="L461" title="All 2 branches covered.">        } else if (&quot;15&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L462" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_3)) {</span>
-<span class="fc" id="L463">                throw new IllegalArgumentException(&quot;Target bytecode 15 requires Groovy &quot; + GROOVY_3_0_3 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L483" title="All 2 branches covered.">        } else if (&quot;15&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L484" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_3)) {</span>
+<span class="fc" id="L485">                throw new IllegalArgumentException(&quot;Target bytecode 15 requires Groovy &quot; + GROOVY_3_0_3 + &quot; or newer.&quot;);</span>
             }
-<span class="fc bfc" id="L465" title="All 2 branches covered.">        } else if (&quot;14&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L466" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {</span>
-<span class="fc" id="L467">                throw new IllegalArgumentException(&quot;Target bytecode 14 requires Groovy &quot; + GROOVY_3_0_0_BETA2 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L487" title="All 2 branches covered.">        } else if (&quot;14&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {</span>
+<span class="fc" id="L489">                throw new IllegalArgumentException(&quot;Target bytecode 14 requires Groovy &quot; + GROOVY_3_0_0_BETA2 + &quot; or newer.&quot;);</span>
             }
-<span class="fc bfc" id="L469" title="All 2 branches covered.">        } else if (&quot;13&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L470" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
-<span class="fc" id="L471">                throw new IllegalArgumentException(&quot;Target bytecode 13 requires Groovy &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L491" title="All 2 branches covered.">        } else if (&quot;13&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L492" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_BETA1))) {</span>
+<span class="fc" id="L493">                throw new IllegalArgumentException(&quot;Target bytecode 13 requires Groovy &quot; + GROOVY_2_5_7 + &quot;/&quot; + GROOVY_3_0_0_BETA1 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L473" title="All 6 branches covered.">        } else if (&quot;12&quot;.equals(targetBytecode) || &quot;11&quot;.equals(targetBytecode) || &quot;10&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L474" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {</span>
-<span class="fc" id="L475">                throw new IllegalArgumentException(&quot;Target bytecode 10, 11, or 12 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L495" title="All 6 branches covered.">        } else if (&quot;12&quot;.equals(targetBytecode) || &quot;11&quot;.equals(targetBytecode) || &quot;10&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L496" title="All 6 branches covered.">            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {</span>
+<span class="fc" id="L497">                throw new IllegalArgumentException(&quot;Target bytecode 10, 11, or 12 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L477" title="All 2 branches covered.">        } else if (&quot;9&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L478" title="All 4 branches covered.">            if (!isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3)</span>
-<span class="fc bfc" id="L479" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_2_6_0_ALPHA4))</span>
-<span class="fc bfc" id="L480" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {</span>
-<span class="fc" id="L481">                throw new IllegalArgumentException(&quot;Target bytecode 9 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_2_6_0_ALPHA4 + &quot;/&quot; + GROOVY_3_0_0_ALPHA2 + &quot; or newer.&quot;);</span>
-<span class="fc bfc" id="L482" title="All 8 branches covered.">            } else if (isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {</span>
-<span class="fc" id="L483">                throw new IllegalArgumentException(&quot;Target bytecode 9 with invokedynamic requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        } else if (&quot;9&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L500" title="All 4 branches covered.">            if (!isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3)</span>
+<span class="fc bfc" id="L501" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_2_6_0_ALPHA4))</span>
+<span class="fc bfc" id="L502" title="All 4 branches covered.">                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {</span>
+<span class="fc" id="L503">                throw new IllegalArgumentException(&quot;Target bytecode 9 requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_2_6_0_ALPHA4 + &quot;/&quot; + GROOVY_3_0_0_ALPHA2 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L504" title="All 8 branches covered.">            } else if (isGroovyIndy() &amp;&amp; (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) &amp;&amp; groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {</span>
+<span class="fc" id="L505">                throw new IllegalArgumentException(&quot;Target bytecode 9 with invokedynamic requires Groovy &quot; + GROOVY_2_5_3 + &quot;/&quot; + GROOVY_3_0_0_ALPHA4 + &quot; or newer. No 2.6 version is supported.&quot;);</span>
             }
-<span class="fc bfc" id="L485" title="All 2 branches covered.">        } else if (&quot;1.8&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L486" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_3_3)) {</span>
-<span class="fc" id="L487">                throw new IllegalArgumentException(&quot;Target bytecode 1.8 requires Groovy &quot; + GROOVY_2_3_3 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        } else if (&quot;1.8&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L508" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_3_3)) {</span>
+<span class="fc" id="L509">                throw new IllegalArgumentException(&quot;Target bytecode 1.8 requires Groovy &quot; + GROOVY_2_3_3 + &quot; or newer.&quot;);</span>
             }
-<span class="fc bfc" id="L489" title="All 4 branches covered.">        } else if (&quot;1.7&quot;.equals(targetBytecode) || &quot;1.6&quot;.equals(targetBytecode)) {</span>
-<span class="fc bfc" id="L490" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_1_3)) {</span>
-<span class="fc" id="L491">                throw new IllegalArgumentException(&quot;Target bytecode 1.6 and 1.7 require Groovy &quot; + GROOVY_2_1_3 + &quot; or newer.&quot;);</span>
+<span class="fc bfc" id="L511" title="All 4 branches covered.">        } else if (&quot;1.7&quot;.equals(targetBytecode) || &quot;1.6&quot;.equals(targetBytecode)) {</span>
+<span class="fc bfc" id="L512" title="All 2 branches covered.">            if (groovyOlderThan(GROOVY_2_1_3)) {</span>
+<span class="fc" id="L513">                throw new IllegalArgumentException(&quot;Target bytecode 1.6 and 1.7 require Groovy &quot; + GROOVY_2_1_3 + &quot; or newer.&quot;);</span>
             }
-<span class="pc bpc" id="L493" title="2 of 4 branches missed.">        } else if (!&quot;1.5&quot;.equals(targetBytecode) &amp;&amp; !&quot;1.4&quot;.equals(targetBytecode)) {</span>
-<span class="fc" id="L494">            throw new IllegalArgumentException(&quot;Unrecognized target bytecode: '&quot; + targetBytecode + &quot;'.&quot;);</span>
+<span class="pc bpc" id="L515" title="2 of 4 branches missed.">        } else if (!&quot;1.5&quot;.equals(targetBytecode) &amp;&amp; !&quot;1.4&quot;.equals(targetBytecode)) {</span>
+<span class="fc" id="L516">            throw new IllegalArgumentException(&quot;Unrecognized target bytecode: '&quot; + targetBytecode + &quot;'.&quot;);</span>
         }
-<span class="fc" id="L496">    }</span>
+<span class="fc" id="L518">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

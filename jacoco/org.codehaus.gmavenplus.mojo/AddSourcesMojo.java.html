@@ -55,10 +55,12 @@ import org.apache.maven.shared.model.fileset.FileSet;
      */
     protected void addSourcePath(final String path) {
 <span class="fc bfc" id="L57" title="All 2 branches covered.">        if (!project.getCompileSourceRoots().contains(path)) {</span>
-<span class="fc" id="L58">            getLog().debug(&quot;Added source directory: &quot; + path);</span>
-<span class="fc" id="L59">            project.addCompileSourceRoot(path);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L59">                getLog().debug(&quot;Added source directory: &quot; + path);</span>
+            }
+<span class="fc" id="L61">            project.addCompileSourceRoot(path);</span>
         }
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L63">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

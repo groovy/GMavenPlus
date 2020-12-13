@@ -49,10 +49,12 @@ import java.io.File;
     @Override
     public void execute() {
 <span class="fc bfc" id="L51" title="All 2 branches covered.">        if (!skipTests) {</span>
-<span class="fc" id="L52">            getLog().debug(&quot;Added test stub directory &quot; + testStubsOutputDirectory.getAbsolutePath() + &quot; to project test sources.&quot;);</span>
-<span class="fc" id="L53">            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L53">                getLog().debug(&quot;Added test stub directory &quot; + testStubsOutputDirectory.getAbsolutePath() + &quot; to project test sources.&quot;);</span>
+            }
+<span class="fc" id="L55">            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());</span>
         }
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L57">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -42,9 +42,11 @@ import java.io.File;
      */
     @Override
     public void execute() {
-<span class="fc" id="L45">        getLog().debug(&quot;Added stub directory &quot; + stubsOutputDirectory.getAbsolutePath() + &quot; to project sources.&quot;);</span>
-<span class="fc" id="L46">        project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());</span>
-<span class="fc" id="L47">    }</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L46">            getLog().debug(&quot;Added stub directory &quot; + stubsOutputDirectory.getAbsolutePath() + &quot; to project sources.&quot;);</span>
+        }
+<span class="fc" id="L48">        project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());</span>
+<span class="fc" id="L49">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
