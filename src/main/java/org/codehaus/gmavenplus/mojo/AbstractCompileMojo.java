@@ -389,7 +389,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 invokeMethod(findMethod(importCustomizerClass, "addStaticStar", String.class), importCustomizer, "org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder");
                 List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, "getCompilationCustomizers"), shellCompilerConfiguration);
                 compilationCustomizers.add(importCustomizer);
-                Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
+                Object shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, bindingClass, compilerConfigurationClass), classWrangler.getClassLoader(), binding, shellCompilerConfiguration);
                 if (getLog().isDebugEnabled()) {
                     getLog().debug("Using configuration script " + configScript + " for compilation.");
                 }
