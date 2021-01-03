@@ -397,7 +397,7 @@
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>                 invokeMethod(findMethod(importCustomizerClass, <span class="jxr_string">"addStaticStar"</span>, String.<strong class="jxr_keyword">class</strong>), importCustomizer, <span class="jxr_string">"org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder"</span>);
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>                 List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, <span class="jxr_string">"getCompilationCustomizers"</span>), shellCompilerConfiguration);
 <a class="jxr_linenumber" name="L391" href="#L391">391</a>                 compilationCustomizers.add(importCustomizer);
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>                 Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>                 Object shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.<strong class="jxr_keyword">class</strong>, bindingClass, compilerConfigurationClass), classWrangler.getClassLoader(), binding, shellCompilerConfiguration);
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>                 <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>                     getLog().debug(<span class="jxr_string">"Using configuration script "</span> + configScript + <span class="jxr_string">" for compilation."</span>);
 <a class="jxr_linenumber" name="L395" href="#L395">395</a>                 }
@@ -528,6 +528,6 @@
 <a class="jxr_linenumber" name="L520" href="#L520">520</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2020. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2011&#x2013;2021. All rights reserved.</div>
 </body>
 </html>

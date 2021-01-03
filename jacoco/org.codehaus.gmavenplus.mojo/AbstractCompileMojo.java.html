@@ -389,7 +389,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 <span class="nc" id="L389">                invokeMethod(findMethod(importCustomizerClass, &quot;addStaticStar&quot;, String.class), importCustomizer, &quot;org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder&quot;);</span>
 <span class="nc" id="L390">                List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, &quot;getCompilationCustomizers&quot;), shellCompilerConfiguration);</span>
 <span class="nc" id="L391">                compilationCustomizers.add(importCustomizer);</span>
-<span class="nc" id="L392">                Object shell = invokeConstructor(findConstructor(groovyShellClass, bindingClass, compilerConfigurationClass), binding, shellCompilerConfiguration);</span>
+<span class="nc" id="L392">                Object shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, bindingClass, compilerConfigurationClass), classWrangler.getClassLoader(), binding, shellCompilerConfiguration);</span>
 <span class="nc bnc" id="L393" title="All 2 branches missed.">                if (getLog().isDebugEnabled()) {</span>
 <span class="nc" id="L394">                    getLog().debug(&quot;Using configuration script &quot; + configScript + &quot; for compilation.&quot;);</span>
                 }
