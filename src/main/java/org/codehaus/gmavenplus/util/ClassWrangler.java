@@ -71,6 +71,7 @@ public class ClassWrangler {
     public ClassWrangler(final List<?> classpath, final ClassLoader parentClassLoader, final Log pluginLog) throws MalformedURLException {
         log = pluginLog;
         classLoader = createNewClassLoader(classpath, parentClassLoader);
+        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
     /**
