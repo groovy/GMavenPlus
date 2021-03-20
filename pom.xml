@@ -645,15 +645,6 @@
   <description>Integrates Groovy into Maven projects.</description>
   <inceptionYear>2011</inceptionYear>
   <url>http://groovy.github.io/GMavenPlus/</url>
-  <developers>
-    <developer>
-      <id>keeganwitt</id>
-      <name>Keegan Witt</name>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-  </developers>
   <licenses>
     <license>
       <name>Apache 2</name>
