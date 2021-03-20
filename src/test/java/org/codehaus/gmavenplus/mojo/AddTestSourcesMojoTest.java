@@ -42,7 +42,7 @@ public class AddTestSourcesMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         addTestSourcesMojo = new AddTestSourcesMojo();
         addTestSourcesMojo.project = project;
     }

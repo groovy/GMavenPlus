@@ -57,7 +57,7 @@ public class AbstractToolsMojoTest {
 
     @Before
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         testMojo = new TestMojo();
         testMojo.project = project;
         testMojo.session = session;

@@ -38,7 +38,7 @@ public class AbstractGroovyDocMojoTest {
     @Before
     @SuppressWarnings("deprecation")
     public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         testMojo.mojoExecution = mojoExecution;
         doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
         testMojo.project = project;

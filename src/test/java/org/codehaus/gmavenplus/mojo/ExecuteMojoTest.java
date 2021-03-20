@@ -50,7 +50,7 @@ public class ExecuteMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         executeMojo = new ExecuteMojo();
         executeMojo.mojoExecution = mock(MojoExecution.class);
         executeMojo.project = mock(MavenProject.class);

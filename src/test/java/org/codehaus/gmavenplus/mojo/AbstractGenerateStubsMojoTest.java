@@ -52,7 +52,7 @@ public class AbstractGenerateStubsMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         doReturn("STUBBED_DIRECTORY").when(fileSet).getDirectory();
         doReturn(new String[]{"STUBBED_INCLUDES"}).when(fileSet).getIncludesArray();
         doReturn("STUBBED_STUBS_DIRECTORY").when(outputDirectory).getAbsolutePath();

@@ -49,7 +49,7 @@ public class GenerateTestStubsMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         doReturn(new TreeSet<File>()).when(generateTestStubsMojo).getTestFiles(any(FileSet[].class), eq(false));
         doReturn(new TreeSet<File>()).when(generateTestStubsMojo).getStubs(any(File.class));
         generateTestStubsMojo.project = mock(MavenProject.class);

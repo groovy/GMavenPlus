@@ -48,11 +48,9 @@ public class Link {
      * Set the packages attribute.
      *
      * @param newPackages the comma separated package prefixes corresponding to this link
-     * @return this object (for fluent invocation)
      */
-    public Link setPackages(final String newPackages) {
+    public void setPackages(final String newPackages) {
         packages = newPackages;
-        return this;
     }
 
     /**
@@ -68,11 +66,9 @@ public class Link {
      * Set the href attribute.
      *
      * @param newHref a <code>String</code> value representing the URL to use for this link
-     * @return this object (for fluent invocation)
      */
-    public Link setHref(final String newHref) {
+    public void setHref(final String newHref) {
         href = newHref;
-        return this;
     }
 
 }

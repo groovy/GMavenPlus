@@ -113,11 +113,9 @@ public class ReflectionUtils {
         Class<?> searchType = clazz;
         while (searchType != null) {
             Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));
-            if (methods != null) {
-                for (Method method : methods) {
-                    if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
-                        return method;
-                    }
+            for (Method method : methods) {
+                if (name.equals(method.getName()) && (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {
+                    return method;
                 }
             }
             searchType = searchType.getSuperclass();
