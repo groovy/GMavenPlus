@@ -50,7 +50,7 @@ public class CompileMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         Set<File> sources = new TreeSet<>();
         sources.add(mock(File.class));
         doReturn(sources).when(compileMojo).getTestFiles(any(FileSet[].class), eq(false));

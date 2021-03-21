@@ -106,9 +106,9 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
         if (includeJavaSources) {
             List<FileSet> javaFileSets = new ArrayList<>();
-            for (Object sourceRoot : project.getCompileSourceRoots()) {
+            for (String sourceRoot : project.getCompileSourceRoots()) {
                 FileSet javaFileSet = new FileSet();
-                javaFileSet.setDirectory((String) sourceRoot);
+                javaFileSet.setDirectory(sourceRoot);
                 javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                 javaFileSets.add(javaFileSet);
             }
@@ -145,9 +145,9 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
         if (includeJavaSources) {
             List<FileSet> javaFileSets = new ArrayList<>();
-            for (Object sourceRoot : project.getTestCompileSourceRoots()) {
+            for (String sourceRoot : project.getTestCompileSourceRoots()) {
                 FileSet javaFileSet = new FileSet();
-                javaFileSet.setDirectory((String) sourceRoot);
+                javaFileSet.setDirectory(sourceRoot);
                 javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                 javaFileSets.add(javaFileSet);
             }

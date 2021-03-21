@@ -121,7 +121,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
                 }
             }
             if (getLog().isDebugEnabled()) {
-                getLog().debug("Plugin classpath:\n" + sb.toString());
+                getLog().debug("Plugin classpath:\n" + sb);
             }
         }
     }

@@ -40,7 +40,7 @@ public class AbstractGroovyStubSourcesMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         testMojo = new TestMojo();
         doReturn(PATH).when(outputDirectory).getAbsolutePath();
     }

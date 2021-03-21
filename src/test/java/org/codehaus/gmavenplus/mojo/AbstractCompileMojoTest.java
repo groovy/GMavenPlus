@@ -38,7 +38,7 @@ public class AbstractCompileMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         testMojo = new TestMojo();
     }
 

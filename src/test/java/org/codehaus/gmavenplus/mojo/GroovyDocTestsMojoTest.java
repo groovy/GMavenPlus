@@ -49,7 +49,7 @@ public class GroovyDocTestsMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         Set<File> sources = new TreeSet<>();
         sources.add(mock(File.class));
         doReturn(sources).when(groovyDocTestsMojo).getTestFiles(any(FileSet[].class), eq(false));

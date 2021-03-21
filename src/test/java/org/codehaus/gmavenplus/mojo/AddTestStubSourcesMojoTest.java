@@ -42,7 +42,7 @@ public class AddTestStubSourcesMojoTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         addTestStubSourcesMojo = new AddTestStubSourcesMojo();
         addTestStubSourcesMojo.project = project;
         addTestStubSourcesMojo.testStubsOutputDirectory = outputDirectory;
