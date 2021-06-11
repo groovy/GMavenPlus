@@ -675,8 +675,8 @@
     <tag>HEAD</tag>
   </scm>
   <ciManagement>
-    <system>Travis</system>
-    <url>https://travis-ci.org/groovy/GMavenPlus</url>
+    <system>Github Actions</system>
+    <url>https://github.com/groovy/GMavenPlus/actions</url>
   </ciManagement>
 
 </project>
