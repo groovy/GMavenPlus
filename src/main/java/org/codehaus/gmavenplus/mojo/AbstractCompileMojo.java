@@ -41,9 +41,19 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 4.0.0 alpha-3 version.
+     */
+    protected static final Version GROOVY_4_0_0_ALPHA3 = new Version(4, 0, 0, "alpha-3");
+
+    /**
      * Groovy 4.0.0 alpha-1 version.
      */
     protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, "alpha-1");
+
+    /**
+     * Groovy 3.0.9 version.
+     */
+    protected static final Version GROOVY_3_0_8 = new Version(3, 0, 8);
 
     /**
      * Groovy 3.0.6 version.
@@ -157,6 +167,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>14</li>
      *   <li>15</li>
      *   <li>16</li>
+     *   <li>17</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -167,6 +178,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 14 requires Groovy &gt;= 3.0.0 beta-2.
      * Using 15 requires Groovy &gt;= 3.0.3.
      * Using 16 requires Groovy &gt;= 3.0.6.
+     * Using 17 requires Groovy &gt;= 3.0.8 or Groovy &gt; 4.0.0-alpha-3.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -477,7 +489,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("16".equals(targetBytecode)) {
+        if ("17".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_3_0_8) || (groovyAtLeast(GROOVY_4_0_0_ALPHA1) && groovyOlderThan(GROOVY_4_0_0_ALPHA3))) {
+                throw new IllegalArgumentException("Target bytecode 17 requires Groovy " + GROOVY_3_0_8 + "/" + GROOVY_4_0_0_ALPHA3 + " or newer.");
+            }
+        } else if ("16".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_6)) {
                 throw new IllegalArgumentException("Target bytecode 16 requires Groovy " + GROOVY_3_0_6 + " or newer.");
             }
