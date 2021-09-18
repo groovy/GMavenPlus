@@ -41,6 +41,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 4.0.0 beta-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_BETA1 = new Version(4, 0, 0, "beta-1");
+
+    /**
      * Groovy 4.0.0 alpha-3 version.
      */
     protected static final Version GROOVY_4_0_0_ALPHA3 = new Version(4, 0, 0, "alpha-3");
@@ -168,6 +173,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>15</li>
      *   <li>16</li>
      *   <li>17</li>
+     *   <li>18</li>
      * </ul>
      * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
      * Using 1.8 requires Groovy &gt;= 2.3.3.
@@ -179,6 +185,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 15 requires Groovy &gt;= 3.0.3.
      * Using 16 requires Groovy &gt;= 3.0.6.
      * Using 17 requires Groovy &gt;= 3.0.8 or Groovy &gt; 4.0.0-alpha-3.
+     * Using 18 requires Groovy &gt; 4.0.0-beta-1.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -489,7 +496,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("17".equals(targetBytecode)) {
+        if ("18".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_0_BETA1)) {
+                throw new IllegalArgumentException("Target bytecode 18 requires Groovy " + GROOVY_4_0_0_BETA1 + " or newer.");
+            }
+        } else if ("17".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_8) || (groovyAtLeast(GROOVY_4_0_0_ALPHA1) && groovyOlderThan(GROOVY_4_0_0_ALPHA3))) {
                 throw new IllegalArgumentException("Target bytecode 17 requires Groovy " + GROOVY_3_0_8 + "/" + GROOVY_4_0_0_ALPHA3 + " or newer.");
             }

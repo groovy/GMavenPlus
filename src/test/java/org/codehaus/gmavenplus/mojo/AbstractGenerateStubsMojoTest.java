@@ -385,6 +385,20 @@ public class AbstractGenerateStubsMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava18WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.0-alpha-3");
+        testMojo.targetBytecode = "18";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava18WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.0-beta-1");
+        testMojo.targetBytecode = "18";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testUnrecognizedJava() {
         testMojo = new TestMojo("2.1.2");
         testMojo.targetBytecode = "unknown";
