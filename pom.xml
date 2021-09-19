@@ -25,7 +25,7 @@
     <sourcePluginVersion>3.2.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
     <groovyGroupId>org.codehaus.groovy</groovyGroupId>
-    <groovyVersion>3.0.7</groovyVersion>
+    <groovyVersion>3.0.9</groovyVersion>
   </properties>
 
   <dependencies>
