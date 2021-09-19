@@ -321,6 +321,34 @@ public class AbstractCompileMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava17WithUnsupportedGroovy() {
+        testMojo = new TestMojo("3.0.7");
+        testMojo.targetBytecode = "17";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava17WithSupportedGroovy() {
+        testMojo = new TestMojo("3.0.8");
+        testMojo.targetBytecode = "17";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava17WithUnsupportedGroovy4() {
+        testMojo = new TestMojo("4.0.0-alpha-2");
+        testMojo.targetBytecode = "17";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava17WithSupportedGroovy4() {
+        testMojo = new TestMojo("4.0.0-alpha-3");
+        testMojo.targetBytecode = "17";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testUnrecognizedJava() {
         testMojo = new TestMojo("2.1.2");
         testMojo.targetBytecode = "unknown";
