@@ -65,7 +65,7 @@
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Before
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          MockitoAnnotations.initMocks(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          MockitoAnnotations.openMocks(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          testMojo = <strong class="jxr_keyword">new</strong> TestMojo();
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          testMojo.project = project;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          testMojo.session = session;

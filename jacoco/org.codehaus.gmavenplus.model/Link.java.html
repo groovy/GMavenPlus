@@ -48,12 +48,10 @@ package org.codehaus.gmavenplus.model;
      * Set the packages attribute.
      *
      * @param newPackages the comma separated package prefixes corresponding to this link
-     * @return this object (for fluent invocation)
      */
-    public Link setPackages(final String newPackages) {
-<span class="fc" id="L54">        packages = newPackages;</span>
-<span class="fc" id="L55">        return this;</span>
-    }
+    public void setPackages(final String newPackages) {
+<span class="fc" id="L53">        packages = newPackages;</span>
+<span class="fc" id="L54">    }</span>
 
     /**
      * Get the href attribute.
@@ -61,19 +59,17 @@ package org.codehaus.gmavenplus.model;
      * @return the href attribute
      */
     public String getHref() {
-<span class="fc" id="L64">        return href;</span>
+<span class="fc" id="L62">        return href;</span>
     }
 
     /**
      * Set the href attribute.
      *
      * @param newHref a &lt;code&gt;String&lt;/code&gt; value representing the URL to use for this link
-     * @return this object (for fluent invocation)
      */
-    public Link setHref(final String newHref) {
-<span class="fc" id="L74">        href = newHref;</span>
-<span class="fc" id="L75">        return this;</span>
-    }
+    public void setHref(final String newHref) {
+<span class="fc" id="L71">        href = newHref;</span>
+<span class="fc" id="L72">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

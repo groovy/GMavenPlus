@@ -104,18 +104,18 @@ import static java.util.Collections.singletonList;
 <span class="fc" id="L104">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
-<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (includeJavaSources) {</span>
-<span class="nc" id="L108">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            for (Object sourceRoot : project.getCompileSourceRoots()) {</span>
-<span class="nc" id="L110">                FileSet javaFileSet = new FileSet();</span>
-<span class="nc" id="L111">                javaFileSet.setDirectory((String) sourceRoot);</span>
-<span class="nc" id="L112">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
-<span class="nc" id="L113">                javaFileSets.add(javaFileSet);</span>
-<span class="nc" id="L114">            }</span>
-<span class="nc" id="L115">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
-<span class="nc" id="L116">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
-<span class="nc" id="L117">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
-<span class="nc" id="L118">        } else {</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (includeJavaSources) {</span>
+<span class="fc" id="L108">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            for (String sourceRoot : project.getCompileSourceRoots()) {</span>
+<span class="fc" id="L110">                FileSet javaFileSet = new FileSet();</span>
+<span class="fc" id="L111">                javaFileSet.setDirectory(sourceRoot);</span>
+<span class="fc" id="L112">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
+<span class="fc" id="L113">                javaFileSets.add(javaFileSet);</span>
+<span class="fc" id="L114">            }</span>
+<span class="fc" id="L115">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
+<span class="fc" id="L116">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
+<span class="fc" id="L117">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
+<span class="fc" id="L118">        } else {</span>
 <span class="fc" id="L119">            result = groovyFileSets;</span>
         }
 
@@ -143,18 +143,18 @@ import static java.util.Collections.singletonList;
 <span class="fc" id="L143">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
-<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (includeJavaSources) {</span>
-<span class="nc" id="L147">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L148" title="All 2 branches missed.">            for (Object sourceRoot : project.getTestCompileSourceRoots()) {</span>
-<span class="nc" id="L149">                FileSet javaFileSet = new FileSet();</span>
-<span class="nc" id="L150">                javaFileSet.setDirectory((String) sourceRoot);</span>
-<span class="nc" id="L151">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
-<span class="nc" id="L152">                javaFileSets.add(javaFileSet);</span>
-<span class="nc" id="L153">            }</span>
-<span class="nc" id="L154">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
-<span class="nc" id="L155">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
-<span class="nc" id="L156">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
-<span class="nc" id="L157">        } else {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (includeJavaSources) {</span>
+<span class="fc" id="L147">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">            for (String sourceRoot : project.getTestCompileSourceRoots()) {</span>
+<span class="fc" id="L149">                FileSet javaFileSet = new FileSet();</span>
+<span class="fc" id="L150">                javaFileSet.setDirectory(sourceRoot);</span>
+<span class="fc" id="L151">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
+<span class="fc" id="L152">                javaFileSets.add(javaFileSet);</span>
+<span class="fc" id="L153">            }</span>
+<span class="fc" id="L154">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
+<span class="fc" id="L155">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
+<span class="fc" id="L156">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
+<span class="fc" id="L157">        } else {</span>
 <span class="fc" id="L158">            result = groovyFileSets;</span>
         }
 
