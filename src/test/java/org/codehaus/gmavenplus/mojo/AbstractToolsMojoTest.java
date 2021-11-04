@@ -96,7 +96,7 @@ public class AbstractToolsMojoTest {
 
         verify(properties, never()).put(eq("project"), any(MavenProject.class));
         verify(properties, never()).put(eq("session"), any(MavenSession.class));
-        verify(properties, never()).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
+        verify(properties, never()).put(eq("pluginArtifacts"), anyList());
         verify(properties, never()).put(eq("mojoExecution"), any(MojoExecution.class));
     }
 
@@ -110,7 +110,7 @@ public class AbstractToolsMojoTest {
 
         verify(properties, times(1)).put(eq("project"), any(MavenProject.class));
         verify(properties, times(1)).put(eq("session"), any(MavenSession.class));
-        verify(properties, times(1)).put(eq("pluginArtifacts"), anyListOf(Artifact.class));
+        verify(properties, times(1)).put(eq("pluginArtifacts"), anyList());
         verify(properties, times(1)).put(eq("mojoExecution"), any(MojoExecution.class));
     }
 

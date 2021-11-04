@@ -63,9 +63,9 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("deprecation")
     public void testCallsExpectedMethods() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doNothing().when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doNothing().when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
-        verify(generateTestStubsMojo, times(1)).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        verify(generateTestStubsMojo, times(1)).doStubGeneration(anySet(), anyList(), any(File.class));
     }
 
     @Test
@@ -74,14 +74,14 @@ public class GenerateTestStubsMojoTest {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
         generateTestStubsMojo.skipTests = true;
         generateTestStubsMojo.execute();
-        verify(generateTestStubsMojo, never()).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        verify(generateTestStubsMojo, never()).doStubGeneration(anySet(), anyList(), any(File.class));
     }
 
     @Test(expected = MojoExecutionException.class)
     @SuppressWarnings("deprecation")
     public void testClassNotFoundExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doThrow(new ClassNotFoundException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -89,7 +89,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("deprecation")
     public void testInvocationTargetExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doThrow(new InvocationTargetException(mock(Exception.class), INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -97,7 +97,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("deprecation")
     public void testInstantiationExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doThrow(new InstantiationException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -105,7 +105,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("deprecation")
     public void testIllegalAccessExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doThrow(new IllegalAccessException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
     }
 
@@ -119,7 +119,7 @@ public class GenerateTestStubsMojoTest {
     @SuppressWarnings("deprecation")
     public void testMalformedURLExceptionThrowsMojoExecutionException() throws Exception {
         doReturn(true).when(generateTestStubsMojo).groovyVersionSupportsAction();
-        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySetOf(File.class), anyList(), any(File.class));
+        doThrow(new MalformedURLException(INTENTIONAL_EXCEPTION_MESSAGE)).when(generateTestStubsMojo).doStubGeneration(anySet(), anyList(), any(File.class));
         generateTestStubsMojo.execute();
     }
 
