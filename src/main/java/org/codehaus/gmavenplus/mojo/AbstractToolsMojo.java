@@ -185,7 +185,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
                 properties.putAll(session.getUserProperties());
             } else if (bindAllProjectProperties && bindSessionUserOverrideProperties && project != null) {
                 for (Object key : project.getProperties().keySet()) {
-                    properties.put(key, session.getUserProperties().get(key));
+                    if (session.getUserProperties().get(key) != null) {
+                        properties.put(key, session.getUserProperties().get(key));
+                    }
                 }
             }
         }
