@@ -193,22 +193,24 @@
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>                 properties.putAll(session.getUserProperties());
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (bindAllProjectProperties &amp;&amp; bindSessionUserOverrideProperties &amp;&amp; project != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>                 <strong class="jxr_keyword">for</strong> (Object key : project.getProperties().keySet()) {
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                     properties.put(key, session.getUserProperties().get(key));
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>                 }
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>             }
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         }
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     }
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">     * Logs errors that caused the 'ant' object to not be populated.</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     * @param e the exception causing the failure</em>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> logUnableToInitializeAntBuilder(<strong class="jxr_keyword">final</strong> Throwable e) {
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         getLog().warn(<span class="jxr_string">"Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency."</span>);
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     }
-<a class="jxr_linenumber" name="L202" href="#L202">202</a> 
-<a class="jxr_linenumber" name="L203" href="#L203">203</a> }
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>                     <strong class="jxr_keyword">if</strong> (session.getUserProperties().get(key) != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>                         properties.put(key, session.getUserProperties().get(key));
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>                     }
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>                 }
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>             }
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         }
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     }
+<a class="jxr_linenumber" name="L195" href="#L195">195</a> 
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     * Logs errors that caused the 'ant' object to not be populated.</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">     * @param e the exception causing the failure</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> logUnableToInitializeAntBuilder(<strong class="jxr_keyword">final</strong> Throwable e) {
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         getLog().warn(<span class="jxr_string">"Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency."</span>);
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> 
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2011&#x2013;2021. All rights reserved.</div>

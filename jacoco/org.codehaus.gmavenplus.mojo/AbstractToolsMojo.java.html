@@ -185,11 +185,13 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
 <span class="fc" id="L185">                properties.putAll(session.getUserProperties());</span>
 <span class="pc bpc" id="L186" title="1 of 6 branches missed.">            } else if (bindAllProjectProperties &amp;&amp; bindSessionUserOverrideProperties &amp;&amp; project != null) {</span>
 <span class="fc bfc" id="L187" title="All 2 branches covered.">                for (Object key : project.getProperties().keySet()) {</span>
-<span class="fc" id="L188">                    properties.put(key, session.getUserProperties().get(key));</span>
-<span class="fc" id="L189">                }</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">                    if (session.getUserProperties().get(key) != null) {</span>
+<span class="fc" id="L189">                        properties.put(key, session.getUserProperties().get(key));</span>
+                    }
+<span class="fc" id="L191">                }</span>
             }
         }
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * Logs errors that caused the 'ant' object to not be populated.
@@ -197,8 +199,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-<span class="nc" id="L200">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
-<span class="nc" id="L201">    }</span>
+<span class="nc" id="L202">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
+<span class="nc" id="L203">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
