@@ -143,6 +143,20 @@ public class AbstractToolsMojoTest {
     }
 
     @Test
+    public void testBindAllProjectPropertiesAndBindSessionUserOverridePropertiesWhenEmpty() {
+        MavenSession session = mock(MavenSession.class);
+        Properties projectProperties = new Properties();
+        projectProperties.put("foo", "bar");
+        doReturn(new Properties()).when(session).getUserProperties();
+        doReturn(projectProperties).when(project).getProperties();
+        testMojo.session = session;
+        testMojo.bindAllProjectProperties = true;
+        testMojo.bindSessionUserOverrideProperties = true;
+
+        testMojo.initializeProperties();
+    }
+
+    @Test
     public void testSessionPropertiesOverrideProjectPropertiesAndIncludesOthers() {
         Properties projectProperties = new Properties();
         projectProperties.put("foo", "bar");
