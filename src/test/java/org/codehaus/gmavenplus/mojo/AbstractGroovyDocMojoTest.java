@@ -44,14 +44,14 @@ public class AbstractGroovyDocMojoTest {
         testMojo.project = project;
         doReturn(new Properties()).when(testMojo).setupProperties();
         doReturn(emptyList()).when(testMojo).setupGroovyDocSources(any(FileSet[].class), any(FileSetManager.class));
-        doNothing().when(testMojo).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), anyObject(), anyListOf(String.class), anyObject());
+        doNothing().when(testMojo).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void testDontSkipGroovyDoc() throws Exception {
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
-        verify(testMojo, times(1)).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), anyObject(), anyListOf(String.class), anyObject());
+        verify(testMojo, times(1)).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class AbstractGroovyDocMojoTest {
     public void testSkipGroovyDoc() throws Exception {
         testMojo.skipGroovyDoc = true;
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
-        verify(testMojo, never()).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), anyObject(), anyListOf(String.class), anyObject());
+        verify(testMojo, never()).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
     }
 
     public static class TestMojo extends AbstractGroovyDocMojo {
