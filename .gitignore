@@ -1,0 +1,18 @@
+# Maven
+target
+
+# Eclipse
+.settings
+*.classpath
+*.project
+bin
+
+# Jetbrains
+*.iml
+*.ipr
+*.iws
+.idea
+out
+
+# Sonar
+.sonar
