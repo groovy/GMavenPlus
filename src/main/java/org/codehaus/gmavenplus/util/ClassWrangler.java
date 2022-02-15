@@ -141,8 +141,7 @@ public class ClassWrangler {
         try {
             return Version.parseFromString(getGroovyVersionString());
         } catch (Exception e) {
-            log.error("Unable to determine Groovy version. Is Groovy declared as a dependency?");
-            return null;
+            throw new RuntimeException("Unable to determine Groovy version. Is Groovy declared as a dependency?");
         }
     }
 
@@ -279,8 +278,7 @@ public class ClassWrangler {
 
             return groovyJar;
         } catch (ClassNotFoundException e) {
-            log.error("Unable to determine Groovy version. Is Groovy declared as a dependency?");
-            return null;
+            throw new RuntimeException("Unable to determine Groovy version. Is Groovy declared as a dependency?");
         }
     }
 
