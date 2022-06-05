@@ -12,7 +12,7 @@
   <properties>
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
     <commonsLang3Version>3.11</commonsLang3Version>
-    <mavenVersion>3.6.3</mavenVersion>
+    <mavenVersion>3.8.5</mavenVersion>
     <junit5Version>5.7.0</junit5Version>
   </properties>
 
