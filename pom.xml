@@ -71,7 +71,7 @@
       <!-- this is needed to be able to use maven-archiver 3.5 -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.4.1</version>
+      <version>3.4.2</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
