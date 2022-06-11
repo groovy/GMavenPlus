@@ -25,13 +25,21 @@ import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -45,6 +53,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
  */
 @Mojo(name = "execute", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
 public class ExecuteMojo extends AbstractToolsMojo {
+
+    /**
+     * Groovy 4.0.0-RC-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_RC_1 = new Version(4, 0, 0, "RC-1");
 
     /**
      * Groovy 1.7.0 version.
@@ -185,7 +198,11 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 invokeMethod(setProperty, shell, k, properties.get(k));
             }
         } else {
-            invokeMethod(setProperty, shell, "properties", properties);
+            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {
+                invokeMethod(setProperty, shell, "properties", properties);
+            } else {
+                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC_1 + " and later.");
+            }
         }
 
         return shell;

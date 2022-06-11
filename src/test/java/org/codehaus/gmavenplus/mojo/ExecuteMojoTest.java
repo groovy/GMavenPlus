@@ -32,7 +32,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -52,6 +54,7 @@ public class ExecuteMojoTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         executeMojo = new ExecuteMojo();
+        executeMojo.bindPropertiesToSeparateVariables = true;
         executeMojo.mojoExecution = mock(MojoExecution.class);
         executeMojo.project = mock(MavenProject.class);
         MojoDescriptor mockMojoDescriptor = mock(MojoDescriptor.class);
