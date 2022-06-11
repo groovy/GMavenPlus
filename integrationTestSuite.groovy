@@ -37,7 +37,7 @@ for (int i = 0; i < groovyVersions.size(); i++) {
         testLabel = "${groovyVersion}-indy"
         os = new FileOutputStream(new File("groovy-${testLabel}.log"))
         profiles = "${i < groovyVersions.indexOf("2.3.0") ? 'pre2.3-' : ''}indy"
-        properties = "-DgroovyVersion=${groovyVersion} -DgroovyGroupId=${i >= groovyVersions.indexOf("4.0.0-alpha-1") ? 'org.apache.groovy' : 'org.codehaus.groovy'}"
+        properties = "-DgroovyVersion=${groovyVersion} -DgroovyGroupId=org.codehaus.groovy"
         testVersion()
     }
 }
