@@ -34,7 +34,9 @@ public class SomeClassTest {
         List<Parameter> parameterNames = Arrays.asList(method.getParameters());
 
         Assert.assertEquals(2, parameterNames.size());
-        if (GroovySystem.getVersion().startsWith("2.5") || GroovySystem.getVersion().startsWith("3.0")) {
+        if (GroovySystem.getVersion().startsWith("2.5")
+                || GroovySystem.getVersion().startsWith("3.0")
+                || GroovySystem.getVersion().startsWith("4.0")) {
             Assert.assertEquals("param1", parameterNames.get(0).getName());
             Assert.assertEquals("param2", parameterNames.get(1).getName());
         } else {
