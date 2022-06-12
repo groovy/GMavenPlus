@@ -65,7 +65,9 @@ public class CompileMojo extends AbstractCompileMojo {
                     getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
                 }
             } catch (DependencyResolutionRequiredException e) {
-                getLog().debug("Unable to log project compile classpath");
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("Unable to log project compile classpath");
+                }
             }
             doCompile(getFiles(sources, false), project.getCompileClasspathElements(), outputDirectory);
         } catch (ClassNotFoundException e) {

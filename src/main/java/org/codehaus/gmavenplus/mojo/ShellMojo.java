@@ -89,7 +89,9 @@ public class ShellMojo extends AbstractToolsMojo {
                 getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
             }
         } catch (DependencyResolutionRequiredException e) {
-            getLog().debug("Unable to log project test classpath");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Unable to log project test classpath");
+            }
         }
 
         if (groovyVersionSupportsAction()) {
@@ -129,7 +131,9 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
+            }
         }
     }
 

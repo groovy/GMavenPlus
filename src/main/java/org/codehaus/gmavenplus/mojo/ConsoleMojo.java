@@ -84,7 +84,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
             }
         } catch (DependencyResolutionRequiredException e) {
-            getLog().debug("Unable to log project test classpath");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Unable to log project test classpath");
+            }
         }
 
         if (groovyVersionSupportsAction()) {
@@ -135,7 +137,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+            }
         }
     }
 
@@ -210,7 +214,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
             try {
                 antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
             } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                }
                 try {
                     antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {

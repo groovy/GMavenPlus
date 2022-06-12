@@ -110,12 +110,16 @@ public class ExecuteMojo extends AbstractToolsMojo {
      */
     protected synchronized void doExecute() throws MojoExecutionException {
         if (skipScriptExecution) {
-            getLog().info("Skipping script execution because ${skipScriptExecution} was set to true.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("Skipping script execution because ${skipScriptExecution} was set to true.");
+            }
             return;
         }
 
         if (scripts == null || scripts.length == 0) {
-            getLog().info("No scripts specified for execution. Skipping.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("No scripts specified for execution. Skipping.");
+            }
             return;
         }
 
@@ -135,7 +139,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
             }
         } catch (DependencyResolutionRequiredException e) {
-            getLog().debug("Unable to log project test classpath");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Unable to log project test classpath");
+            }
         }
 
         if (groovyVersionSupportsAction()) {
@@ -167,7 +173,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support script execution. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping script execution.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support script execution. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping script execution.");
+            }
         }
     }
 
@@ -242,7 +250,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 }
             } catch (IOException ioe) {
                 if (continueExecuting) {
-                    getLog().error("An Exception occurred while executing script " + scriptNum + ". Continuing to execute remaining scripts.", ioe);
+                    if (getLog().isErrorEnabled()) {
+                        getLog().error("An Exception occurred while executing script " + scriptNum + ". Continuing to execute remaining scripts.", ioe);
+                    }
                 } else {
                     throw new MojoExecutionException("An Exception occurred while executing script " + scriptNum + ".", ioe);
                 }
@@ -284,7 +294,9 @@ public class ExecuteMojo extends AbstractToolsMojo {
             InputStream inputStream = null;
             try {
                 if (sourceEncoding != null) {
-                    getLog().warn("Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.");
+                    if (getLog().isWarnEnabled()) {
+                        getLog().warn("Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.");
+                    }
                 }
                 inputStream = url.openStream();
                 invokeMethod(evaluateUrlWithStream, shell, inputStream);

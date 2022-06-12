@@ -26,9 +26,16 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -261,7 +268,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
-            getLog().info("No sources specified for stub generation. Skipping.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("No sources specified for stub generation. Skipping.");
+            }
             return;
         }
 
@@ -273,7 +282,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
+            }
             return;
         }
 
@@ -344,7 +355,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (supportsSettingExtensions()) {
             invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
         }
-        getLog().debug("Adding Groovy to generate stubs for:");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Adding Groovy to generate stubs for:");
+        }
         Method addSource = findMethod(javaStubCompilationUnitClass, "addSource", File.class);
         for (File stubSource : stubSources) {
             if (getLog().isDebugEnabled()) {

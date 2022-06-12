@@ -26,7 +26,14 @@ import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -34,7 +41,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -261,12 +271,16 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (skipGroovyDoc) {
-            getLog().info("Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.");
+            }
             return;
         }
 
         if (sourceDirectories == null || sourceDirectories.length == 0) {
-            getLog().info("No source directories specified for GroovyDoc generation. Skipping.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("No source directories specified for GroovyDoc generation. Skipping.");
+            }
             return;
         }
 
@@ -276,7 +290,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         logPluginClasspath();
 
         if (!groovyVersionSupportsAction()) {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping GroovyDoc generation.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping GroovyDoc generation.");
+            }
             return;
         }
         if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {
@@ -512,7 +528,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
      */
     protected void generateGroovyDoc(final File outputDirectory, final Class<?> groovyDocToolClass, final Class<?> outputToolClass, final Object fileOutputTool, final List<String> groovyDocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
-        getLog().debug("Adding sources to generate GroovyDoc for:");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Adding sources to generate GroovyDoc for:");
+        }
         if (getLog().isDebugEnabled()) {
             for (String groovyDocSource : groovyDocSources) {
                 if (getLog().isDebugEnabled()) {
