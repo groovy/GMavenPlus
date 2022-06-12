@@ -67,7 +67,9 @@ public class GenerateStubsMojo extends AbstractGenerateStubsMojo {
                     getLog().debug("Project compile classpath:\n" + project.getCompileClasspathElements());
                 }
             } catch (DependencyResolutionRequiredException e) {
-                getLog().debug("Unable to log project compile classpath");
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("Unable to log project compile classpath");
+                }
             }
 
             doStubGeneration(getFiles(sources, false), project.getCompileClasspathElements(), stubsOutputDirectory);

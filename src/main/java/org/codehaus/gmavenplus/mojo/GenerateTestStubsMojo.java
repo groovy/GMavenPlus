@@ -73,7 +73,9 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                         getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
                     }
                 } catch (DependencyResolutionRequiredException e) {
-                    getLog().debug("Unable to log project test classpath");
+                    if (getLog().isDebugEnabled()) {
+                        getLog().debug("Unable to log project test classpath");
+                    }
                 }
 
                 doStubGeneration(getTestFiles(testSources, false), project.getTestClasspathElements(), testStubsOutputDirectory);
@@ -96,7 +98,9 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                 throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
             }
         } else {
-            getLog().info("Generation of test stubs is skipped.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("Generation of test stubs is skipped.");
+            }
         }
     }
 

@@ -30,7 +30,13 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.getField;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -78,7 +84,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
             }
         } catch (DependencyResolutionRequiredException e) {
-            getLog().debug("Unable to log project test classpath");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Unable to log project test classpath");
+            }
         }
 
         if (groovyVersionSupportsAction()) {
@@ -129,7 +137,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+            }
         }
     }
 
@@ -175,7 +185,11 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 invokeMethod(setVariable, binding, k, properties.get(k));
             }
         } else {
-            invokeMethod(setVariable, binding, "properties", properties);
+            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {
+                invokeMethod(setVariable, binding, "properties", properties);
+            } else {
+                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC_1 + " and later.");
+            }
         }
 
         return invokeConstructor(findConstructor(consoleClass, ClassLoader.class, bindingClass), classWrangler.getClassLoader(), binding);
@@ -200,7 +214,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
             try {
                 antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
             } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                }
                 try {
                     antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {

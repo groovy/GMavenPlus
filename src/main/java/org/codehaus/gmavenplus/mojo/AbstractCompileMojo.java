@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -301,7 +304,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sources == null || sources.isEmpty()) {
-            getLog().info("No sources specified for compilation. Skipping.");
+            if (getLog().isInfoEnabled()) {
+                getLog().info("No sources specified for compilation. Skipping.");
+            }
             return;
         }
 
@@ -313,7 +318,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
+            if (getLog().isErrorEnabled()) {
+                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
+            }
             return;
         }
 
@@ -362,7 +369,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         } else {
             compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
         }
-        getLog().debug("Adding Groovy to compile:");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Adding Groovy to compile:");
+        }
         Method addSourceMethod = findMethod(compilationUnitClass, "addSource", File.class);
         for (File source : sources) {
             if (getLog().isDebugEnabled()) {
@@ -447,14 +456,18 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
-                        getLog().info("invokedynamic enabled.");
+                        if (getLog().isInfoEnabled()) {
+                            getLog().info("invokedynamic enabled.");
+                        }
                     } else {
                         if (getLog().isWarnEnabled()) {
                             getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring invokeDynamic parameter.");
                         }
                     }
                 } else {
-                    getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.");
+                    if (getLog().isWarnEnabled()) {
+                        getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.");
+                    }
                 }
             } else {
                 if (getLog().isWarnEnabled()) {
@@ -481,9 +494,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             if ((parallelParsing == null && groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null && parallelParsing)) {
                 Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("parallelParse", true);
-                getLog().info("Parallel parsing enabled.");
+                if (getLog().isInfoEnabled()) {
+                    getLog().info("Parallel parsing enabled.");
+                }
             } else {
-                getLog().info("Parallel parsing disabled.");
+                if (getLog().isInfoEnabled()) {
+                    getLog().info("Parallel parsing disabled.");
+                }
             }
         }
 

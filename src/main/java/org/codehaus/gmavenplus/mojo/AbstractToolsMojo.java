@@ -158,7 +158,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             try {
                 antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
             } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+                }
                 try {
                     antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {
@@ -172,10 +174,14 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             }
         }
         if (bindSessionUserOverrideProperties && !bindAllProjectProperties) {
-            getLog().warn("bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.");
+            }
         }
         if (bindAllSessionUserProperties && bindSessionUserOverrideProperties) {
-            getLog().warn("bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.");
+            }
         }
         if (bindAllProjectProperties && project != null) {
             properties.putAll(project.getProperties());
@@ -199,7 +205,9 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-        getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
+        if (getLog().isWarnEnabled()) {
+            getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
+        }
     }
 
 }

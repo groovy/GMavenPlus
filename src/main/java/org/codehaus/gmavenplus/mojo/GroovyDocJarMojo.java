@@ -20,7 +20,11 @@ import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -128,7 +132,9 @@ public class GroovyDocJarMojo extends GroovyDocMojo {
             if (attach) {
                 projectHelper.attachArtifact(project, artifactType, classifier, outputFile);
             } else {
-                getLog().info("Not adding GroovyDoc jar to attached artifacts list.");
+                if (getLog().isInfoEnabled()) {
+                    getLog().info("Not adding GroovyDoc jar to attached artifacts list.");
+                }
             }
         } catch (ArchiverException e) {
             throw new MojoExecutionException("ArchiverException: Error while creating archive", e);
@@ -160,7 +166,9 @@ public class GroovyDocJarMojo extends GroovyDocMojo {
         archiver.setOutputFile(groovydocJar);
 
         if (!groovydocFiles.exists()) {
-            getLog().warn("JAR will be empty - no content was marked for inclusion!");
+            if (getLog().isWarnEnabled()) {
+                getLog().warn("JAR will be empty - no content was marked for inclusion!");
+            }
         } else {
             archiver.getArchiver().addDirectory(groovydocFiles);
         }
