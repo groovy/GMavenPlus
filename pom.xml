@@ -61,14 +61,14 @@
       <version>3.6.0</version>
     </dependency>
     <dependency>
-      <!-- this is needed to be able to use maven-archiver 3.5 -->
+      <!-- this is needed to be able to use maven-archiver >= 3.5 -->
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
       <version>3.3.4</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <!-- this is needed to be able to use maven-archiver 3.5 -->
+      <!-- this is needed to be able to use maven-archiver >= 3.5 -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>3.4.2</version>
