@@ -18,10 +18,17 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.codehaus.groovy.control.CompilerConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
@@ -66,6 +73,8 @@ public class AbstractCompileMojoTest {
         testMojo = new TestMojo("2.1.3");
         testMojo.targetBytecode = "1.6";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+        testMojo.targetBytecode = "6";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -79,6 +88,8 @@ public class AbstractCompileMojoTest {
     public void testJava7WithSupportedGroovy() {
         testMojo = new TestMojo("2.1.3");
         testMojo.targetBytecode = "1.7";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+        testMojo.targetBytecode = "7";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
@@ -94,6 +105,8 @@ public class AbstractCompileMojoTest {
         testMojo = new TestMojo("2.3.3");
         testMojo.targetBytecode = "1.8";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+        testMojo.targetBytecode = "8";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -107,6 +120,8 @@ public class AbstractCompileMojoTest {
     public void testJava9WithSupportedGroovy2_5() {
         testMojo = new TestMojo("2.5.3");
         testMojo.targetBytecode = "9";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+        testMojo.targetBytecode = "1.9";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
@@ -367,6 +382,24 @@ public class AbstractCompileMojoTest {
         testMojo = new TestMojo("2.1.2");
         testMojo.targetBytecode = "unknown";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testBytecodeTranslation() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        Map<String, String> expectedTranslations = new LinkedHashMap<>();
+        expectedTranslations.put("5", "1.5");
+        expectedTranslations.put("6", "1.6");
+        expectedTranslations.put("7", "1.7");
+        expectedTranslations.put("8", "1.8");
+        expectedTranslations.put("1.9", "9");
+        for (String javacVersion : expectedTranslations.keySet()) {
+            testMojo.targetBytecode = javacVersion;
+            String expectedGroovycVersion = expectedTranslations.get(javacVersion);
+            Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
+            File compileOutputDirectory = new File(".");
+            CompilerConfiguration compilerConfiguration = (CompilerConfiguration) testMojo.setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
+            assertEquals(expectedGroovycVersion, compilerConfiguration.getTargetBytecode());
+        }
     }
 
     protected static class TestMojo extends AbstractCompileMojo {
