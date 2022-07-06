@@ -75,6 +75,13 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <!-- fix CVE-2021-29425 -->
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.7</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
