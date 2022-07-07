@@ -16,9 +16,13 @@
 
 package org.codehaus.gmavenplus.util;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -264,7 +268,7 @@ public class ReflectionUtils {
             for (Method ifcMethod : ifc.getMethods()) {
                 if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
                     if (result == null) {
-                        result = new LinkedList<>();
+                        result = new ArrayList<>();
                     }
                     result.add(ifcMethod);
                 }

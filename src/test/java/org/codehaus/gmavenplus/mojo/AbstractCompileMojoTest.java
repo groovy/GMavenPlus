@@ -392,9 +392,10 @@ public class AbstractCompileMojoTest {
         expectedTranslations.put("7", "1.7");
         expectedTranslations.put("8", "1.8");
         expectedTranslations.put("1.9", "9");
-        for (String javacVersion : expectedTranslations.keySet()) {
+        for (Map.Entry<String, String> entry : expectedTranslations.entrySet()) {
+            String javacVersion = entry.getKey();
+            String expectedGroovycVersion = entry.getValue();
             testMojo.targetBytecode = javacVersion;
-            String expectedGroovycVersion = expectedTranslations.get(javacVersion);
             Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
             File compileOutputDirectory = new File(".");
             CompilerConfiguration compilerConfiguration = (CompilerConfiguration) testMojo.setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
