@@ -42,9 +42,7 @@ public class AddStubSourcesMojo extends AbstractGroovyStubSourcesMojo {
      */
     @Override
     public void execute() {
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Added stub directory " + stubsOutputDirectory.getAbsolutePath() + " to project sources.");
-        }
+        getLog().debug("Added stub directory " + stubsOutputDirectory.getAbsolutePath() + " to project sources.");
         project.addCompileSourceRoot(stubsOutputDirectory.getAbsolutePath());
     }
 

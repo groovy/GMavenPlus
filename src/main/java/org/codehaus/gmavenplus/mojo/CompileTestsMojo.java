@@ -68,13 +68,9 @@ public class CompileTestsMojo extends AbstractCompileMojo {
         if (!skipTests) {
             try {
                 try {
-                    if (getLog().isDebugEnabled()) {
-                        getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-                    }
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
                 } catch (DependencyResolutionRequiredException e) {
-                    if (getLog().isDebugEnabled()) {
-                        getLog().debug("Unable to log project test classpath");
-                    }
+                    getLog().debug("Unable to log project test classpath");
                 }
                 doCompile(getTestFiles(testSources, false), project.getTestClasspathElements(), testOutputDirectory);
             } catch (ClassNotFoundException e) {
@@ -91,9 +87,7 @@ public class CompileTestsMojo extends AbstractCompileMojo {
                 throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
             }
         } else {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Compilation of tests is skipped.");
-            }
+            getLog().info("Compilation of tests is skipped.");
         }
     }
 

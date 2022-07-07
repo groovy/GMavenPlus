@@ -305,9 +305,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
         if (sources == null || sources.isEmpty()) {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("No sources specified for compilation. Skipping.");
-            }
+            getLog().info("No sources specified for compilation. Skipping.");
             return;
         }
 
@@ -319,9 +317,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
-            if (getLog().isErrorEnabled()) {
-                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
-            }
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
             return;
         }
 
@@ -343,9 +339,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
         // log compiled classes
         List classes = (List) invokeMethod(findMethod(compilationUnitClass, "getClasses"), compilationUnit);
-        if (getLog().isInfoEnabled()) {
-            getLog().info("Compiled " + classes.size() + " file" + (classes.size() != 1 ? "s" : "") + ".");
-        }
+        getLog().info("Compiled " + classes.size() + " file" + (classes.size() != 1 ? "s" : "") + ".");
     }
 
     private static String translateJavacTargetToTargetBytecode(String targetBytecode) {
@@ -380,14 +374,10 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         } else {
             compilationUnit = invokeConstructor(findConstructor(compilationUnitClass, compilerConfigurationClass, CodeSource.class, groovyClassLoaderClass), compilerConfiguration, null, groovyClassLoader);
         }
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Adding Groovy to compile:");
-        }
+        getLog().debug("Adding Groovy to compile:");
         Method addSourceMethod = findMethod(compilationUnitClass, "addSource", File.class);
         for (File source : sources) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + source);
-            }
+            getLog().debug("    " + source);
             invokeMethod(addSourceMethod, compilationUnit, source);
         }
 
@@ -410,13 +400,9 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
         if (configScript != null) {
             if (!configScript.exists()) {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Configuration script file (" + configScript.getAbsolutePath() + ") doesn't exist. Ignoring configScript parameter.");
-                }
+                getLog().warn("Configuration script file (" + configScript.getAbsolutePath() + ") doesn't exist. Ignoring configScript parameter.");
             } else if (groovyOlderThan(GROOVY_2_1_0_BETA1)) {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer). Ignoring configScript parameter.");
-                }
+                getLog().warn("Requested to use configScript, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_1_0_BETA1 + " or newer). Ignoring configScript parameter.");
             } else {
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
                 Class<?> importCustomizerClass = classWrangler.getClass("org.codehaus.groovy.control.customizers.ImportCustomizer");
@@ -430,9 +416,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 List compilationCustomizers = (List) invokeMethod(findMethod(compilerConfigurationClass, "getCompilationCustomizers"), shellCompilerConfiguration);
                 compilationCustomizers.add(importCustomizer);
                 Object shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, bindingClass, compilerConfigurationClass), classWrangler.getClassLoader(), binding, shellCompilerConfiguration);
-                if (getLog().isDebugEnabled()) {
-                    getLog().debug("Using configuration script " + configScript + " for compilation.");
-                }
+                getLog().debug("Using configuration script " + configScript + " for compilation.");
                 invokeMethod(findMethod(groovyShellClass, "evaluate", File.class), shell, configScript);
             }
         }
@@ -444,16 +428,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if (previewFeatures) {
             if (isJavaSupportPreviewFeatures()) {
                 if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
-                    if (getLog().isWarnEnabled()) {
-                        getLog().warn("Requested to use preview features, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.");
-                    }
+                    getLog().warn("Requested to use preview features, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported. Ignoring previewFeatures parameter.");
                 } else {
                     invokeMethod(findMethod(compilerConfigurationClass, "setPreviewFeatures", boolean.class), compilerConfiguration, previewFeatures);
                 }
             } else {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Requested to use to use preview features, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring previewFeatures parameter.");
-                }
+                getLog().warn("Requested to use to use preview features, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring previewFeatures parameter.");
             }
         }
         if (sourceEncoding != null) {
@@ -467,23 +447,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                         Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                         optimizationOptions.put("indy", true);
                         optimizationOptions.put("int", false);
-                        if (getLog().isInfoEnabled()) {
-                            getLog().info("invokedynamic enabled.");
-                        }
+                        getLog().info("invokedynamic enabled.");
                     } else {
-                        if (getLog().isWarnEnabled()) {
-                            getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring invokeDynamic parameter.");
-                        }
+                        getLog().warn("Requested to use to use invokedynamic, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring invokeDynamic parameter.");
                     }
                 } else {
-                    if (getLog().isWarnEnabled()) {
-                        getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.");
-                    }
+                    getLog().warn("Requested to use invokedynamic, but your Groovy version doesn't support it (must use have indy classifier). Ignoring invokeDynamic parameter.");
                 }
             } else {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_0_0_BETA3 + " or newer). Ignoring invokeDynamic parameter.");
-                }
+                getLog().warn("Requested to use invokeDynamic, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_0_0_BETA3 + " or newer). Ignoring invokeDynamic parameter.");
             }
         }
         if (parameters) {
@@ -491,27 +463,19 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 if (isJavaSupportParameters()) {
                     invokeMethod(findMethod(compilerConfigurationClass, "setParameters", boolean.class), compilerConfiguration, parameters);
                 } else {
-                    if (getLog().isWarnEnabled()) {
-                        getLog().warn("Requested to use to use parameters, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring parameters parameter.");
-                    }
+                    getLog().warn("Requested to use to use parameters, but your Java version (" + getJavaVersionString() + ") doesn't support it. Ignoring parameters parameter.");
                 }
             } else {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer). Ignoring parameters parameter.");
-                }
+                getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer). Ignoring parameters parameter.");
             }
         }
         if (groovyAtLeast(GROOVY_3_0_5)) {
             if ((parallelParsing == null && groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null && parallelParsing)) {
                 Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("parallelParse", true);
-                if (getLog().isInfoEnabled()) {
-                    getLog().info("Parallel parsing enabled.");
-                }
+                getLog().info("Parallel parsing enabled.");
             } else {
-                if (getLog().isInfoEnabled()) {
-                    getLog().info("Parallel parsing disabled.");
-                }
+                getLog().info("Parallel parsing disabled.");
             }
         }
 

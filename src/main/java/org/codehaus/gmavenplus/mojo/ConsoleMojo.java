@@ -80,13 +80,9 @@ public class ConsoleMojo extends AbstractToolsMojo {
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
         try {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-            }
+            getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
         } catch (DependencyResolutionRequiredException e) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Unable to log project test classpath");
-            }
+            getLog().debug("Unable to log project test classpath");
         }
 
         if (groovyVersionSupportsAction()) {
@@ -137,9 +133,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 }
             }
         } else {
-            if (getLog().isErrorEnabled()) {
-                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
-            }
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
         }
     }
 
@@ -154,14 +148,10 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 if (consoleScriptFile.isFile()) {
                     invokeMethod(loadScriptFile, console, consoleScriptFile);
                 } else {
-                    if (getLog().isWarnEnabled()) {
-                        getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
-                    }
-                }
-            } else {
-                if (getLog().isWarnEnabled()) {
                     getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
                 }
+            } else {
+                getLog().warn("consoleScript ('" + consoleScript + "') doesn't exist in project properties or as a file.");
             }
         }
     }
@@ -214,9 +204,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             try {
                 antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
             } catch (ClassNotFoundException e1) {
-                if (getLog().isDebugEnabled()) {
-                    getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                }
+                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
                 try {
                     antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
                 } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {

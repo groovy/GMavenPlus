@@ -69,13 +69,9 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
             minGroovyVersion = GROOVY_1_8_2;
             try {
                 try {
-                    if (getLog().isDebugEnabled()) {
-                        getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
-                    }
+                    getLog().debug("Project test classpath:\n" + project.getTestClasspathElements());
                 } catch (DependencyResolutionRequiredException e) {
-                    if (getLog().isDebugEnabled()) {
-                        getLog().debug("Unable to log project test classpath");
-                    }
+                    getLog().debug("Unable to log project test classpath");
                 }
 
                 doStubGeneration(getTestFiles(testSources, false), project.getTestClasspathElements(), testStubsOutputDirectory);
@@ -98,9 +94,7 @@ public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {
                 throw new MojoExecutionException("Unable to add project test dependencies to classpath.", e);
             }
         } else {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Generation of test stubs is skipped.");
-            }
+            getLog().info("Generation of test stubs is skipped.");
         }
     }
 

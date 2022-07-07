@@ -120,9 +120,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
                     sb.append(", ");
                 }
             }
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Plugin classpath:\n" + sb);
-            }
+            getLog().debug("Plugin classpath:\n" + sb);
         }
     }
 
@@ -239,19 +237,13 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected void setupClassWrangler(List<?> classpath, IncludeClasspath includeClasspath) throws MalformedURLException {
         if (IncludeClasspath.PROJECT_ONLY.equals(includeClasspath)) {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Using isolated classloader, without GMavenPlus classpath.");
-            }
+            getLog().info("Using isolated classloader, without GMavenPlus classpath.");
             classWrangler = new ClassWrangler(classpath, ClassLoader.getSystemClassLoader(), getLog());
         } else if (IncludeClasspath.PROJECT_AND_PLUGIN.equals(includeClasspath)) {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Using plugin classloader, includes GMavenPlus and project classpath.");
-            }
+            getLog().info("Using plugin classloader, includes GMavenPlus and project classpath.");
             classWrangler = new ClassWrangler(classpath, getClass().getClassLoader(), getLog());
         } else {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Using plugin classloader, includes GMavenPlus classpath, but not project classpath.");
-            }
+            getLog().info("Using plugin classloader, includes GMavenPlus classpath, but not project classpath.");
             classWrangler = new ClassWrangler(emptyList(), getClass().getClassLoader(), getLog());
         }
     }

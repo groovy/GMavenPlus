@@ -132,9 +132,7 @@ public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
             if (attach) {
                 projectHelper.attachArtifact(project, testArtifactType, testClassifier, outputFile);
             } else {
-                if (getLog().isInfoEnabled()) {
-                    getLog().info("Not adding test GroovyDoc jar to attached artifacts list.");
-                }
+                getLog().info("Not adding test GroovyDoc jar to attached artifacts list.");
             }
         } catch (ArchiverException e) {
             throw new MojoExecutionException("ArchiverException: Error while creating archive", e);
@@ -166,17 +164,13 @@ public class GroovyDocTestsJarMojo extends GroovyDocTestsMojo {
         archiver.setOutputFile(groovydocJar);
 
         if (!groovydocFiles.exists()) {
-            if (getLog().isWarnEnabled()) {
-                getLog().warn("JAR will be empty - no content was marked for inclusion!");
-            }
+            getLog().warn("JAR will be empty - no content was marked for inclusion!");
         } else {
             archiver.getArchiver().addDirectory(groovydocFiles);
         }
 
         if (useDefaultManifestFile && defaultManifestFile.exists() && archive.getManifestFile() == null) {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile.getPath());
-            }
+            getLog().info("Adding existing MANIFEST to archive. Found under: " + defaultManifestFile.getPath());
             archive.setManifestFile(defaultManifestFile);
         }
 

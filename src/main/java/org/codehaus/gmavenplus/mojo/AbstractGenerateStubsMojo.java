@@ -268,9 +268,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected synchronized void doStubGeneration(final Set<File> stubSources, final List<?> classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
         if (stubSources == null || stubSources.isEmpty()) {
-            if (getLog().isInfoEnabled()) {
-                getLog().info("No sources specified for stub generation. Skipping.");
-            }
+            getLog().info("No sources specified for stub generation. Skipping.");
             return;
         }
 
@@ -282,9 +280,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
             verifyGroovyVersionSupportsTargetBytecode();
         } else {
-            if (getLog().isErrorEnabled()) {
-                getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
-            }
+            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
             return;
         }
 
@@ -349,20 +345,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         for (File stubSource : stubSources) {
             scriptExtensions.add(FileUtils.getFileExtension(stubSource));
         }
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
-        }
+        getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
         if (supportsSettingExtensions()) {
             invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
         }
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Adding Groovy to generate stubs for:");
-        }
+        getLog().debug("Adding Groovy to generate stubs for:");
         Method addSource = findMethod(javaStubCompilationUnitClass, "addSource", File.class);
         for (File stubSource : stubSources) {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("    " + stubSource);
-            }
+            getLog().debug("    " + stubSource);
             if (supportsSettingExtensions()) {
                 invokeMethod(addSource, javaStubCompilationUnit, stubSource);
             } else {
@@ -388,9 +378,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected void logGeneratedStubs(File outputDirectory) {
         Set<File> stubs = getStubs(outputDirectory);
-        if (getLog().isInfoEnabled()) {
-            getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() != 1 ? "s" : "") + ".");
-        }
+        getLog().info("Generated " + stubs.size() + " stub" + (stubs.size() != 1 ? "s" : "") + ".");
     }
 
     /**
@@ -405,9 +393,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         for (File stub : stubs) {
             boolean success = stub.setLastModified(0L);
             if (!success) {
-                if (getLog().isWarnEnabled()) {
-                    getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
-                }
+                getLog().warn("Unable to set modified time on stub " + stub.getAbsolutePath() + ".");
             }
         }
     }

@@ -219,9 +219,7 @@ public class ClassWrangler {
      * @param goal The goal to mention in the log statement showing Groovy version
      */
     public void logGroovyVersion(final String goal) {
-        if (log.isInfoEnabled()) {
-            log.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
-        }
+        log.info("Using Groovy " + getGroovyVersionString() + " to perform " + goal + ".");
     }
 
     /**
