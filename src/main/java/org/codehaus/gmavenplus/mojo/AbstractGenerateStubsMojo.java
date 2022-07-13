@@ -317,7 +317,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         invokeMethod(findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
         invokeMethod(findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
         invokeMethod(findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, targetBytecode);
+        invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, translateJavacTargetToTargetBytecode(targetBytecode));
         if (sourceEncoding != null) {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
@@ -406,51 +406,61 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected void verifyGroovyVersionSupportsTargetBytecode() {
         if ("18".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_0_BETA1)) {
-                throw new IllegalArgumentException("Target bytecode 18 requires Groovy " + GROOVY_4_0_0_BETA1 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_0_BETA1 + " or newer.");
             }
         } else if ("17".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_8) || (groovyAtLeast(GROOVY_4_0_0_ALPHA1) && groovyOlderThan(GROOVY_4_0_0_ALPHA3))) {
-                throw new IllegalArgumentException("Target bytecode 17 requires Groovy " + GROOVY_3_0_8 + "/" + GROOVY_4_0_0_ALPHA3 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_8 + "/" + GROOVY_4_0_0_ALPHA3 + " or newer.");
             }
         } else if ("16".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_6)) {
-                throw new IllegalArgumentException("Target bytecode 16 requires Groovy " + GROOVY_3_0_6 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_6 + " or newer.");
             }
         } else if ("15".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_3)) {
-                throw new IllegalArgumentException("Target bytecode 15 requires Groovy " + GROOVY_3_0_3 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_3 + " or newer.");
             }
         } else if ("14".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {
-                throw new IllegalArgumentException("Target bytecode 14 requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
             }
         } else if ("13".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
-                throw new IllegalArgumentException("Target bytecode 13 requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
             }
         } else if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {
-                throw new IllegalArgumentException("Target bytecode 10, 11, or 12 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
             }
-        } else if ("9".equals(targetBytecode)) {
+        } else if ("9".equals(targetBytecode) || "1.9".equals(targetBytecode)) {
             if (!isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3)
                     || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_2_6_0_ALPHA4))
                     || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {
-                throw new IllegalArgumentException("Target bytecode 9 requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
             } else if (isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {
-                throw new IllegalArgumentException("Target bytecode 9 with invokedynamic requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
             }
-        } else if ("1.8".equals(targetBytecode)) {
+        } else if ("8".equals(targetBytecode) || "1.8".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_3_3)) {
-                throw new IllegalArgumentException("Target bytecode 1.8 requires Groovy " + GROOVY_2_3_3 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_3_3 + " or newer.");
             }
-        } else if ("1.7".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
+        } else if ("7".equals(targetBytecode) || "1.7".equals(targetBytecode) || "6".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_2_1_3)) {
-                throw new IllegalArgumentException("Target bytecode 1.6 and 1.7 require Groovy " + GROOVY_2_1_3 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_1_3 + " or newer.");
             }
-        } else if (!"1.5".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
-            throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'.");
+        } else if (!"5".equals(targetBytecode) && !"1.5".equals(targetBytecode) && !"4".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
+            throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'. This check can be skipped with 'skipBytecodeCheck', but this may result in a different target bytecode being used.");
         }
+    }
+
+    private static String translateJavacTargetToTargetBytecode(String targetBytecode) {
+        Map<String, String> javacTargetToTargetBytecode = new HashMap<>();
+        javacTargetToTargetBytecode.put("5", "1.5");
+        javacTargetToTargetBytecode.put("6", "1.6");
+        javacTargetToTargetBytecode.put("7", "1.7");
+        javacTargetToTargetBytecode.put("8", "1.8");
+        javacTargetToTargetBytecode.put("1.9", "9");
+        return javacTargetToTargetBytecode.getOrDefault(targetBytecode, targetBytecode);
     }
 
 }

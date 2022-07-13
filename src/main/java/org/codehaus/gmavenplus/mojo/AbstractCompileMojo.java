@@ -342,16 +342,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         getLog().info("Compiled " + classes.size() + " file" + (classes.size() != 1 ? "s" : "") + ".");
     }
 
-    private static String translateJavacTargetToTargetBytecode(String targetBytecode) {
-        Map<String, String> javacTargetToTargetBytecode = new HashMap<>();
-        javacTargetToTargetBytecode.put("5", "1.5");
-        javacTargetToTargetBytecode.put("6", "1.6");
-        javacTargetToTargetBytecode.put("7", "1.7");
-        javacTargetToTargetBytecode.put("8", "1.8");
-        javacTargetToTargetBytecode.put("1.9", "9");
-        return javacTargetToTargetBytecode.getOrDefault(targetBytecode, targetBytecode);
-    }
-
     /**
      * Sets up the CompilationUnit to use for compilation.
      *
@@ -535,6 +525,16 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         } else if (!"5".equals(targetBytecode) && !"1.5".equals(targetBytecode) && !"4".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
             throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'. This check can be skipped with 'skipBytecodeCheck', but this may result in a different target bytecode being used.");
         }
+    }
+
+    private static String translateJavacTargetToTargetBytecode(String targetBytecode) {
+        Map<String, String> javacTargetToTargetBytecode = new HashMap<>();
+        javacTargetToTargetBytecode.put("5", "1.5");
+        javacTargetToTargetBytecode.put("6", "1.6");
+        javacTargetToTargetBytecode.put("7", "1.7");
+        javacTargetToTargetBytecode.put("8", "1.8");
+        javacTargetToTargetBytecode.put("1.9", "9");
+        return javacTargetToTargetBytecode.getOrDefault(targetBytecode, targetBytecode);
     }
 
 }
