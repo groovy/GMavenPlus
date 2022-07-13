@@ -165,12 +165,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     /**
      * The Groovy compiler bytecode compatibility. One of
      * <ul>
-     *   <li>1.4</li>
-     *   <li>1.5</li>
-     *   <li>1.6</li>
-     *   <li>1.7</li>
-     *   <li>1.8</li>
-     *   <li>9</li>
+     *   <li>1.4 (or 4)</li>
+     *   <li>1.5 (or 5)</li>
+     *   <li>1.6 (or 6)</li>
+     *   <li>1.7 (or 7)</li>
+     *   <li>1.8 (or 8)</li>
+     *   <li>9 (or 1.9)</li>
      *   <li>10</li>
      *   <li>11</li>
      *   <li>12</li>
@@ -181,10 +181,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>17</li>
      *   <li>18</li>
      * </ul>
-     * Using 1.6 or 1.7 requires Groovy &gt;= 2.1.3.
-     * Using 1.8 requires Groovy &gt;= 2.3.3.
-     * Using 9 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 2.6.0 alpha 4, or Groovy &gt;= 3.0.0 alpha 2.
-     * Using 9 with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
+     * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
+     * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
+     * Using 9 (or 1.9) requires Groovy &gt;= 2.5.3, or Groovy &gt;= 2.6.0 alpha 4, or Groovy &gt;= 3.0.0 alpha 2.
+     * Using 9 (or 1.9) with invokedynamic requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 2, but not any 2.6 versions.
      * Using 10, 11, or 12 requires Groovy &gt;= 2.5.3, or Groovy &gt;= 3.0.0 alpha 4, but not any 2.6 versions.
      * Using 13 requires Groovy &gt;= 2.5.7, or Groovy &gt;= 3.0.0-beta-1, but not any 2.6 versions.
      * Using 14 requires Groovy &gt;= 3.0.0 beta-2.
