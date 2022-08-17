@@ -28,7 +28,7 @@ import org.apache.maven.shared.model.fileset.FileSet;
  * @author Keegan Witt
  * @since 1.0-beta-3
  */
-@Mojo(name = "addTestSources", defaultPhase = LifecyclePhase.INITIALIZE, threadSafe = true)
+@Mojo(name = "addTestSources", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, threadSafe = true)
 public class AddTestSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
