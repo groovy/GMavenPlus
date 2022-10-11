@@ -45,11 +45,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * @since 1.0-beta-1
  */
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
-    /*
-     * TODO: support Groovy 1.5.0 - 1.8.1?
-     * For some reason, the JavaStubCompilationUnit is silently not creating my stubs
-     * (although it does create the target directory) when I use other versions.
+
+    /**
+     * Groovy 4.0.2 version.
      */
+    protected static final Version GROOVY_4_0_2 = new Version(4, 0, 2);
 
     /**
      * Groovy 4.0.0 beta-1 version.
@@ -155,6 +155,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Groovy 1.8.3 version.
      */
     protected static final Version GROOVY_1_8_3 = new Version(1, 8, 3);
+
+    /*
+     * TODO: support Groovy 1.5.0 - 1.8.1?
+     * For some reason, the JavaStubCompilationUnit is silently not creating my stubs
+     * (although it does create the target directory) when I use other versions.
+     */
 
     /**
      * The encoding of source files.
@@ -404,7 +410,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("18".equals(targetBytecode)) {
+        if ("19".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_2)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_2 + " or newer.");
+            }
+        } else if ("18".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_0_BETA1)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_0_BETA1 + " or newer.");
             }

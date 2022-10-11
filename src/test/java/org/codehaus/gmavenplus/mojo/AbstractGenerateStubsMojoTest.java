@@ -29,8 +29,14 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 /**
@@ -395,6 +401,20 @@ public class AbstractGenerateStubsMojoTest {
     public void testJava18WithSupportedGroovy() {
         testMojo = new TestMojo("4.0.0-beta-1");
         testMojo.targetBytecode = "18";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava19WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.1");
+        testMojo.targetBytecode = "19";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava19WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.2");
+        testMojo.targetBytecode = "19";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
