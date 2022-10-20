@@ -45,6 +45,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 4.0.6 version.
+     */
+    protected static final Version GROOVY_4_0_6 = new Version(4, 0, 6);
+
+    /**
      * Groovy 4.0.2 version.
      */
     protected static final Version GROOVY_4_0_2 = new Version(4, 0, 2);
@@ -195,6 +200,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 16 requires Groovy &gt;= 3.0.6.
      * Using 17 requires Groovy &gt;= 3.0.8 or Groovy &gt; 4.0.0-alpha-3.
      * Using 18 requires Groovy &gt; 4.0.0-beta-1.
+     * Using 19 requires Groovy &gt; 4.0.2.
+     * Using 20 requires Groovy &gt; 4.0.6.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -483,7 +490,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("19".equals(targetBytecode)) {
+        if ("20".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_6)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_6 + " or newer.");
+            }
+        } else if ("19".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_2)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_2 + " or newer.");
             }

@@ -392,6 +392,20 @@ public class AbstractCompileMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava20WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.5");
+        testMojo.targetBytecode = "20";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava20WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.6");
+        testMojo.targetBytecode = "20";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testUnrecognizedJava() {
         testMojo = new TestMojo("2.1.2");
         testMojo.targetBytecode = "unknown";
