@@ -198,6 +198,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 16 requires Groovy &gt;= 3.0.6.
      * Using 17 requires Groovy &gt;= 3.0.8 or Groovy &gt; 4.0.0-alpha-3.
      * Using 18 requires Groovy &gt; 4.0.0-beta-1.
+     * Using 19 requires Groovy &gt; 4.0.2.
      *
      * @since 1.0-beta-3
      */
