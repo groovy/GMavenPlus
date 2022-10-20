@@ -25,7 +25,7 @@
     <sourcePluginVersion>3.2.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
     <groovyGroupId>org.apache.groovy</groovyGroupId>
-    <groovyVersion>4.0.5</groovyVersion>
+    <groovyVersion>4.0.6</groovyVersion>
   </properties>
 
   <dependencies>
