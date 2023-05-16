@@ -11,16 +11,16 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <mavenVersion>3.0</mavenVersion>
-    <jacocoPluginVersion>0.8.7</jacocoPluginVersion>
-    <javadocPluginVersion>3.3.1</javadocPluginVersion>
+    <jacocoPluginVersion>0.8.10</jacocoPluginVersion>
+    <javadocPluginVersion>3.5.0</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
-    <dependencyPluginVersion>3.2.0</dependencyPluginVersion>
-    <compilerPluginVersion>3.8.1</compilerPluginVersion>
+    <dependencyPluginVersion>3.5.0</dependencyPluginVersion>
+    <compilerPluginVersion>3.11.0</compilerPluginVersion>
     <junitVersion>4.13.2</junitVersion>
-    <surefirePluginVersion>3.0.0-M5</surefirePluginVersion>
-    <pluginPluginVersion>3.6.1</pluginPluginVersion>
+    <surefirePluginVersion>3.1.0</surefirePluginVersion>
+    <pluginPluginVersion>3.9.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.2.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
@@ -33,16 +33,31 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>${mavenVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -71,14 +86,14 @@
       <!-- this is needed to be able to use maven-archiver >= 3.5 -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.4.2</version>
+      <version>3.5.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <!-- fix CVE-2021-29425 -->
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version>
+      <version>2.11.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -100,7 +115,7 @@
       <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.12</version>
+      <version>1.10.13</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -119,7 +134,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.8.0</version>
+      <version>4.11.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -262,7 +277,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
             <executions>
               <execution>
                 <goals>
@@ -285,7 +300,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <goals>
@@ -316,14 +331,14 @@
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>extra-enforcer-rules</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.2</version>
           </dependency>
         </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -333,7 +348,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -362,7 +377,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-help-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -384,7 +399,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.20</version>
+        <version>1.23</version>
         <executions>
           <execution>
             <goals>
@@ -427,12 +442,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.2.2</version>
+        <version>3.5.1</version>
         <configuration>
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -477,22 +492,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>3.0.0-M1</version>
+        <version>3.1.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0-M1</version>
+        <version>3.1.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.9.1</version>
+        <version>3.12.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M4</version>
+        <version>3.0.0</version>
       </plugin>
     </plugins>
 
@@ -531,7 +546,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.3.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -548,7 +563,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.4.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -576,7 +591,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.0.0</version>
         <configuration>
           <tagListOptions>
             <tagClasses>
@@ -599,19 +614,19 @@
         <version>3.15.0</version>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.5</version>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.3.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.2</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.8.1</version>
+        <version>2.15.0</version>
         <reportSets>
           <reportSet>
             <reports>
