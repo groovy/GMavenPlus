@@ -11,16 +11,16 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <mavenVersion>3.0</mavenVersion>
-    <jacocoPluginVersion>0.8.7</jacocoPluginVersion>
-    <javadocPluginVersion>3.3.1</javadocPluginVersion>
+    <jacocoPluginVersion>0.8.10</jacocoPluginVersion>
+    <javadocPluginVersion>3.5.0</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
-    <dependencyPluginVersion>3.2.0</dependencyPluginVersion>
-    <compilerPluginVersion>3.8.1</compilerPluginVersion>
+    <dependencyPluginVersion>3.5.0</dependencyPluginVersion>
+    <compilerPluginVersion>3.11.0</compilerPluginVersion>
     <junitVersion>4.13.2</junitVersion>
-    <surefirePluginVersion>3.0.0-M5</surefirePluginVersion>
-    <pluginPluginVersion>3.6.1</pluginPluginVersion>
+    <surefirePluginVersion>3.1.0</surefirePluginVersion>
+    <pluginPluginVersion>3.9.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.2.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
@@ -336,7 +336,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
