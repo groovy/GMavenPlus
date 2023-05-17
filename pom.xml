@@ -10,7 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenVersion>3.0</mavenVersion>
+    <mavenVersion>3.2.5</mavenVersion>
     <jacocoPluginVersion>0.8.10</jacocoPluginVersion>
     <javadocPluginVersion>3.5.0</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
