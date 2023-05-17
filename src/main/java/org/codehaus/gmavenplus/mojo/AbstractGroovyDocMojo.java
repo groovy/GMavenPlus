@@ -313,7 +313,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         Properties docProperties = setupProperties();
         Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));
         Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));
-        FileSetManager fileSetManager = new FileSetManager(getLog());
+        FileSetManager fileSetManager = new FileSetManager();
         List<String> sourceDirectoriesStrings = new ArrayList<>();
         for (FileSet sourceDirectory : sourceDirectories) {
             sourceDirectoriesStrings.add(sourceDirectory.getDirectory());

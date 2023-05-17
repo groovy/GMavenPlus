@@ -42,7 +42,7 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
      */
     protected Set<File> getStubs(File outputDirectory) {
         Set<File> files = new HashSet<>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
+        FileSetManager fileSetManager = new FileSetManager();
 
         FileSet fileSet = new FileSet();
         fileSet.setDirectory(outputDirectory.getAbsolutePath());
