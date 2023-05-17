@@ -18,6 +18,7 @@
     <javaVersion>1.${shortJavaVersion}</javaVersion>
     <dependencyPluginVersion>3.5.0</dependencyPluginVersion>
     <compilerPluginVersion>3.11.0</compilerPluginVersion>
+    <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
     <surefirePluginVersion>3.1.0</surefirePluginVersion>
     <pluginPluginVersion>3.9.0</pluginPluginVersion>
@@ -342,7 +343,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>${resourcesPluginVersion}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
