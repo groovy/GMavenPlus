@@ -52,7 +52,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      */
     protected SortedSet<File> getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
         SortedSet<File> files = new TreeSet<>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
+        FileSetManager fileSetManager = new FileSetManager();
 
         for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {
             for (String include : fileSetManager.getIncludedFiles(fileSet)) {
@@ -72,7 +72,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
      */
     protected SortedSet<File> getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
         SortedSet<File> files = new TreeSet<>();
-        FileSetManager fileSetManager = new FileSetManager(getLog());
+        FileSetManager fileSetManager = new FileSetManager();
 
         for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {
             for (String include : fileSetManager.getIncludedFiles(fileSet)) {
