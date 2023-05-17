@@ -2,6 +2,7 @@
 target
 
 # Eclipse
+.factorypath
 .settings
 *.classpath
 *.project
