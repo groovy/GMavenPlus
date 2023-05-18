@@ -532,10 +532,8 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <version>${pluginPluginVersion}</version>
         <configuration>
-          <requirements>
-            <jdk>${javaVersion}</jdk>
-            <maven>${mavenVersion}</maven>
-          </requirements>
+          <requiredJavaVersion>${mavenVersion}</requiredJavaVersion>
+          <requiredMavenVersion>${javaVersion}</requiredMavenVersion>
         </configuration>
       </plugin>
       <plugin>
