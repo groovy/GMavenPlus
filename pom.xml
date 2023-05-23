@@ -78,6 +78,13 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <!-- fix CVE-2018010237 and CVE-2020-8908 coming from org.apache.maven:maven-core -->
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>30.0-jre</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
