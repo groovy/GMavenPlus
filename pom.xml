@@ -81,7 +81,7 @@
       <!-- fix CVE-2018010237 and CVE-2020-8908 coming from org.apache.maven:maven-core -->
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>30.0-jre</version>
+      <version>30.1.1-jre</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
