@@ -71,17 +71,17 @@
       <version>3.1.0</version>
     </dependency>
     <dependency>
-      <!-- fix CVE-2022-4244 and CVE-2022-4245 vulnerabilities transitively coming from org.apache.maven:maven-artifact -->
+      <!-- fix CVE-2022-4244 and CVE-2022-4245 from org.apache.maven:maven-artifact -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>3.5.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <!-- fix CVE-2018010237 and CVE-2020-8908 coming from org.apache.maven:maven-core -->
+      <!-- fix CVE-2018-10237, CVE-2020-8908, and CVE-2023-2976 from org.apache.maven:maven-core -->
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>30.0-jre</version>
+      <version>32.0.0-jre</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -93,7 +93,8 @@
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
-      <!-- this will work for all Groovy >= 2.2.0-beta-1; users of older versions will need to pull in 1.0 as a runtime dependency -->
+      <!-- this will work for all Groovy >= 2.2.0-beta-1 -->
+      <!-- users of older versions will need to pull in 1.0 as a runtime dependency -->
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
       <version>2.14.6</version>
