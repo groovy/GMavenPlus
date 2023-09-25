@@ -47,6 +47,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * Groovy 5.0.0-alpha-1 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
+
+    /**
      * Groovy 4.0.11 version.
      */
     protected static final Version GROOVY_4_0_11 = new Version(4, 0, 11);
@@ -417,6 +422,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
+        if ("1.5".equals(targetBytecode) || "5".equals(targetBytecode) || "1.6".equals(targetBytecode) || "6".equals(targetBytecode) || "1.7".equals(targetBytecode) || "7".equals(targetBytecode) || "1.8".equals(targetBytecode) || "8".equals(targetBytecode) || "1.9".equals(targetBytecode) || "9".equals(targetBytecode) || "10".equals(targetBytecode)) {
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " isn't accepted by Groovy " + GROOVY_5_0_0_ALPHA1 + " or newer.");
+            }
+        }
+
         if ("21".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_11)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_11 + " or newer.");
@@ -478,7 +489,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
     }
 
-    private static String translateJavacTargetToTargetBytecode(String targetBytecode) {
+    protected static String translateJavacTargetToTargetBytecode(String targetBytecode) {
         Map<String, String> javacTargetToTargetBytecode = new HashMap<>();
         javacTargetToTargetBytecode.put("5", "1.5");
         javacTargetToTargetBytecode.put("6", "1.6");

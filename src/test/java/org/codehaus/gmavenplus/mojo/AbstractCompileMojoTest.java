@@ -420,7 +420,7 @@ public class AbstractCompileMojoTest {
     }
 
     @Test
-    public void testBytecodeTranslation() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    public void testBytecodeTranslation() {
         Map<String, String> expectedTranslations = new LinkedHashMap<>();
         expectedTranslations.put("5", "1.5");
         expectedTranslations.put("6", "1.6");
@@ -430,11 +430,7 @@ public class AbstractCompileMojoTest {
         for (Map.Entry<String, String> entry : expectedTranslations.entrySet()) {
             String javacVersion = entry.getKey();
             String expectedGroovycVersion = entry.getValue();
-            testMojo.targetBytecode = javacVersion;
-            Class<?> compilerConfigurationClass = Class.forName("org.codehaus.groovy.control.CompilerConfiguration");
-            File compileOutputDirectory = new File(".");
-            CompilerConfiguration compilerConfiguration = (CompilerConfiguration) testMojo.setupCompilerConfiguration(compileOutputDirectory, compilerConfigurationClass);
-            assertEquals(expectedGroovycVersion, compilerConfiguration.getTargetBytecode());
+            assertEquals(expectedGroovycVersion, AbstractCompileMojo.translateJavacTargetToTargetBytecode(javacVersion));
         }
     }
 
