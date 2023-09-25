@@ -166,12 +166,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      */
     protected static final Version GROOVY_1_8_3 = new Version(1, 8, 3);
 
-    /*
-     * TODO: support Groovy 1.5.0 - 1.8.1?
-     * For some reason, the JavaStubCompilationUnit is silently not creating my stubs
-     * (although it does create the target directory) when I use other versions.
-     */
-
     /**
      * The encoding of source files.
      */
