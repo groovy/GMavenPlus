@@ -23,7 +23,6 @@
       <groupId>@groovyGroupId@</groupId>
       <artifactId>groovy</artifactId>
       <version>@groovyVersion@</version>
-      <!-- note that indy versions don't work with the help mojo -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>

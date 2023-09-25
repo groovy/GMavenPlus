@@ -14,46 +14,12 @@
   <version>testing</version>
   <name>GMavenPlus Plugin Shaded Groovy Uber Jar Module</name>
 
-  <profiles>
-    <profile>
-      <id>indy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-          <classifier>indy</classifier>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>nonindy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>pre2.3-indy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-          <classifier>indy</classifier>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>pre2.3-nonindy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
+  <dependencies>
+    <dependency>
+      <groupId>@groovyGroupId@</groupId>
+      <artifactId>groovy</artifactId>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
