@@ -22,57 +22,15 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
+    <dependency>
+      <groupId>@groovyGroupId@</groupId>
+      <artifactId>groovy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>@groovyGroupId@</groupId>
+      <artifactId>groovy-ant</artifactId>
+    </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>indy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-          <classifier>indy</classifier>
-        </dependency>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy-ant</artifactId>
-          <classifier>indy</classifier>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>nonindy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy-ant</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>pre2.3-indy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-          <classifier>indy</classifier>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>pre2.3-nonindy</id>
-      <dependencies>
-        <dependency>
-          <groupId>@groovyGroupId@</groupId>
-          <artifactId>groovy</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 
   <build>
     <plugins>
