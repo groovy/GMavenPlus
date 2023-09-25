@@ -8,21 +8,47 @@ on:
     branches:
       - master
 
+env:
+  MAVEN_OPTS: '-Xms2048m -Xmx2048m'
+  MAVEN_ARGS: >-
+    --show-version 
+    --errors 
+    --batch-mode 
+    --no-transfer-progress 
+    -Dinvoker.streamLogsOnFailures=true 
+    -Pnonindy
+
 jobs:
   ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk: [ 11, 17 ]
+        # empty == use pom.xml
+        groovy-version: ['2.5.23', '3.0.19', '4.0.15', '' ]
+        exclude:
+          - jdk: 17
+            groovy-version: '3.0.18'
+
     runs-on: ubuntu-latest
+
+    env:
+      MVN_GROOVY_GROUPID: ${{ matrix.groovy-version != '' && format('{0}{1}', '-DgroovyVersion=', matrix.groovy-version) || '' }}
+      MVN_GROOVY_VERSION: ${{ ( startsWith( matrix.groovy-version , '2' ) || startsWith( matrix.groovy-version , '3' ) ) && '-DgroovyGroupId=org.codehaus.groovy' || '' }}
+
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: jdk setup
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
-          java-package: jdk
-          architecture: x64
-#      - name: unit test
-#        run: ./mvnw --batch-mode --activate-profiles indy clean test
-#      - name: integration test
-#        run: ./mvnw --batch-mode --activate-profiles indy -Dmaven.test.skip=true clean install invoker:install invoker:run
+          java-version: ${{ matrix.jdk }}
+          distribution: 'temurin'
+
       - name: full test
-        run: ./mvnw --batch-mode --activate-profiles nonindy clean install invoker:install invoker:run
+        run: >-
+          ./mvnw ${MAVEN_ARGS}
+          ${MVN_GROOVY_GROUPID}
+          ${MVN_GROOVY_VERSION}          
+          clean install invoker:install invoker:run
