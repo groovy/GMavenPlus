@@ -8,6 +8,16 @@ on:
     branches:
       - master
 
+env:
+  MAVEN_OPTS: '-Xms2048m -Xmx2048m'
+  MAVEN_ARGS: >-
+    --show-version 
+    --errors 
+    --batch-mode 
+    --no-transfer-progress 
+    -Dinvoker.streamLogsOnFailures=true 
+    -Pnonindy
+
 defaults:
   run:
     shell: 'bash -o errexit -o nounset -o pipefail {0}'
@@ -17,25 +27,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version:
+        groovy-version:
           - 2.5.23
           - 3.0.19
           - 4.0.15
 #          - 5.0.0-alpha-2
+    env:
+      MVN_GROOVY_GROUP_ID: ${{format('{0}{1}', '-DgroovyVersion=', matrix.groovy-version)}}
+      MVN_GROOVY_VERSION: ${{(startsWith(matrix.groovy-version, '2') || startsWith(matrix.groovy-version, '3')) && '-DgroovyGroupId=org.codehaus.groovy' || '-DgroovyGroupId=org.apache.groovy' }}
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: jdk setup
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 11
-          java-package: jdk
-          architecture: x64
-      - name: unit and integration tests
-        env:
-          version: ${{ matrix.version }}
-        run: |
-          majorVersion=$(echo "${version}" | grep --extended-regex --only-matching "^[0-9]+")
-          [ "${majorVersion}" -gt "3" ] && groupId="org.apache.groovy" || groupId="org.codehaus.groovy"
-          ./mvnw --batch-mode -DgroovyVersion="${version}" -DgroovyGroupId="${groupId}" clean install invoker:install invoker:run
+      - name: full test
+        run: >-
+          ./mvnw ${MAVEN_ARGS}
+          ${MVN_GROOVY_GROUP_ID}
+          ${MVN_GROOVY_VERSION}          
+          clean install invoker:install invoker:run
