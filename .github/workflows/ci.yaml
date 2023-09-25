@@ -25,4 +25,4 @@ jobs:
 #      - name: integration test
 #        run: ./mvnw --batch-mode --activate-profiles indy -Dmaven.test.skip=true clean install invoker:install invoker:run
       - name: full test
-        run: ./mvnw --batch-mode --activate-profiles nonindy clean install invoker:install invoker:run
+        run: ./mvnw --batch-mode clean install invoker:install invoker:run
