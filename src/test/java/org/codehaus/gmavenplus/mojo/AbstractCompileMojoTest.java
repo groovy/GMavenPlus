@@ -405,6 +405,13 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
+    @Test
+    public void testJava21WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.11");
+        testMojo.targetBytecode = "21";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testUnrecognizedJava() {
         testMojo = new TestMojo("2.1.2");

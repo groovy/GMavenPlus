@@ -47,6 +47,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * Groovy 4.0.11 version.
+     */
+    protected static final Version GROOVY_4_0_11 = new Version(4, 0, 11);
+
+    /**
      * Groovy 4.0.6 version.
      */
     protected static final Version GROOVY_4_0_6 = new Version(4, 0, 6);
@@ -205,6 +210,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 18 requires Groovy &gt; 4.0.0-beta-1.
      * Using 19 requires Groovy &gt; 4.0.2.
      * Using 20 requires Groovy &gt; 4.0.6.
+     * Using 21 requires Groovy &gt; 4.0.11.
      *
      * @since 1.0-beta-3
      */
@@ -417,7 +423,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * org.codehaus.groovy.classgen.asm.WriterController.
      */
     protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("20".equals(targetBytecode)) {
+        if ("21".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_11)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_11 + " or newer.");
+            }
+        } else if ("20".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_6)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_6 + " or newer.");
             }
