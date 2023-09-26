@@ -16,7 +16,6 @@ env:
     --batch-mode
     --no-transfer-progress
     -Dinvoker.streamLogsOnFailures=true
-    -Pnonindy
 
 defaults:
   run:
