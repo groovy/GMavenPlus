@@ -85,7 +85,7 @@ public class ClassWrangler {
             try {
                 Class<?> groovySystemClass = getClass("groovy.lang.GroovySystem");
                 String ver = (String) invokeStaticMethod(findMethod(groovySystemClass, "getVersion"));
-                if (ver != null && ver.length() > 0) {
+                if (ver != null && !ver.isEmpty()) {
                     groovyVersion = ver;
                 }
             } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
@@ -98,7 +98,7 @@ public class ClassWrangler {
                 try {
                     Class<?> invokerHelperClass = getClass("org.codehaus.groovy.runtime.InvokerHelper");
                     String ver = (String) invokeStaticMethod(findMethod(invokerHelperClass, "getVersion"));
-                    if (ver != null && ver.length() > 0) {
+                    if (ver != null && !ver.isEmpty()) {
                         groovyVersion = ver;
                     }
                 } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {

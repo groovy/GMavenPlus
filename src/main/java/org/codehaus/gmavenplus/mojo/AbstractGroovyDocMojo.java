@@ -382,7 +382,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     @SuppressWarnings({"rawtypes", "unchecked"})
     protected List<?> setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         List linksList = new ArrayList();
-        if (links != null && links.size() > 0) {
+        if (links != null && !links.isEmpty()) {
             Class<?> linkArgumentClass = null;
             if (this.linkArgumentClass == null) {
                 if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
