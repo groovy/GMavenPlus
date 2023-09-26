@@ -11,12 +11,11 @@ on:
 env:
   MAVEN_OPTS: '-Xms2048m -Xmx2048m'
   MAVEN_ARGS: >-
-    --show-version 
-    --errors 
-    --batch-mode 
-    --no-transfer-progress 
-    -Dinvoker.streamLogsOnFailures=true 
-    -Pnonindy
+    --show-version
+    --errors
+    --batch-mode
+    --no-transfer-progress
+    -Dinvoker.streamLogsOnFailures=true
 
 defaults:
   run:
@@ -34,7 +33,7 @@ jobs:
           - 5.0.0-alpha-2
     env:
       MVN_GROOVY_GROUP_ID: ${{format('{0}{1}', '-DgroovyVersion=', matrix.groovy-version)}}
-      MVN_GROOVY_VERSION: ${{(startsWith(matrix.groovy-version, '2') || startsWith(matrix.groovy-version, '3')) && '-DgroovyGroupId=org.codehaus.groovy' || '-DgroovyGroupId=org.apache.groovy' }}
+      MVN_GROOVY_VERSION: ${{(startsWith(matrix.groovy-version, '2') || startsWith(matrix.groovy-version, '3')) && '-DgroovyGroupId=org.codehaus.groovy' || '-DgroovyGroupId=org.apache.groovy'}}
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -45,7 +44,5 @@ jobs:
           java-version: 17
       - name: full test
         run: >-
-          ./mvnw ${MAVEN_ARGS}
-          ${MVN_GROOVY_GROUP_ID}
-          ${MVN_GROOVY_VERSION}          
+          ./mvnw ${MAVEN_ARGS} ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION}
           clean install invoker:install invoker:run
