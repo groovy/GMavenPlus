@@ -36,7 +36,6 @@ public class AbstractGroovyDocMojoTest {
     private MavenProject project;
 
     @Before
-    @SuppressWarnings("deprecation")
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
         testMojo.mojoExecution = mojoExecution;
@@ -48,14 +47,12 @@ public class AbstractGroovyDocMojoTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testDontSkipGroovyDoc() throws Exception {
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
         verify(testMojo, times(1)).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testSkipGroovyDoc() throws Exception {
         testMojo.skipGroovyDoc = true;
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));

@@ -400,10 +400,10 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     }
 
     /**
-     * This is a fix for http://jira.codehaus.org/browse/MGROOVY-187
+     * This is a fix for <a href="http://jira.codehaus.org/browse/MGROOVY-187">...</a>
      * It modifies the dates of the created stubs to 1/1/1970, ensuring that the Java compiler will not overwrite perfectly
      * good compiled Groovy just because it has a newer source stub. Basically, this prevents the stubs from causing a
-     * side-effect with the Java compiler, but still allows stubs to work with JavaDoc.
+     * side effect with the Java compiler, but still allows stubs to work with JavaDoc.
      *
      * @param stubs the files on which to reset the modified date
      */

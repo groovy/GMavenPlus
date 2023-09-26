@@ -90,7 +90,9 @@ public class ExecuteMojoTest {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             actualLine = reader.readLine();
             FileUtils.closeQuietly(reader);
-            file.delete();
+            if (!file.delete()) {
+                System.err.println("Unable to delete " + file.getAbsolutePath());
+            }
         }
 
         assertEquals(line, actualLine);
@@ -110,7 +112,9 @@ public class ExecuteMojoTest {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             actualLine = reader.readLine();
             FileUtils.closeQuietly(reader);
-            file.delete();
+            if (!file.delete()) {
+                System.err.println("Unable to delete " + file.getAbsolutePath());
+            }
         }
 
         assertEquals(line, actualLine);

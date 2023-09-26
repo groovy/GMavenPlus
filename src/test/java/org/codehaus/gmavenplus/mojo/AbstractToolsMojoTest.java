@@ -85,7 +85,6 @@ public class AbstractToolsMojoTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testInitializePropertiesNull() {
         testMojo.project = null;
         testMojo.session = null;
@@ -101,7 +100,6 @@ public class AbstractToolsMojoTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void testInitializePropertiesAlreadyInProps() {
         testMojo.properties = properties;
 

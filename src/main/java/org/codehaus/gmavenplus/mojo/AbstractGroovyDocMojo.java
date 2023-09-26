@@ -29,14 +29,13 @@ import org.codehaus.gmavenplus.util.FileUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -537,9 +536,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             BufferedWriter bufferedWriter = null;
             try {
                 if (stylesheetEncoding != null) {
-                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile), stylesheetEncoding));
+                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath()), stylesheetEncoding));
                 } else {
-                    bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(stylesheetFile)));
+                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath())));
                 }
                 StringBuilder css = new StringBuilder();
                 String line;
@@ -548,9 +547,9 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                 }
                 File outfile = new File(outputDirectory, "stylesheet.css");
                 if (stylesheetEncoding != null) {
-                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile), stylesheetEncoding));
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath()), stylesheetEncoding));
                 } else {
-                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfile)));
+                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath())));
                 }
                 bufferedWriter.write(css.toString());
             } finally {
