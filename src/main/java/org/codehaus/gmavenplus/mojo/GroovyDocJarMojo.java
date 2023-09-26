@@ -156,7 +156,9 @@ public class GroovyDocJarMojo extends GroovyDocMojo {
         File groovydocJar = new File(jarOutputDirectory, jarFileName);
 
         if (groovydocJar.exists()) {
-            groovydocJar.delete();
+            if (!groovydocJar.delete()) {
+                getLog().warn("Unable to delete " + groovydocJar.getAbsolutePath());
+            }
         }
 
         MavenArchiver archiver = new MavenArchiver();

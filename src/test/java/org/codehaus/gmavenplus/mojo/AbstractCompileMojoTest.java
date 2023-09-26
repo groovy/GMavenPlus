@@ -18,13 +18,10 @@ package org.codehaus.gmavenplus.mojo;
 
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
-import org.codehaus.groovy.control.CompilerConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
