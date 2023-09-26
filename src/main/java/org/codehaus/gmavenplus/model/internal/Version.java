@@ -65,7 +65,7 @@ public class Version implements Comparable<Version> {
         major = newMajor;
         minor = newMinor;
         revision = newRevision;
-        if (newTag == null || newTag.length() != 0) {
+        if (newTag == null || !newTag.isEmpty()) {
             tag = newTag;
         } else {
             tag = null;
@@ -109,7 +109,7 @@ public class Version implements Comparable<Version> {
      * @return The version parsed from the string
      */
     public static Version parseFromString(final String version) {
-        if (version == null || version.length() == 0) {
+        if (version == null || version.isEmpty()) {
             throw new IllegalArgumentException("Version must not be null or empty.");
         }
         String[] split = version.split("[._-]", 4);
