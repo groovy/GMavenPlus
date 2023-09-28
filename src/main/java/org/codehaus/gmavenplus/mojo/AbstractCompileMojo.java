@@ -337,11 +337,13 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
-            verifyGroovyVersionSupportsTargetBytecode();
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support compilation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping compiling.");
             return;
+        }
+
+        if (!skipBytecodeCheck) {
+            verifyGroovyVersionSupportsTargetBytecode();
         }
 
         // get classes we need with reflection
