@@ -295,11 +295,13 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (groovyVersionSupportsAction() && !skipBytecodeCheck) {
-            verifyGroovyVersionSupportsTargetBytecode();
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
             return;
+        }
+
+        if (!skipBytecodeCheck) {
+            verifyGroovyVersionSupportsTargetBytecode();
         }
 
         // get classes we need with reflection
