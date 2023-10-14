@@ -313,6 +313,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean previewFeatures;
 
     /**
+     * Whether to run the compiler using {@code groovyc} in a separate process.
+     * <p>
+     * {@code groovyc} will be search in {@code GROOVY_HOME/bin} first and then on the {@code PATH}.
+     * If no executable was found, the compilation fails.
+     */
+    @Parameter(property = "groovy.fork", defaultValue = "false")
+    protected boolean fork;
+
+    /**
      * Performs compilation of compile mojos.
      *
      * @param sources                the sources to compile
