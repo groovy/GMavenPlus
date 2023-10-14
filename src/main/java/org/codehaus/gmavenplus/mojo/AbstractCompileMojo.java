@@ -16,6 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.internal.Version;
@@ -341,6 +346,68 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
+        if (this.fork) {
+            doCompileProcess(sources, classpath, compileOutputDirectory);
+            return;
+        }
+
+        doCompileLibrary(sources, classpath, compileOutputDirectory);
+    }
+
+    private void doCompileProcess(Set<File> sources, List<?> classpath, File compileOutputDirectory) {
+        Path groovyc = getGroovyc();
+        // TODO: implement
+        throw new UnsupportedOperationException(
+            "not yet implemented: [org.codehaus.gmavenplus.mojo.AbstractCompileMojo::doCompileProcess].");
+    }
+
+    private Path getGroovyc() {
+        final Optional<Path> groovyHomeGroovyc = getGroovyHomeGroovyc();
+
+        if (groovyHomeGroovyc.isPresent()) {
+            return groovyHomeGroovyc.orElseThrow(NoSuchElementException::new);
+        }
+
+        final Optional<Path> pathGroovyc = getPathGroovyc();
+
+        return pathGroovyc.orElseThrow(() -> new IllegalStateException("No groovyc found in GROOVY_HOME or PATH!"));
+    }
+
+    private Optional<Path> getPathGroovyc() {
+        for (String dirname : System.getenv("PATH").split(File.pathSeparator)) {
+            final Path groovyc = Paths.get(dirname, "groovyc");
+            if (Files.isRegularFile(groovyc) && Files.isExecutable(groovyc)) {
+                return Optional.of(groovyc);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Path> getGroovyHomeGroovyc() {
+        final String groovyHome = System.getenv("GROOVY_HOME");
+
+        if (groovyHome == null || groovyHome.trim().isEmpty()) {
+            return Optional.empty();
+        }
+
+        final Path groovyHomePath = Paths.get(groovyHome);
+
+        if (!Files.isDirectory(groovyHomePath)) {
+            return Optional.empty();
+        }
+
+        final Path groovyc = groovyHomePath.resolve("bin/groovyc");
+
+        if (Files.exists(groovyc) && Files.isExecutable(groovyc) && Files.isRegularFile(groovyc)) {
+            return Optional.of(groovyc);
+        }
+
+        return Optional.empty();
+    }
+
+    private void doCompileLibrary(Set<File> sources, List classpath, File compileOutputDirectory)
+        throws MalformedURLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         setupClassWrangler(classpath, includeClasspath);
 
         logPluginClasspath();
