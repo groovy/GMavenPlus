@@ -42,7 +42,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: install groovy
+        shell: bash
+        run: >
+          curl -s "https://get.sdkman.io" | bash;
+          source "$HOME/.sdkman/bin/sdkman-init.sh";
+          sdk install groovy ${{ matrix.groovy-version }}
       - name: full test
+        shell: bash
         run: >-
+          source "$HOME/.sdkman/bin/sdkman-init.sh";
+          sdk use groovy ${{ matrix.groovy-version }};
           ./mvnw ${MAVEN_ARGS} ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION}
           clean install invoker:install invoker:run
