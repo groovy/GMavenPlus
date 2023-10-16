@@ -344,6 +344,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException    when a method needed for compilation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
      * @throws MalformedURLException     when a classpath element provides a malformed URL
+     * @throws MojoExecutionException    in case the mojo execution breaks with another reason.
      */
     @SuppressWarnings({"rawtypes"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
@@ -386,21 +387,41 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             args.add("-Jtarget=" + this.targetBytecode);
         }
 
+        if (this.debug) {
+            getLog().warn("Option 'debug' is requested but not supported yet with fork=true.");
+        }
+
+        if (!this.invokeDynamic) {
+            getLog().warn("Option 'invokeDynamic=false' is requested but not supported yet with fork=true.");
+        }
+
+        if (!this.skipBytecodeCheck) {
+            getLog().warn("Option 'skipBytecodeCheck' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.warningLevel != 1) {
+            getLog().warn("Option 'warningLevel' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.tolerance != 0) {
+            getLog().warn("Option 'tolerance' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.parallelParsing) {
+            getLog().warn("Option 'parallelParsing' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.includeClasspath != IncludeClasspath.PROJECT_ONLY) {
+            getLog().warn("Option 'includeClasspath' is requested but not supported yet with fork=true.");
+        }
+
         // missing:
-        // this.debug
-        // this.includeClasspath
         // this.configScript (available as --configscript=)
-        // this.parallelParsing
-        // this.invokeDynamic
-        // this.tolerance
-        // this.warningLevel
         // this.verbose
-        // this.skipBytecodeCheck
         // as well as:
         // --compile-static
         // --type-checked
         // --temp=
-
 
         final String compileMessage = String.format(
             Locale.ROOT,
