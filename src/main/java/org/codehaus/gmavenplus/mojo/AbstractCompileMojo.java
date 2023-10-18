@@ -407,7 +407,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             getLog().warn("Option 'tolerance' is requested but not supported yet with fork=true.");
         }
 
-        if (this.parallelParsing) {
+        if (this.parallelParsing != null) {
             getLog().warn("Option 'parallelParsing' is requested but not supported yet with fork=true.");
         }
 
