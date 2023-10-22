@@ -90,44 +90,45 @@ public class ShellMojo extends AbstractToolsMojo {
             getLog().debug("Unable to log project test classpath");
         }
 
-        if (groovyVersionSupportsAction()) {
-            final SecurityManager sm = System.getSecurityManager();
-            try {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(new NoExitSecurityManager());
-                }
-
-                // get classes we need with reflection
-                Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
-                Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
-                Class<?> ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
-                Class<?> verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
-                Class<?> loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
-
-                // create shell to run
-                Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
-
-                // run the shell
-                invokeMethod(findMethod(shellClass, "run", String.class), shell, (String) null);
-            } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
-            } catch (InvocationTargetException e) {
-                if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().contains("jline")) {
-                    throw new MojoExecutionException("Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy < 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.", e);
-                } else {
-                    throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-                }
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } catch (InstantiationException e) {
-                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
-            } finally {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(sm);
-                }
-            }
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
+        }
+
+        final SecurityManager sm = System.getSecurityManager();
+        try {
+            if (!allowSystemExits) {
+                getLog().warn("This feature relies on Java's SecurityManager, which is deprecated for removal in Java 17. Java 18 and later will require `-Djava.security.manager=allow` be used to continue using this feature.");
+                System.setSecurityManager(new NoExitSecurityManager());
+            }
+
+            // get classes we need with reflection
+            Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
+            Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
+            Class<?> ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
+            Class<?> verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
+            Class<?> loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
+
+            // create shell to run
+            Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
+
+            // run the shell
+            invokeMethod(findMethod(shellClass, "run", String.class), shell, (String) null);
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().contains("jline")) {
+                throw new MojoExecutionException("Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy < 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.", e);
+            } else {
+                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+            }
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+        } finally {
+            if (!allowSystemExits) {
+                System.setSecurityManager(sm);
+            }
         }
     }
 

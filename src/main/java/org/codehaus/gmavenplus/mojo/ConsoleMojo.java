@@ -85,55 +85,56 @@ public class ConsoleMojo extends AbstractToolsMojo {
             getLog().debug("Unable to log project test classpath");
         }
 
-        if (groovyVersionSupportsAction()) {
-            final SecurityManager sm = System.getSecurityManager();
-            try {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(new NoExitSecurityManager());
-                }
-
-                // get classes we need with reflection
-                Class<?> consoleClass;
-                try {
-                    consoleClass = classWrangler.getClass("groovy.console.ui.Console");
-                } catch (ClassNotFoundException e) {
-                    consoleClass = classWrangler.getClass("groovy.ui.Console");
-                }
-                Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
-
-                // create console to run
-                Object console = setupConsole(consoleClass, bindingClass);
-
-                // run the console
-                invokeMethod(findMethod(consoleClass, "run"), console);
-
-                // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
-                bindAntBuilder(consoleClass, bindingClass, console);
-
-                // open script file
-                loadScript(consoleClass, console);
-
-                // wait for console to be closed
-                waitForConsoleClose();
-            } catch (ClassNotFoundException e) {
-                throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
-            } catch (InvocationTargetException e) {
-                if (e.getCause() instanceof NoClassDefFoundError && "org/apache/ivy/core/report/ResolveReport".equals(e.getCause().getMessage())) {
-                    throw new MojoExecutionException("Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console. Either change your Groovy version or add Ivy as a project or plugin dependency.", e);
-                } else {
-                    throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
-                }
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } catch (InstantiationException e) {
-                throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
-            } finally {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(sm);
-                }
-            }
-        } else {
+        if (!groovyVersionSupportsAction()) {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a console. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping console startup.");
+        }
+
+        final SecurityManager sm = System.getSecurityManager();
+        try {
+            if (!allowSystemExits) {
+                getLog().warn("This feature relies on Java's SecurityManager, which is deprecated for removal in Java 17. Java 18 and later will require `-Djava.security.manager=allow` be used to continue using this feature.");
+                System.setSecurityManager(new NoExitSecurityManager());
+            }
+
+            // get classes we need with reflection
+            Class<?> consoleClass;
+            try {
+                consoleClass = classWrangler.getClass("groovy.console.ui.Console");
+            } catch (ClassNotFoundException e) {
+                consoleClass = classWrangler.getClass("groovy.ui.Console");
+            }
+            Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
+
+            // create console to run
+            Object console = setupConsole(consoleClass, bindingClass);
+
+            // run the console
+            invokeMethod(findMethod(consoleClass, "run"), console);
+
+            // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
+            bindAntBuilder(consoleClass, bindingClass, console);
+
+            // open script file
+            loadScript(consoleClass, console);
+
+            // wait for console to be closed
+            waitForConsoleClose();
+        } catch (ClassNotFoundException e) {
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof NoClassDefFoundError && "org/apache/ivy/core/report/ResolveReport".equals(e.getCause().getMessage())) {
+                throw new MojoExecutionException("Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console. Either change your Groovy version or add Ivy as a project or plugin dependency.", e);
+            } else {
+                throw new MojoExecutionException("Error occurred while calling a method on a Groovy class from classpath.", e);
+            }
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
+        } catch (InstantiationException e) {
+            throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
+        } finally {
+            if (!allowSystemExits) {
+                System.setSecurityManager(sm);
+            }
         }
     }
 
