@@ -93,7 +93,7 @@
       <!-- fix CVE-2018-10237, CVE-2020-8908, and CVE-2023-2976 from org.apache.maven:maven-core -->
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>32.1.2-jre</version>
+      <version>32.1.3-jre</version>
       <scope>runtime</scope>
     </dependency>
     <!-- main groovy support -->
