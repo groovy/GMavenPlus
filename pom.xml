@@ -595,7 +595,7 @@
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy into Maven projects.</description>
   <inceptionYear>2011</inceptionYear>
-  <url>http://groovy.github.io/GMavenPlus/</url>
+  <url>https://groovy.github.io/GMavenPlus/</url>
   <developers>
     <developer>
       <id>keeganwitt</id>
@@ -608,12 +608,12 @@
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
   <issueManagement>
     <system>GitHub</system>
-    <url>http://github.com/groovy/GMavenPlus/issues</url>
+    <url>https://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
   <mailingLists>
     <mailingList>
@@ -629,7 +629,7 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <url>http://github.com/groovy/GMavenPlus</url>
+    <url>https://github.com/groovy/GMavenPlus</url>
     <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>
     <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
     <tag>HEAD</tag>
