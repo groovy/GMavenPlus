@@ -1,0 +1,5 @@
+org.codehaus.gmavenplus.groovyworkarounds
+org.codehaus.gmavenplus.model
+org.codehaus.gmavenplus.model.internal
+org.codehaus.gmavenplus.mojo
+org.codehaus.gmavenplus.util

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.codehaus.gmavenplus.groovyworkarounds"},{"l":"org.codehaus.gmavenplus.model"},{"l":"org.codehaus.gmavenplus.model.internal"},{"l":"org.codehaus.gmavenplus.mojo"},{"l":"org.codehaus.gmavenplus.util"}];updateSearchResults();

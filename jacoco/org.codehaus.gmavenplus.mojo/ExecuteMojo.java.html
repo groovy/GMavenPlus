@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecuteMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">ExecuteMojo.java</span></div><h1>ExecuteMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.internal.Version;
+import org.codehaus.gmavenplus.util.FileUtils;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
+
+
+/**
+ * Executes Groovy scripts (in the pom or external), bound to the current project.
+ * Note that this mojo requires Groovy &amp;gt;= 1.5.0.
+ * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
+ * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ *
+ * @author Keegan Witt
+ * @since 1.0-beta-1
+ */
+@Mojo(name = &quot;execute&quot;, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
+<span class="fc" id="L55">public class ExecuteMojo extends AbstractToolsMojo {</span>
+
+    /**
+     * Groovy 4.0.0-RC-1 version.
+     */
+<span class="fc" id="L60">    protected static final Version GROOVY_4_0_0_RC_1 = new Version(4, 0, 0, &quot;RC-1&quot;);</span>
+
+    /**
+     * Groovy 1.7.0 version.
+     */
+<span class="fc" id="L65">    protected static final Version GROOVY_1_7_0 = new Version(1, 7, 0);</span>
+
+    /**
+     * Groovy scripts to run (in order). Can be a script body, a {@link java.net.URL URL} to a script
+     * (local or remote), or a filename.
+     */
+    @Parameter(required = true)
+    protected String[] scripts;
+
+    /**
+     * Whether to continue executing remaining scripts when a script fails.
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean continueExecuting;
+
+    /**
+     * The encoding of script files.
+     *
+     * @since 1.0-beta-2
+     */
+    @Parameter(defaultValue = &quot;${project.build.sourceEncoding}&quot;)
+    protected String sourceEncoding;
+
+    /**
+     * Flag to allow script execution to be skipped.
+     *
+     * @since 1.9.1
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean skipScriptExecution;
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    @Override
+    public void execute() throws MojoExecutionException {
+<span class="nc" id="L103">        doExecute();</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Does the actual execution.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    protected synchronized void doExecute() throws MojoExecutionException {
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (skipScriptExecution) {</span>
+<span class="nc" id="L113">            getLog().info(&quot;Skipping script execution because ${skipScriptExecution} was set to true.&quot;);</span>
+<span class="nc" id="L114">            return;</span>
+        }
+
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">        if (scripts == null || scripts.length == 0) {</span>
+<span class="nc" id="L118">            getLog().info(&quot;No scripts specified for execution. Skipping.&quot;);</span>
+<span class="nc" id="L119">            return;</span>
+        }
+
+        try {
+<span class="fc" id="L123">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
+<span class="nc" id="L124">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L125">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="nc" id="L126">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L127">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L128">        }</span>
+
+<span class="fc" id="L130">        logPluginClasspath();</span>
+<span class="fc" id="L131">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+
+        try {
+<span class="fc" id="L134">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="nc" id="L135">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L136">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="fc" id="L137">        }</span>
+
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
+<span class="fc" id="L140">            final SecurityManager sm = System.getSecurityManager();</span>
+            try {
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L143">                    System.setSecurityManager(new NoExitSecurityManager());</span>
+                }
+
+                // get classes we need with reflection
+<span class="nc" id="L147">                Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
+
+                // create a GroovyShell to run scripts in
+<span class="nc" id="L150">                Object shell = setupShell(groovyShellClass);</span>
+
+                // run the scripts
+<span class="nc" id="L153">                executeScripts(groovyShellClass, shell);</span>
+<span class="nc" id="L154">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L155">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
+<span class="nc" id="L156">            } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L157">                throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L158">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L159">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L160">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L161">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+            } finally {
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="fc" id="L164">                    System.setSecurityManager(sm);</span>
+                }
+            }
+<span class="nc" id="L167">        } else {</span>
+<span class="nc" id="L168">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support script execution. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping script execution.&quot;);</span>
+        }
+<span class="nc" id="L170">    }</span>
+
+    /**
+     * Instantiates a new groovy.lang.GroovyShell object.
+     *
+     * @param groovyShellClass the groovy.lang.GroovyShell class
+     * @return a new groovy.lang.GroovyShell object
+     * @throws InvocationTargetException when a reflection invocation needed for shell configuration cannot be completed
+     * @throws IllegalAccessException    when a method needed for shell configuration cannot be accessed
+     * @throws InstantiationException    when a class needed for shell configuration cannot be instantiated
+     * @throws ClassNotFoundException    when a class needed for shell configuration cannot be found
+     */
+    protected Object setupShell(final Class&lt;?&gt; groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        Object shell;
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (sourceEncoding != null) {</span>
+<span class="nc" id="L185">            Class&lt;?&gt; compilerConfigurationClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;);</span>
+<span class="nc" id="L186">            Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
+<span class="nc" id="L187">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
+<span class="nc" id="L188">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);</span>
+<span class="nc" id="L189">        } else {</span>
+<span class="nc" id="L190">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class), classWrangler.getClassLoader());</span>
+        }
+<span class="nc" id="L192">        initializeProperties();</span>
+<span class="nc" id="L193">        Method setProperty = findMethod(groovyShellClass, &quot;setProperty&quot;, String.class, Object.class);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            for (Object k : properties.keySet()) {</span>
+<span class="nc" id="L196">                invokeMethod(setProperty, shell, k, properties.get(k));</span>
+<span class="nc" id="L197">            }</span>
+        } else {
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {</span>
+<span class="nc" id="L200">                invokeMethod(setProperty, shell, &quot;properties&quot;, properties);</span>
+            } else {
+<span class="nc" id="L202">                throw new IllegalArgumentException(&quot;properties is a read-only property in Groovy &quot; + GROOVY_4_0_0_RC_1 + &quot; and later.&quot;);</span>
+            }
+        }
+
+<span class="nc" id="L206">        return shell;</span>
+    }
+
+    /**
+     * Executes the configured scripts.
+     *
+     * @param groovyShellClass the groovy.lang.GroovyShell class
+     * @param shell            a groovy.lag.GroovyShell object
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
+     * @throws MojoExecutionException    when an exception occurred during script execution (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    protected void executeScripts(final Class&lt;?&gt; groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
+<span class="nc" id="L219">        int scriptNum = 1;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        for (String script : scripts) {</span>
+            try {
+                // TODO: try as file first, then as URL?
+                try {
+                    // it's a URL to a script
+<span class="nc" id="L225">                    executeScriptFromUrl(groovyShellClass, shell, script);</span>
+<span class="nc" id="L226">                } catch (MalformedURLException e) {</span>
+                    // it's not a URL to a script, try as a filename
+<span class="nc" id="L228">                    File scriptFile = new File(script);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                    if (scriptFile.isFile()) {</span>
+<span class="nc" id="L230">                        getLog().info(&quot;Running Groovy script from &quot; + scriptFile.getCanonicalPath() + &quot;.&quot;);</span>
+<span class="nc" id="L231">                        Method evaluateFile = findMethod(groovyShellClass, &quot;evaluate&quot;, File.class);</span>
+<span class="nc" id="L232">                        invokeMethod(evaluateFile, shell, scriptFile);</span>
+<span class="nc" id="L233">                    } else {</span>
+                        // it's neither a filename or URL, treat as a script body
+<span class="nc" id="L235">                        Method evaluateString = findMethod(groovyShellClass, &quot;evaluate&quot;, String.class);</span>
+<span class="nc" id="L236">                        invokeMethod(evaluateString, shell, script);</span>
+                    }
+<span class="nc" id="L238">                }</span>
+<span class="nc" id="L239">            } catch (IOException ioe) {</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (continueExecuting) {</span>
+<span class="nc" id="L241">                    getLog().error(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;. Continuing to execute remaining scripts.&quot;, ioe);</span>
+                } else {
+<span class="nc" id="L243">                    throw new MojoExecutionException(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;.&quot;, ioe);</span>
+                }
+<span class="nc" id="L245">            }</span>
+<span class="nc" id="L246">            scriptNum++;</span>
+        }
+<span class="nc" id="L248">    }</span>
+
+    /**
+     * Executes a script at a URL location.
+     *
+     * @param groovyShellClass the GroovyShell class
+     * @param shell            a groovy.lag.GroovyShell object
+     * @param script           the script URL to execute
+     * @throws IOException               when the stream can't be opened on the URL
+     * @throws InvocationTargetException when a reflection invocation needed for script execution cannot be completed
+     * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
+     */
+    protected void executeScriptFromUrl(Class&lt;?&gt; groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
+<span class="nc" id="L261">        URL url = new URL(script);</span>
+<span class="nc" id="L262">        getLog().info(&quot;Running Groovy script from &quot; + url + &quot;.&quot;);</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (groovyAtLeast(GROOVY_1_7_0)) {</span>
+<span class="nc" id="L264">            Method evaluateUrlWithReader = findMethod(groovyShellClass, &quot;evaluate&quot;, Reader.class);</span>
+<span class="nc" id="L265">            BufferedReader reader = null;</span>
+            try {
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                if (sourceEncoding != null) {</span>
+<span class="nc" id="L268">                    reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));</span>
+                } else {
+<span class="nc" id="L270">                    reader = new BufferedReader(new InputStreamReader(url.openStream()));</span>
+                }
+<span class="nc" id="L272">                invokeMethod(evaluateUrlWithReader, shell, reader);</span>
+            } finally {
+<span class="nc" id="L274">                FileUtils.closeQuietly(reader);</span>
+            }
+<span class="nc" id="L276">        } else {</span>
+<span class="nc" id="L277">            Method evaluateUrlWithStream = findMethod(groovyShellClass, &quot;evaluate&quot;, InputStream.class);</span>
+<span class="nc" id="L278">            InputStream inputStream = null;</span>
+            try {
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                if (sourceEncoding != null) {</span>
+<span class="nc" id="L281">                    getLog().warn(&quot;Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.&quot;);</span>
+                }
+<span class="nc" id="L283">                inputStream = url.openStream();</span>
+<span class="nc" id="L284">                invokeMethod(evaluateUrlWithStream, shell, inputStream);</span>
+            } finally {
+<span class="nc" id="L286">                FileUtils.closeQuietly(inputStream);</span>
+            }
+        }
+<span class="nc" id="L289">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

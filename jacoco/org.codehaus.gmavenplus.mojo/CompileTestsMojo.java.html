@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompileTestsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">CompileTestsMojo.java</span></div><h1>CompileTestsMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2011 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.model.fileset.FileSet;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+
+
+/**
+ * Compiles the test sources.
+ * Note that this mojo requires Groovy &amp;gt;= 1.5.0, and &amp;gt;= 2.0.0-beta-3 (the indy version) for compiling with invokedynamic option.
+ *
+ * @author Keegan Witt
+ * @since 1.0-beta-1
+ */
+@Mojo(name = &quot;compileTests&quot;, defaultPhase = LifecyclePhase.TEST_COMPILE, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
+<span class="fc" id="L40">public class CompileTestsMojo extends AbstractCompileMojo {</span>
+
+    /**
+     * The Groovy test source files (relative paths).
+     * Default: &quot;${project.basedir}/src/test/groovy/&amp;#42;&amp;#42;/&amp;#42;.groovy&quot;
+     */
+    @Parameter
+    protected FileSet[] testSources;
+
+    /**
+     * The location for the compiled test classes.
+     */
+    @Parameter(defaultValue = &quot;${project.build.testOutputDirectory}&quot;)
+    protected File testOutputDirectory;
+
+    /**
+     * Flag to allow test compilation to be skipped.
+     */
+    @Parameter(property = &quot;maven.test.skip&quot;, defaultValue = &quot;false&quot;)
+    protected boolean skipTests;
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    @Override
+    public void execute() throws MojoExecutionException {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (!skipTests) {</span>
+            try {
+                try {
+<span class="fc" id="L71">                    getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="fc" id="L72">                } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L73">                    getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="fc" id="L74">                }</span>
+<span class="fc" id="L75">                doCompile(getTestFiles(testSources, false), project.getTestClasspathElements(), testOutputDirectory);</span>
+<span class="fc" id="L76">            } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L77">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
+<span class="fc" id="L78">            } catch (InvocationTargetException e) {</span>
+<span class="fc" id="L79">                throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L80">            } catch (InstantiationException e) {</span>
+<span class="fc" id="L81">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L82">            } catch (IllegalAccessException e) {</span>
+<span class="fc" id="L83">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L84">            } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L85">                throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L86">            } catch (MalformedURLException e) {</span>
+<span class="fc" id="L87">                throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="fc" id="L88">            }</span>
+        } else {
+<span class="fc" id="L90">            getLog().info(&quot;Compilation of tests is skipped.&quot;);</span>
+        }
+<span class="fc" id="L92">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

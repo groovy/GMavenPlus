@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShellMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">ShellMojo.java</span></div><h1>ShellMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.internal.Version;
+import org.codehaus.gmavenplus.util.NoExitSecurityManager;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+
+import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
+
+
+/**
+ * Launches a Groovy shell bound to the current project.
+ * Note that this mojo requires Groovy &amp;gt;= 1.5.0.
+ * Note that it references the plugin ClassLoader to pull in dependencies
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ *
+ * @author Keegan Witt
+ * @since 1.1
+ */
+@Mojo(name = &quot;shell&quot;, requiresDependencyResolution = ResolutionScope.TEST)
+<span class="nc" id="L50">public class ShellMojo extends AbstractToolsMojo {</span>
+
+    /**
+     * Groovy 4.0.0 alpha-1 version.
+     */
+<span class="nc" id="L55">    protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, &quot;alpha-1&quot;);</span>
+
+    /**
+     * Groovy shell verbosity level. Should be one of:
+     * &lt;ul&gt;
+     *   &lt;li&gt;QUIET&lt;/li&gt;
+     *   &lt;li&gt;INFO&lt;/li&gt;
+     *   &lt;li&gt;DEBUG&lt;/li&gt;
+     *   &lt;li&gt;VERBOSE&lt;/li&gt;
+     * &lt;/ul&gt;
+     */
+    @Parameter(defaultValue = &quot;QUIET&quot;)
+    protected String verbosity;
+
+    /**
+     * Executes this mojo.
+     *
+     * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
+     */
+    @Override
+    public void execute() throws MojoExecutionException {
+        try {
+<span class="nc" id="L77">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
+<span class="nc" id="L78">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L79">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="nc" id="L80">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L81">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="nc" id="L82">        }</span>
+
+<span class="nc" id="L84">        logPluginClasspath();</span>
+<span class="nc" id="L85">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+
+        try {
+<span class="nc" id="L88">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="nc" id="L89">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L90">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="nc" id="L91">        }</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L94">            final SecurityManager sm = System.getSecurityManager();</span>
+            try {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L97">                    System.setSecurityManager(new NoExitSecurityManager());</span>
+                }
+
+                // get classes we need with reflection
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                Class&lt;?&gt; shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? &quot;org.apache.groovy.groovysh.Groovysh&quot; : &quot;org.codehaus.groovy.tools.shell.Groovysh&quot;);</span>
+<span class="nc" id="L102">                Class&lt;?&gt; bindingClass = classWrangler.getClass(&quot;groovy.lang.Binding&quot;);</span>
+<span class="nc" id="L103">                Class&lt;?&gt; ioClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO&quot;);</span>
+<span class="nc" id="L104">                Class&lt;?&gt; verbosityClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.IO$Verbosity&quot;);</span>
+<span class="nc" id="L105">                Class&lt;?&gt; loggerClass = classWrangler.getClass(&quot;org.codehaus.groovy.tools.shell.util.Logger&quot;);</span>
+
+                // create shell to run
+<span class="nc" id="L108">                Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);</span>
+
+                // run the shell
+<span class="nc" id="L111">                invokeMethod(findMethod(shellClass, &quot;run&quot;, String.class), shell, (String) null);</span>
+<span class="nc" id="L112">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L113">                throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
+<span class="nc" id="L114">            } catch (InvocationTargetException e) {</span>
+<span class="nc bnc" id="L115" title="All 6 branches missed.">                if (e.getCause() instanceof NoClassDefFoundError &amp;&amp; e.getCause().getMessage() != null &amp;&amp; e.getCause().getMessage().contains(&quot;jline&quot;)) {</span>
+<span class="nc" id="L116">                    throw new MojoExecutionException(&quot;Unable to get a JLine class from classpath. This might be because of a JLine version mismatch. If you are using Groovy &lt; 2.2.0-beta-1, make sure you include JLine 1.0 as a runtime dependency in your project or the plugin.&quot;, e);</span>
+                } else {
+<span class="nc" id="L118">                    throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+                }
+<span class="nc" id="L120">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L121">                throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L122">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L123">                throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+            } finally {
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if (!allowSystemExits) {</span>
+<span class="nc" id="L126">                    System.setSecurityManager(sm);</span>
+                }
+            }
+<span class="nc" id="L129">        } else {</span>
+<span class="nc" id="L130">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support running a shell. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping shell startup.&quot;);</span>
+        }
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * Creates the Groovysh to run.
+     *
+     * @param shellClass     the Groovysh class
+     * @param bindingClass   the Binding class
+     * @param ioClass        the IO class
+     * @param verbosityClass the Verbosity
+     * @param loggerClass    the Logger class
+     * @return the Groovysh shell to run
+     * @throws InstantiationException    when a class needed for setting up a shell cannot be instantiated
+     * @throws IllegalAccessException    when a method needed for setting up a shell cannot be accessed
+     * @throws InvocationTargetException when a reflection invocation needed for setting up a shell cannot be completed
+     */
+    protected Object setupShell(final Class&lt;?&gt; shellClass, final Class&lt;?&gt; bindingClass, final Class&lt;?&gt; ioClass, final Class&lt;?&gt; verbosityClass, final Class&lt;?&gt; loggerClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+<span class="nc" id="L148">        Object binding = invokeConstructor(findConstructor(bindingClass));</span>
+<span class="nc" id="L149">        initializeProperties();</span>
+<span class="nc" id="L150">        Method setVariable = findMethod(bindingClass, &quot;setVariable&quot;, String.class, Object.class);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            for (Object k : properties.keySet()) {</span>
+<span class="nc" id="L153">                invokeMethod(setVariable, binding, k, properties.get(k));</span>
+<span class="nc" id="L154">            }</span>
+        } else {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {</span>
+<span class="nc" id="L157">                invokeMethod(setVariable, binding, &quot;properties&quot;, properties);</span>
+            } else {
+<span class="nc" id="L159">                throw new IllegalArgumentException(&quot;properties is a read-only property in Groovy &quot; + GROOVY_4_0_0_RC_1 + &quot; and later.&quot;);</span>
+            }
+        }
+<span class="nc" id="L162">        Object io = invokeConstructor(findConstructor(ioClass));</span>
+<span class="nc" id="L163">        invokeMethod(findMethod(ioClass, &quot;setVerbosity&quot;, verbosityClass), io, invokeStaticMethod(findMethod(verbosityClass, &quot;forName&quot;, String.class), verbosity));</span>
+<span class="nc" id="L164">        findField(loggerClass, &quot;io&quot;, ioClass).set(null, io);</span>
+
+<span class="nc" id="L166">        return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), classWrangler.getClassLoader(), binding, io);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

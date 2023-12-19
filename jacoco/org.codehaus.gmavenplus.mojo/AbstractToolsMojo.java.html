@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractToolsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractToolsMojo.java</span></div><h1>AbstractToolsMojo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.mojo;
+
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.gmavenplus.model.IncludeClasspath;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
+
+
+/**
+ * The base tools mojo, which all tool mojos extend.
+ * Note that it references the plugin classloader to pull in dependencies
+ * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * Note that using the &lt;code&gt;ant&lt;/code&gt; property requires Java 8, as the included Ant version was compiled for Java 8.
+ *
+ * @author Keegan Witt
+ * @since 1.1
+ */
+<span class="fc" id="L40">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
+
+    /**
+     * Maven ProjectHelper to use in properties.
+     *
+     * @since 1.3
+     */
+    @Component
+    protected MavenProjectHelper projectHelper;
+
+    /**
+     * Properties to make available in scripts as variables using the property name. By default will include
+     * &lt;dl&gt;
+     *   &lt;dt&gt;project&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.project.Project object of the current Maven project.&lt;/dd&gt;
+     *   &lt;dt&gt;session&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.execution.MavenSession object of the current Maven session.&lt;/dd&gt;
+     *   &lt;dt&gt;pluginArtifacts&lt;/dt&gt;
+     *     &lt;dd&gt;A list of org.apache.maven.artifact.Artifact objects of this plugin's artifacts.&lt;/dd&gt;
+     *   &lt;dt&gt;mojoExecution&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.plugin.MojoExecution object of this plugin's mojo execution.&lt;/dd&gt;
+     *   &lt;dt&gt;log&lt;/dt&gt;
+     *     &lt;dd&gt;A org.apache.maven.plugin.logging.Log object of Maven's log.&lt;/dd&gt;
+     *   &lt;dt&gt;ant&lt;/dt&gt;
+     *     &lt;dd&gt;A groovy.util.AntBuilder object (if groovy.ant.AntBuilder or groovy.util.AntBuilder is available).&lt;/dd&gt;
+     * &lt;/dl&gt;
+     * These can be overridden.
+     *
+     * @since 1.0-beta-3
+     */
+<span class="fc" id="L70">    @Parameter</span>
+    protected Properties properties = new Properties();
+
+    /**
+     * Whether to allow System.exit() to be used. Should not be set to &lt;code&gt;false&lt;/code&gt; when using parallel
+     * execution, as it isn't thread-safe.
+     *
+     * @since 1.2
+     */
+    @Parameter(defaultValue = &quot;true&quot;)
+    protected boolean allowSystemExits;
+
+    /**
+     * Whether to bind each property to a separate variable (otherwise binds properties to a single 'properties' variable).
+     *
+     * @since 1.2
+     */
+    @Parameter(defaultValue = &quot;true&quot;)
+    protected boolean bindPropertiesToSeparateVariables;
+
+    /**
+     * What classpath to include. One of
+     * &lt;ul&gt;
+     *   &lt;li&gt;PROJECT_ONLY&lt;/li&gt;
+     *   &lt;li&gt;PROJECT_AND_PLUGIN&lt;/li&gt;
+     *   &lt;li&gt;PLUGIN_ONLY&lt;/li&gt;
+     * &lt;/ul&gt;
+     * Uses the same scope as the required dependency resolution of this mojo. Use only if you know what you're doing.
+     *
+     * @since 1.8.0
+     */
+    @Parameter(defaultValue = &quot;PROJECT_AND_PLUGIN&quot;)
+    protected IncludeClasspath includeClasspath;
+
+    /**
+     * Whether to add all properties from &lt;code&gt;project.properties&lt;/code&gt; into properties.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean bindAllProjectProperties;
+
+    /**
+     * Whether to add user session properties from &lt;code&gt;session.userProperties&lt;/code&gt; that override project properties
+     * into properties. &lt;code&gt;bindAllSessionUserProperties&lt;/code&gt; takes priority over this property if present. Has no
+     * effect if &lt;code&gt;bindAllProjectProperties&lt;/code&gt; is &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean bindSessionUserOverrideProperties;
+
+    /**
+     * Whether to add all properties from &lt;code&gt;session.userProperties&lt;/code&gt; into properties. If both
+     * &lt;code&gt;bindAllProjectProperties&lt;/code&gt; and &lt;code&gt;bindAllSessionUserProperties&lt;/code&gt; are specified, the session
+     * properties will override the project properties, but it will also include properties not present in project
+     * properties. To only include user session properties that are also in project properties, use
+     * &lt;code&gt;bindSessionUserOverrideProperties&lt;/code&gt;.
+     *
+     * @since 1.10.1
+     */
+    @Parameter(defaultValue = &quot;false&quot;)
+    protected boolean bindAllSessionUserProperties;
+
+    /**
+     * Initializes the properties field.
+     */
+    protected void initializeProperties() {
+<span class="fc bfc" id="L138" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
+<span class="fc" id="L139">            properties.put(&quot;project&quot;, project);</span>
+        }
+<span class="fc bfc" id="L141" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
+<span class="fc" id="L142">            properties.put(&quot;session&quot;, session);</span>
+        }
+<span class="fc bfc" id="L144" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
+<span class="fc" id="L145">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
+        }
+<span class="pc bpc" id="L147" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
+<span class="fc" id="L148">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
+        }
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
+<span class="fc" id="L151">            properties.put(&quot;log&quot;, getLog());</span>
+        }
+<span class="pc bpc" id="L153" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
+<span class="nc" id="L154">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
+        }
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
+<span class="fc" id="L157">            Object antBuilder = null;</span>
+            try {
+<span class="fc" id="L159">                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.ant.AntBuilder&quot;)));</span>
+<span class="nc" id="L160">            } catch (ClassNotFoundException e1) {</span>
+<span class="nc" id="L161">                getLog().debug(&quot;groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.&quot;);</span>
+                try {
+<span class="nc" id="L163">                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="nc" id="L164">                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {</span>
+<span class="nc" id="L165">                    logUnableToInitializeAntBuilder(e2);</span>
+<span class="nc" id="L166">                }</span>
+<span class="nc" id="L167">            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {</span>
+<span class="nc" id="L168">                logUnableToInitializeAntBuilder(e);</span>
+<span class="pc" id="L169">            }</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if (antBuilder != null) {</span>
+<span class="fc" id="L171">                properties.put(&quot;ant&quot;, antBuilder);</span>
+            }
+        }
+<span class="pc bpc" id="L174" title="1 of 4 branches missed.">        if (bindSessionUserOverrideProperties &amp;&amp; !bindAllProjectProperties) {</span>
+<span class="nc" id="L175">            getLog().warn(&quot;bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.&quot;);</span>
+        }
+<span class="pc bpc" id="L177" title="1 of 4 branches missed.">        if (bindAllSessionUserProperties &amp;&amp; bindSessionUserOverrideProperties) {</span>
+<span class="nc" id="L178">            getLog().warn(&quot;bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.&quot;);</span>
+        }
+<span class="pc bpc" id="L180" title="1 of 4 branches missed.">        if (bindAllProjectProperties &amp;&amp; project != null) {</span>
+<span class="fc" id="L181">            properties.putAll(project.getProperties());</span>
+        }
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (session != null) {</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">            if (bindAllSessionUserProperties) {</span>
+<span class="fc" id="L185">                properties.putAll(session.getUserProperties());</span>
+<span class="pc bpc" id="L186" title="1 of 6 branches missed.">            } else if (bindAllProjectProperties &amp;&amp; bindSessionUserOverrideProperties &amp;&amp; project != null) {</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">                for (Object key : project.getProperties().keySet()) {</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">                    if (session.getUserProperties().get(key) != null) {</span>
+<span class="fc" id="L189">                        properties.put(key, session.getUserProperties().get(key));</span>
+                    }
+<span class="fc" id="L191">                }</span>
+            }
+        }
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Logs errors that caused the 'ant' object to not be populated.
+     *
+     * @param e the exception causing the failure
+     */
+    protected void logUnableToInitializeAntBuilder(final Throwable e) {
+<span class="nc" id="L202">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
+<span class="nc" id="L203">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

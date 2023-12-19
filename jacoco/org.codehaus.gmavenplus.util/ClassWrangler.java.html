@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassWrangler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.util</a> &gt; <span class="el_source">ClassWrangler.java</span></div><h1>ClassWrangler.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.util;
+
+import org.apache.maven.plugin.logging.Log;
+import org.codehaus.gmavenplus.model.internal.Version;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
+import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
+
+
+/**
+ * Handles getting Groovy classes and version from the specified classpath.
+ *
+ * @author Keegan Witt
+ * @since 1.2
+ */
+public class ClassWrangler {
+
+    /**
+     * Cached Groovy version.
+     */
+<span class="fc" id="L46">    private String groovyVersion = null;</span>
+
+    /**
+     * Cached whether Groovy supports invokedynamic (indy jar).
+     */
+<span class="fc" id="L51">    private Boolean isIndy = null;</span>
+
+    /**
+     * ClassLoader to use for class wrangling.
+     */
+    private final ClassLoader classLoader;
+
+    /**
+     * Plugin log.
+     */
+    private final Log log;
+
+    /**
+     * Creates a new ClassWrangler using the specified parent ClassLoader, loaded with the items from the specified classpath.
+     *
+     * @param classpath         the classpath to load the new ClassLoader with
+     * @param parentClassLoader the parent for the new ClassLoader used to use to load classes
+     * @param pluginLog         the Maven log to use for logging
+     * @throws MalformedURLException when a classpath element provides a malformed URL
+     */
+<span class="fc" id="L71">    public ClassWrangler(final List&lt;?&gt; classpath, final ClassLoader parentClassLoader, final Log pluginLog) throws MalformedURLException {</span>
+<span class="fc" id="L72">        log = pluginLog;</span>
+<span class="fc" id="L73">        classLoader = createNewClassLoader(classpath, parentClassLoader);</span>
+<span class="fc" id="L74">        Thread.currentThread().setContextClassLoader(classLoader);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Gets the version string of Groovy used from classpath.
+     *
+     * @return The version string of Groovy used by the project
+     */
+    public String getGroovyVersionString() {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (groovyVersion == null) {</span>
+            // this method should work for all Groovy versions &gt;= 1.6.6
+            try {
+<span class="fc" id="L86">                Class&lt;?&gt; groovySystemClass = getClass(&quot;groovy.lang.GroovySystem&quot;);</span>
+<span class="fc" id="L87">                String ver = (String) invokeStaticMethod(findMethod(groovySystemClass, &quot;getVersion&quot;));</span>
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">                if (ver != null &amp;&amp; !ver.isEmpty()) {</span>
+<span class="fc" id="L89">                    groovyVersion = ver;</span>
+                }
+<span class="fc" id="L91">            } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {</span>
+                // do nothing, will try another way
+<span class="fc" id="L93">            }</span>
+
+            // this should work for Groovy versions &lt; 1.6.6 (technically can work up to 1.9.0)
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            if (groovyVersion == null) {</span>
+<span class="fc" id="L97">                log.info(&quot;Unable to get Groovy version from GroovySystem, trying InvokerHelper.&quot;);</span>
+                try {
+<span class="nc" id="L99">                    Class&lt;?&gt; invokerHelperClass = getClass(&quot;org.codehaus.groovy.runtime.InvokerHelper&quot;);</span>
+<span class="nc" id="L100">                    String ver = (String) invokeStaticMethod(findMethod(invokerHelperClass, &quot;getVersion&quot;));</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">                    if (ver != null &amp;&amp; !ver.isEmpty()) {</span>
+<span class="nc" id="L102">                        groovyVersion = ver;</span>
+                    }
+<span class="fc" id="L104">                } catch (ClassNotFoundException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {</span>
+                    // do nothing, will try another way
+<span class="nc" id="L106">                }</span>
+            }
+
+            /*
+             * This handles the circumstances in which neither the GroovySystem or InvokerHelper methods
+             * worked (GAE with versions older than 1.6.6 is one example, see
+             * https://jira.codehaus.org/browse/GROOVY-3884). One case this can't handle properly is uber
+             * jars that include Groovy. It should also be noted this method assumes jars will be named
+             * in the Maven convention (&lt;artifactId&gt;-&lt;version&gt;-&lt;classifier&gt;.jar).
+             */
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (groovyVersion == null) {</span>
+<span class="fc" id="L117">                log.warn(&quot;Unable to get Groovy version from InvokerHelper or GroovySystem, trying jar name.&quot;);</span>
+<span class="fc" id="L118">                String jar = getGroovyJar();</span>
+<span class="fc" id="L119">                int idx = Integer.MAX_VALUE;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">                for (int i = 0; i &lt; 9; i++) {</span>
+<span class="fc" id="L121">                    int newIdx = jar.indexOf(&quot;-&quot; + i);</span>
+<span class="pc bpc" id="L122" title="1 of 4 branches missed.">                    if (newIdx &gt;= 0 &amp;&amp; newIdx &lt; idx) {</span>
+<span class="fc" id="L123">                        idx = newIdx;</span>
+                    }
+                }
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                if (idx &lt; Integer.MAX_VALUE) {</span>
+<span class="fc" id="L127">                    groovyVersion = jar.substring(idx + 1, jar.length() - 4).replace(&quot;-indy&quot;, &quot;&quot;).replace(&quot;-grooid&quot;, &quot;&quot;);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L132">        return groovyVersion;</span>
+    }
+
+    /**
+     * Gets the version of Groovy used from the classpath.
+     *
+     * @return The version of Groovy used by the project
+     */
+    public Version getGroovyVersion() {
+        try {
+<span class="fc" id="L142">            return Version.parseFromString(getGroovyVersionString());</span>
+<span class="nc" id="L143">        } catch (Exception e) {</span>
+<span class="nc" id="L144">            throw new RuntimeException(&quot;Unable to determine Groovy version. Is Groovy declared as a dependency?&quot;);</span>
+        }
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version or newer.
+     *
+     * @param detectedVersion  the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version or newer, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public static boolean groovyAtLeast(Version detectedVersion, Version compareToVersion) {
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        return detectedVersion.compareTo(compareToVersion) &gt;= 0;</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is the specified version.
+     *
+     * @param detectedVersion  the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public static boolean groovyIs(Version detectedVersion, Version compareToVersion) {
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        return detectedVersion.compareTo(compareToVersion) == 0;</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is newer than the specified version.
+     *
+     * @param detectedVersion  the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is newer than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public static boolean groovyNewerThan(Version detectedVersion, Version compareToVersion) {
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        return detectedVersion.compareTo(compareToVersion) &gt; 0;</span>
+    }
+
+    /**
+     * Determines whether the detected Groovy version is older than the specified version.
+     *
+     * @param detectedVersion  the detected Groovy version
+     * @param compareToVersion the version to compare the detected Groovy version to
+     * @return &lt;code&gt;true&lt;/code&gt; if the detected Groovy version is older than the specified version, &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public static boolean groovyOlderThan(Version detectedVersion, Version compareToVersion) {
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        return detectedVersion.compareTo(compareToVersion) &lt; 0;</span>
+    }
+
+    /**
+     * Gets whether the version of Groovy on the classpath supports invokedynamic.
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if the version of Groovy uses invokedynamic,
+     * &lt;code&gt;false&lt;/code&gt; if not or Groovy dependency cannot be found.
+     */
+    public boolean isGroovyIndy() {
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (isIndy == null) {</span>
+            try {
+<span class="fc" id="L201">                getClass(&quot;org.codehaus.groovy.vmplugin.v8.IndyInterface&quot;);</span>
+<span class="fc" id="L202">                isIndy = true;</span>
+<span class="fc" id="L203">            } catch (ClassNotFoundException e1) {</span>
+                try {
+<span class="nc" id="L205">                    getClass(&quot;org.codehaus.groovy.vmplugin.v7.IndyInterface&quot;);</span>
+<span class="nc" id="L206">                    isIndy = true;</span>
+<span class="fc" id="L207">                } catch (ClassNotFoundException e2) {</span>
+<span class="fc" id="L208">                    isIndy = false;</span>
+<span class="nc" id="L209">                }</span>
+<span class="fc" id="L210">            }</span>
+        }
+
+<span class="fc" id="L213">        return isIndy;</span>
+    }
+
+    /**
+     * Logs the version of groovy used by this mojo.
+     *
+     * @param goal The goal to mention in the log statement showing Groovy version
+     */
+    public void logGroovyVersion(final String goal) {
+<span class="fc" id="L222">        log.info(&quot;Using Groovy &quot; + getGroovyVersionString() + &quot; to perform &quot; + goal + &quot;.&quot;);</span>
+<span class="fc" id="L223">    }</span>
+
+    /**
+     * Gets a class for the given class name.
+     *
+     * @param className the class name to retrieve the class for
+     * @return the class for the given class name
+     * @throws ClassNotFoundException when a class for the specified class name cannot be found
+     */
+    public Class&lt;?&gt; getClass(final String className) throws ClassNotFoundException {
+<span class="fc" id="L233">        return Class.forName(className, true, classLoader);</span>
+    }
+
+    /**
+     * Returns the classloader used for loading classes.
+     *
+     * @return the classloader used for loading classes
+     */
+    public ClassLoader getClassLoader() {
+<span class="nc" id="L242">        return classLoader;</span>
+    }
+
+    /**
+     * Creates a new ClassLoader with the specified classpath.
+     *
+     * @param classpath   the classpath (a list of file path Strings) to include in the new loader
+     * @param classLoader the ClassLoader to use as the parent for the new CLassLoader
+     * @return the new ClassLoader
+     * @throws MalformedURLException when a classpath element provides a malformed URL
+     */
+    protected ClassLoader createNewClassLoader(final List&lt;?&gt; classpath, final ClassLoader classLoader) throws MalformedURLException {
+<span class="fc" id="L254">        List&lt;URL&gt; urlsList = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        for (Object classPathObject : classpath) {</span>
+<span class="nc" id="L256">            String path = (String) classPathObject;</span>
+<span class="nc" id="L257">            urlsList.add(new File(path).toURI().toURL());</span>
+<span class="nc" id="L258">        }</span>
+<span class="fc" id="L259">        URL[] urlsArray = urlsList.toArray(new URL[0]);</span>
+<span class="fc" id="L260">        return new URLClassLoader(urlsArray, classLoader);</span>
+    }
+
+    /**
+     * Returns the filename of the Groovy jar on the classpath.
+     *
+     * @return the Groovy jar filename
+     */
+    protected String getGroovyJar() {
+        try {
+<span class="fc" id="L270">            String groovyObjectClassPath = getJarPath();</span>
+<span class="fc" id="L271">            String groovyJar = null;</span>
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            if (groovyObjectClassPath != null) {</span>
+<span class="fc" id="L273">                groovyJar = groovyObjectClassPath.replaceAll(&quot;!.+&quot;, &quot;&quot;);</span>
+<span class="fc" id="L274">                groovyJar = groovyJar.substring(groovyJar.lastIndexOf(&quot;/&quot;) + 1);</span>
+            }
+
+<span class="fc" id="L277">            return groovyJar;</span>
+<span class="nc" id="L278">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L279">            throw new RuntimeException(&quot;Unable to determine Groovy version. Is Groovy declared as a dependency?&quot;);</span>
+        }
+    }
+
+    /**
+     * Returns the path of the Groovy jar on the classpath.
+     *
+     * @return the path of the Groovy jar
+     * @throws ClassNotFoundException when Groovy couldn't be found on the classpath
+     */
+    protected String getJarPath() throws ClassNotFoundException {
+<span class="nc" id="L290">        Class&lt;?&gt; groovyObjectClass = getClass(&quot;groovy.lang.GroovyObject&quot;);</span>
+<span class="nc" id="L291">        String groovyObjectClassPath = String.valueOf(groovyObjectClass.getResource(&quot;/&quot; + groovyObjectClass.getName().replace('.', '/') + &quot;.class&quot;));</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (groovyObjectClassPath == null) {</span>
+<span class="nc" id="L293">            CodeSource codeSource = groovyObjectClass.getProtectionDomain().getCodeSource();</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            if (codeSource != null) {</span>
+<span class="nc" id="L295">                groovyObjectClassPath = String.valueOf(codeSource.getLocation());</span>
+            }
+        }
+<span class="nc" id="L298">        return groovyObjectClassPath;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
