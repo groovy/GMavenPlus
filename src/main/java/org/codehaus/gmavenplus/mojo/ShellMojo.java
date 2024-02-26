@@ -22,11 +22,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.internal.Version;
+import org.codehaus.gmavenplus.util.DefaultSecurityManagerSetter;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import org.codehaus.gmavenplus.util.SecurityManagerSetter;
 
 import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
@@ -91,11 +93,10 @@ public class ShellMojo extends AbstractToolsMojo {
         }
 
         if (groovyVersionSupportsAction()) {
-            final SecurityManager sm = System.getSecurityManager();
+            final SecurityManagerSetter securityManagerSetter = new DefaultSecurityManagerSetter(getLog(), this.allowSystemExits);
+
             try {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(new NoExitSecurityManager());
-                }
+                securityManagerSetter.setNoExitSecurityManager();
 
                 // get classes we need with reflection
                 Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
@@ -122,9 +123,7 @@ public class ShellMojo extends AbstractToolsMojo {
             } catch (InstantiationException e) {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } finally {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(sm);
-                }
+                securityManagerSetter.revertToPreviousSecurityManager();
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
