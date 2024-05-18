@@ -52,6 +52,16 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     /**
      * Groovy 4.0.11 version.
      */
+    protected static final Version GROOVY_4_0_21 = new Version(4, 0, 21);
+
+    /**
+     * Groovy 4.0.11 version.
+     */
+    protected static final Version GROOVY_4_0_16 = new Version(4, 0, 16);
+
+    /**
+     * Groovy 4.0.11 version.
+     */
     protected static final Version GROOVY_4_0_11 = new Version(4, 0, 11);
 
     /**
@@ -198,6 +208,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>16</li>
      *   <li>17</li>
      *   <li>18</li>
+     *   <li>19</li>
+     *   <li>20</li>
+     *   <li>21</li>
+     *   <li>22</li>
+     *   <li>23</li>
      * </ul>
      * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
      * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
@@ -213,6 +228,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 19 requires Groovy &gt; 4.0.2.
      * Using 20 requires Groovy &gt; 4.0.6.
      * Using 21 requires Groovy &gt; 4.0.11.
+     * Using 22 requires Groovy &gt; 4.0.16.
+     * Using 23 requires Groovy &gt; 4.0.21.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -509,7 +526,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
 
-        if ("21".equals(targetBytecode)) {
+        if ("23".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_21)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
+            }
+        } else if ("22".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_16)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_16 + " or newer.");
+            }
+        } else if ("21".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_11)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_11 + " or newer.");
             }
