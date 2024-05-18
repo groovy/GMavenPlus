@@ -402,10 +402,45 @@ public class AbstractCompileMojoTest {
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava21WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.10");
+        testMojo.targetBytecode = "21";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
     @Test
     public void testJava21WithSupportedGroovy() {
         testMojo = new TestMojo("4.0.11");
         testMojo.targetBytecode = "21";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava22WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.15");
+        testMojo.targetBytecode = "22";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava22WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.16");
+        testMojo.targetBytecode = "22";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava23WithUnsupportedGroovy() {
+        testMojo = new TestMojo("4.0.20");
+        testMojo.targetBytecode = "23";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava23WithSupportedGroovy() {
+        testMojo = new TestMojo("4.0.21");
+        testMojo.targetBytecode = "23";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }
 
