@@ -74,7 +74,7 @@
       <!-- fix CVE-2022-4244 and CVE-2022-4245 from org.apache.maven:maven-artifact -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>4.0.1</version>
+      <version>3.5.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
