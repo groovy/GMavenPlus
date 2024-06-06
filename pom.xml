@@ -77,6 +77,13 @@
       <version>33.2.1-jre</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <!-- fix CVE-2022-29599 from org.apache.maven:maven-core -->
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-shared-utils</artifactId>
+      <version>3.3.3</version>
+      <scope>runtime</scope>
+    </dependency>
     <!-- main groovy support -->
     <dependency>
       <groupId>${groovyGroupId}</groupId>
