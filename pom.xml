@@ -84,6 +84,13 @@
       <version>3.3.3</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <!-- fix CVE-2024-36124 from org.apache.maven:maven-archiver -->
+      <groupId>org.iq80.snappy</groupId>
+      <artifactId>snappy</artifactId>
+      <version>0.5</version>
+      <scope>runtime</scope>
+    </dependency>
     <!-- main groovy support -->
     <dependency>
       <groupId>${groovyGroupId}</groupId>
