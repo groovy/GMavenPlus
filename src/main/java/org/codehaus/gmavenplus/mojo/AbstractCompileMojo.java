@@ -472,7 +472,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
         }
         invokeMethod(findMethod(compilerConfigurationClass, "setTargetDirectory", String.class), compilerConfiguration, compileOutputDirectory.getAbsolutePath());
-        if (invokeDynamic || groovyAtLeast(GROOVY_4_0_0_ALPHA1)) {
+        if (invokeDynamic && groovyOlderThan(GROOVY_4_0_0_ALPHA1)) {
             if (groovyAtLeast(GROOVY_2_0_0_BETA3)) {
                 if (classWrangler.isGroovyIndy()) {
                     if (isJavaSupportIndy()) {
@@ -501,8 +501,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
                 getLog().warn("Requested to use parameters, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_2_5_0_ALPHA1 + " or newer). Ignoring parameters parameter.");
             }
         }
-        if (groovyAtLeast(GROOVY_3_0_5)) {
-            if ((parallelParsing == null && groovyAtLeast(GROOVY_4_0_0_ALPHA1)) || (parallelParsing != null && parallelParsing)) {
+        if (groovyAtLeast(GROOVY_3_0_5) && groovyOlderThan(GROOVY_4_0_0_ALPHA1)) {
+            if (parallelParsing != null && parallelParsing) {
                 Map<String, Boolean> optimizationOptions = (Map<String, Boolean>) invokeMethod(findMethod(compilerConfigurationClass, "getOptimizationOptions"), compilerConfiguration);
                 optimizationOptions.put("parallelParse", true);
                 getLog().info("Parallel parsing enabled.");
