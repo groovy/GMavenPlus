@@ -23,7 +23,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
-import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -137,12 +136,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
         }
 
         if (groovyVersionSupportsAction()) {
-            final SecurityManager sm = System.getSecurityManager();
             try {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(new NoExitSecurityManager());
-                }
-
                 // get classes we need with reflection
                 Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
 
@@ -159,10 +153,6 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } catch (IllegalAccessException e) {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
-            } finally {
-                if (!allowSystemExits) {
-                    System.setSecurityManager(sm);
-                }
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support script execution. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping script execution.");
