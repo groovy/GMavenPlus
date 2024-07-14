@@ -137,10 +137,15 @@ public class ExecuteMojo extends AbstractToolsMojo {
         }
 
         if (groovyVersionSupportsAction()) {
-            final SecurityManager sm = System.getSecurityManager();
+            final SecurityManager defaultSecurityManager = System.getSecurityManager();
             try {
                 if (!allowSystemExits) {
-                    System.setSecurityManager(new NoExitSecurityManager());
+                    getLog().warn("JEP 411 deprecated Security Manager in Java 17 for removal. Therefore `allowSystemExits` is also deprecated for removal.");
+                    try {
+                        System.setSecurityManager(new NoExitSecurityManager());
+                    } catch (UnsupportedOperationException e) {
+                        getLog().warn("Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.");
+                    }
                 }
 
                 // get classes we need with reflection
@@ -161,7 +166,11 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 throw new MojoExecutionException("Unable to access a method on a Groovy class from classpath.", e);
             } finally {
                 if (!allowSystemExits) {
-                    System.setSecurityManager(sm);
+                    try {
+                        System.setSecurityManager(defaultSecurityManager);
+                    } catch (UnsupportedOperationException e) {
+                        getLog().warn("Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.");
+                    }
                 }
             }
         } else {
