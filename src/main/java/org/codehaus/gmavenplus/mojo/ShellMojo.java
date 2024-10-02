@@ -22,11 +22,13 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.gmavenplus.model.internal.Version;
+import org.codehaus.gmavenplus.util.DefaultSecurityManagerSetter;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import org.codehaus.gmavenplus.util.SecurityManagerSetter;
 
 import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
@@ -91,16 +93,10 @@ public class ShellMojo extends AbstractToolsMojo {
         }
 
         if (groovyVersionSupportsAction()) {
-            final SecurityManager defaultSecurityManager = System.getSecurityManager();
+            final SecurityManagerSetter securityManagerSetter = new DefaultSecurityManagerSetter(getLog(), this.allowSystemExits);
+
             try {
-                if (!allowSystemExits) {
-                    getLog().warn("JEP 411 deprecated Security Manager in Java 17 for removal. Therefore `allowSystemExits` is also deprecated for removal.");
-                    try {
-                        System.setSecurityManager(new NoExitSecurityManager());
-                    } catch (UnsupportedOperationException e) {
-                        getLog().warn("Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.");
-                    }
-                }
+                securityManagerSetter.setNoExitSecurityManager();
 
                 // get classes we need with reflection
                 Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
@@ -127,13 +123,7 @@ public class ShellMojo extends AbstractToolsMojo {
             } catch (InstantiationException e) {
                 throw new MojoExecutionException("Error occurred while instantiating a Groovy class from classpath.", e);
             } finally {
-                if (!allowSystemExits) {
-                    try {
-                        System.setSecurityManager(defaultSecurityManager);
-                    } catch (UnsupportedOperationException e) {
-                        getLog().warn("Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.");
-                    }
-                }
+                securityManagerSetter.revertToPreviousSecurityManager();
             }
         } else {
             getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping shell startup.");
