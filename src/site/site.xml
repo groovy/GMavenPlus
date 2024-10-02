@@ -26,9 +26,7 @@
         <ribbonOrientation>right</ribbonOrientation>
         <ribbonColor>red</ribbonColor>
       </gitHub>
-<!--      <googleSearch>-->
-<!--        <sitesearch/>-->
-<!--      </googleSearch>-->
+      <googleSearch />
     </fluidoSkin>
   </custom>
 
