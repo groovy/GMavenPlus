@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>AbstractCompileMojoTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
@@ -410,58 +410,93 @@
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>     }
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> 
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     @Test
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava21WithSupportedGroovy() {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.11"</span>);
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     @Test(expected = IllegalArgumentException.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava21WithUnsupportedGroovy() {
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.10"</span>);
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>         testMojo.targetBytecode = <span class="jxr_string">"21"</span>;
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
 <a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>     @Test(expected = IllegalArgumentException.<strong class="jxr_keyword">class</strong>)
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testUnrecognizedJava() {
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"2.1.2"</span>);
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         testMojo.targetBytecode = <span class="jxr_string">"unknown"</span>;
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>     @Test
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava21WithSupportedGroovy() {
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.11"</span>);
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         testMojo.targetBytecode = <span class="jxr_string">"21"</span>;
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>     }
 <a class="jxr_linenumber" name="L418" href="#L418">418</a> 
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>     @Test
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testBytecodeTranslation() {
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>         Map&lt;String, String&gt; expectedTranslations = <strong class="jxr_keyword">new</strong> LinkedHashMap&lt;&gt;();
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         expectedTranslations.put(<span class="jxr_string">"5"</span>, <span class="jxr_string">"1.5"</span>);
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         expectedTranslations.put(<span class="jxr_string">"6"</span>, <span class="jxr_string">"1.6"</span>);
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         expectedTranslations.put(<span class="jxr_string">"7"</span>, <span class="jxr_string">"1.7"</span>);
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         expectedTranslations.put(<span class="jxr_string">"8"</span>, <span class="jxr_string">"1.8"</span>);
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         expectedTranslations.put(<span class="jxr_string">"1.9"</span>, <span class="jxr_string">"9"</span>);
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">for</strong> (Map.Entry&lt;String, String&gt; entry : expectedTranslations.entrySet()) {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>             String javacVersion = entry.getKey();
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>             String expectedGroovycVersion = entry.getValue();
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>             assertEquals(expectedGroovycVersion, AbstractCompileMojo.translateJavacTargetToTargetBytecode(javacVersion));
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>         }
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>     }
-<a class="jxr_linenumber" name="L433" href="#L433">433</a> 
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractCompileMojo {
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <strong class="jxr_keyword">protected</strong> TestMojo() {
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>             <strong class="jxr_keyword">this</strong>(GROOVY_1_5_0.toString(), false);
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         }
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> 
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>         <strong class="jxr_keyword">protected</strong> TestMojo(String groovyVersion) {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>             <strong class="jxr_keyword">this</strong>(groovyVersion, false);
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         }
-<a class="jxr_linenumber" name="L442" href="#L442">442</a> 
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">protected</strong> TestMojo(String groovyVersion, <strong class="jxr_keyword">boolean</strong> indy) {
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>             classWrangler = mock(ClassWrangler.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>             doReturn(Version.parseFromString(groovyVersion)).when(classWrangler).getGroovyVersion();
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>             doReturn(indy).when(classWrangler).isGroovyIndy();
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         }
-<a class="jxr_linenumber" name="L448" href="#L448">448</a> 
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         @Override
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         }
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     @Test(expected = IllegalArgumentException.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava22WithUnsupportedGroovy() {
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.15"</span>);
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         testMojo.targetBytecode = <span class="jxr_string">"22"</span>;
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     }
+<a class="jxr_linenumber" name="L425" href="#L425">425</a> 
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>     @Test
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava22WithSupportedGroovy() {
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.16"</span>);
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         testMojo.targetBytecode = <span class="jxr_string">"22"</span>;
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>     }
+<a class="jxr_linenumber" name="L432" href="#L432">432</a> 
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     @Test(expected = IllegalArgumentException.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava23WithUnsupportedGroovy() {
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.20"</span>);
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         testMojo.targetBytecode = <span class="jxr_string">"23"</span>;
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>     }
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>     @Test
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testJava23WithSupportedGroovy() {
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"4.0.21"</span>);
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>         testMojo.targetBytecode = <span class="jxr_string">"23"</span>;
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     }
+<a class="jxr_linenumber" name="L446" href="#L446">446</a> 
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>     @Test(expected = IllegalArgumentException.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testUnrecognizedJava() {
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>         testMojo = <strong class="jxr_keyword">new</strong> TestMojo(<span class="jxr_string">"2.1.2"</span>);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         testMojo.targetBytecode = <span class="jxr_string">"unknown"</span>;
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>         testMojo.verifyGroovyVersionSupportsTargetBytecode();
 <a class="jxr_linenumber" name="L452" href="#L452">452</a>     }
 <a class="jxr_linenumber" name="L453" href="#L453">453</a> 
-<a class="jxr_linenumber" name="L454" href="#L454">454</a> }
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>     @Test
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testBytecodeTranslation() {
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>         Map&lt;String, String&gt; expectedTranslations = <strong class="jxr_keyword">new</strong> LinkedHashMap&lt;&gt;();
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>         expectedTranslations.put(<span class="jxr_string">"5"</span>, <span class="jxr_string">"1.5"</span>);
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>         expectedTranslations.put(<span class="jxr_string">"6"</span>, <span class="jxr_string">"1.6"</span>);
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         expectedTranslations.put(<span class="jxr_string">"7"</span>, <span class="jxr_string">"1.7"</span>);
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         expectedTranslations.put(<span class="jxr_string">"8"</span>, <span class="jxr_string">"1.8"</span>);
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>         expectedTranslations.put(<span class="jxr_string">"1.9"</span>, <span class="jxr_string">"9"</span>);
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">for</strong> (Map.Entry&lt;String, String&gt; entry : expectedTranslations.entrySet()) {
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>             String javacVersion = entry.getKey();
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>             String expectedGroovycVersion = entry.getValue();
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>             assertEquals(expectedGroovycVersion, AbstractCompileMojo.translateJavacTargetToTargetBytecode(javacVersion));
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>         }
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>     }
+<a class="jxr_linenumber" name="L468" href="#L468">468</a> 
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractCompileMojo {
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">protected</strong> TestMojo() {
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>             <strong class="jxr_keyword">this</strong>(GROOVY_1_5_0.toString(), false);
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>         }
+<a class="jxr_linenumber" name="L473" href="#L473">473</a> 
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>         <strong class="jxr_keyword">protected</strong> TestMojo(String groovyVersion) {
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>             <strong class="jxr_keyword">this</strong>(groovyVersion, false);
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>         }
+<a class="jxr_linenumber" name="L477" href="#L477">477</a> 
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>         <strong class="jxr_keyword">protected</strong> TestMojo(String groovyVersion, <strong class="jxr_keyword">boolean</strong> indy) {
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>             classWrangler = mock(ClassWrangler.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>             doReturn(Version.parseFromString(groovyVersion)).when(classWrangler).getGroovyVersion();
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>             doReturn(indy).when(classWrangler).isGroovyIndy();
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         }
+<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>         @Override
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>         }
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> 
+<a class="jxr_linenumber" name="L489" href="#L489">489</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2011&#x2013;2023. All rights reserved.</div>
+<div id="footer">© 2011–2024</div>
 </body>
 </html>
