@@ -588,7 +588,7 @@
     </repository>
     <site>
       <id>github</id>
-      <url>scm:git:git@github.com:groovy/GMavenPlus.git</url>
+      <url>scm:git:ssh://git@github.com/groovy/GMavenPlus.git</url>
     </site>
   </distributionManagement>
 
