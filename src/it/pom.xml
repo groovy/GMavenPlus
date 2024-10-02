@@ -11,9 +11,9 @@
 
   <properties>
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
-    <commonsLang3Version>3.12.0</commonsLang3Version>
-    <mavenVersion>3.9.2</mavenVersion>
-    <junit5Version>5.9.3</junit5Version>
+    <commonsLang3Version>3.14.0</commonsLang3Version>
+    <mavenVersion>3.9.9</mavenVersion>
+    <junit5Version>5.11.1</junit5Version>
   </properties>
 
   <dependencyManagement>

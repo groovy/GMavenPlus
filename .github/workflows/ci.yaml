@@ -28,9 +28,9 @@ jobs:
       matrix:
         groovy-version:
           - 2.5.23
-          - 3.0.19
-          - 4.0.15
-          - 5.0.0-alpha-2
+          - 3.0.22
+          - 4.0.23
+          - 5.0.0-alpha-10
     env:
       MVN_GROOVY_GROUP_ID: ${{format('{0}{1}', '-DgroovyVersion=', matrix.groovy-version)}}
       MVN_GROOVY_VERSION: ${{(startsWith(matrix.groovy-version, '2') || startsWith(matrix.groovy-version, '3')) && '-DgroovyGroupId=org.codehaus.groovy' || '-DgroovyGroupId=org.apache.groovy'}}

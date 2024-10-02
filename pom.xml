@@ -5,28 +5,28 @@
   <groupId>org.codehaus.gmavenplus</groupId>
   <artifactId>gmavenplus-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>3.0.3-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenVersion>3.2.5</mavenVersion>
-    <jacocoPluginVersion>0.8.10</jacocoPluginVersion>
-    <javadocPluginVersion>3.5.0</javadocPluginVersion>
+    <mavenVersion>3.6.3</mavenVersion>
+    <jacocoPluginVersion>0.8.12</jacocoPluginVersion>
+    <javadocPluginVersion>3.10.1</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
-    <dependencyPluginVersion>3.5.0</dependencyPluginVersion>
-    <compilerPluginVersion>3.11.0</compilerPluginVersion>
+    <dependencyPluginVersion>3.8.0</dependencyPluginVersion>
+    <compilerPluginVersion>3.13.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
-    <surefirePluginVersion>3.1.0</surefirePluginVersion>
-    <pluginPluginVersion>3.9.0</pluginPluginVersion>
+    <surefirePluginVersion>3.5.0</surefirePluginVersion>
+    <pluginPluginVersion>3.15.0</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
-    <sourcePluginVersion>3.2.1</sourcePluginVersion>
+    <sourcePluginVersion>3.3.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
     <groovyGroupId>org.apache.groovy</groovyGroupId>
-    <groovyVersion>4.0.15</groovyVersion>
+    <groovyVersion>4.0.23</groovyVersion>
   </properties>
 
   <dependencies>
@@ -57,25 +57,13 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.9.0</version>
+      <version>3.13.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>3.6.0</version>
-    </dependency>
-    <dependency>
-      <!-- fix CVE-2023-37460 from org.apache.maven:maven-archiver -->
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-archiver</artifactId>
-      <version>4.8.0</version>
-    </dependency>
-    <dependency>
-      <!-- fix CVE-2023-42503 from org.codehaus.plexus:plexus-archiver -->
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.24.0</version>
+      <version>3.6.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -83,17 +71,24 @@
       <version>3.1.0</version>
     </dependency>
     <dependency>
-      <!-- fix CVE-2022-4244 and CVE-2022-4245 from org.apache.maven:maven-artifact -->
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>3.5.1</version>
+      <!-- fix CVE-2020-8908 and CVE-2023-2976 from org.apache.maven:maven-core -->
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.3.1-jre</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <!-- fix CVE-2018-10237, CVE-2020-8908, and CVE-2023-2976 from org.apache.maven:maven-core -->
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>32.1.1-jre</version>
+      <!-- fix CVE-2022-29599 from org.apache.maven:maven-core -->
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-shared-utils</artifactId>
+      <version>3.4.2</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <!-- fix CVE-2024-36124 from org.apache.maven:maven-archiver -->
+      <groupId>org.iq80.snappy</groupId>
+      <artifactId>snappy</artifactId>
+      <version>0.5</version>
       <scope>runtime</scope>
     </dependency>
     <!-- main groovy support -->
@@ -119,7 +114,7 @@
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
-      <version>2.4.0</version>
+      <version>2.4.1</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -135,7 +130,7 @@
       <!-- this is to support use of AntBuilder (Groovy jars don't include) -->
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.13</version>
+      <version>1.10.15</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -154,13 +149,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.3.1</version>
+      <version>5.14.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.7</version>
+      <version>2.0.16</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -179,7 +174,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.2.7</version>
             <executions>
               <execution>
                 <goals>
@@ -202,7 +197,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <goals>
@@ -233,14 +228,14 @@
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>extra-enforcer-rules</artifactId>
-            <version>1.6.2</version>
+            <version>1.9.0</version>
           </dependency>
         </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -283,7 +278,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <version>2.1.1</version>
+        <version>2.2.0</version>
         <executions>
           <execution>
             <goals>
@@ -295,12 +290,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-help-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>${pluginPluginVersion}</version>
+        <configuration>
+          <goalPrefix>gplus</goalPrefix>
+        </configuration>
         <executions>
           <execution>
             <id>generate-helpmojo</id>
@@ -317,7 +315,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
-        <version>1.23</version>
+        <version>1.24</version>
         <executions>
           <execution>
             <goals>
@@ -360,19 +358,19 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Multi-Release>true</Multi-Release>
-            </manifestEntries>
-          </archive>
-        </configuration>
+        <version>3.4.2</version>
+          <configuration>
+              <archive>
+                  <manifestEntries>
+                      <Multi-Release>true</Multi-Release>
+                  </manifestEntries>
+              </archive>
+          </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.8.0</version>
         <configuration>
           <projectsDirectory>src/it</projectsDirectory>
           <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -417,42 +415,57 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.12.1</version>
+        <version>3.20.0</version>
+        <executions>
+          <execution>
+            <id>stage-for-scm-publish</id>
+            <phase>post-site</phase>
+            <goals>
+              <goal>stage</goal>
+            </goals>
+            <configuration>
+              <skipDeploy>false</skipDeploy>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <skipDeploy>true</skipDeploy>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <scmBranch>gh-pages</scmBranch>
+          <tryUpdate>true</tryUpdate>
+        </configuration>
+        <executions>
+          <execution>
+            <id>scm-publish</id>
+            <phase>site-deploy</phase>
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.1</version>
       </plugin>
     </plugins>
-
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-gitexe</artifactId>
-        <version>1.12.0</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-manager-plexus</artifactId>
-        <version>1.12.0</version>
-      </extension>
-      <extension>
-        <groupId>com.github.stephenc.wagon</groupId>
-        <artifactId>wagon-gitsite</artifactId>
-        <version>0.5</version>
-      </extension>
-    </extensions>
   </build>
 
   <reporting>
@@ -469,7 +482,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -485,8 +498,13 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-report-plugin</artifactId>
+        <version>3.15.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.4.3</version>
+        <version>3.7.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -514,7 +532,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
         <configuration>
           <tagListOptions>
             <tagClasses>
@@ -534,22 +552,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.21.0</version>
+        <version>3.25.0</version>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.4</version>
+        <version>4.8.6.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.2.2</version>
+        <version>3.5.0</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version>2.15.0</version>
+        <version>2.17.1</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -590,15 +608,15 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
     <site>
-      <id>github-project-site</id>
-      <url>gitsite:git@github.com/groovy/GMavenPlus.git</url>
+      <id>github</id>
+      <url>scm:git:git@github.com:groovy/GMavenPlus.git</url>
     </site>
   </distributionManagement>
 
   <name>GMavenPlus Plugin</name>
   <description>Integrates Groovy into Maven projects.</description>
   <inceptionYear>2011</inceptionYear>
-  <url>http://groovy.github.io/GMavenPlus/</url>
+  <url>https://groovy.github.io/GMavenPlus/</url>
   <developers>
     <developer>
       <id>keeganwitt</id>
@@ -611,12 +629,12 @@
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
   <issueManagement>
     <system>GitHub</system>
-    <url>http://github.com/groovy/GMavenPlus/issues</url>
+    <url>https://github.com/groovy/GMavenPlus/issues</url>
   </issueManagement>
   <mailingLists>
     <mailingList>
@@ -632,7 +650,7 @@
     </mailingList>
   </mailingLists>
   <scm>
-    <url>http://github.com/groovy/GMavenPlus</url>
+    <url>https://github.com/groovy/GMavenPlus</url>
     <connection>scm:git:git@github.com:groovy/GMavenPlus.git</connection>
     <developerConnection>scm:git:git@github.com:groovy/GMavenPlus.git</developerConnection>
     <tag>HEAD</tag>
@@ -641,5 +659,12 @@
     <system>Github Actions</system>
     <url>https://github.com/groovy/GMavenPlus/actions</url>
   </ciManagement>
+  <repositories>
+    <repository>
+      <id>maven_central</id>
+      <name>Maven Central</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </repository>
+  </repositories>
 
 </project>

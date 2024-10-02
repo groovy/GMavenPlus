@@ -61,6 +61,7 @@
         <configuration>
           <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+          <goalPrefix>gplus-plugin-it</goalPrefix>
         </configuration>
         <executions>
           <execution>
