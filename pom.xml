@@ -17,7 +17,7 @@
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
     <dependencyPluginVersion>3.8.0</dependencyPluginVersion>
-    <compilerPluginVersion>3.14.0</compilerPluginVersion>
+    <compilerPluginVersion>3.13.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
     <surefirePluginVersion>3.5.0</surefirePluginVersion>
