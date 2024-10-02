@@ -5,7 +5,7 @@
          name="GMavenPlus Plugin">
 
   <bannerLeft>
-    <name>GMavenPlus Logo</name>
+    <name>GMavenPlus</name>
     <src>/images/logos/GMavenPlusLogo_sm.png</src>
     <alt>GMavenPlus logo</alt>
     <href>/index.html</href>
