@@ -16,6 +16,7 @@ env:
     --batch-mode
     --no-transfer-progress
     -Dinvoker.streamLogsOnFailures=true
+    -Dgpg.skip=true
 
 defaults:
   run:
