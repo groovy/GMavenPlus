@@ -403,7 +403,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.20.0</version>
+        <version>4.0.0-M16</version>
         <executions>
           <execution>
             <id>stage-for-scm-publish</id>
@@ -418,6 +418,7 @@
         </executions>
         <configuration>
           <skipDeploy>true</skipDeploy>
+          <locales>default</locales>
         </configuration>
       </plugin>
       <plugin>
