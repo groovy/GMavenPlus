@@ -26,13 +26,9 @@
         <ribbonOrientation>right</ribbonOrientation>
         <ribbonColor>red</ribbonColor>
       </gitHub>
-      <!--<googleSearch />-->
-      <!--<facebookLike />-->
-      <!--<googlePlusOne />-->
-      <ohloh>
-        <projectId>GMavenPlus</projectId>
-        <widget>thin-badge</widget>
-      </ohloh>
+<!--      <googleSearch>-->
+<!--        <sitesearch/>-->
+<!--      </googleSearch>-->
     </fluidoSkin>
   </custom>
 
