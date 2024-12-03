@@ -68,7 +68,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * Groovy scripts to run (in order). Can be a script body, a {@link java.net.URL URL} to a script
      * (local or remote), or a filename.
      */
-    @Parameter(required = true, property = "gp.exec.scripts")
+    @Parameter(required = true, property = "scripts")
     protected String[] scripts;
 
     /**
