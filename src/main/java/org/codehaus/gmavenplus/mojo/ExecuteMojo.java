@@ -74,7 +74,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Whether to continue executing remaining scripts when a script fails.
      */
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = "false", property = "continueExecuting")
     protected boolean continueExecuting;
 
     /**
