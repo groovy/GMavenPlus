@@ -90,7 +90,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      *
      * @since 1.9.1
      */
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = "false", property = "skipScriptExecution")
     protected boolean skipScriptExecution;
 
     /**
