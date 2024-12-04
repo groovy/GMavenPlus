@@ -68,13 +68,13 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * Groovy scripts to run (in order). Can be a script body, a {@link java.net.URL URL} to a script
      * (local or remote), or a filename.
      */
-    @Parameter(required = true)
+    @Parameter(required = true, property = "scripts")
     protected String[] scripts;
 
     /**
      * Whether to continue executing remaining scripts when a script fails.
      */
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = "false", property = "continueExecuting")
     protected boolean continueExecuting;
 
     /**
@@ -90,7 +90,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
      *
      * @since 1.9.1
      */
-    @Parameter(defaultValue = "false")
+    @Parameter(defaultValue = "false", property = "skipScriptExecution")
     protected boolean skipScriptExecution;
 
     /**
