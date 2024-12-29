@@ -35,6 +35,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
@@ -78,7 +79,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
     protected boolean continueExecuting;
 
     /**
-     * The encoding of script files.
+     * The encoding of script files/URLs.
      *
      * @since 1.0-beta-2
      */
@@ -92,6 +93,22 @@ public class ExecuteMojo extends AbstractToolsMojo {
      */
     @Parameter(defaultValue = "false", property = "skipScriptExecution")
     protected boolean skipScriptExecution;
+
+    /**
+     * The timeout to use for URL connections.
+     *
+     * @since 4.1.0
+     */
+    @Parameter(defaultValue = "0", property = "urlConnectionTimeout")
+    protected int urlConnectionTimeout;
+
+    /**
+     * The timeout to use for URL reading.
+     *
+     * @since 4.1.0
+     */
+    @Parameter(defaultValue = "0", property = "urlReadTimeout")
+    protected int urlReadTimeout;
 
     /**
      * Executes this mojo.
@@ -268,16 +285,22 @@ public class ExecuteMojo extends AbstractToolsMojo {
      * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
      */
     protected void executeScriptFromUrl(Class<?> groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
-        URL url = new URL(script);
-        getLog().info("Running Groovy script from " + url + ".");
+        URLConnection urlConnection = new URL(script).openConnection();
+        if (urlConnectionTimeout > 0) {
+            urlConnection.setConnectTimeout(urlConnectionTimeout);
+        }
+        if (urlReadTimeout > 0) {
+            urlConnection.setReadTimeout(urlReadTimeout);
+        }
+        getLog().info("Running Groovy script from " + urlConnection.getURL() + ".");
         if (groovyAtLeast(GROOVY_1_7_0)) {
             Method evaluateUrlWithReader = findMethod(groovyShellClass, "evaluate", Reader.class);
             BufferedReader reader = null;
             try {
                 if (sourceEncoding != null) {
-                    reader = new BufferedReader(new InputStreamReader(url.openStream(), sourceEncoding));
+                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), sourceEncoding));
                 } else {
-                    reader = new BufferedReader(new InputStreamReader(url.openStream()));
+                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 }
                 invokeMethod(evaluateUrlWithReader, shell, reader);
             } finally {
@@ -290,8 +313,8 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 if (sourceEncoding != null) {
                     getLog().warn("Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.");
                 }
-                inputStream = url.openStream();
-                invokeMethod(evaluateUrlWithStream, shell, inputStream);
+                inputStream = urlConnection.getInputStream();
+                invokeMethod(evaluateUrlWithStream, shell, urlConnection.getInputStream());
             } finally {
                 FileUtils.closeQuietly(inputStream);
             }
