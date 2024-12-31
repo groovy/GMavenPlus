@@ -15,7 +15,7 @@
   <name>GMavenPlus Plugin Maven Plugin Test Mojo</name>
 
   <prerequisites>
-    <maven>@testMavenVersion@</maven>
+    <maven>@mavenVersion@</maven>
   </prerequisites>
 
   <dependencies>

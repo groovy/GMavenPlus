@@ -460,8 +460,8 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <version>${pluginPluginVersion}</version>
         <configuration>
-          <requiredJavaVersion>${mavenVersion}</requiredJavaVersion>
-          <requiredMavenVersion>${javaVersion}</requiredMavenVersion>
+          <requiredJavaVersion>${javaVersion}</requiredJavaVersion>
+          <requiredMavenVersion>${mavenVersion}</requiredMavenVersion>
         </configuration>
       </plugin>
       <plugin>
