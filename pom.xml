@@ -12,21 +12,21 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <mavenVersion>3.6.3</mavenVersion>
     <jacocoPluginVersion>0.8.12</jacocoPluginVersion>
-    <javadocPluginVersion>3.10.1</javadocPluginVersion>
+    <javadocPluginVersion>3.11.2</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
-    <dependencyPluginVersion>3.8.0</dependencyPluginVersion>
+    <dependencyPluginVersion>3.8.1</dependencyPluginVersion>
     <compilerPluginVersion>3.13.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
-    <surefirePluginVersion>3.5.0</surefirePluginVersion>
-    <pluginPluginVersion>3.15.0</pluginPluginVersion>
+    <surefirePluginVersion>3.5.2</surefirePluginVersion>
+    <pluginPluginVersion>3.15.1</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.3.1</sourcePluginVersion>
     <!-- these are properties so that site generation and integration tests can use it -->
     <groovyGroupId>org.apache.groovy</groovyGroupId>
-    <groovyVersion>4.0.23</groovyVersion>
+    <groovyVersion>4.0.24</groovyVersion>
   </properties>
 
   <dependencies>
@@ -57,13 +57,13 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.13.1</version>
+      <version>3.15.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>3.6.2</version>
+      <version>3.6.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -74,7 +74,7 @@
       <!-- fix CVE-2020-8908 and CVE-2023-2976 from org.apache.maven:maven-core -->
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.3.1-jre</version>
+      <version>33.4.0-jre</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -149,7 +149,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.14.1</version>
+      <version>5.14.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
