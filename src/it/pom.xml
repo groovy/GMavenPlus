@@ -12,7 +12,6 @@
   <properties>
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
     <commonsLang3Version>3.17.0</commonsLang3Version>
-    <mavenVersion>3.9.9</mavenVersion>
     <junit5Version>5.11.4</junit5Version>
   </properties>
 
@@ -34,7 +33,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-plugin-api</artifactId>
-        <version>${mavenVersion}</version>
+        <version>@mavenVersion@</version>
         <scope>provided</scope>
       </dependency>
       <dependency>

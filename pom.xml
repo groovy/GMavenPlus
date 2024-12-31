@@ -10,7 +10,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mavenVersion>3.6.3</mavenVersion>
+    <requiredMavenVersion>3.6.3</requiredMavenVersion>
+    <mavenVersion>3.9.9</mavenVersion>
     <jacocoPluginVersion>0.8.12</jacocoPluginVersion>
     <javadocPluginVersion>3.11.2</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
@@ -69,27 +70,12 @@
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>file-management</artifactId>
       <version>3.1.0</version>
-    </dependency>
-    <dependency>
-      <!-- fix CVE-2020-8908 and CVE-2023-2976 from org.apache.maven:maven-core -->
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>32.0.1-android</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <!-- fix CVE-2022-29599 and CVE-2020-15250 from org.apache.maven:maven-core -->
-      <groupId>org.apache.maven.shared</groupId>
-      <artifactId>maven-shared-utils</artifactId>
-      <version>3.4.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <!-- fix CVE-2017-1000487 and CVE-2022-4244, and CVE-2022-4245 from org.apache.maven:maven-core -->
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>3.0.24</version>
-      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <!-- fix CVE-2024-47554 from org.apache.maven.shared:file-management -->
@@ -461,7 +447,7 @@
         <version>${pluginPluginVersion}</version>
         <configuration>
           <requiredJavaVersion>${javaVersion}</requiredJavaVersion>
-          <requiredMavenVersion>${mavenVersion}</requiredMavenVersion>
+          <requiredMavenVersion>${requiredMavenVersion}</requiredMavenVersion>
         </configuration>
       </plugin>
       <plugin>
