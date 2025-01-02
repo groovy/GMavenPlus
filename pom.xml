@@ -172,7 +172,7 @@
   </profiles>
 
   <prerequisites>
-    <maven>${mavenVersion}</maven>
+    <maven>${requiredMavenVersion}</maven>
   </prerequisites>
 
   <build>
