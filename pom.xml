@@ -81,7 +81,7 @@
       <!-- fix CVE-2024-47554 from org.apache.maven.shared:file-management -->
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.14.0</version>
+      <version>2.18.0</version>
     </dependency>
     <!-- main groovy support -->
     <dependency>
