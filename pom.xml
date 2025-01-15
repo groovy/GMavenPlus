@@ -129,7 +129,7 @@
       <!-- this is to support use of @grab (Groovy jars don't include) -->
       <groupId>org.apache.ivy</groupId>
       <artifactId>ivy</artifactId>
-      <version>2.5.2</version>
+      <version>2.5.3</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
