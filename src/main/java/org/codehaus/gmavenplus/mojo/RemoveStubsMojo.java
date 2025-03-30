@@ -43,7 +43,11 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
      */
     @Override
     public void execute() {
-        project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
+        try {
+            project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
+        } catch (UnsupportedOperationException e) {
+            getLog().warn("Unable to remove the stubs source directory because this version of Maven doesn't support it.");
+        }
     }
 
 }

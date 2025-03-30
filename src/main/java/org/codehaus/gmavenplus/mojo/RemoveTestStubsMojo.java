@@ -50,7 +50,11 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
     @Override
     public void execute() {
         if (!skipTests) {
-            project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+            try {
+                project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+            } catch (UnsupportedOperationException e) {
+                getLog().warn("Unable to remove the test stubs source directory because this version of Maven doesn't support it.");
+            }
         }
     }
 
