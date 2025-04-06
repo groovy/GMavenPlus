@@ -47,6 +47,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * Groovy 5.0.0-alpha-13 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA13 = new Version(5, 0, 0, "alpha-13");
+
+    /**
      * Groovy 5.0.0-alpha-11 version.
      */
     protected static final Version GROOVY_5_0_0_ALPHA11 = new Version(5, 0, 0, "alpha-11");
@@ -65,6 +70,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Groovy 5.0.0-alpha-1 version.
      */
     protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
+
+    /**
+     * Groovy 4.0.27 version.
+     */
+    protected static final Version GROOVY_4_0_27 = new Version(4, 0, 27);
 
     /**
      * Groovy 4.0.24 version.
@@ -231,6 +241,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>22</li>
      *   <li>23</li>
      *   <li>24</li>
+     *   <li>25</li>
      * </ul>
      * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
      * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
@@ -249,6 +260,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 22 requires Groovy &gt; 4.0.16 or Groovy &gt; 5.0.0-alpha-3.
      * Using 23 requires Groovy &gt; 4.0.21 or Groovy &gt; 5.0.0-alpha-8.
      * Using 24 requires Groovy &gt; 4.0.24 or Groovy &gt; 5.0.0-alpha-11.
+     * Using 25 requires Groovy &gt; 4.0.27 or Groovy &gt; 5.0.0-alpha-13.
      *
      * @since 1.0-beta-3
      */
@@ -469,7 +481,14 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             }
         }
 
-        if ("24".equals(targetBytecode)) {
+        if ("25".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_27)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA13)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA13 + " or newer.");
+            }
+        } else if ("24".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_24)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
             }
