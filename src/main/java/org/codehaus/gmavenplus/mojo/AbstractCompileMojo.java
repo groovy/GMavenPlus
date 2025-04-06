@@ -45,12 +45,42 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 
     /**
+     * Groovy 5.0.0-alpha-13 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA13 = new Version(5, 0, 0, "alpha-13");
+
+    /**
+     * Groovy 5.0.0-alpha-11 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA11 = new Version(5, 0, 0, "alpha-11");
+
+    /**
+     * Groovy 5.0.0-alpha-8 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA8 = new Version(5, 0, 0, "alpha-8");
+
+    /**
+     * Groovy 5.0.0-alpha-3 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA3 = new Version(5, 0, 0, "alpha-3");
+
+    /**
      * Groovy 5.0.0-alpha-1 version.
      */
     protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
 
     /**
-     * Groovy 4.0.11 version.
+     * Groovy 4.0.27 version.
+     */
+    protected static final Version GROOVY_4_0_27 = new Version(4, 0, 27);
+
+    /**
+     * Groovy 4.0.24 version.
+     */
+    protected static final Version GROOVY_4_0_24 = new Version(4, 0, 24);
+
+    /**
+     * Groovy 4.0.21 version.
      */
     protected static final Version GROOVY_4_0_21 = new Version(4, 0, 21);
 
@@ -213,6 +243,8 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>21</li>
      *   <li>22</li>
      *   <li>23</li>
+     *   <li>24</li>
+     *   <li>25</li>
      * </ul>
      * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
      * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
@@ -228,8 +260,10 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 19 requires Groovy &gt; 4.0.2.
      * Using 20 requires Groovy &gt; 4.0.6.
      * Using 21 requires Groovy &gt; 4.0.11.
-     * Using 22 requires Groovy &gt; 4.0.16.
-     * Using 23 requires Groovy &gt; 4.0.21.
+     * Using 22 requires Groovy &gt; 4.0.16 or Groovy &gt; 5.0.0-alpha-3.
+     * Using 23 requires Groovy &gt; 4.0.21 or Groovy &gt; 5.0.0-alpha-8.
+     * Using 24 requires Groovy &gt; 4.0.24 or Groovy &gt; 5.0.0-alpha-11.
+     * Using 25 requires Groovy &gt; 4.0.27 or Groovy &gt; 5.0.0-alpha-13.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -526,13 +560,33 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
 
-        if ("23".equals(targetBytecode)) {
+        if ("25".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_27)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA13)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA13 + " or newer.");
+            }
+        } else if ("24".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_24)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA11)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA11 + " or newer.");
+            }
+        } else if ("23".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_21)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA8)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA8 + " or newer.");
             }
         } else if ("22".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_16)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_16 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA3)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA3 + " or newer.");
             }
         } else if ("21".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_11)) {
