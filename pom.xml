@@ -12,7 +12,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <requiredMavenVersion>3.6.3</requiredMavenVersion>
     <mavenVersion>3.9.9</mavenVersion>
-    <jacocoPluginVersion>0.8.12</jacocoPluginVersion>
+    <jacocoPluginVersion>0.8.13</jacocoPluginVersion>
     <javadocPluginVersion>3.11.2</javadocPluginVersion>
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
@@ -21,7 +21,7 @@
     <compilerPluginVersion>3.13.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
-    <surefirePluginVersion>3.5.2</surefirePluginVersion>
+    <surefirePluginVersion>3.5.3</surefirePluginVersion>
     <pluginPluginVersion>3.15.1</pluginPluginVersion>
     <!-- this is a property so that site generation can use it -->
     <sourcePluginVersion>3.3.1</sourcePluginVersion>
@@ -211,7 +211,7 @@
           <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>extra-enforcer-rules</artifactId>
-            <version>1.9.0</version>
+            <version>1.10.0</version>
           </dependency>
         </dependencies>
       </plugin>
