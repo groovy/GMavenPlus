@@ -461,6 +461,20 @@ public class AbstractGenerateStubsMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava22WithUnsupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-2");
+        testMojo.targetBytecode = "22";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava22WithSupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-3");
+        testMojo.targetBytecode = "22";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testJava23WithUnsupportedGroovy() {
         testMojo = new TestMojo("4.0.20");
         testMojo.targetBytecode = "23";
@@ -475,6 +489,20 @@ public class AbstractGenerateStubsMojoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testJava23WithUnsupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-7");
+        testMojo.targetBytecode = "23";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava23WithSupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-8");
+        testMojo.targetBytecode = "23";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testJava24WithUnsupportedGroovy() {
         testMojo = new TestMojo("4.0.23");
         testMojo.targetBytecode = "24";
@@ -484,6 +512,20 @@ public class AbstractGenerateStubsMojoTest {
     @Test
     public void testJava24WithSupportedGroovy() {
         testMojo = new TestMojo("4.0.24");
+        testMojo.targetBytecode = "24";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testJava24WithUnsupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-10");
+        testMojo.targetBytecode = "24";
+        testMojo.verifyGroovyVersionSupportsTargetBytecode();
+    }
+
+    @Test
+    public void testJava24WithSupportedGroovy5() {
+        testMojo = new TestMojo("5.0.0-alpha-11");
         testMojo.targetBytecode = "24";
         testMojo.verifyGroovyVersionSupportsTargetBytecode();
     }

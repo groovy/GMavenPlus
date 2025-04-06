@@ -47,6 +47,21 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
+     * Groovy 5.0.0-alpha-11 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA11 = new Version(5, 0, 0, "alpha-11");
+
+    /**
+     * Groovy 5.0.0-alpha-8 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA8 = new Version(5, 0, 0, "alpha-8");
+
+    /**
+     * Groovy 5.0.0-alpha-3 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA3 = new Version(5, 0, 0, "alpha-3");
+
+    /**
      * Groovy 5.0.0-alpha-1 version.
      */
     protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
@@ -231,9 +246,9 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 19 requires Groovy &gt; 4.0.2.
      * Using 20 requires Groovy &gt; 4.0.6.
      * Using 21 requires Groovy &gt; 4.0.11.
-     * Using 22 requires Groovy &gt; 4.0.16.
-     * Using 23 requires Groovy &gt; 4.0.21.
-     * Using 24 requires Groovy &gt; 4.0.24.
+     * Using 22 requires Groovy &gt; 4.0.16 or Groovy &gt; 5.0.0-alpha-3.
+     * Using 23 requires Groovy &gt; 4.0.21 or Groovy &gt; 5.0.0-alpha-8.
+     * Using 24 requires Groovy &gt; 4.0.24 or Groovy &gt; 5.0.0-alpha-11.
      *
      * @since 1.0-beta-3
      */
@@ -458,13 +473,22 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             if (groovyOlderThan(GROOVY_4_0_24)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
             }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA11)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA11 + " or newer.");
+            }
         } else if ("23".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_21)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
             }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA8)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA8 + " or newer.");
+            }
         } else if ("22".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_16)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_16 + " or newer.");
+            }
+            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA3)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA3 + " or newer.");
             }
         } else if ("21".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_11)) {
