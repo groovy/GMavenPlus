@@ -50,7 +50,12 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
 
     /**
-     * Groovy 4.0.11 version.
+     * Groovy 4.0.24 version.
+     */
+    protected static final Version GROOVY_4_0_24 = new Version(4, 0, 24);
+
+    /**
+     * Groovy 4.0.21 version.
      */
     protected static final Version GROOVY_4_0_21 = new Version(4, 0, 21);
 
@@ -213,6 +218,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      *   <li>21</li>
      *   <li>22</li>
      *   <li>23</li>
+     *   <li>24</li>
      * </ul>
      * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
      * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
@@ -230,6 +236,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * Using 21 requires Groovy &gt; 4.0.11.
      * Using 22 requires Groovy &gt; 4.0.16.
      * Using 23 requires Groovy &gt; 4.0.21.
+     * Using 24 requires Groovy &gt; 4.0.24.
      */
     @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
     protected String targetBytecode;
@@ -526,7 +533,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             }
         }
 
-        if ("23".equals(targetBytecode)) {
+        if ("24".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_24)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+            }
+        } else if ("23".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_21)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
             }

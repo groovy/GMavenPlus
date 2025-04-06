@@ -52,7 +52,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
 
     /**
-     * Groovy 4.0.11 version.
+     * Groovy 4.0.24 version.
+     */
+    protected static final Version GROOVY_4_0_24 = new Version(4, 0, 24);
+
+    /**
+     * Groovy 4.0.21 version.
      */
     protected static final Version GROOVY_4_0_21 = new Version(4, 0, 21);
 
@@ -210,6 +215,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      *   <li>21</li>
      *   <li>22</li>
      *   <li>23</li>
+     *   <li>24</li>
      * </ul>
      * Using 1.6 (or 6) or 1.7 (or 7) requires Groovy &gt;= 2.1.3.
      * Using 1.8 (or 8) requires Groovy &gt;= 2.3.3.
@@ -227,6 +233,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 21 requires Groovy &gt; 4.0.11.
      * Using 22 requires Groovy &gt; 4.0.16.
      * Using 23 requires Groovy &gt; 4.0.21.
+     * Using 24 requires Groovy &gt; 4.0.24.
      *
      * @since 1.0-beta-3
      */
@@ -447,7 +454,11 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             }
         }
 
-        if ("23".equals(targetBytecode)) {
+        if ("24".equals(targetBytecode)) {
+            if (groovyOlderThan(GROOVY_4_0_24)) {
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+            }
+        } else if ("23".equals(targetBytecode)) {
             if (groovyOlderThan(GROOVY_4_0_21)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
             }
@@ -517,13 +528,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     }
 
     protected static String translateJavacTargetToTargetBytecode(String targetBytecode) {
-        Map<String, String> javacTargetToTargetBytecode = new HashMap<>();
-        javacTargetToTargetBytecode.put("5", "1.5");
-        javacTargetToTargetBytecode.put("6", "1.6");
-        javacTargetToTargetBytecode.put("7", "1.7");
-        javacTargetToTargetBytecode.put("8", "1.8");
-        javacTargetToTargetBytecode.put("1.9", "9");
-        return javacTargetToTargetBytecode.getOrDefault(targetBytecode, targetBytecode);
+        return AbstractCompileMojo.translateJavacTargetToTargetBytecode(targetBytecode);
     }
 
 }
