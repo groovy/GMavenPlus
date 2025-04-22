@@ -16,11 +16,18 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Collections.singletonList;
@@ -33,6 +40,27 @@ import static java.util.Collections.singletonList;
  * @since 1.0-beta-3
  */
 public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySourcesMojo {
+
+    static void removeSourceRoot(MavenProject project, String scopeToRemove, File file) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
+        Class<?> sourceRoot = project.getClass().getClassLoader().loadClass("org.apache.maven.api.SourceRoot");
+        Path path = project.getBasedir().toPath().resolve(file.getAbsolutePath()).normalize();
+        Field field = project.getClass().getDeclaredField("sources");
+        field.setAccessible(true);
+        Method scope = sourceRoot.getMethod("scope");
+        Method language = sourceRoot.getMethod("language");
+        Method directory = sourceRoot.getMethod("directory");
+        Method id = project.getClass().getClassLoader().loadClass("org.apache.maven.api.ExtensibleEnum").getMethod("id");
+        Collection<?> sources = (Collection) field.get(project);
+        sources.removeIf(source -> {
+            try {
+                return Objects.equals(id.invoke(scope.invoke(source)), scopeToRemove)
+                        && Objects.equals(id.invoke(language.invoke(source)), "java")
+                        && Objects.equals(directory.invoke(source), path);
+            } catch (IllegalAccessException | InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
 
     /**
      * Gets the set of stub files in specified directory.

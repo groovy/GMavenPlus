@@ -19,16 +19,8 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -54,34 +46,12 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
         try {
             project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
         } catch (UnsupportedOperationException e) {
-            String scopeToRemove = "main";
             try {
-                RemoveStubsMojo.removeSourceRoot(project, scopeToRemove, stubsOutputDirectory);
+                removeSourceRoot(project, "main", stubsOutputDirectory);
             } catch (Throwable e2) {
                 e.addSuppressed(e2);
                 throw e;
             }
         }
-    }
-
-    static void removeSourceRoot(MavenProject project, String scopeToRemove, File file) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
-        Class<?> sourceRoot = project.getClass().getClassLoader().loadClass("org.apache.maven.api.SourceRoot");
-        Path path = project.getBasedir().toPath().resolve(file.getAbsolutePath()).normalize();
-        Field field = project.getClass().getDeclaredField("sources");
-        field.setAccessible(true);
-        Method scope = sourceRoot.getMethod("scope");
-        Method language = sourceRoot.getMethod("language");
-        Method directory = sourceRoot.getMethod("directory");
-        Method id = project.getClass().getClassLoader().loadClass("org.apache.maven.api.ExtensibleEnum").getMethod("id");
-        Collection<?> sources = (Collection) field.get(project);
-        sources.removeIf(source -> {
-            try {
-                return Objects.equals(id.invoke(scope.invoke(source)), scopeToRemove)
-                        && Objects.equals(id.invoke(language.invoke(source)), "java")
-                        && Objects.equals(directory.invoke(source), path);
-            } catch (IllegalAccessException | InvocationTargetException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
     }
 }
