@@ -50,7 +50,17 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
     @Override
     public void execute() {
         if (!skipTests) {
-            project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+            try {
+                project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
+            } catch (UnsupportedOperationException e) {
+                String scopeToRemove = "test";
+                try {
+                    RemoveStubsMojo.removeSourceRoot(project, scopeToRemove, testStubsOutputDirectory);
+                } catch (Throwable e2) {
+                    e.addSuppressed(e2);
+                    throw e;
+                }
+            }
         }
     }
 
