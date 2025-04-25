@@ -38,7 +38,7 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/groovy-stubs/main")
     protected File stubsOutputDirectory;
 
-     /**
+    /**
      * Executes this mojo.
      */
     @Override
@@ -54,4 +54,5 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
             }
         }
     }
+
 }

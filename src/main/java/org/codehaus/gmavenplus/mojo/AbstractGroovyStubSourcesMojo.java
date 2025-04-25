@@ -41,9 +41,21 @@ import static java.util.Collections.singletonList;
  */
 public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySourcesMojo {
 
-    static void removeSourceRoot(MavenProject project, String scopeToRemove, File file) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
+    /**
+     * Removes the source roots from the project, using reflection to avoid breaking changes in Maven 4.
+     *
+     * @param project the Maven project
+     * @param scopeToRemove the scope to remove (main or test)
+     * @param sourceDirectory the source directory to remove
+     * @throws ClassNotFoundException when a class needed cannot be found
+     * @throws NoSuchFieldException when a field needed cannot be found
+     * @throws NoSuchMethodException when a method needed cannot be found
+     * @throws IllegalAccessException when a method needed cannot be accessed
+     */
+    protected static void removeSourceRoot(MavenProject project, String scopeToRemove, File sourceDirectory)
+            throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
         Class<?> sourceRoot = project.getClass().getClassLoader().loadClass("org.apache.maven.api.SourceRoot");
-        Path path = project.getBasedir().toPath().resolve(file.getAbsolutePath()).normalize();
+        Path path = project.getBasedir().toPath().resolve(sourceDirectory.getAbsolutePath()).normalize();
         Field field = project.getClass().getDeclaredField("sources");
         field.setAccessible(true);
         Method scope = sourceRoot.getMethod("scope");
