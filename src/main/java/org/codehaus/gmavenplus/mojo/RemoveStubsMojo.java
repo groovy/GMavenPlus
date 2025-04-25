@@ -43,7 +43,16 @@ public class RemoveStubsMojo extends AbstractGroovyStubSourcesMojo {
      */
     @Override
     public void execute() {
-        project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
+        try {
+            project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());
+        } catch (UnsupportedOperationException e) {
+            try {
+                removeSourceRoot(project, "main", stubsOutputDirectory);
+            } catch (Throwable e2) {
+                e.addSuppressed(e2);
+                throw e;
+            }
+        }
     }
 
 }
