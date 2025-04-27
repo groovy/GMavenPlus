@@ -18,7 +18,7 @@
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
     <dependencyPluginVersion>3.8.1</dependencyPluginVersion>
-    <compilerPluginVersion>3.13.0</compilerPluginVersion>
+    <compilerPluginVersion>3.14.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
     <junitVersion>4.13.2</junitVersion>
     <surefirePluginVersion>3.5.3</surefirePluginVersion>
@@ -218,7 +218,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -401,12 +401,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>3.1.3</version>
+        <version>3.1.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.3</version>
+        <version>3.1.4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
