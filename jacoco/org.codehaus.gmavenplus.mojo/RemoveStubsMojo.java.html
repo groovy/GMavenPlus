@@ -43,8 +43,17 @@ import java.io.File;
      */
     @Override
     public void execute() {
-<span class="fc" id="L46">        project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());</span>
-<span class="fc" id="L47">    }</span>
+        try {
+<span class="fc" id="L47">            project.getCompileSourceRoots().remove(stubsOutputDirectory.getAbsolutePath());</span>
+<span class="nc" id="L48">        } catch (UnsupportedOperationException e) {</span>
+            try {
+<span class="nc" id="L50">                removeSourceRoot(project, &quot;main&quot;, stubsOutputDirectory);</span>
+<span class="nc" id="L51">            } catch (Throwable e2) {</span>
+<span class="nc" id="L52">                e.addSuppressed(e2);</span>
+<span class="nc" id="L53">                throw e;</span>
+<span class="nc" id="L54">            }</span>
+<span class="fc" id="L55">        }</span>
+<span class="fc" id="L56">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

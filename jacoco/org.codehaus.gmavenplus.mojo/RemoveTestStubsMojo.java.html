@@ -50,9 +50,18 @@ import java.io.File;
     @Override
     public void execute() {
 <span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!skipTests) {</span>
-<span class="fc" id="L53">            project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());</span>
+            try {
+<span class="fc" id="L54">                project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());</span>
+<span class="nc" id="L55">            } catch (UnsupportedOperationException e) {</span>
+                try {
+<span class="nc" id="L57">                    removeSourceRoot(project, &quot;test&quot;, testStubsOutputDirectory);</span>
+<span class="nc" id="L58">                } catch (Throwable e2) {</span>
+<span class="nc" id="L59">                    e.addSuppressed(e2);</span>
+<span class="nc" id="L60">                    throw e;</span>
+<span class="nc" id="L61">                }</span>
+<span class="fc" id="L62">            }</span>
         }
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L64">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
