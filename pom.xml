@@ -78,6 +78,11 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
+      <version>3.27.0</version>
+    </dependency>
+    <dependency>
       <!-- fix CVE-2024-47554 from org.apache.maven.shared:file-management -->
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>

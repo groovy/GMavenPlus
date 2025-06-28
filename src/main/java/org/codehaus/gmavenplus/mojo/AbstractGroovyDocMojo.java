@@ -16,6 +16,7 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import com.github.javaparser.ParserConfiguration;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
@@ -53,6 +54,21 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * @since 1.0-beta-1
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
+
+    /**
+     * Groovy 5.0.0-beta-1 version.
+     */
+    protected static final Version GROOVY_5_0_0_BETA_1 = new Version(5, 0, 0, "beta-1");
+
+    /**
+     * Groovy 5.0.0-alpha-1 version.
+     */
+    protected static final Version GROOVY_5_0_0_ALPHA_1 = new Version(5, 0, 0, "alpha-1");
+
+    /**
+     * Groovy 4.0.27 version.
+     */
+    protected static final Version GROOVY_4_0_27 = new Version(4, 0, 27);
 
     /**
      * Groovy 3.0.0 alpha-4 version.
@@ -96,6 +112,12 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     @Parameter(defaultValue = "Groovy Documentation")
     protected String footer;
+
+    /**
+     * The Java language level to use for GroovyDoc generation.
+     */
+    @Parameter
+    protected ParserConfiguration.LanguageLevel languageLevel;
 
     /**
      * The page header.
@@ -426,7 +448,18 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      */
     protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List<?> groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Object groovyDocTool;
-        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
+        if ((groovyAtLeast(GROOVY_4_0_27) && groovyOlderThan(GROOVY_5_0_0_ALPHA_1)) || groovyAtLeast(GROOVY_5_0_0_BETA_1)) {
+            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, String.class, Properties.class),
+                    classpathResourceManager,
+                    sourceDirectories.toArray(new String[0]),
+                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
+                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
+                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
+                    groovyDocLinks,
+                    languageLevel,
+                    docProperties
+            );
+        } else if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
                     sourceDirectories.toArray(new String[0]),
