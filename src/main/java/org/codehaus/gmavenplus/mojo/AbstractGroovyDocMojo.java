@@ -16,11 +16,11 @@
 
 package org.codehaus.gmavenplus.mojo;
 
-import com.github.javaparser.ParserConfiguration;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
+import org.codehaus.gmavenplus.javaparser.LanguageLevel;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Link;
 import org.codehaus.gmavenplus.model.Scopes;
@@ -117,7 +117,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * The Java language level to use for GroovyDoc generation.
      */
     @Parameter
-    protected ParserConfiguration.LanguageLevel languageLevel;
+    protected LanguageLevel languageLevel;
 
     /**
      * The page header.
