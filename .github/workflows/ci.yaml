@@ -30,8 +30,8 @@ jobs:
         groovy-version:
           - 2.5.23
           - 3.0.25
-          - 4.0.27
-          - 5.0.0-beta-1
+          - 4.0.29
+          - 5.0.2
     env:
       MVN_GROOVY_GROUP_ID: ${{format('{0}{1}', '-DgroovyVersion=', matrix.groovy-version)}}
       MVN_GROOVY_VERSION: ${{(startsWith(matrix.groovy-version, '2') || startsWith(matrix.groovy-version, '3')) && '-DgroovyGroupId=org.codehaus.groovy' || '-DgroovyGroupId=org.apache.groovy'}}
