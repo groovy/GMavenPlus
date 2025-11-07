@@ -1,3 +1,5 @@
+// From https://github.com/javaparser/javaparser/blob/7e0b61c9a026e04bd955cff915f208deda1984c7/javaparser-core/src/main/java/com/github/javaparser/ParserConfiguration.java#L50-L243
+
 package org.codehaus.gmavenplus.javaparser;
 
 import java.util.Arrays;
