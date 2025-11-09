@@ -456,7 +456,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                     defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
                     defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
                     groovyDocLinks,
-                    languageLevel,
+                    languageLevel != null ? languageLevel.toString() : languageLevel,
                     docProperties
             );
         } else if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
