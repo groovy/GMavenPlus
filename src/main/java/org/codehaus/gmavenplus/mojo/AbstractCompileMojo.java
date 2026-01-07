@@ -16,6 +16,16 @@
 
 package org.codehaus.gmavenplus.mojo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.internal.Version;
@@ -29,7 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.codehaus.gmavenplus.mojo.GroovycLogger.LogTarget;
 
+import static java.util.stream.Collectors.joining;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
@@ -364,6 +376,15 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected boolean previewFeatures;
 
     /**
+     * Whether to run the compiler using {@code groovyc} in a separate process.
+     * <p>
+     * {@code groovyc} will be search in {@code GROOVY_HOME/bin} first and then on the {@code PATH}.
+     * If no executable was found, the compilation fails.
+     */
+    @Parameter(property = "groovy.fork", defaultValue = "false")
+    protected boolean fork;
+
+    /**
      * Performs compilation of compile mojos.
      *
      * @param sources                the sources to compile
@@ -374,15 +395,196 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
      * @throws IllegalAccessException    when a method needed for compilation cannot be accessed
      * @throws InvocationTargetException when a reflection invocation needed for compilation cannot be completed
      * @throws MalformedURLException     when a classpath element provides a malformed URL
+     * @throws MojoExecutionException    in case the mojo execution breaks with another reason.
      */
     @SuppressWarnings({"rawtypes"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
+        throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException, MojoExecutionException {
         if (sources == null || sources.isEmpty()) {
             getLog().info("No sources specified for compilation. Skipping.");
             return;
         }
 
+        if (this.fork) {
+            doCompileProcess(sources, classpath, compileOutputDirectory);
+            return;
+        }
+
+        doCompileLibrary(sources, classpath, compileOutputDirectory);
+    }
+
+    private void doCompileProcess(Set<File> sources, List<?> classpath, File compileOutputDirectory)
+        throws MojoExecutionException {
+        Path groovyc = getGroovyc();
+
+        List<String> args = new ArrayList<>();
+        args.add(groovyc.toAbsolutePath().toString());
+        final String delimitedCp = getClassPathString(classpath);
+        args.add("--classpath="+delimitedCp);
+
+        if (this.sourceEncoding != null && !this.sourceEncoding.trim().isEmpty()) {
+            args.add("--encoding=" + this.sourceEncoding);
+        }
+
+        if (this.parameters) {
+            args.add("--parameters");
+        }
+
+        if (this.previewFeatures) {
+            args.add("--enable-preview");
+        }
+
+        if (this.targetBytecode != null) {
+            args.add("-Jtarget=" + this.targetBytecode);
+        }
+
+        if (this.debug) {
+            getLog().warn("Option 'debug' is requested but not supported yet with fork=true.");
+        }
+
+        if (!this.invokeDynamic) {
+            getLog().warn("Option 'invokeDynamic=false' is requested but not supported yet with fork=true.");
+        }
+
+        if (!this.skipBytecodeCheck) {
+            getLog().warn("Option 'skipBytecodeCheck' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.warningLevel != 1) {
+            getLog().warn("Option 'warningLevel' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.tolerance != 0) {
+            getLog().warn("Option 'tolerance' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.parallelParsing != null) {
+            getLog().warn("Option 'parallelParsing' is requested but not supported yet with fork=true.");
+        }
+
+        if (this.includeClasspath != IncludeClasspath.PROJECT_ONLY) {
+            getLog().warn("Option 'includeClasspath' is requested but not supported yet with fork=true.");
+        }
+
+        // missing:
+        // this.configScript (available as --configscript=)
+        // this.verbose
+        // as well as:
+        // --compile-static
+        // --type-checked
+        // --temp=
+
+        final String compileMessage = String.format(
+            Locale.ROOT,
+            "Compiling %d source files with groovyc %s to %s",
+            sources.size(),
+            args.stream().skip(2).collect(Collectors.toList()),
+            project.getBasedir().toPath().relativize(compileOutputDirectory.toPath()));
+        getLog().info(compileMessage);
+        args.addAll(sources.stream().map(File::getAbsolutePath).collect(Collectors.toList()));
+
+        final ProcessBuilder processBuilder = new ProcessBuilder()
+            .directory(compileOutputDirectory)
+            .command(args)
+            .inheritIO()
+            ;
+
+        getLog().debug("Running groovyc via: " + args);
+
+        try {
+            final Path compileOutputDirectoryPath = compileOutputDirectory.toPath();
+            if (!Files.exists(compileOutputDirectoryPath)) {
+                Files.createDirectories(compileOutputDirectoryPath);
+            }
+            if (!Files.isDirectory(compileOutputDirectoryPath)) {
+                throw new MojoExecutionException(
+                    "Target directory [" + compileOutputDirectoryPath + "] is not a directory.");
+            }
+            final Process groovycProcess = processBuilder.start();
+
+            final GroovycLogger outputLogger = new GroovycLogger(groovycProcess.getInputStream(),
+                getLog(), LogTarget.INFO);
+            final GroovycLogger errorLogger = new GroovycLogger(groovycProcess.getErrorStream(),
+                getLog(), LogTarget.ERROR);
+            final Thread outputLoggerThread = new Thread(outputLogger);
+            outputLoggerThread.start();
+            final Thread errorLoggerThread = new Thread(errorLogger);
+            errorLoggerThread.start();
+
+            final int groovycRc = groovycProcess.waitFor();
+            outputLoggerThread.join();
+            errorLoggerThread.join();
+
+            if (groovycRc != 0) {
+                throw new MojoExecutionException("Groovy exited with RC=" + groovycRc);
+            }
+        } catch (final IOException ioException) {
+            throw new MojoExecutionException("Error compiling", ioException);
+        } catch (InterruptedException interruptedException) {
+            Thread.currentThread().interrupt();
+            throw new MojoExecutionException("Compilation interrupted", interruptedException);
+        }
+    }
+
+    private static String getClassPathString(List<?> classpath) {
+        for (Object cp : classpath) {
+            if (!(cp instanceof String)) {
+                throw new IllegalArgumentException("Classpath element [" + cp + "] is not a string!");
+            }
+        }
+
+        return classpath.stream()
+            .map(obj -> (String) obj)
+            .collect(joining(File.pathSeparator));
+    }
+
+    private Path getGroovyc() {
+        final Optional<Path> groovyHomeGroovyc = getGroovyHomeGroovyc();
+
+        if (groovyHomeGroovyc.isPresent()) {
+            return groovyHomeGroovyc.orElseThrow(NoSuchElementException::new);
+        }
+
+        final Optional<Path> pathGroovyc = getPathGroovyc();
+
+        return pathGroovyc.orElseThrow(() -> new IllegalStateException("No groovyc found in GROOVY_HOME or PATH!"));
+    }
+
+    private Optional<Path> getPathGroovyc() {
+        for (String dirname : System.getenv("PATH").split(File.pathSeparator)) {
+            final Path groovyc = Paths.get(dirname, "groovyc");
+            if (Files.isRegularFile(groovyc) && Files.isExecutable(groovyc)) {
+                return Optional.of(groovyc);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private Optional<Path> getGroovyHomeGroovyc() {
+        final String groovyHome = System.getenv("GROOVY_HOME");
+
+        if (groovyHome == null || groovyHome.trim().isEmpty()) {
+            return Optional.empty();
+        }
+
+        final Path groovyHomePath = Paths.get(groovyHome);
+
+        if (!Files.isDirectory(groovyHomePath)) {
+            return Optional.empty();
+        }
+
+        final Path groovyc = groovyHomePath.resolve("bin/groovyc");
+
+        if (Files.exists(groovyc) && Files.isExecutable(groovyc) && Files.isRegularFile(groovyc)) {
+            return Optional.of(groovyc);
+        }
+
+        return Optional.empty();
+    }
+
+    private void doCompileLibrary(Set<File> sources, List classpath, File compileOutputDirectory)
+        throws MalformedURLException, ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
         setupClassWrangler(classpath, includeClasspath);
 
         logPluginClasspath();
