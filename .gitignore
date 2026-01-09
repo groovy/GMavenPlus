@@ -17,3 +17,5 @@ out
 
 # Sonar
 .sonar
+
+src/it/toolchains.xml

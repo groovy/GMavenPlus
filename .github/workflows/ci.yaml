@@ -42,8 +42,10 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 17
+          java-version: |
+            17
+            21
       - name: full test
-        run: >-
-          ./mvnw ${MAVEN_ARGS} ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION}
-          clean install invoker:install invoker:run
+        run: |
+          ./mvnw org.apache.maven.plugins:maven-toolchains-plugin:generate-jdk-toolchains-xml -Dtoolchain.file=src/it/toolchains.xml
+          ./mvnw ${MAVEN_ARGS} --global-toolchains src/it/toolchains.xml ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION} clean install invoker:install invoker:run
