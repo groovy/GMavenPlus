@@ -17,6 +17,7 @@
     <shortJavaVersion>8</shortJavaVersion>
     <!-- these are properties so integration tests can use them -->
     <javaVersion>1.${shortJavaVersion}</javaVersion>
+    <itJavaVersion>11</itJavaVersion>
     <dependencyPluginVersion>3.8.1</dependencyPluginVersion>
     <compilerPluginVersion>3.14.0</compilerPluginVersion>
     <resourcesPluginVersion>3.3.1</resourcesPluginVersion>
