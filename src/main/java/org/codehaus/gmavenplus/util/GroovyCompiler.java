@@ -686,7 +686,7 @@ public class GroovyCompiler {
 
         if ("25".equals(targetBytecode)) {
             if (ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), GROOVY_4_0_27)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
+                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_27 + " or newer.");
             }
             if (ClassWrangler.groovyNewerThan(classWrangler.getGroovyVersion(), GROOVY_5_0_0_ALPHA1) && ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), GROOVY_5_0_0_ALPHA13)) {
                 throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA13 + " or newer.");
