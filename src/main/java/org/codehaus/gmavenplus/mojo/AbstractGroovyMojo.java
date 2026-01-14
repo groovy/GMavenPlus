@@ -22,6 +22,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
@@ -101,6 +102,12 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     @Parameter(property = "mojoExecution", required = true, readonly = true)
     protected MojoExecution mojoExecution;
+
+    /**
+     * The plugin descriptor.
+     */
+    @Parameter(defaultValue = "${plugin}", readonly = true)
+    protected PluginDescriptor pluginDescriptor;
 
     /**
      * The minimum version of Groovy that this mojo supports (1.5.0 by
@@ -246,5 +253,43 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
             getLog().info("Using plugin classloader, includes GMavenPlus classpath, but not project classpath.");
             classWrangler = new ClassWrangler(emptyList(), getClass().getClassLoader(), getLog());
         }
+    }
+
+    /**
+     * Gets the Java executable to use for forked execution.
+     *
+     * @return the Java executable path
+     */
+    protected String getJavaExecutable() {
+        // Try to get operation system process via JDK 9+ ProcessHandle
+        try {
+            Class<?> processHandleClass = Class.forName("java.lang.ProcessHandle");
+            // ProcessHandle.current()
+            java.lang.reflect.Method currentMethod = processHandleClass.getMethod("current");
+            Object currentProcess = currentMethod.invoke(null);
+
+            // ProcessHandle.info()
+            java.lang.reflect.Method infoMethod = processHandleClass.getMethod("info");
+            Object info = infoMethod.invoke(currentProcess);
+
+            // ProcessHandle.Info.command()
+            Class<?> infoClass = Class.forName("java.lang.ProcessHandle$Info");
+            java.lang.reflect.Method commandMethod = infoClass.getMethod("command");
+            @SuppressWarnings("unchecked")
+            java.util.Optional<String> commandConfig = (java.util.Optional<String>) commandMethod.invoke(info);
+
+            if (commandConfig.isPresent()) {
+                return commandConfig.get();
+            }
+        } catch (Exception e) {
+            // ignore, we are probably on Java 8 or the OS doesn't support this
+        }
+
+        String javaHome = System.getProperty("java.home");
+        String javaExecutable = javaHome + File.separator + "bin" + File.separator + "java";
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            javaExecutable += ".exe";
+        }
+        return javaExecutable;
     }
 }

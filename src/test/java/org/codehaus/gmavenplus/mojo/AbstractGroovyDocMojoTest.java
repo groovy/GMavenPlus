@@ -1,10 +1,11 @@
 package org.codehaus.gmavenplus.mojo;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
-import org.apache.maven.shared.model.fileset.util.FileSetManager;
+import org.apache.maven.toolchain.ToolchainManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -35,28 +36,35 @@ public class AbstractGroovyDocMojoTest {
     @Mock
     private MavenProject project;
 
+    @Mock
+    private ToolchainManager toolchainManager;
+
+    @Mock
+    private MavenSession session;
+
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
         testMojo.mojoExecution = mojoExecution;
         doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
         testMojo.project = project;
+        testMojo.toolchainManager = toolchainManager;
+        testMojo.session = session;
         doReturn(new Properties()).when(testMojo).setupProperties();
-        doReturn(emptyList()).when(testMojo).setupGroovyDocSources(any(FileSet[].class), any(FileSetManager.class));
-        doNothing().when(testMojo).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
+        doNothing().when(testMojo).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.class));
     }
 
     @Test
     public void testDontSkipGroovyDoc() throws Exception {
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
-        verify(testMojo, times(1)).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
+        verify(testMojo, times(1)).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.class));
     }
 
     @Test
     public void testSkipGroovyDoc() throws Exception {
         testMojo.skipGroovyDoc = true;
         testMojo.doGroovyDocGeneration(new FileSet[]{new FileSet()}, emptyList(), new File(""));
-        verify(testMojo, never()).generateGroovyDoc(any(File.class), any(Class.class), any(Class.class), any(), anyList(), any());
+        verify(testMojo, never()).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.class));
     }
 
     public static class TestMojo extends AbstractGroovyDocMojo {

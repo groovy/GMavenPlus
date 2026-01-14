@@ -17,25 +17,15 @@
 package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.gmavenplus.groovyworkarounds.DotGroovyFile;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.internal.Version;
-import org.codehaus.gmavenplus.util.FileUtils;
+import org.codehaus.gmavenplus.util.GroovyCompiler;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -47,169 +37,9 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {
 
     /**
-     * Groovy 5.0.0-alpha-13 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA13 = new Version(5, 0, 0, "alpha-13");
-
-    /**
-     * Groovy 5.0.0-alpha-11 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA11 = new Version(5, 0, 0, "alpha-11");
-
-    /**
-     * Groovy 5.0.0-alpha-8 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA8 = new Version(5, 0, 0, "alpha-8");
-
-    /**
-     * Groovy 5.0.0-alpha-3 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA3 = new Version(5, 0, 0, "alpha-3");
-
-    /**
-     * Groovy 5.0.0-alpha-1 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA1 = new Version(5, 0, 0, "alpha-1");
-
-    /**
-     * Groovy 4.0.27 version.
-     */
-    protected static final Version GROOVY_4_0_27 = new Version(4, 0, 27);
-
-    /**
-     * Groovy 4.0.24 version.
-     */
-    protected static final Version GROOVY_4_0_24 = new Version(4, 0, 24);
-
-    /**
-     * Groovy 4.0.21 version.
-     */
-    protected static final Version GROOVY_4_0_21 = new Version(4, 0, 21);
-
-    /**
-     * Groovy 4.0.11 version.
-     */
-    protected static final Version GROOVY_4_0_16 = new Version(4, 0, 16);
-
-    /**
-     * Groovy 4.0.11 version.
-     */
-    protected static final Version GROOVY_4_0_11 = new Version(4, 0, 11);
-
-    /**
-     * Groovy 4.0.6 version.
-     */
-    protected static final Version GROOVY_4_0_6 = new Version(4, 0, 6);
-
-    /**
-     * Groovy 4.0.2 version.
-     */
-    protected static final Version GROOVY_4_0_2 = new Version(4, 0, 2);
-
-    /**
-     * Groovy 4.0.0 beta-1 version.
-     */
-    protected static final Version GROOVY_4_0_0_BETA1 = new Version(4, 0, 0, "beta-1");
-
-    /**
-     * Groovy 4.0.0 alpha-3 version.
-     */
-    protected static final Version GROOVY_4_0_0_ALPHA3 = new Version(4, 0, 0, "alpha-3");
-
-    /**
-     * Groovy 4.0.0 alpha-1 version.
-     */
-    protected static final Version GROOVY_4_0_0_ALPHA1 = new Version(4, 0, 0, "alpha-1");
-
-    /**
-     * Groovy 3.0.8 version.
-     */
-    protected static final Version GROOVY_3_0_8 = new Version(3, 0, 8);
-
-    /**
-     * Groovy 3.0.6 version.
-     */
-    protected static final Version GROOVY_3_0_6 = new Version(3, 0, 6);
-
-    /**
-     * Groovy 3.0.3 version.
-     */
-    protected static final Version GROOVY_3_0_3 = new Version(3, 0, 3);
-
-    /**
-     * Groovy 3.0.0 beta-2 version.
-     */
-    protected static final Version GROOVY_3_0_0_BETA2 = new Version(3, 0, 0, "beta-2");
-
-    /**
-     * Groovy 3.0.0 beta-1 version.
-     */
-    protected static final Version GROOVY_3_0_0_BETA1 = new Version(3, 0, 0, "beta-1");
-
-    /**
-     * Groovy 3.0.0 alpha-4 version.
-     */
-    protected static final Version GROOVY_3_0_0_ALPHA4 = new Version(3, 0, 0, "alpha-4");
-
-    /**
-     * Groovy 3.0.0 alpha-2 version.
-     */
-    protected static final Version GROOVY_3_0_0_ALPHA2 = new Version(3, 0, 0, "alpha-2");
-
-    /**
-     * Groovy 3.0.0 alpha-1 version.
-     */
-    protected static final Version GROOVY_3_0_0_ALPHA1 = new Version(3, 0, 0, "alpha-1");
-
-    /**
-     * Groovy 2.6.0 alpha-4 version.
-     */
-    protected static final Version GROOVY_2_6_0_ALPHA4 = new Version(2, 6, 0, "alpha-4");
-
-    /**
-     * Groovy 2.6.0 alpha-1 version.
-     */
-    protected static final Version GROOVY_2_6_0_ALPHA1 = new Version(2, 6, 0, "alpha-1");
-
-    /**
-     * Groovy 2.5.7 version.
-     */
-    protected static final Version GROOVY_2_5_7 = new Version(2, 5, 7);
-
-    /**
-     * Groovy 2.5.3 version.
-     */
-    protected static final Version GROOVY_2_5_3 = new Version(2, 5, 3);
-
-    /**
-     * Groovy 2.3.3 version.
-     */
-    protected static final Version GROOVY_2_3_3 = new Version(2, 3, 3);
-
-    /**
-     * Groovy 2.1.3 version.
-     */
-    protected static final Version GROOVY_2_1_3 = new Version(2, 1, 3);
-
-    /**
-     * Groovy 2.9.0 beta-1 version.
-     */
-    protected static final Version GROOVY_1_9_0_BETA1 = new Version(1, 9, 0, "beta-1");
-
-    /**
-     * Groovy 1.9.0 beta-3 version.
-     */
-    protected static final Version GROOVY_1_9_0_BETA3 = new Version(1, 9, 0, "beta-3");
-
-    /**
      * Groovy 1.8.2 version.
      */
     protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);
-
-    /**
-     * Groovy 1.8.3 version.
-     */
-    protected static final Version GROOVY_1_8_3 = new Version(1, 8, 3);
 
     /**
      * The encoding of source files.
@@ -324,6 +154,26 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected IncludeClasspath includeClasspath;
 
     /**
+     * The Maven ToolchainManager.
+     */
+    @javax.inject.Inject
+    protected org.apache.maven.toolchain.ToolchainManager toolchainManager;
+
+    /**
+     * The Maven Session.
+     */
+    @Parameter(defaultValue = "${session}", readonly = true, required = true)
+    protected org.apache.maven.execution.MavenSession session;
+
+    /**
+     * Whether to execute in a forked process.
+     *
+     * @since 1.13.0
+     */
+    @Parameter(property = "fork", defaultValue = "false")
+    protected boolean fork;
+
+    /**
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources     the sources to perform stub generation on
@@ -341,105 +191,97 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             return;
         }
 
-        setupClassWrangler(classpath, includeClasspath);
+        org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration = new org.codehaus.gmavenplus.model.GroovyStubConfiguration(stubSources, classpath, outputDirectory);
+        configuration.setIncludeClasspath(includeClasspath);
+        configuration.setSkipBytecodeCheck(skipBytecodeCheck);
+        configuration.setDebug(debug);
+        configuration.setVerbose(verbose);
+        configuration.setWarningLevel(warningLevel);
+        configuration.setTolerance(tolerance);
+        configuration.setSourceEncoding(sourceEncoding);
+        configuration.setTargetBytecode(targetBytecode);
 
+        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext("jdk", session);
+        if (toolchain != null) {
+            getLog().info("Toolchain in gmavenplus-plugin: " + toolchain);
+            performForkedStubGeneration(configuration, toolchain.findTool("java"));
+        } else if (fork) {
+            String javaExecutable = getJavaExecutable();
+            getLog().info("Forking stub generation using " + javaExecutable);
+            performForkedStubGeneration(configuration, javaExecutable);
+        } else {
+            performInProcessStubGeneration(configuration, classpath);
+        }
+    }
+
+    protected void performInProcessStubGeneration(org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration, List<?> classpath) throws MalformedURLException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        setupClassWrangler(classpath, includeClasspath);
         logPluginClasspath();
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
 
-        if (!groovyVersionSupportsAction()) {
-            getLog().error("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support stub generation. The minimum version of Groovy required is " + minGroovyVersion + ". Skipping stub generation.");
-            return;
-        }
+        // Note: GroovyCompiler handles minGroovyVersion check now in generateStubs
 
-        if (!skipBytecodeCheck) {
-            verifyGroovyVersionSupportsTargetBytecode();
-        }
-
-        // get classes we need with reflection
-        Class<?> compilerConfigurationClass = classWrangler.getClass("org.codehaus.groovy.control.CompilerConfiguration");
-        Class<?> javaStubCompilationUnitClass = classWrangler.getClass("org.codehaus.groovy.tools.javac.JavaStubCompilationUnit");
-        Class<?> groovyClassLoaderClass = classWrangler.getClass("groovy.lang.GroovyClassLoader");
-
-        // setup stub generation options
-        Object compilerConfiguration = setupCompilerConfiguration(outputDirectory, compilerConfigurationClass);
-        Object groovyClassLoader = invokeConstructor(findConstructor(groovyClassLoaderClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);
-        Object javaStubCompilationUnit = invokeConstructor(findConstructor(javaStubCompilationUnitClass, compilerConfigurationClass, groovyClassLoaderClass, File.class), compilerConfiguration, groovyClassLoader, outputDirectory);
-
-        // add Groovy sources
-        addGroovySources(stubSources, compilerConfigurationClass, javaStubCompilationUnitClass, compilerConfiguration, javaStubCompilationUnit);
-
-        // generate the stubs
-        invokeMethod(findMethod(javaStubCompilationUnitClass, "compile"), javaStubCompilationUnit);
+        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());
+        compiler.generateStubs(configuration);
     }
 
-    /**
-     * Sets up the CompilerConfiguration to use for stub generation.
-     *
-     * @param outputDirectory            the directory to write the stub files to
-     * @param compilerConfigurationClass the CompilerConfiguration class
-     * @return the CompilerConfiguration to use for stub generation
-     * @throws InstantiationException    when a class needed for stub generation cannot be instantiated
-     * @throws IllegalAccessException    when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
-     */
-    protected Object setupCompilerConfiguration(final File outputDirectory, final Class<?> compilerConfigurationClass) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));
-        invokeMethod(findMethod(compilerConfigurationClass, "setDebug", boolean.class), compilerConfiguration, debug);
-        invokeMethod(findMethod(compilerConfigurationClass, "setVerbose", boolean.class), compilerConfiguration, verbose);
-        invokeMethod(findMethod(compilerConfigurationClass, "setWarningLevel", int.class), compilerConfiguration, warningLevel);
-        invokeMethod(findMethod(compilerConfigurationClass, "setTolerance", int.class), compilerConfiguration, tolerance);
-        invokeMethod(findMethod(compilerConfigurationClass, "setTargetBytecode", String.class), compilerConfiguration, translateJavacTargetToTargetBytecode(targetBytecode));
-        if (sourceEncoding != null) {
-            invokeMethod(findMethod(compilerConfigurationClass, "setSourceEncoding", String.class), compilerConfiguration, sourceEncoding);
-        }
-        Map<String, Object> options = new HashMap<>();
-        options.put("stubDir", outputDirectory);
-        options.put("keepStubs", Boolean.TRUE);
-        invokeMethod(findMethod(compilerConfigurationClass, "setJointCompilationOptions", Map.class), compilerConfiguration, options);
-
-        return compilerConfiguration;
-    }
-
-    /**
-     * Adds the Groovy sources to the CompilationUnit.
-     *
-     * @param stubSources                  the sources to perform stub generation on
-     * @param compilerConfigurationClass   the CompilerConfiguration class
-     * @param javaStubCompilationUnitClass the JavaStubCompilationUnit class
-     * @param compilerConfiguration        the CompilerConfiguration to use for stub generation
-     * @param javaStubCompilationUnit      the JavaStubCompilationUnit to use for stub generation
-     * @throws IllegalAccessException    when a method needed for stub generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for stub generation cannot be completed
-     */
-    protected void addGroovySources(final Set<File> stubSources, final Class<?> compilerConfigurationClass, final Class<?> javaStubCompilationUnitClass, final Object compilerConfiguration, final Object javaStubCompilationUnit) throws InvocationTargetException, IllegalAccessException {
-        Set<String> scriptExtensions = new HashSet<>();
-        for (File stubSource : stubSources) {
-            scriptExtensions.add(FileUtils.getFileExtension(stubSource));
-        }
-        getLog().debug("Detected Groovy file extensions: " + scriptExtensions + ".");
-        if (supportsSettingExtensions()) {
-            invokeMethod(findMethod(compilerConfigurationClass, "setScriptExtensions", Set.class), compilerConfiguration, scriptExtensions);
-        }
-        getLog().debug("Adding Groovy to generate stubs for:");
-        Method addSource = findMethod(javaStubCompilationUnitClass, "addSource", File.class);
-        for (File stubSource : stubSources) {
-            getLog().debug("    " + stubSource);
-            if (supportsSettingExtensions()) {
-                invokeMethod(addSource, javaStubCompilationUnit, stubSource);
-            } else {
-                DotGroovyFile dotGroovyFile = new DotGroovyFile(stubSource).setScriptExtensions(scriptExtensions);
-                invokeMethod(addSource, javaStubCompilationUnit, dotGroovyFile);
+    protected void performForkedStubGeneration(org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration, String javaExecutable) throws InvocationTargetException {
+        try {
+            // Write configuration to file
+            File configFile = File.createTempFile("groovy-stub-config", ".ser");
+            configFile.deleteOnExit();
+            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {
+                oos.writeObject(configuration);
             }
+
+            // Build classpath for forked process (plugin + dependencies)
+            String forkClasspath = buildForkClasspath();
+
+            List<String> command = new java.util.ArrayList<>();
+            command.add(javaExecutable);
+            command.add("-cp");
+            command.add(forkClasspath);
+            command.add("org.codehaus.gmavenplus.util.ForkedGroovyCompiler");
+            command.add(configFile.getAbsolutePath());
+
+            ProcessBuilder pb = new ProcessBuilder(command);
+            pb.inheritIO();
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode != 0) {
+                throw new InvocationTargetException(new RuntimeException("Forked stub generation failed with exit code " + exitCode));
+            }
+
+        } catch (java.io.IOException | InterruptedException e) {
+            throw new InvocationTargetException(e);
         }
     }
 
-    /**
-     * Determines whether the version of Groovy supports stub generation.
-     *
-     * @return <code>true</code> if the version of Groovy supports stub generation, <code>false</code> otherwise
-     */
-    protected boolean supportsSettingExtensions() {
-        return groovyAtLeast(GROOVY_1_8_3) && (groovyOlderThan(GROOVY_1_9_0_BETA1) || groovyNewerThan(GROOVY_1_9_0_BETA3));
+    protected String buildForkClasspath() {
+        StringBuilder cp = new StringBuilder();
+        // Add plugin artifact
+        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());
+
+        // Add plugin dependencies
+        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {
+            cp.append(File.pathSeparator);
+            cp.append(artifact.getFile().getAbsolutePath());
+        }
+
+        // Add maven-plugin-api jar which is 'provided' so not in getArtifacts()
+        try {
+            Class<?> logClass = org.apache.maven.plugin.logging.Log.class;
+            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();
+            if (codeSource != null) {
+                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();
+                cp.append(File.pathSeparator).append(logJar);
+            }
+        } catch (Exception e) {
+            getLog().warn("Could not find maven-plugin-api jar to add to fork classpath", e);
+        }
+
+        return cp.toString();
     }
 
     /**
@@ -469,109 +311,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         }
     }
 
-    /**
-     * Throws an exception if targetBytecode is not supported with this version of Groovy. That is, when Groovy added
-     * the option to org.codehaus.groovy.control.CompilerConfiguration and used it in
-     * org.codehaus.groovy.classgen.asm.WriterController.
-     */
-    protected void verifyGroovyVersionSupportsTargetBytecode() {
-        if ("1.5".equals(targetBytecode) || "5".equals(targetBytecode) || "1.6".equals(targetBytecode) || "6".equals(targetBytecode) || "1.7".equals(targetBytecode) || "7".equals(targetBytecode) || "1.8".equals(targetBytecode) || "8".equals(targetBytecode) || "1.9".equals(targetBytecode) || "9".equals(targetBytecode) || "10".equals(targetBytecode)) {
-            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " isn't accepted by Groovy " + GROOVY_5_0_0_ALPHA1 + " or newer.");
-            }
-        }
 
-        if ("25".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_27)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
-            }
-            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA13)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA13 + " or newer.");
-            }
-        } else if ("24".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_24)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_24 + " or newer.");
-            }
-            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA11)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA11 + " or newer.");
-            }
-        } else if ("23".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_21)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_21 + " or newer.");
-            }
-            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA8)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA8 + " or newer.");
-            }
-        } else if ("22".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_16)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_16 + " or newer.");
-            }
-            if (groovyNewerThan(GROOVY_5_0_0_ALPHA1) && groovyOlderThan(GROOVY_5_0_0_ALPHA3)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_5_0_0_ALPHA3 + " or newer.");
-            }
-        } else if ("21".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_11)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_11 + " or newer.");
-            }
-        } else if ("20".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_6)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_6 + " or newer.");
-            }
-        } else if ("19".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_2)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_2 + " or newer.");
-            }
-        } else if ("18".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_4_0_0_BETA1)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_4_0_0_BETA1 + " or newer.");
-            }
-        } else if ("17".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_3_0_8) || (groovyAtLeast(GROOVY_4_0_0_ALPHA1) && groovyOlderThan(GROOVY_4_0_0_ALPHA3))) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_8 + "/" + GROOVY_4_0_0_ALPHA3 + " or newer.");
-            }
-        } else if ("16".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_3_0_6)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_6 + " or newer.");
-            }
-        } else if ("15".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_3_0_3)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_3 + " or newer.");
-            }
-        } else if ("14".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_3_0_0_BETA2)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_3_0_0_BETA2 + " or newer.");
-            }
-        } else if ("13".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_5_7) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_BETA1))) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_7 + "/" + GROOVY_3_0_0_BETA1 + " or newer. No 2.6 version is supported.");
-            }
-        } else if ("12".equals(targetBytecode) || "11".equals(targetBytecode) || "10".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4))) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
-            }
-        } else if ("9".equals(targetBytecode) || "1.9".equals(targetBytecode)) {
-            if (!isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3)
-                    || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_2_6_0_ALPHA4))
-                    || (groovyAtLeast(GROOVY_3_0_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA2)))) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_2_6_0_ALPHA4 + "/" + GROOVY_3_0_0_ALPHA2 + " or newer.");
-            } else if (isGroovyIndy() && (groovyOlderThan(GROOVY_2_5_3) || (groovyAtLeast(GROOVY_2_6_0_ALPHA1) && groovyOlderThan(GROOVY_3_0_0_ALPHA4)))) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_5_3 + "/" + GROOVY_3_0_0_ALPHA4 + " or newer. No 2.6 version is supported.");
-            }
-        } else if ("8".equals(targetBytecode) || "1.8".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_3_3)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_3_3 + " or newer.");
-            }
-        } else if ("7".equals(targetBytecode) || "1.7".equals(targetBytecode) || "6".equals(targetBytecode) || "1.6".equals(targetBytecode)) {
-            if (groovyOlderThan(GROOVY_2_1_3)) {
-                throw new IllegalArgumentException("Target bytecode " + targetBytecode + " requires Groovy " + GROOVY_2_1_3 + " or newer.");
-            }
-        } else if (!"5".equals(targetBytecode) && !"1.5".equals(targetBytecode) && !"4".equals(targetBytecode) && !"1.4".equals(targetBytecode)) {
-            throw new IllegalArgumentException("Unrecognized target bytecode: '" + targetBytecode + "'. This check can be skipped with 'skipBytecodeCheck', but this may result in a different target bytecode being used.");
-        }
-    }
 
-    protected static String translateJavacTargetToTargetBytecode(String targetBytecode) {
-        return AbstractCompileMojo.translateJavacTargetToTargetBytecode(targetBytecode);
-    }
 
 }

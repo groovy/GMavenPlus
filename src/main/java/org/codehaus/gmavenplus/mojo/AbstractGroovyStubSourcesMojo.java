@@ -62,7 +62,7 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
         Method language = sourceRoot.getMethod("language");
         Method directory = sourceRoot.getMethod("directory");
         Method id = project.getClass().getClassLoader().loadClass("org.apache.maven.api.ExtensibleEnum").getMethod("id");
-        Collection<?> sources = (Collection) field.get(project);
+        Collection<?> sources = (Collection<?>) field.get(project);
         sources.removeIf(source -> {
             try {
                 return Objects.equals(id.invoke(scope.invoke(source)), scopeToRemove)

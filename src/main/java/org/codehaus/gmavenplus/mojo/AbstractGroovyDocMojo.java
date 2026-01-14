@@ -19,13 +19,15 @@ package org.codehaus.gmavenplus.mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
-import org.codehaus.gmavenplus.groovyworkarounds.GroovyDocTemplateInfo;
 import org.codehaus.gmavenplus.javaparser.LanguageLevel;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.Link;
 import org.codehaus.gmavenplus.model.Scopes;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.FileUtils;
+
+import org.codehaus.gmavenplus.model.GroovyDocConfiguration;
+import org.codehaus.gmavenplus.util.GroovyCompiler;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,17 +36,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
-import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 
 
 /**
@@ -56,31 +52,6 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
 public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
     /**
-     * Groovy 5.0.0-beta-1 version.
-     */
-    protected static final Version GROOVY_5_0_0_BETA_1 = new Version(5, 0, 0, "beta-1");
-
-    /**
-     * Groovy 5.0.0-alpha-1 version.
-     */
-    protected static final Version GROOVY_5_0_0_ALPHA_1 = new Version(5, 0, 0, "alpha-1");
-
-    /**
-     * Groovy 4.0.27 version.
-     */
-    protected static final Version GROOVY_4_0_27 = new Version(4, 0, 27);
-
-    /**
-     * Groovy 3.0.0 alpha-4 version.
-     */
-    protected static final Version GROOVY_3_0_0_ALPHA_4 = new Version(3, 0, 0, "alpha-4");
-
-    /**
-     * Groovy 1.6.0 RC-2 version.
-     */
-    protected static final Version GROOVY_1_6_0_RC2 = new Version(1, 6, 0, "RC-2");
-
-    /**
      * Groovy 1.6.0 RC-1 version.
      */
     protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, "RC-1");
@@ -89,11 +60,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
      * Groovy 1.5.8 version.
      */
     protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);
-
-    /**
-     * Groovy 1.5.2 version.
-     */
-    protected static final Version GROOVY_1_5_2 = new Version(1, 5, 2);
 
     /**
      * The window title.
@@ -279,6 +245,26 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected boolean attachGroovyDocAnnotation;
 
     /**
+     * The Maven ToolchainManager.
+     */
+    @javax.inject.Inject
+    protected org.apache.maven.toolchain.ToolchainManager toolchainManager;
+
+    /**
+     * The Maven Session.
+     */
+    @Parameter(defaultValue = "${session}", readonly = true, required = true)
+    protected org.apache.maven.execution.MavenSession session;
+
+    /**
+     * Whether to execute in a forked process.
+     *
+     * @since 1.13.0
+     */
+    @Parameter(property = "fork", defaultValue = "false")
+    protected boolean fork;
+
+    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -301,8 +287,52 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        setupClassWrangler(classpath, includeClasspath);
+        GroovyDocConfiguration configuration = new GroovyDocConfiguration(sourceDirectories, classpath, outputDirectory);
+        configuration.setIncludeClasspath(includeClasspath);
+        configuration.setDocProperties(setupProperties());
+        configuration.setLinks(links);
 
+        configuration.setAttachGroovyDocAnnotation(attachGroovyDocAnnotation);
+        configuration.setDefaultDocTemplates(defaultDocTemplates);
+        configuration.setDefaultPackageTemplates(defaultPackageTemplates);
+        configuration.setDefaultClassTemplates(defaultClassTemplates);
+        configuration.setGroovyDocToolClass(groovyDocToolClass);
+        configuration.setOutputToolClass(outputToolClass);
+        configuration.setFileOutputToolClass(fileOutputToolClass);
+        configuration.setResourceManagerClass(resourceManagerClass);
+        configuration.setClasspathResourceManagerClass(classpathResourceManagerClass);
+        configuration.setLinkArgumentClass(linkArgumentClass);
+        configuration.setWindowTitle(windowTitle);
+        configuration.setDocTitle(docTitle);
+        configuration.setFooter(footer);
+        configuration.setHeader(header);
+        configuration.setDisplayAuthor(displayAuthor);
+        configuration.setDisplayAuthor(displayAuthor);
+        configuration.setOverviewFile(overviewFile);
+        configuration.setLanguageLevel(languageLevel != null ? languageLevel.toString() : null);
+
+        configuration.setScope(scope);
+
+        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext("jdk", session);
+        if (toolchain != null) {
+            getLog().info("Toolchain in gmavenplus-plugin: " + toolchain);
+            performForkedGroovyDocGeneration(configuration, toolchain.findTool("java"));
+        } else if (fork) {
+            String javaExecutable = getJavaExecutable();
+            getLog().info("Forking GroovyDoc generation using " + javaExecutable);
+            performForkedGroovyDocGeneration(configuration, javaExecutable);
+        } else {
+            performInProcessGroovyDocGeneration(configuration);
+        }
+
+        // overwrite stylesheet.css with provided stylesheet (if configured)
+        if (stylesheetFile != null) {
+            copyStylesheet(outputDirectory);
+        }
+    }
+
+    protected void performInProcessGroovyDocGeneration(GroovyDocConfiguration configuration) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
+        setupClassWrangler(configuration.getClasspath(), includeClasspath);
         classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());
         logPluginClasspath();
 
@@ -316,48 +346,66 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             return;
         }
 
-        // get classes we need with reflection
-        Class<?> groovyDocToolClass = classWrangler.getClass(this.groovyDocToolClass == null ? "org.codehaus.groovy.tools.groovydoc.GroovyDocTool" : this.groovyDocToolClass);
-        Class<?> outputToolClass = classWrangler.getClass(this.outputToolClass == null ? "org.codehaus.groovy.tools.groovydoc.OutputTool" : this.outputToolClass);
-        Class<?> fileOutputToolClass = classWrangler.getClass(this.fileOutputToolClass == null ? "org.codehaus.groovy.tools.groovydoc.FileOutputTool" : this.fileOutputToolClass);
-        Class<?> resourceManagerClass = classWrangler.getClass(this.resourceManagerClass == null ? "org.codehaus.groovy.tools.groovydoc.ResourceManager" : this.resourceManagerClass);
-        Class<?> classpathResourceManagerClass = classWrangler.getClass(this.classpathResourceManagerClass == null ? "org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager" : this.classpathResourceManagerClass);
+        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());
+        compiler.generateGroovyDoc(configuration);
+    }
 
-        // set up GroovyDoc options
-        if (attachGroovyDocAnnotation) {
-            if (groovyAtLeast(GROOVY_3_0_0_ALPHA_4)) {
-                System.setProperty("runtimeGroovydoc", "true");
-            } else {
-                getLog().warn("Requested to enable attaching GroovyDoc annotation, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_3_0_0_ALPHA_4 + " or newer). Ignoring enableGroovyDocAnnotation parameter.");
+    protected void performForkedGroovyDocGeneration(GroovyDocConfiguration configuration, String javaExecutable) throws InvocationTargetException {
+        try {
+             // Write configuration to file
+            File configFile = File.createTempFile("groovy-doc-config", ".ser");
+            configFile.deleteOnExit();
+            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {
+                oos.writeObject(configuration);
             }
+
+            // Build classpath for forked process (plugin + dependencies)
+            String forkClasspath = buildForkClasspath();
+
+            List<String> command = new ArrayList<>();
+            command.add(javaExecutable);
+            command.add("-cp");
+            command.add(forkClasspath);
+            command.add("org.codehaus.gmavenplus.util.ForkedGroovyCompiler");
+            command.add(configFile.getAbsolutePath());
+
+            ProcessBuilder pb = new ProcessBuilder(command);
+            pb.inheritIO();
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode != 0) {
+                throw new InvocationTargetException(new RuntimeException("Forked GroovyDoc generation failed with exit code " + exitCode));
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new InvocationTargetException(e);
         }
-        Properties docProperties = setupProperties();
-        Object fileOutputTool = invokeConstructor(findConstructor(fileOutputToolClass));
-        Object classpathResourceManager = invokeConstructor(findConstructor(classpathResourceManagerClass));
-        FileSetManager fileSetManager = new FileSetManager();
-        List<String> sourceDirectoriesStrings = new ArrayList<>();
-        for (FileSet sourceDirectory : sourceDirectories) {
-            sourceDirectoriesStrings.add(sourceDirectory.getDirectory());
-        }
-        GroovyDocTemplateInfo groovyDocTemplateInfo = new GroovyDocTemplateInfo(classWrangler.getGroovyVersion());
-        List<?> groovyDocLinks = setupLinks();
-        if (groovyOlderThan(GROOVY_1_6_0_RC2)) {
-            getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
+    }
+
+    protected String buildForkClasspath() {
+        StringBuilder cp = new StringBuilder();
+        // Add plugin artifact
+        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());
+
+        // Add plugin dependencies
+        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {
+            cp.append(File.pathSeparator);
+            cp.append(artifact.getFile().getAbsolutePath());
         }
 
-        // prevent Java stubs (which lack Javadoc) from overwriting GroovyDoc by removing Java sources
-        List<String> groovyDocSources = setupGroovyDocSources(sourceDirectories, fileSetManager);
-
-        // instantiate GroovyDocTool
-        Object groovyDocTool = createGroovyDocTool(groovyDocToolClass, resourceManagerClass, docProperties, classpathResourceManager, sourceDirectoriesStrings, groovyDocTemplateInfo, groovyDocLinks);
-
-        // generate GroovyDoc
-        generateGroovyDoc(outputDirectory, groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);
-
-        // overwrite stylesheet.css with provided stylesheet (if configured)
-        if (stylesheetFile != null) {
-            copyStylesheet(outputDirectory);
+        // Add maven-plugin-api jar which is 'provided' so not in getArtifacts()
+        try {
+            Class<?> logClass = org.apache.maven.plugin.logging.Log.class;
+            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();
+            if (codeSource != null) {
+                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();
+                cp.append(File.pathSeparator).append(logJar);
+            }
+        } catch (Exception e) {
+            getLog().warn("Could not find maven-plugin-api jar to add to fork classpath", e);
         }
+
+        return cp.toString();
     }
 
     /**
@@ -391,171 +439,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         return properties;
     }
 
-    /**
-     * Sets up the GroovyDoc links.
-     *
-     * @return the GroovyDoc links
-     * @throws ClassNotFoundException    when a class needed for setting up GroovyDoc links cannot be found
-     * @throws InstantiationException    when a class needed for setting up GroovyDoc links cannot be instantiated
-     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc links cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc links cannot be completed
-     */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    protected List<?> setupLinks() throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        List linksList = new ArrayList();
-        if (links != null && !links.isEmpty()) {
-            Class<?> linkArgumentClass = null;
-            if (this.linkArgumentClass == null) {
-                if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
-                    linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.LinkArgument");
-                } else if (groovyAtLeast(GROOVY_1_5_2)) {
-                    linkArgumentClass = classWrangler.getClass("org.codehaus.groovy.ant.Groovydoc$LinkArgument");
-                }
-            } else {
-                linkArgumentClass = classWrangler.getClass(this.linkArgumentClass);
-            }
-            if (linkArgumentClass != null) {
-                Method setHref = findMethod(linkArgumentClass, "setHref", String.class);
-                Method setPackages = findMethod(linkArgumentClass, "setPackages", String.class);
-                for (Link link : links) {
-                    Object linkArgument = invokeConstructor(findConstructor(linkArgumentClass));
-                    invokeMethod(setHref, linkArgument, link.getHref());
-                    invokeMethod(setPackages, linkArgument, link.getPackages());
-                    linksList.add(linkArgument);
-                }
-            } else {
-                getLog().warn("Requested to use GroovyDoc links, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be 1.5.2 or newer). Ignoring links parameter.");
-            }
-        }
-
-        return linksList;
-    }
-
-    /**
-     * Instantiates a new GroovyDocTool.
-     *
-     * @param groovyDocToolClass       the GroovyDocTool class
-     * @param resourceManagerClass     the ResourceManager lass
-     * @param docProperties            the documentation properties
-     * @param classpathResourceManager the ClasspathResourceManager for the GroovyDocTool
-     * @param sourceDirectories        the source directories for the GroovyDocTool
-     * @param groovyDocTemplateInfo    the GroovyDocTemplateInfo for the GroovyDocTool
-     * @param groovyDocLinks           the GroovyDoc links
-     * @return the GroovyDocTool to use in GroovyDoc generation
-     * @throws InstantiationException    when a class needed for setting up GroovyDoc tool cannot be instantiated
-     * @throws IllegalAccessException    when a method needed for setting up GroovyDoc tool cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for setting up GroovyDoc tool cannot be completed
-     */
-    protected Object createGroovyDocTool(final Class<?> groovyDocToolClass, final Class<?> resourceManagerClass, final Properties docProperties, final Object classpathResourceManager, final List<String> sourceDirectories, final GroovyDocTemplateInfo groovyDocTemplateInfo, final List<?> groovyDocLinks) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        Object groovyDocTool;
-        if ((groovyAtLeast(GROOVY_4_0_27) && groovyOlderThan(GROOVY_5_0_0_ALPHA_1)) || groovyAtLeast(GROOVY_5_0_0_BETA_1)) {
-            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, String.class, Properties.class),
-                    classpathResourceManager,
-                    sourceDirectories.toArray(new String[0]),
-                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
-                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
-                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
-                    groovyDocLinks,
-                    languageLevel != null ? languageLevel.toString() : languageLevel,
-                    docProperties
-            );
-        } else if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
-            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
-                    classpathResourceManager,
-                    sourceDirectories.toArray(new String[0]),
-                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
-                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
-                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
-                    groovyDocLinks,
-                    docProperties
-            );
-        } else if (groovyAtLeast(GROOVY_1_5_2)) {
-            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class, List.class),
-                    classpathResourceManager,
-                    sourceDirectories.get(0),
-                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
-                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
-                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
-                    groovyDocLinks
-            );
-            if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
-            }
-        } else {
-            groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String.class, String[].class, String[].class, String[].class),
-                    classpathResourceManager,
-                    sourceDirectories.get(0),
-                    defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
-                    defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
-                    defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates
-            );
-            if (sourceDirectories.size() > 1) {
-                getLog().warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support more than one GroovyDoc source directory (must be 1.6-RC-2 or newer). Only using first source directory (" + sourceDirectories.get(0) + ").");
-            }
-        }
-
-        return groovyDocTool;
-    }
-
-    /**
-     * Gets the Groovy sources without the Java sources (since the Java sources don't have Javadoc).
-     *
-     * @param sourceDirectories the source directories to get the Groovy sources from
-     * @param fileSetManager    the FileSetmanager to use to get the included files
-     * @return the groovy sources
-     */
-    protected List<String> setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
-        List<String> javaSources = new ArrayList<>();
-        List<String> groovySources = new ArrayList<>();
-        List<String> possibleGroovyStubs = new ArrayList<>();
-        for (FileSet sourceDirectory : sourceDirectories) {
-            String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);
-            for (String source : sources) {
-                if (source.endsWith(".java") && !javaSources.contains(source)) {
-                    javaSources.add(source);
-                } else if (!groovySources.contains(source)) {
-                    groovySources.add(source);
-                    possibleGroovyStubs.add(source.replaceFirst("\\." + FileUtils.getFileExtension(source), ".java"));
-                }
-            }
-        }
-        javaSources.removeAll(possibleGroovyStubs);
-        List<String> groovyDocSources = new ArrayList<>();
-        groovyDocSources.addAll(javaSources);
-        groovyDocSources.addAll(groovySources);
-
-        return groovyDocSources;
-    }
-
-    /**
-     * Performs the GroovyDoc generation.
-     *
-     * @param outputDirectory    the directory to output the GroovyDoc to
-     * @param groovyDocToolClass the GroovyDocTool class
-     * @param outputToolClass    the OutputTool class
-     * @param fileOutputTool     the FileOutputTool to use for GroovyDoc generation
-     * @param groovyDocSources   the sources to
-     * @param groovyDocTool      the GroovyDocTool to use for GroovyDoc generation
-     * @throws IllegalAccessException    when a method needed for GroovyDoc generation cannot be accessed
-     * @throws InvocationTargetException when a reflection invocation needed for GroovyDoc generation cannot be completed
-     */
-    protected void generateGroovyDoc(final File outputDirectory, final Class<?> groovyDocToolClass, final Class<?> outputToolClass, final Object fileOutputTool, final List<String> groovyDocSources, final Object groovyDocTool) throws InvocationTargetException, IllegalAccessException {
-        getLog().debug("Adding sources to generate GroovyDoc for:");
-        if (getLog().isDebugEnabled()) {
-            for (String groovyDocSource : groovyDocSources) {
-                getLog().debug("    " + groovyDocSource);
-            }
-        }
-        if (groovyAtLeast(GROOVY_1_6_0_RC2)) {
-            invokeMethod(findMethod(groovyDocToolClass, "add", List.class), groovyDocTool, groovyDocSources);
-        } else {
-            Method add = findMethod(groovyDocToolClass, "add", String.class);
-            for (String groovyDocSource : groovyDocSources) {
-                invokeMethod(add, groovyDocTool, groovyDocSource);
-            }
-        }
-        invokeMethod(findMethod(groovyDocToolClass, "renderToOutput", outputToolClass, String.class), groovyDocTool, fileOutputTool, outputDirectory.getAbsolutePath());
-    }
 
     /**
      * Copies the stylesheet to the specified output directory.

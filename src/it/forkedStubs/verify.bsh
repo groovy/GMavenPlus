@@ -1,0 +1,26 @@
+import java.io.*;
+import java.util.regex.*;
+
+File buildLog = new File( basedir, "build.log" );
+if ( !buildLog.exists() ) {
+    throw new FileNotFoundException( "build.log missing" );
+}
+
+StringBuilder contentBuilder = new StringBuilder();
+BufferedReader br = new BufferedReader(new FileReader(buildLog));
+try {
+    String sCurrentLine;
+    while ((sCurrentLine = br.readLine()) != null) {
+        contentBuilder.append(sCurrentLine).append("\n");
+    }
+} finally {
+    br.close();
+}
+String log = contentBuilder.toString();
+
+Pattern p = Pattern.compile("Toolchain in gmavenplus-plugin: JDK\\[.*17.*\\]");
+Matcher m = p.matcher(log);
+
+if (!m.find()) {
+    throw new RuntimeException("Build log does not contain usage of JDK 17 toolchain.");
+}
