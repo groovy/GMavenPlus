@@ -25,7 +25,6 @@ import java.util.Set;
  * Holds configuration for Groovy stub generation.
  *
  * @author Keegan Witt
- * @since 1.13.0
  */
 public class GroovyStubConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -37,7 +37,6 @@ import static java.util.Collections.singletonList;
  * This mojo provides access to the Groovy sources (including stubs).
  *
  * @author Keegan Witt
- * @since 1.0-beta-3
  */
 public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySourcesMojo {
 

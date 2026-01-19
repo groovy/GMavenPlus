@@ -23,7 +23,6 @@ import java.io.*;
  * A collection of file utility methods taken from Guava so we don't have to depend on Guava.
  *
  * @author Keegan Witt
- * @since 1.2
  */
 public class FileUtils {
 

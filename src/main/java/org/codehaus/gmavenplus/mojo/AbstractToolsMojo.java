@@ -35,7 +35,6 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
  * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
- * @since 1.1
  */
 public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
 

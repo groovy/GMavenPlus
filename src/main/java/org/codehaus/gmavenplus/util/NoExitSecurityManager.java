@@ -23,7 +23,6 @@ import java.security.Permission;
  * Custom security manager to {@link System#exit} (and related) from being used.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
- * @since 1.2
  */
 public class NoExitSecurityManager extends SecurityManager {
 

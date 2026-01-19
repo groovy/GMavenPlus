@@ -47,7 +47,6 @@ import java.util.Properties;
  * The base GroovyDoc mojo, which all GroovyDoc mojos extend.
  *
  * @author Keegan Witt
- * @since 1.0-beta-1
  */
 public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
@@ -259,7 +258,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Whether to execute in a forked process.
      *
-     * @since 1.13.0
+     * @since 4.3.0
      */
     @Parameter(property = "fork", defaultValue = "false")
     protected boolean fork;

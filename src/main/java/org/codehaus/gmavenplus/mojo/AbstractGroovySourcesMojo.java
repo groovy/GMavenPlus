@@ -29,7 +29,6 @@ import static java.util.Collections.singletonList;
  * This mojo provides access to the Groovy sources.
  *
  * @author Keegan Witt
- * @since 1.0-beta-2
  */
 public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 

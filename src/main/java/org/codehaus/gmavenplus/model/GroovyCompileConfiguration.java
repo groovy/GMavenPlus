@@ -25,7 +25,6 @@ import java.util.Set;
  * Holds configuration for Groovy compilation.
  *
  * @author Keegan Witt
- * @since 1.13.0
  */
 public class GroovyCompileConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;
