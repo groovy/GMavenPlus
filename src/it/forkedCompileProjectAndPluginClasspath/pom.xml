@@ -23,6 +23,8 @@
     <dependency>
       <groupId>@groovyGroupId@</groupId>
       <artifactId>groovy</artifactId>
+      <version>@groovyVersion@</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -52,7 +54,7 @@
         <artifactId>gmavenplus-plugin</artifactId>
         <configuration>
           <fork>true</fork>
-          <includeClasspath>PROJECT_ONLY</includeClasspath>
+          <includeClasspath>PROJECT_AND_PLUGIN</includeClasspath>
         </configuration>
         <executions>
           <execution>
@@ -62,6 +64,13 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>@groovyGroupId@</groupId>
+            <artifactId>groovy</artifactId>
+            <version>@groovyVersion@</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

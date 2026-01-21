@@ -12,7 +12,6 @@
   </parent>
 
   <artifactId>gmavenplus-plugin-it-forkedStubs</artifactId>
-  <version>testing</version>
   <name>GMavenPlus Plugin Forked Stubs Test</name>
   <description>Verifies stub generation using a forked JVM via Toolchains.</description>
 
