@@ -36,7 +36,6 @@ import java.util.List;
  * @author Sam Brannen
  * @author Chris Beams
  * @author Keegan Witt
- * @since 1.0-beta-1
  */
 public class ReflectionUtils {
 

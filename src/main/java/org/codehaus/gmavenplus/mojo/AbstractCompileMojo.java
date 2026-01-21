@@ -41,7 +41,6 @@ import java.util.Set;
  * The base compile mojo, which all compile mojos extend.
  *
  * @author Keegan Witt
- * @since 1.0-beta-1
  */
 public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
 

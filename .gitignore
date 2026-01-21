@@ -15,6 +15,9 @@ bin
 .idea
 out
 
+# VS Code
+.vscode
+
 # Sonar
 .sonar
 

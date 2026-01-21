@@ -27,7 +27,6 @@ import java.util.Properties;
  * Holds configuration for GroovyDoc generation.
  *
  * @author Keegan Witt
- * @since 1.13.0
  */
 public class GroovyDocConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;

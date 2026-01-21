@@ -36,7 +36,6 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
  * Handles getting Groovy classes and version from the specified classpath.
  *
  * @author Keegan Witt
- * @since 1.2
  */
 public class ClassWrangler {
 
