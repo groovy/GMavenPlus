@@ -23,7 +23,6 @@ import java.security.Permission;
  * Custom security manager to {@link System#exit} (and related) from being used.
  *
  * @author &lt;a href=&quot;mailto:jason@planet57.com&quot;&gt;Jason Dillon&lt;/a&gt;
- * @since 1.2
  */
 public class NoExitSecurityManager extends SecurityManager {
 
@@ -37,16 +36,16 @@ public class NoExitSecurityManager extends SecurityManager {
      *
      * @param newParent the parent to set
      */
-<span class="fc" id="L40">    public NoExitSecurityManager(final SecurityManager newParent) {</span>
-<span class="fc" id="L41">        parent = newParent;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L39">    public NoExitSecurityManager(final SecurityManager newParent) {</span>
+<span class="fc" id="L40">        parent = newParent;</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Construct a new NoExitSecurityManager, using the System SecurityManager as the parent.
      */
     public NoExitSecurityManager() {
-<span class="fc" id="L48">        this(System.getSecurityManager());</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L47">        this(System.getSecurityManager());</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Check the given Permission.
@@ -54,10 +53,10 @@ public class NoExitSecurityManager extends SecurityManager {
      * @param permission the Permission to check
      */
     public void checkPermission(final Permission permission) {
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (parent != null) {</span>
-<span class="nc" id="L58">            parent.checkPermission(permission);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (parent != null) {</span>
+<span class="nc" id="L57">            parent.checkPermission(permission);</span>
         }
-<span class="nc" id="L60">    }</span>
+<span class="nc" id="L59">    }</span>
 
     /**
      * Always throws {@link SecurityException}.
@@ -65,7 +64,7 @@ public class NoExitSecurityManager extends SecurityManager {
      * @param code the exit code that is completely ignored
      */
     public void checkExit(final int code) {
-<span class="nc" id="L68">        throw new SecurityException(&quot;Use of System.exit() is forbidden!&quot;);</span>
+<span class="nc" id="L67">        throw new SecurityException(&quot;Use of System.exit() is forbidden!&quot;);</span>
     }
 
 }

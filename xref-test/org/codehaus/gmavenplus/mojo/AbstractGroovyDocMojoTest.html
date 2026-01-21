@@ -8,74 +8,82 @@
 <div id="overview"><a href="../../../../../testapidocs/org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojoTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> org.codehaus.gmavenplus.mojo;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.plugin.MojoExecution;
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.plugin.descriptor.MojoDescriptor;
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.project.MavenProject;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.shared.model.fileset.FileSet;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.shared.model.fileset.util.FileSetManager;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.junit.Before;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.junit.Test;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.mockito.Mock;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.mockito.MockitoAnnotations;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.mockito.Spy;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> java.io.File;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> java.util.Collections.emptyList;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * Unit tests for the AbstractGroovyDocMojo class.</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * @author Rick Venutolo</em>
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractGroovyDocMojoTest" href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojoTest.html#AbstractGroovyDocMojoTest">AbstractGroovyDocMojoTest</a> {
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      @Spy
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> TestMojo testMojo;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      @Mock
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> MojoExecution mojoExecution;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      @Mock
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> MojoDescriptor mojoDescriptor;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      @Mock
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> MavenProject project;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      @Before
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          MockitoAnnotations.openMocks(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          testMojo.mojoExecution = mojoExecution;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          testMojo.project = project;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          doReturn(<strong class="jxr_keyword">new</strong> Properties()).when(testMojo).setupProperties();
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          doReturn(emptyList()).when(testMojo).setupGroovyDocSources(any(FileSet[].<strong class="jxr_keyword">class</strong>), any(FileSetManager.<strong class="jxr_keyword">class</strong>));
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          doNothing().when(testMojo).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(), anyList(), any());
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Test
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDontSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          verify(testMojo, times(1)).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(), anyList(), any());
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      @Test
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          testMojo.skipGroovyDoc = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          verify(testMojo, never()).generateGroovyDoc(any(File.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(Class.<strong class="jxr_keyword">class</strong>), any(), anyList(), any());
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractGroovyDocMojo {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          @Override
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          }
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  }
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.execution.MavenSession;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.plugin.MojoExecution;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.plugin.descriptor.MojoDescriptor;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.project.MavenProject;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.shared.model.fileset.FileSet;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.apache.maven.toolchain.ToolchainManager;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.junit.Before;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.mockito.Mock;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.mockito.MockitoAnnotations;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.mockito.Spy;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.util.Properties;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> java.util.Collections.emptyList;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.mockito.Mockito.*;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> * Unit tests for the AbstractGroovyDocMojo class.</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> * @author Rick Venutolo</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractGroovyDocMojoTest" href="../../../../org/codehaus/gmavenplus/mojo/AbstractGroovyDocMojoTest.html#AbstractGroovyDocMojoTest">AbstractGroovyDocMojoTest</a> {
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      @Spy
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> TestMojo testMojo;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      @Mock
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> MojoExecution mojoExecution;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Mock
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">private</strong> MojoDescriptor mojoDescriptor;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      @Mock
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> MavenProject project;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      @Mock
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">private</strong> ToolchainManager toolchainManager;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      @Mock
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">private</strong> MavenSession session;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      @Before
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setup() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          MockitoAnnotations.openMocks(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          testMojo.mojoExecution = mojoExecution;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          doReturn(mojoDescriptor).when(mojoExecution).getMojoDescriptor();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          testMojo.project = project;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          testMojo.toolchainManager = toolchainManager;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          testMojo.session = session;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          doReturn(<strong class="jxr_keyword">new</strong> Properties()).when(testMojo).setupProperties();
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          doNothing().when(testMojo).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      }
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      @Test
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDontSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          verify(testMojo, times(1)).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      @Test
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSkipGroovyDoc() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          testMojo.skipGroovyDoc = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          testMojo.doGroovyDocGeneration(<strong class="jxr_keyword">new</strong> FileSet[]{<strong class="jxr_keyword">new</strong> FileSet()}, emptyList(), <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          verify(testMojo, never()).performInProcessGroovyDocGeneration(any(org.codehaus.gmavenplus.model.GroovyDocConfiguration.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> TestMojo <strong class="jxr_keyword">extends</strong> AbstractGroovyDocMojo {
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          @Override
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  }
 </pre>
 <hr/>
-<div id="footer">© 2011–2025</div>
+<div id="footer">© 2011–2026</div>
 </body>
 </html>

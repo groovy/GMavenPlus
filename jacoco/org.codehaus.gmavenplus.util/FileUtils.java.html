@@ -23,7 +23,6 @@ import java.io.*;
  * A collection of file utility methods taken from Guava so we don't have to depend on Guava.
  *
  * @author Keegan Witt
- * @since 1.2
  */
 public class FileUtils {
 
@@ -37,9 +36,9 @@ public class FileUtils {
      * @return the file extension
      */
     public static String getFileExtension(final File file) {
-<span class="fc" id="L40">        String fileName = file.getName();</span>
-<span class="fc" id="L41">        int dotIndex = fileName.lastIndexOf('.');</span>
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        return (dotIndex == -1) ? &quot;&quot; : fileName.substring(dotIndex + 1);</span>
+<span class="fc" id="L39">        String fileName = file.getName();</span>
+<span class="fc" id="L40">        int dotIndex = fileName.lastIndexOf('.');</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        return (dotIndex == -1) ? &quot;&quot; : fileName.substring(dotIndex + 1);</span>
     }
 
     /**
@@ -49,7 +48,7 @@ public class FileUtils {
      * @return the file extension
      */
     public static String getFileExtension(final String file) {
-<span class="fc" id="L52">        return getFileExtension(new File(file));</span>
+<span class="fc" id="L51">        return getFileExtension(new File(file));</span>
     }
 
     /**
@@ -59,9 +58,9 @@ public class FileUtils {
      * @return the file name without its path or extension
      */
     public static String getNameWithoutExtension(final File file) {
-<span class="fc" id="L62">        String fileName = file.getName();</span>
-<span class="fc" id="L63">        int dotIndex = fileName.lastIndexOf('.');</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);</span>
+<span class="fc" id="L61">        String fileName = file.getName();</span>
+<span class="fc" id="L62">        int dotIndex = fileName.lastIndexOf('.');</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        return (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);</span>
     }
 
     /**
@@ -71,7 +70,7 @@ public class FileUtils {
      * @return the file name without its path or extension
      */
     public static String getNameWithoutExtension(final String file) {
-<span class="fc" id="L74">        return getNameWithoutExtension(new File(file));</span>
+<span class="fc" id="L73">        return getNameWithoutExtension(new File(file));</span>
     }
 
     /**
@@ -80,14 +79,14 @@ public class FileUtils {
      * @param inputStream the InputStream to close
      */
     public static void closeQuietly(final InputStream inputStream) {
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (inputStream != null) {</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (inputStream != null) {</span>
             try {
-<span class="nc" id="L85">                inputStream.close();</span>
-<span class="fc" id="L86">            } catch (IOException e) {</span>
+<span class="nc" id="L84">                inputStream.close();</span>
+<span class="fc" id="L85">            } catch (IOException e) {</span>
                 // do nothing, close quietly
-<span class="nc" id="L88">            }</span>
+<span class="nc" id="L87">            }</span>
         }
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Closes the OutputStream if it is not null, swallowing any exceptions.
@@ -95,14 +94,14 @@ public class FileUtils {
      * @param outputStream the OutputStream to close
      */
     public static void closeQuietly(final OutputStream outputStream) {
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (outputStream != null) {</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (outputStream != null) {</span>
             try {
-<span class="nc" id="L100">                outputStream.close();</span>
-<span class="fc" id="L101">            } catch (IOException e) {</span>
+<span class="nc" id="L99">                outputStream.close();</span>
+<span class="fc" id="L100">            } catch (IOException e) {</span>
                 // do nothing, close quietly
-<span class="nc" id="L103">            }</span>
+<span class="nc" id="L102">            }</span>
         }
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Closes the Reader if it is not null, swallowing any exceptions.
@@ -110,14 +109,14 @@ public class FileUtils {
      * @param reader the Reader to close
      */
     public static void closeQuietly(final Reader reader) {
-<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (reader != null) {</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (reader != null) {</span>
             try {
-<span class="fc" id="L115">                reader.close();</span>
-<span class="fc" id="L116">            } catch (IOException e) {</span>
+<span class="fc" id="L114">                reader.close();</span>
+<span class="fc" id="L115">            } catch (IOException e) {</span>
                 // do nothing, close quietly
-<span class="fc" id="L118">            }</span>
+<span class="fc" id="L117">            }</span>
         }
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Closes the Writer if it is not null, swallowing any exceptions.
@@ -125,14 +124,14 @@ public class FileUtils {
      * @param writer the Writer to close
      */
     public static void closeQuietly(final Writer writer) {
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (writer != null) {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (writer != null) {</span>
             try {
-<span class="nc" id="L130">                writer.close();</span>
-<span class="fc" id="L131">            } catch (IOException e) {</span>
+<span class="nc" id="L129">                writer.close();</span>
+<span class="fc" id="L130">            } catch (IOException e) {</span>
                 // do nothing, close quietly
-<span class="nc" id="L133">            }</span>
+<span class="nc" id="L132">            }</span>
         }
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L134">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

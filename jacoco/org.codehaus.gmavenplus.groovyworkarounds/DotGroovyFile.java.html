@@ -30,7 +30,6 @@ import java.util.Set;
  * into letting us use files that don't end in &quot;.groovy&quot; (as a workaround for &lt;a href=&quot;http://jira.codehaus.org/browse/GROOVY-5021&quot;&gt;GROOVY-5021&lt;/a&gt;).
  *
  * @author Keegan Witt
- * @since 1.0-beta-1
  */
 public class DotGroovyFile extends File {
 
@@ -39,7 +38,7 @@ public class DotGroovyFile extends File {
     /**
      * The file extensions to consider as Groovy files.
      */
-<span class="fc" id="L42">    private Set&lt;String&gt; scriptExtensions = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L41">    private Set&lt;String&gt; scriptExtensions = new HashSet&lt;&gt;();</span>
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -47,8 +46,8 @@ public class DotGroovyFile extends File {
      * @param pathname Pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(final String pathname) {
-<span class="fc" id="L50">        super(pathname);</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L49">        super(pathname);</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -57,8 +56,8 @@ public class DotGroovyFile extends File {
      * @param child  Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(final String parent, final String child) {
-<span class="fc" id="L60">        super(parent, child);</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L59">        super(parent, child);</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -67,8 +66,8 @@ public class DotGroovyFile extends File {
      * @param child  Child pathname to use to create DotGroovyFile
      */
     public DotGroovyFile(final File parent, final String child) {
-<span class="fc" id="L70">        super(parent, child);</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L69">        super(parent, child);</span>
+<span class="fc" id="L70">    }</span>
 
     /**
      * Constructs a new DotGroovyFile object with the specified parameters.
@@ -76,8 +75,8 @@ public class DotGroovyFile extends File {
      * @param uri URI to use to create DotGroovyFile
      */
     public DotGroovyFile(final URI uri) {
-<span class="fc" id="L79">        super(uri);</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L78">        super(uri);</span>
+<span class="fc" id="L79">    }</span>
 
     /**
      * A convenience constructor to turn a regular file into a DotGroovyFile.
@@ -85,8 +84,8 @@ public class DotGroovyFile extends File {
      * @param file File to use to create DotGroovyFile
      */
     public DotGroovyFile(final File file) {
-<span class="fc" id="L88">        super(file.getAbsolutePath());</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L87">        super(file.getAbsolutePath());</span>
+<span class="fc" id="L88">    }</span>
 
     /**
      * A method to lie about the file extension and say it is &quot;.groovy&quot;.
@@ -95,10 +94,10 @@ public class DotGroovyFile extends File {
      */
     @Override
     public String getName() {
-<span class="pc bpc" id="L98" title="2 of 6 branches missed.">        if (scriptExtensions != null &amp;&amp; !scriptExtensions.isEmpty() &amp;&amp; scriptExtensions.contains(FileUtils.getFileExtension(super.getAbsolutePath()))) {</span>
-<span class="fc" id="L99">            return FileUtils.getNameWithoutExtension(super.getName()) + &quot;.groovy&quot;;</span>
+<span class="pc bpc" id="L97" title="2 of 6 branches missed.">        if (scriptExtensions != null &amp;&amp; !scriptExtensions.isEmpty() &amp;&amp; scriptExtensions.contains(FileUtils.getFileExtension(super.getAbsolutePath()))) {</span>
+<span class="fc" id="L98">            return FileUtils.getNameWithoutExtension(super.getName()) + &quot;.groovy&quot;;</span>
         } else {
-<span class="fc" id="L101">            return super.getName();</span>
+<span class="fc" id="L100">            return super.getName();</span>
         }
     }
 
@@ -108,7 +107,7 @@ public class DotGroovyFile extends File {
      * @return The script extensions for this Groovy file
      */
     public Set&lt;String&gt; getScriptExtensions() {
-<span class="fc" id="L111">        return scriptExtensions;</span>
+<span class="fc" id="L110">        return scriptExtensions;</span>
     }
 
     /**
@@ -118,8 +117,8 @@ public class DotGroovyFile extends File {
      * @return This object (for fluent invocation)
      */
     public DotGroovyFile setScriptExtensions(final Set&lt;String&gt; newScriptExtensions) {
-<span class="fc" id="L121">        scriptExtensions = newScriptExtensions;</span>
-<span class="fc" id="L122">        return this;</span>
+<span class="fc" id="L120">        scriptExtensions = newScriptExtensions;</span>
+<span class="fc" id="L121">        return this;</span>
     }
 
 }

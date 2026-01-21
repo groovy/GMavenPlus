@@ -1,49 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LanguageLevel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.javaparser</a> &gt; <span class="el_source">LanguageLevel.java</span></div><h1>LanguageLevel.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.javaparser;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LanguageLevel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.javaparser</a> &gt; <span class="el_source">LanguageLevel.java</span></div><h1>LanguageLevel.java</h1><pre class="source lang-java linenums">// From https://github.com/javaparser/javaparser/blob/7e0b61c9a026e04bd955cff915f208deda1984c7/javaparser-core/src/main/java/com/github/javaparser/ParserConfiguration.java#L50-L243
+
+package org.codehaus.gmavenplus.javaparser;
 
 import java.util.Arrays;
 
-<span class="nc" id="L5">public enum LanguageLevel {</span>
-<span class="nc" id="L6">    JAVA_1_0,</span>
-<span class="nc" id="L7">    JAVA_1_1,</span>
-<span class="nc" id="L8">    JAVA_1_2,</span>
-<span class="nc" id="L9">    JAVA_1_3,</span>
-<span class="nc" id="L10">    JAVA_1_4,</span>
-<span class="nc" id="L11">    JAVA_5,</span>
-<span class="nc" id="L12">    JAVA_6,</span>
-<span class="nc" id="L13">    JAVA_7,</span>
-<span class="nc" id="L14">    JAVA_8,</span>
-<span class="nc" id="L15">    JAVA_9,</span>
-<span class="nc" id="L16">    JAVA_10,</span>
-<span class="nc" id="L17">    JAVA_10_PREVIEW,</span>
-<span class="nc" id="L18">    JAVA_11,</span>
-<span class="nc" id="L19">    JAVA_11_PREVIEW,</span>
-<span class="nc" id="L20">    JAVA_12,</span>
-<span class="nc" id="L21">    JAVA_12_PREVIEW,</span>
-<span class="nc" id="L22">    JAVA_13,</span>
-<span class="nc" id="L23">    JAVA_13_PREVIEW,</span>
-<span class="nc" id="L24">    JAVA_14,</span>
-<span class="nc" id="L25">    JAVA_14_PREVIEW,</span>
-<span class="nc" id="L26">    JAVA_15,</span>
-<span class="nc" id="L27">    JAVA_15_PREVIEW,</span>
-<span class="nc" id="L28">    JAVA_16,</span>
-<span class="nc" id="L29">    JAVA_16_PREVIEW,</span>
-<span class="nc" id="L30">    JAVA_17,</span>
-<span class="nc" id="L31">    JAVA_17_PREVIEW,</span>
-<span class="nc" id="L32">    JAVA_18,</span>
-<span class="nc" id="L33">    JAVA_19,</span>
-<span class="nc" id="L34">    JAVA_20,</span>
-<span class="nc" id="L35">    JAVA_21;</span>
+<span class="nc" id="L7">public enum LanguageLevel {</span>
+<span class="nc" id="L8">    JAVA_1_0,</span>
+<span class="nc" id="L9">    JAVA_1_1,</span>
+<span class="nc" id="L10">    JAVA_1_2,</span>
+<span class="nc" id="L11">    JAVA_1_3,</span>
+<span class="nc" id="L12">    JAVA_1_4,</span>
+<span class="nc" id="L13">    JAVA_5,</span>
+<span class="nc" id="L14">    JAVA_6,</span>
+<span class="nc" id="L15">    JAVA_7,</span>
+<span class="nc" id="L16">    JAVA_8,</span>
+<span class="nc" id="L17">    JAVA_9,</span>
+<span class="nc" id="L18">    JAVA_10,</span>
+<span class="nc" id="L19">    JAVA_10_PREVIEW,</span>
+<span class="nc" id="L20">    JAVA_11,</span>
+<span class="nc" id="L21">    JAVA_11_PREVIEW,</span>
+<span class="nc" id="L22">    JAVA_12,</span>
+<span class="nc" id="L23">    JAVA_12_PREVIEW,</span>
+<span class="nc" id="L24">    JAVA_13,</span>
+<span class="nc" id="L25">    JAVA_13_PREVIEW,</span>
+<span class="nc" id="L26">    JAVA_14,</span>
+<span class="nc" id="L27">    JAVA_14_PREVIEW,</span>
+<span class="nc" id="L28">    JAVA_15,</span>
+<span class="nc" id="L29">    JAVA_15_PREVIEW,</span>
+<span class="nc" id="L30">    JAVA_16,</span>
+<span class="nc" id="L31">    JAVA_16_PREVIEW,</span>
+<span class="nc" id="L32">    JAVA_17,</span>
+<span class="nc" id="L33">    JAVA_17_PREVIEW,</span>
+<span class="nc" id="L34">    JAVA_18,</span>
+<span class="nc" id="L35">    JAVA_19,</span>
+<span class="nc" id="L36">    JAVA_20,</span>
+<span class="nc" id="L37">    JAVA_21;</span>
 
-<span class="nc" id="L37">    public static final LanguageLevel RAW = null;</span>
-<span class="nc" id="L38">    public static final LanguageLevel POPULAR = JAVA_11;</span>
-<span class="nc" id="L39">    public static final LanguageLevel CURRENT = JAVA_18;</span>
-<span class="nc" id="L40">    public static final LanguageLevel BLEEDING_EDGE = JAVA_21;</span>
-<span class="nc" id="L41">    private static final LanguageLevel[] yieldSupport = new LanguageLevel[]{</span>
+<span class="nc" id="L39">    public static final LanguageLevel RAW = null;</span>
+<span class="nc" id="L40">    public static final LanguageLevel POPULAR = JAVA_11;</span>
+<span class="nc" id="L41">    public static final LanguageLevel CURRENT = JAVA_18;</span>
+<span class="nc" id="L42">    public static final LanguageLevel BLEEDING_EDGE = JAVA_21;</span>
+<span class="nc" id="L43">    private static final LanguageLevel[] yieldSupport = new LanguageLevel[]{</span>
             JAVA_1_0, JAVA_13, JAVA_13_PREVIEW, JAVA_14, JAVA_14_PREVIEW, JAVA_15, JAVA_15_PREVIEW, JAVA_16,
             JAVA_16_PREVIEW, JAVA_17, JAVA_17_PREVIEW, JAVA_18, JAVA_19, JAVA_20, JAVA_21};
 
     public boolean isYieldSupported() {
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        return Arrays.stream(yieldSupport).anyMatch((level) -&gt; level == this);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        return Arrays.stream(yieldSupport).anyMatch((level) -&gt; level == this);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

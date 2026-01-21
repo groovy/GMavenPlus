@@ -29,9 +29,8 @@ import static java.util.Collections.singletonList;
  * This mojo provides access to the Groovy sources.
  *
  * @author Keegan Witt
- * @since 1.0-beta-2
  */
-<span class="fc" id="L34">public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {</span>
+<span class="fc" id="L33">public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {</span>
 
     /**
      * Main source directory name.
@@ -51,16 +50,16 @@ import static java.util.Collections.singletonList;
      * @return The included files from the specified sources
      */
     protected SortedSet&lt;File&gt; getFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L54">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
-<span class="fc" id="L55">        FileSetManager fileSetManager = new FileSetManager();</span>
+<span class="fc" id="L53">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
+<span class="fc" id="L54">        FileSetManager fileSetManager = new FileSetManager();</span>
 
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            for (String include : fileSetManager.getIncludedFiles(fileSet)) {</span>
-<span class="nc" id="L59">                files.add(new File(fileSet.getDirectory(), include));</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (FileSet fileSet : getFilesets(fromSources, includeJavaSources)) {</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">            for (String include : fileSetManager.getIncludedFiles(fileSet)) {</span>
+<span class="nc" id="L58">                files.add(new File(fileSet.getDirectory(), include));</span>
             }
         }
 
-<span class="fc" id="L63">        return files;</span>
+<span class="fc" id="L62">        return files;</span>
     }
 
     /**
@@ -71,16 +70,16 @@ import static java.util.Collections.singletonList;
      * @return The included files from the specified sources
      */
     protected SortedSet&lt;File&gt; getTestFiles(final FileSet[] fromSources, final boolean includeJavaSources) {
-<span class="fc" id="L74">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
-<span class="fc" id="L75">        FileSetManager fileSetManager = new FileSetManager();</span>
+<span class="fc" id="L73">        SortedSet&lt;File&gt; files = new TreeSet&lt;&gt;();</span>
+<span class="fc" id="L74">        FileSetManager fileSetManager = new FileSetManager();</span>
 
-<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {</span>
-<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            for (String include : fileSetManager.getIncludedFiles(fileSet)) {</span>
-<span class="nc" id="L79">                files.add(new File(fileSet.getDirectory(), include));</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (FileSet fileSet : getTestFilesets(fromSources, includeJavaSources)) {</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            for (String include : fileSetManager.getIncludedFiles(fileSet)) {</span>
+<span class="nc" id="L78">                files.add(new File(fileSet.getDirectory(), include));</span>
             }
         }
 
-<span class="fc" id="L83">        return files;</span>
+<span class="fc" id="L82">        return files;</span>
     }
 
     /**
@@ -94,32 +93,32 @@ import static java.util.Collections.singletonList;
         FileSet[] result;
         FileSet[] groovyFileSets;
 
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (fromSources != null) {</span>
-<span class="fc" id="L98">            groovyFileSets = fromSources;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (fromSources != null) {</span>
+<span class="fc" id="L97">            groovyFileSets = fromSources;</span>
         } else {
-<span class="fc" id="L100">            FileSet groovyFileSet = new FileSet();</span>
-<span class="fc" id="L101">            String groovyDirectory = &quot;src&quot; + File.separator + MAIN + File.separator + &quot;groovy&quot;;</span>
-<span class="fc" id="L102">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
-<span class="fc" id="L103">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
-<span class="fc" id="L104">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
+<span class="fc" id="L99">            FileSet groovyFileSet = new FileSet();</span>
+<span class="fc" id="L100">            String groovyDirectory = &quot;src&quot; + File.separator + MAIN + File.separator + &quot;groovy&quot;;</span>
+<span class="fc" id="L101">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
+<span class="fc" id="L102">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
+<span class="fc" id="L103">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (includeJavaSources) {</span>
-<span class="fc" id="L108">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">            for (String sourceRoot : project.getCompileSourceRoots()) {</span>
-<span class="fc" id="L110">                FileSet javaFileSet = new FileSet();</span>
-<span class="fc" id="L111">                javaFileSet.setDirectory(sourceRoot);</span>
-<span class="fc" id="L112">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
-<span class="fc" id="L113">                javaFileSets.add(javaFileSet);</span>
-<span class="fc" id="L114">            }</span>
-<span class="fc" id="L115">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
-<span class="fc" id="L116">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
-<span class="fc" id="L117">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
-<span class="fc" id="L118">        } else {</span>
-<span class="fc" id="L119">            result = groovyFileSets;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (includeJavaSources) {</span>
+<span class="fc" id="L107">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            for (String sourceRoot : project.getCompileSourceRoots()) {</span>
+<span class="fc" id="L109">                FileSet javaFileSet = new FileSet();</span>
+<span class="fc" id="L110">                javaFileSet.setDirectory(sourceRoot);</span>
+<span class="fc" id="L111">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
+<span class="fc" id="L112">                javaFileSets.add(javaFileSet);</span>
+<span class="fc" id="L113">            }</span>
+<span class="fc" id="L114">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
+<span class="fc" id="L115">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
+<span class="fc" id="L116">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
+<span class="fc" id="L117">        } else {</span>
+<span class="fc" id="L118">            result = groovyFileSets;</span>
         }
 
-<span class="fc" id="L122">        return result;</span>
+<span class="fc" id="L121">        return result;</span>
     }
 
     /**
@@ -133,32 +132,32 @@ import static java.util.Collections.singletonList;
         FileSet[] result;
         FileSet[] groovyFileSets;
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (fromSources != null) {</span>
-<span class="fc" id="L137">            groovyFileSets = fromSources;</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (fromSources != null) {</span>
+<span class="fc" id="L136">            groovyFileSets = fromSources;</span>
         } else {
-<span class="fc" id="L139">            FileSet groovyFileSet = new FileSet();</span>
-<span class="fc" id="L140">            String groovyDirectory = &quot;src&quot; + File.separator + TEST + File.separator + &quot;groovy&quot;;</span>
-<span class="fc" id="L141">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
-<span class="fc" id="L142">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
-<span class="fc" id="L143">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
+<span class="fc" id="L138">            FileSet groovyFileSet = new FileSet();</span>
+<span class="fc" id="L139">            String groovyDirectory = &quot;src&quot; + File.separator + TEST + File.separator + &quot;groovy&quot;;</span>
+<span class="fc" id="L140">            groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);</span>
+<span class="fc" id="L141">            groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));</span>
+<span class="fc" id="L142">            groovyFileSets = new FileSet[]{groovyFileSet};</span>
         }
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (includeJavaSources) {</span>
-<span class="fc" id="L147">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L148" title="All 2 branches covered.">            for (String sourceRoot : project.getTestCompileSourceRoots()) {</span>
-<span class="fc" id="L149">                FileSet javaFileSet = new FileSet();</span>
-<span class="fc" id="L150">                javaFileSet.setDirectory(sourceRoot);</span>
-<span class="fc" id="L151">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
-<span class="fc" id="L152">                javaFileSets.add(javaFileSet);</span>
-<span class="fc" id="L153">            }</span>
-<span class="fc" id="L154">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
-<span class="fc" id="L155">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
-<span class="fc" id="L156">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
-<span class="fc" id="L157">        } else {</span>
-<span class="fc" id="L158">            result = groovyFileSets;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (includeJavaSources) {</span>
+<span class="fc" id="L146">            List&lt;FileSet&gt; javaFileSets = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            for (String sourceRoot : project.getTestCompileSourceRoots()) {</span>
+<span class="fc" id="L148">                FileSet javaFileSet = new FileSet();</span>
+<span class="fc" id="L149">                javaFileSet.setDirectory(sourceRoot);</span>
+<span class="fc" id="L150">                javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));</span>
+<span class="fc" id="L151">                javaFileSets.add(javaFileSet);</span>
+<span class="fc" id="L152">            }</span>
+<span class="fc" id="L153">            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);</span>
+<span class="fc" id="L154">            result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);</span>
+<span class="fc" id="L155">            System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);</span>
+<span class="fc" id="L156">        } else {</span>
+<span class="fc" id="L157">            result = groovyFileSets;</span>
         }
 
-<span class="fc" id="L161">        return result;</span>
+<span class="fc" id="L160">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -35,9 +35,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
  * Note that using the &lt;code&gt;ant&lt;/code&gt; property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
- * @since 1.1
  */
-<span class="fc" id="L40">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
+<span class="fc" id="L39">public abstract class AbstractToolsMojo extends AbstractGroovyMojo {</span>
 
     /**
      * Maven ProjectHelper to use in properties.
@@ -67,7 +66,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      *
      * @since 1.0-beta-3
      */
-<span class="fc" id="L70">    @Parameter</span>
+<span class="fc" id="L69">    @Parameter</span>
     protected Properties properties = new Properties();
 
     /**
@@ -135,63 +134,63 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * Initializes the properties field.
      */
     protected void initializeProperties() {
-<span class="fc bfc" id="L138" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
-<span class="fc" id="L139">            properties.put(&quot;project&quot;, project);</span>
+<span class="fc bfc" id="L137" title="All 4 branches covered.">        if (project != null &amp;&amp; !properties.containsKey(&quot;project&quot;)) {</span>
+<span class="fc" id="L138">            properties.put(&quot;project&quot;, project);</span>
         }
-<span class="fc bfc" id="L141" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
-<span class="fc" id="L142">            properties.put(&quot;session&quot;, session);</span>
+<span class="fc bfc" id="L140" title="All 4 branches covered.">        if (session != null &amp;&amp; !properties.containsKey(&quot;session&quot;)) {</span>
+<span class="fc" id="L141">            properties.put(&quot;session&quot;, session);</span>
         }
-<span class="fc bfc" id="L144" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
-<span class="fc" id="L145">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
+<span class="fc bfc" id="L143" title="All 4 branches covered.">        if (pluginArtifacts != null &amp;&amp; !properties.containsKey(&quot;pluginArtifacts&quot;)) {</span>
+<span class="fc" id="L144">            properties.put(&quot;pluginArtifacts&quot;, pluginArtifacts);</span>
         }
-<span class="pc bpc" id="L147" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
-<span class="fc" id="L148">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
+<span class="pc bpc" id="L146" title="1 of 4 branches missed.">        if (mojoExecution != null &amp;&amp; !properties.containsKey(&quot;mojoExecution&quot;)) {</span>
+<span class="fc" id="L147">            properties.put(&quot;mojoExecution&quot;, mojoExecution);</span>
         }
-<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
-<span class="fc" id="L151">            properties.put(&quot;log&quot;, getLog());</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (!properties.containsKey(&quot;log&quot;)) {</span>
+<span class="fc" id="L150">            properties.put(&quot;log&quot;, getLog());</span>
         }
-<span class="pc bpc" id="L153" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
-<span class="nc" id="L154">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
+<span class="pc bpc" id="L152" title="3 of 4 branches missed.">        if (projectHelper != null &amp;&amp; !properties.containsKey(&quot;projectHelper&quot;)) {</span>
+<span class="nc" id="L153">            properties.put(&quot;projectHelper&quot;, projectHelper);</span>
         }
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
-<span class="fc" id="L157">            Object antBuilder = null;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (!properties.containsKey(&quot;ant&quot;)) {</span>
+<span class="fc" id="L156">            Object antBuilder = null;</span>
             try {
-<span class="fc" id="L159">                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.ant.AntBuilder&quot;)));</span>
-<span class="nc" id="L160">            } catch (ClassNotFoundException e1) {</span>
-<span class="nc" id="L161">                getLog().debug(&quot;groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.&quot;);</span>
+<span class="fc" id="L158">                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.ant.AntBuilder&quot;)));</span>
+<span class="nc" id="L159">            } catch (ClassNotFoundException e1) {</span>
+<span class="nc" id="L160">                getLog().debug(&quot;groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.&quot;);</span>
                 try {
-<span class="nc" id="L163">                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
-<span class="nc" id="L164">                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {</span>
-<span class="nc" id="L165">                    logUnableToInitializeAntBuilder(e2);</span>
-<span class="nc" id="L166">                }</span>
-<span class="nc" id="L167">            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {</span>
-<span class="nc" id="L168">                logUnableToInitializeAntBuilder(e);</span>
-<span class="pc" id="L169">            }</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if (antBuilder != null) {</span>
-<span class="fc" id="L171">                properties.put(&quot;ant&quot;, antBuilder);</span>
+<span class="nc" id="L162">                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass(&quot;groovy.util.AntBuilder&quot;)));</span>
+<span class="nc" id="L163">                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {</span>
+<span class="nc" id="L164">                    logUnableToInitializeAntBuilder(e2);</span>
+<span class="nc" id="L165">                }</span>
+<span class="nc" id="L166">            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {</span>
+<span class="nc" id="L167">                logUnableToInitializeAntBuilder(e);</span>
+<span class="pc" id="L168">            }</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">            if (antBuilder != null) {</span>
+<span class="fc" id="L170">                properties.put(&quot;ant&quot;, antBuilder);</span>
             }
         }
-<span class="pc bpc" id="L174" title="1 of 4 branches missed.">        if (bindSessionUserOverrideProperties &amp;&amp; !bindAllProjectProperties) {</span>
-<span class="nc" id="L175">            getLog().warn(&quot;bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.&quot;);</span>
+<span class="pc bpc" id="L173" title="1 of 4 branches missed.">        if (bindSessionUserOverrideProperties &amp;&amp; !bindAllProjectProperties) {</span>
+<span class="nc" id="L174">            getLog().warn(&quot;bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.&quot;);</span>
         }
-<span class="pc bpc" id="L177" title="1 of 4 branches missed.">        if (bindAllSessionUserProperties &amp;&amp; bindSessionUserOverrideProperties) {</span>
-<span class="nc" id="L178">            getLog().warn(&quot;bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.&quot;);</span>
+<span class="pc bpc" id="L176" title="1 of 4 branches missed.">        if (bindAllSessionUserProperties &amp;&amp; bindSessionUserOverrideProperties) {</span>
+<span class="nc" id="L177">            getLog().warn(&quot;bindAllSessionUserProperties and bindSessionUserOverrideProperties both set, bindAllSessionUserProperties will take precedence.&quot;);</span>
         }
-<span class="pc bpc" id="L180" title="1 of 4 branches missed.">        if (bindAllProjectProperties &amp;&amp; project != null) {</span>
-<span class="fc" id="L181">            properties.putAll(project.getProperties());</span>
+<span class="pc bpc" id="L179" title="1 of 4 branches missed.">        if (bindAllProjectProperties &amp;&amp; project != null) {</span>
+<span class="fc" id="L180">            properties.putAll(project.getProperties());</span>
         }
-<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (session != null) {</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">            if (bindAllSessionUserProperties) {</span>
-<span class="fc" id="L185">                properties.putAll(session.getUserProperties());</span>
-<span class="pc bpc" id="L186" title="1 of 6 branches missed.">            } else if (bindAllProjectProperties &amp;&amp; bindSessionUserOverrideProperties &amp;&amp; project != null) {</span>
-<span class="fc bfc" id="L187" title="All 2 branches covered.">                for (Object key : project.getProperties().keySet()) {</span>
-<span class="fc bfc" id="L188" title="All 2 branches covered.">                    if (session.getUserProperties().get(key) != null) {</span>
-<span class="fc" id="L189">                        properties.put(key, session.getUserProperties().get(key));</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (session != null) {</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">            if (bindAllSessionUserProperties) {</span>
+<span class="fc" id="L184">                properties.putAll(session.getUserProperties());</span>
+<span class="pc bpc" id="L185" title="1 of 6 branches missed.">            } else if (bindAllProjectProperties &amp;&amp; bindSessionUserOverrideProperties &amp;&amp; project != null) {</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">                for (Object key : project.getProperties().keySet()) {</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">                    if (session.getUserProperties().get(key) != null) {</span>
+<span class="fc" id="L188">                        properties.put(key, session.getUserProperties().get(key));</span>
                     }
-<span class="fc" id="L191">                }</span>
+<span class="fc" id="L190">                }</span>
             }
         }
-<span class="fc" id="L194">    }</span>
+<span class="fc" id="L193">    }</span>
 
     /**
      * Logs errors that caused the 'ant' object to not be populated.
@@ -199,8 +198,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-<span class="nc" id="L202">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
-<span class="nc" id="L203">    }</span>
+<span class="nc" id="L201">        getLog().warn(&quot;Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy &gt;= 2.3.0-rc-1, remember to include groovy-ant as a dependency.&quot;);</span>
+<span class="nc" id="L202">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

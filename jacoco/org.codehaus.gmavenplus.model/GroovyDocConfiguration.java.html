@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GroovyDocConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.model</a> &gt; <span class="el_source">GroovyDocConfiguration.java</span></div><h1>GroovyDocConfiguration.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.codehaus.gmavenplus.model;
+
+import org.apache.maven.shared.model.fileset.FileSet;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Properties;
+
+/**
+ * Holds configuration for GroovyDoc generation.
+ *
+ * @author Keegan Witt
+ */
+public class GroovyDocConfiguration implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private FileSet[] sourceDirectories;
+    private List&lt;?&gt; classpath;
+    private File outputDirectory;
+    private IncludeClasspath includeClasspath;
+    private Properties docProperties;
+    private List&lt;Link&gt; links;
+    private String[] defaultDocTemplates;
+    private String[] defaultPackageTemplates;
+    private String[] defaultClassTemplates;
+    private String groovyDocToolClass;
+    private String outputToolClass;
+    private String fileOutputToolClass;
+    private String resourceManagerClass;
+    private String classpathResourceManagerClass;
+    private String linkArgumentClass;
+    private boolean attachGroovyDocAnnotation;
+    private File overviewFile;
+    private String scope;
+    private String windowTitle;
+    private String docTitle;
+    private String footer;
+    private String header;
+    private boolean displayAuthor;
+    private String languageLevel;
+
+<span class="fc" id="L59">    public GroovyDocConfiguration(FileSet[] sourceDirectories, List&lt;?&gt; classpath, File outputDirectory) {</span>
+<span class="fc" id="L60">        this.sourceDirectories = sourceDirectories;</span>
+<span class="fc" id="L61">        this.classpath = classpath;</span>
+<span class="fc" id="L62">        this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L63">    }</span>
+
+    public FileSet[] getSourceDirectories() {
+<span class="nc" id="L66">        return sourceDirectories;</span>
+    }
+
+    public List&lt;?&gt; getClasspath() {
+<span class="nc" id="L70">        return classpath;</span>
+    }
+
+    public File getOutputDirectory() {
+<span class="nc" id="L74">        return outputDirectory;</span>
+    }
+
+    public IncludeClasspath getIncludeClasspath() {
+<span class="nc" id="L78">        return includeClasspath;</span>
+    }
+
+    public void setIncludeClasspath(IncludeClasspath includeClasspath) {
+<span class="fc" id="L82">        this.includeClasspath = includeClasspath;</span>
+<span class="fc" id="L83">    }</span>
+
+    public List&lt;Link&gt; getLinks() {
+<span class="nc" id="L86">        return links;</span>
+    }
+
+    public void setLinks(List&lt;Link&gt; links) {
+<span class="fc" id="L90">        this.links = links;</span>
+<span class="fc" id="L91">    }</span>
+
+    public String[] getDefaultDocTemplates() {
+<span class="nc" id="L94">        return defaultDocTemplates;</span>
+    }
+
+    public void setDefaultDocTemplates(String[] defaultDocTemplates) {
+<span class="fc" id="L98">        this.defaultDocTemplates = defaultDocTemplates;</span>
+<span class="fc" id="L99">    }</span>
+
+    public String[] getDefaultPackageTemplates() {
+<span class="nc" id="L102">        return defaultPackageTemplates;</span>
+    }
+
+    public void setDefaultPackageTemplates(String[] defaultPackageTemplates) {
+<span class="fc" id="L106">        this.defaultPackageTemplates = defaultPackageTemplates;</span>
+<span class="fc" id="L107">    }</span>
+
+    public String[] getDefaultClassTemplates() {
+<span class="nc" id="L110">        return defaultClassTemplates;</span>
+    }
+
+    public void setDefaultClassTemplates(String[] defaultClassTemplates) {
+<span class="fc" id="L114">        this.defaultClassTemplates = defaultClassTemplates;</span>
+<span class="fc" id="L115">    }</span>
+
+    public Properties getDocProperties() {
+<span class="nc" id="L118">        return docProperties;</span>
+    }
+
+    public void setDocProperties(Properties docProperties) {
+<span class="fc" id="L122">        this.docProperties = docProperties;</span>
+<span class="fc" id="L123">    }</span>
+
+    public String getGroovyDocToolClass() {
+<span class="nc" id="L126">        return groovyDocToolClass;</span>
+    }
+
+    public void setGroovyDocToolClass(String groovyDocToolClass) {
+<span class="fc" id="L130">        this.groovyDocToolClass = groovyDocToolClass;</span>
+<span class="fc" id="L131">    }</span>
+
+    public String getOutputToolClass() {
+<span class="nc" id="L134">        return outputToolClass;</span>
+    }
+
+    public void setOutputToolClass(String outputToolClass) {
+<span class="fc" id="L138">        this.outputToolClass = outputToolClass;</span>
+<span class="fc" id="L139">    }</span>
+
+    public String getFileOutputToolClass() {
+<span class="nc" id="L142">        return fileOutputToolClass;</span>
+    }
+
+    public void setFileOutputToolClass(String fileOutputToolClass) {
+<span class="fc" id="L146">        this.fileOutputToolClass = fileOutputToolClass;</span>
+<span class="fc" id="L147">    }</span>
+
+    public String getResourceManagerClass() {
+<span class="nc" id="L150">        return resourceManagerClass;</span>
+    }
+
+    public void setResourceManagerClass(String resourceManagerClass) {
+<span class="fc" id="L154">        this.resourceManagerClass = resourceManagerClass;</span>
+<span class="fc" id="L155">    }</span>
+
+    public String getClasspathResourceManagerClass() {
+<span class="nc" id="L158">        return classpathResourceManagerClass;</span>
+    }
+
+    public void setClasspathResourceManagerClass(String classpathResourceManagerClass) {
+<span class="fc" id="L162">        this.classpathResourceManagerClass = classpathResourceManagerClass;</span>
+<span class="fc" id="L163">    }</span>
+
+    public String getLinkArgumentClass() {
+<span class="nc" id="L166">        return linkArgumentClass;</span>
+    }
+
+    public void setLinkArgumentClass(String linkArgumentClass) {
+<span class="fc" id="L170">        this.linkArgumentClass = linkArgumentClass;</span>
+<span class="fc" id="L171">    }</span>
+
+    public boolean isAttachGroovyDocAnnotation() {
+<span class="nc" id="L174">        return attachGroovyDocAnnotation;</span>
+    }
+
+    public void setAttachGroovyDocAnnotation(boolean attachGroovyDocAnnotation) {
+<span class="fc" id="L178">        this.attachGroovyDocAnnotation = attachGroovyDocAnnotation;</span>
+<span class="fc" id="L179">    }</span>
+
+    public File getOverviewFile() {
+<span class="nc" id="L182">        return overviewFile;</span>
+    }
+
+    public void setOverviewFile(File overviewFile) {
+<span class="fc" id="L186">        this.overviewFile = overviewFile;</span>
+<span class="fc" id="L187">    }</span>
+
+    public String getScope() {
+<span class="nc" id="L190">        return scope;</span>
+    }
+
+    public void setScope(String scope) {
+<span class="fc" id="L194">        this.scope = scope;</span>
+<span class="fc" id="L195">    }</span>
+
+    public String getWindowTitle() {
+<span class="nc" id="L198">        return windowTitle;</span>
+    }
+
+    public void setWindowTitle(String windowTitle) {
+<span class="fc" id="L202">        this.windowTitle = windowTitle;</span>
+<span class="fc" id="L203">    }</span>
+
+    public String getDocTitle() {
+<span class="nc" id="L206">        return docTitle;</span>
+    }
+
+    public void setDocTitle(String docTitle) {
+<span class="fc" id="L210">        this.docTitle = docTitle;</span>
+<span class="fc" id="L211">    }</span>
+
+    public String getFooter() {
+<span class="nc" id="L214">        return footer;</span>
+    }
+
+    public void setFooter(String footer) {
+<span class="fc" id="L218">        this.footer = footer;</span>
+<span class="fc" id="L219">    }</span>
+
+    public String getHeader() {
+<span class="nc" id="L222">        return header;</span>
+    }
+
+    public void setHeader(String header) {
+<span class="fc" id="L226">        this.header = header;</span>
+<span class="fc" id="L227">    }</span>
+
+    public boolean isDisplayAuthor() {
+<span class="nc" id="L230">        return displayAuthor;</span>
+    }
+
+    public void setDisplayAuthor(boolean displayAuthor) {
+<span class="fc" id="L234">        this.displayAuthor = displayAuthor;</span>
+<span class="fc" id="L235">    }</span>
+
+    public String getLanguageLevel() {
+<span class="nc" id="L238">        return languageLevel;</span>
+    }
+
+    public void setLanguageLevel(String languageLevel) {
+<span class="fc" id="L242">        this.languageLevel = languageLevel;</span>
+<span class="fc" id="L243">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
