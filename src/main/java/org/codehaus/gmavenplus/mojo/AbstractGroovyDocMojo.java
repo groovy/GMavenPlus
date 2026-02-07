@@ -321,6 +321,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
             getLog().info("Forking GroovyDoc generation using " + javaExecutable);
             performForkedGroovyDocGeneration(configuration, javaExecutable);
         } else {
+            getLog().info("Performing in-process GroovyDoc generation");
             performInProcessGroovyDocGeneration(configuration);
         }
 

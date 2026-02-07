@@ -209,6 +209,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
             getLog().info("Forking stub generation using " + javaExecutable);
             performForkedStubGeneration(configuration, javaExecutable);
         } else {
+            getLog().info("Performing in-process stub generation");
             performInProcessStubGeneration(configuration, classpath);
         }
     }

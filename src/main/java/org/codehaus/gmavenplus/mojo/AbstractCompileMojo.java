@@ -244,6 +244,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
             getLog().info("Forking compilation using " + javaExecutable);
             performForkedCompilation(configuration, javaExecutable);
         } else {
+            getLog().info("Performing in-process compilation");
             performInProcessCompilation(configuration, classpath);
         }
     }
