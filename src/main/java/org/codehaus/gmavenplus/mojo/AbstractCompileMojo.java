@@ -220,6 +220,11 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     @SuppressWarnings({"rawtypes"})
     protected synchronized void doCompile(final Set<File> sources, final List classpath, final File compileOutputDirectory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, MalformedURLException {
+        if (sources == null || sources.isEmpty()) {
+            getLog().info("No sources specified for compilation. Skipping.");
+            return;
+        }
+
         GroovyCompileConfiguration configuration = new GroovyCompileConfiguration(sources, classpath, compileOutputDirectory);
         configuration.setIncludeClasspath(includeClasspath);
         configuration.setSkipBytecodeCheck(skipBytecodeCheck);
