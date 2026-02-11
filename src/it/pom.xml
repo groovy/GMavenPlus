@@ -11,8 +11,8 @@
 
   <properties>
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
-    <commonsLang3Version>3.17.0</commonsLang3Version>
-    <junit5Version>5.11.4</junit5Version>
+    <commonsLang3Version>3.20.0</commonsLang3Version>
+    <junit6Version>6.0.2</junit6Version>
   </properties>
 
   <dependencyManagement>
@@ -26,7 +26,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>${junit5Version}</version>
+        <version>${junit6Version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -39,7 +39,7 @@
       <dependency>
         <groupId>org.apache.maven.plugin-tools</groupId>
         <artifactId>maven-plugin-annotations</artifactId>
-        <version>3.15.1</version>
+        <version>3.15.2</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -71,7 +71,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.6.0</version>
+          <version>3.6.1</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.gmavenplus</groupId>
