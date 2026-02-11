@@ -51,7 +51,6 @@
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <configuration>
-          <fork>true</fork>
           <stubsOutputDirectory>${project.build.directory}/generated-sources/groovy-stubs</stubsOutputDirectory>
         </configuration>
         <executions>

@@ -47,5 +47,5 @@ jobs:
             21
       - name: full test
         run: |
-          ./mvnw org.apache.maven.plugins:maven-toolchains-plugin:generate-jdk-toolchains-xml -Dtoolchain.file=src/it/toolchains.xml
-          ./mvnw ${MAVEN_ARGS} --global-toolchains src/it/toolchains.xml ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION} clean install invoker:install invoker:run
+          ./mvnw org.apache.maven.plugins:maven-toolchains-plugin:3.2.0:generate-jdk-toolchains-xml -Dtoolchain.file=src/it/toolchains.xml
+          ./mvnw ${MAVEN_ARGS} ${MVN_GROOVY_GROUP_ID} ${MVN_GROOVY_VERSION} clean install invoker:install invoker:run

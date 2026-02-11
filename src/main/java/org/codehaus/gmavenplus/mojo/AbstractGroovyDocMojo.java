@@ -240,14 +240,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected org.apache.maven.execution.MavenSession session;
 
     /**
-     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
-     *
-     * @since 4.3.0
-     */
-    @Parameter(property = "fork", defaultValue = "false")
-    protected boolean fork;
-
-    /**
      * Generates the GroovyDoc for the specified sources.
      *
      * @param sourceDirectories The source directories to generate GroovyDoc for
@@ -300,10 +292,6 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         if (toolchain != null) {
             getLog().info("Toolchain in gmavenplus-plugin: " + toolchain);
             performForkedGroovyDocGeneration(configuration, toolchain.findTool("java"));
-        } else if (fork) {
-            String javaExecutable = getJavaExecutable();
-            getLog().info("Forking GroovyDoc generation using " + javaExecutable);
-            performForkedGroovyDocGeneration(configuration, javaExecutable);
         } else {
             getLog().info("Performing in-process GroovyDoc generation");
             performInProcessGroovyDocGeneration(configuration);
