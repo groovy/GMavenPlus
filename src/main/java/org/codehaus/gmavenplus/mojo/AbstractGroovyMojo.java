@@ -238,41 +238,4 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
         }
     }
 
-    /**
-     * Gets the Java executable to use for forked execution.
-     *
-     * @return the Java executable path
-     */
-    protected String getJavaExecutable() {
-        // Try to get operation system process via JDK 9+ ProcessHandle
-        try {
-            Class<?> processHandleClass = Class.forName("java.lang.ProcessHandle");
-            // ProcessHandle.current()
-            java.lang.reflect.Method currentMethod = processHandleClass.getMethod("current");
-            Object currentProcess = currentMethod.invoke(null);
-
-            // ProcessHandle.info()
-            java.lang.reflect.Method infoMethod = processHandleClass.getMethod("info");
-            Object info = infoMethod.invoke(currentProcess);
-
-            // ProcessHandle.Info.command()
-            Class<?> infoClass = Class.forName("java.lang.ProcessHandle$Info");
-            java.lang.reflect.Method commandMethod = infoClass.getMethod("command");
-            @SuppressWarnings("unchecked")
-            java.util.Optional<String> commandConfig = (java.util.Optional<String>) commandMethod.invoke(info);
-
-            if (commandConfig.isPresent()) {
-                return commandConfig.get();
-            }
-        } catch (Exception e) {
-            // ignore, we are probably on Java 8 or the OS doesn't support this
-        }
-
-        String javaHome = System.getProperty("java.home");
-        String javaExecutable = javaHome + File.separator + "bin" + File.separator + "java";
-        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
-            javaExecutable += ".exe";
-        }
-        return javaExecutable;
-    }
 }
