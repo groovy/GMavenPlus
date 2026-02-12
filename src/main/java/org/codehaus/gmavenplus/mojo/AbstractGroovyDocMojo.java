@@ -240,7 +240,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected org.apache.maven.execution.MavenSession session;
 
     /**
-     * Whether to execute in a forked process.
+     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
      *
      * @since 4.3.0
      */

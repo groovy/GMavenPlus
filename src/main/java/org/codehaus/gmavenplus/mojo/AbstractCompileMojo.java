@@ -184,7 +184,7 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected ToolchainManager toolchainManager;
 
     /**
-     * whether to fork the compilation.
+     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
      */
     @Parameter(defaultValue = "false")
     protected boolean fork;
