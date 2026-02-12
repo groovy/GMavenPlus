@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReflectionUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.util</a> &gt; <span class="el_source">ReflectionUtils.java</span></div><h1>ReflectionUtils.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2015 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReflectionUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.util</a> &gt; <span class="el_source">ReflectionUtils.java</span></div><h1>ReflectionUtils.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -51,20 +35,20 @@ public class ReflectionUtils {
      * @return The Constructor object
      */
     public static Constructor&lt;?&gt; findConstructor(final Class&lt;?&gt; clazz, final Class&lt;?&gt;... paramTypes) {
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (clazz == null) {</span>
-<span class="fc" id="L55">            throw new IllegalArgumentException(&quot;Class must not be null.&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (clazz == null) {</span>
+<span class="fc" id="L39">            throw new IllegalArgumentException(&quot;Class must not be null.&quot;);</span>
         }
-<span class="fc" id="L57">        Class&lt;?&gt; searchType = clazz;</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        while (searchType != null) {</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">            Constructor&lt;?&gt;[] constructors = searchType.isInterface() ? clazz.getConstructors() : clazz.getDeclaredConstructors();</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            for (Constructor&lt;?&gt; constructor : constructors) {</span>
-<span class="pc bpc" id="L61" title="1 of 4 branches missed.">                if (paramTypes == null || Arrays.equals(paramTypes, constructor.getParameterTypes())) {</span>
-<span class="fc" id="L62">                    return constructor;</span>
+<span class="fc" id="L41">        Class&lt;?&gt; searchType = clazz;</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        while (searchType != null) {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">            Constructor&lt;?&gt;[] constructors = searchType.isInterface() ? clazz.getConstructors() : clazz.getDeclaredConstructors();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            for (Constructor&lt;?&gt; constructor : constructors) {</span>
+<span class="pc bpc" id="L45" title="1 of 4 branches missed.">                if (paramTypes == null || Arrays.equals(paramTypes, constructor.getParameterTypes())) {</span>
+<span class="fc" id="L46">                    return constructor;</span>
                 }
             }
-<span class="fc" id="L65">            searchType = searchType.getSuperclass();</span>
-<span class="fc" id="L66">        }</span>
-<span class="fc" id="L67">        throw new IllegalArgumentException(&quot;Unable to find constructor &quot; + clazz.getName() + &quot;(&quot; + Arrays.toString(paramTypes).replaceAll(&quot;^\\[&quot;, &quot;&quot;).replaceAll(&quot;]$&quot;, &quot;&quot;).replaceAll(&quot;class &quot;, &quot;&quot;) + &quot;).&quot;);</span>
+<span class="fc" id="L49">            searchType = searchType.getSuperclass();</span>
+<span class="fc" id="L50">        }</span>
+<span class="fc" id="L51">        throw new IllegalArgumentException(&quot;Unable to find constructor &quot; + clazz.getName() + &quot;(&quot; + Arrays.toString(paramTypes).replaceAll(&quot;^\\[&quot;, &quot;&quot;).replaceAll(&quot;]$&quot;, &quot;&quot;).replaceAll(&quot;class &quot;, &quot;&quot;) + &quot;).&quot;);</span>
     }
 
     /**
@@ -77,23 +61,23 @@ public class ReflectionUtils {
      * @return The corresponding Field object
      */
     public static Field findField(final Class&lt;?&gt; clazz, final String name, final Class&lt;?&gt; type) {
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (clazz == null) {</span>
-<span class="fc" id="L81">            throw new IllegalArgumentException(&quot;Class must not be null&quot;);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (clazz == null) {</span>
+<span class="fc" id="L65">            throw new IllegalArgumentException(&quot;Class must not be null&quot;);</span>
         }
-<span class="pc bpc" id="L83" title="1 of 4 branches missed.">        if (name == null &amp;&amp; type == null) {</span>
-<span class="fc" id="L84">            throw new IllegalArgumentException(&quot;Either name or type of the field must be specified.&quot;);</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">        if (name == null &amp;&amp; type == null) {</span>
+<span class="fc" id="L68">            throw new IllegalArgumentException(&quot;Either name or type of the field must be specified.&quot;);</span>
         }
-<span class="fc" id="L86">        Class&lt;?&gt; searchType = clazz;</span>
-<span class="pc bpc" id="L87" title="1 of 4 branches missed.">        while (Object.class != searchType &amp;&amp; searchType != null) {</span>
-<span class="fc" id="L88">            Field[] fields = searchType.getDeclaredFields();</span>
-<span class="fc bfc" id="L89" title="All 2 branches covered.">            for (Field field : fields) {</span>
-<span class="pc bpc" id="L90" title="2 of 8 branches missed.">                if ((name == null || name.equals(field.getName())) &amp;&amp; (type == null || type.equals(field.getType()))) {</span>
-<span class="fc" id="L91">                    return field;</span>
+<span class="fc" id="L70">        Class&lt;?&gt; searchType = clazz;</span>
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">        while (Object.class != searchType &amp;&amp; searchType != null) {</span>
+<span class="fc" id="L72">            Field[] fields = searchType.getDeclaredFields();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            for (Field field : fields) {</span>
+<span class="pc bpc" id="L74" title="2 of 8 branches missed.">                if ((name == null || name.equals(field.getName())) &amp;&amp; (type == null || type.equals(field.getType()))) {</span>
+<span class="fc" id="L75">                    return field;</span>
                 }
             }
-<span class="fc" id="L94">            searchType = searchType.getSuperclass();</span>
-<span class="fc" id="L95">        }</span>
-<span class="pc bpc" id="L96" title="2 of 4 branches missed.">        throw new IllegalArgumentException(&quot;Unable to find &quot; + (type != null ? type.getName() : &quot;&quot;) + &quot; &quot; + (name != null ? name : &quot;&quot;) + &quot;.&quot;);</span>
+<span class="fc" id="L78">            searchType = searchType.getSuperclass();</span>
+<span class="fc" id="L79">        }</span>
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">        throw new IllegalArgumentException(&quot;Unable to find &quot; + (type != null ? type.getName() : &quot;&quot;) + &quot; &quot; + (name != null ? name : &quot;&quot;) + &quot;.&quot;);</span>
     }
 
     /**
@@ -107,23 +91,23 @@ public class ReflectionUtils {
      * @return The Method object
      */
     public static Method findMethod(final Class&lt;?&gt; clazz, final String name, final Class&lt;?&gt;... paramTypes) {
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (clazz == null) {</span>
-<span class="fc" id="L111">            throw new IllegalArgumentException(&quot;Class must not be null.&quot;);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (clazz == null) {</span>
+<span class="fc" id="L95">            throw new IllegalArgumentException(&quot;Class must not be null.&quot;);</span>
         }
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (name == null) {</span>
-<span class="fc" id="L114">            throw new IllegalArgumentException(&quot;Method name must not be null.&quot;);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (name == null) {</span>
+<span class="fc" id="L98">            throw new IllegalArgumentException(&quot;Method name must not be null.&quot;);</span>
         }
-<span class="fc" id="L116">        Class&lt;?&gt; searchType = clazz;</span>
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        while (searchType != null) {</span>
-<span class="pc bpc" id="L118" title="1 of 2 branches missed.">            Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));</span>
-<span class="fc bfc" id="L119" title="All 2 branches covered.">            for (Method method : methods) {</span>
-<span class="pc bpc" id="L120" title="1 of 6 branches missed.">                if (name.equals(method.getName()) &amp;&amp; (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {</span>
-<span class="fc" id="L121">                    return method;</span>
+<span class="fc" id="L100">        Class&lt;?&gt; searchType = clazz;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        while (searchType != null) {</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            for (Method method : methods) {</span>
+<span class="pc bpc" id="L104" title="1 of 6 branches missed.">                if (name.equals(method.getName()) &amp;&amp; (paramTypes == null || Arrays.equals(paramTypes, method.getParameterTypes()))) {</span>
+<span class="fc" id="L105">                    return method;</span>
                 }
             }
-<span class="fc" id="L124">            searchType = searchType.getSuperclass();</span>
-<span class="fc" id="L125">        }</span>
-<span class="fc" id="L126">        throw new IllegalArgumentException(&quot;Unable to find method &quot; + clazz.getName() + &quot;.&quot; + name + &quot;(&quot; + Arrays.toString(paramTypes).replaceAll(&quot;^\\[&quot;, &quot;&quot;).replaceAll(&quot;]$&quot;, &quot;&quot;).replaceAll(&quot;class &quot;, &quot;&quot;) + &quot;).&quot;);</span>
+<span class="fc" id="L108">            searchType = searchType.getSuperclass();</span>
+<span class="fc" id="L109">        }</span>
+<span class="fc" id="L110">        throw new IllegalArgumentException(&quot;Unable to find method &quot; + clazz.getName() + &quot;.&quot; + name + &quot;(&quot; + Arrays.toString(paramTypes).replaceAll(&quot;^\\[&quot;, &quot;&quot;).replaceAll(&quot;]$&quot;, &quot;&quot;).replaceAll(&quot;class &quot;, &quot;&quot;) + &quot;).&quot;);</span>
     }
 
     /**
@@ -134,15 +118,15 @@ public class ReflectionUtils {
      * @return The enum value
      */
     public static Object getEnumValue(final Class&lt;?&gt; clazz, final String valueName) {
-<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (clazz.isEnum()) {</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">            for (Object o : clazz.getEnumConstants()) {</span>
-<span class="fc bfc" id="L139" title="All 2 branches covered.">                if (o.toString().equals(valueName)) {</span>
-<span class="fc" id="L140">                    return o;</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (clazz.isEnum()) {</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            for (Object o : clazz.getEnumConstants()) {</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">                if (o.toString().equals(valueName)) {</span>
+<span class="fc" id="L124">                    return o;</span>
                 }
             }
-<span class="fc" id="L143">            throw new IllegalArgumentException(&quot;Unable to get an enum constant with that name.&quot;);</span>
+<span class="fc" id="L127">            throw new IllegalArgumentException(&quot;Unable to get an enum constant with that name.&quot;);</span>
         } else {
-<span class="fc" id="L145">            throw new IllegalArgumentException(clazz + &quot; must be an enum.&quot;);</span>
+<span class="fc" id="L129">            throw new IllegalArgumentException(clazz + &quot; must be an enum.&quot;);</span>
         }
     }
 
@@ -156,8 +140,8 @@ public class ReflectionUtils {
      * @throws IllegalAccessException when unable to access the specified field because access modifiers prevent it
      */
     public static Object getField(final Field field, final Object target) throws IllegalAccessException {
-<span class="fc" id="L159">        field.setAccessible(true);</span>
-<span class="fc" id="L160">        return field.get(target);</span>
+<span class="fc" id="L143">        field.setAccessible(true);</span>
+<span class="fc" id="L144">        return field.get(target);</span>
     }
 
     /**
@@ -169,10 +153,10 @@ public class ReflectionUtils {
      * @throws IllegalAccessException when unable to access the specified field because access modifiers prevent it
      */
     public static Object getStaticField(final Field field) throws IllegalAccessException {
-<span class="fc bfc" id="L172" title="All 2 branches covered.">        if (!Modifier.isStatic(field.getModifiers())) {</span>
-<span class="fc" id="L173">            throw new IllegalArgumentException(&quot;Field must be static.&quot;);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (!Modifier.isStatic(field.getModifiers())) {</span>
+<span class="fc" id="L157">            throw new IllegalArgumentException(&quot;Field must be static.&quot;);</span>
         }
-<span class="fc" id="L175">        return getField(field, null);</span>
+<span class="fc" id="L159">        return getField(field, null);</span>
     }
 
     /**
@@ -186,11 +170,11 @@ public class ReflectionUtils {
      * @throws InstantiationException                      when an instantiation fails
      */
     public static Object invokeConstructor(final Constructor&lt;?&gt; constructor, final Object... args) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (constructor == null) {</span>
-<span class="fc" id="L190">            throw new IllegalArgumentException(&quot;Constructor must not be null.&quot;);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (constructor == null) {</span>
+<span class="fc" id="L174">            throw new IllegalArgumentException(&quot;Constructor must not be null.&quot;);</span>
         }
-<span class="fc" id="L192">        constructor.setAccessible(true);</span>
-<span class="fc" id="L193">        return constructor.newInstance(args);</span>
+<span class="fc" id="L176">        constructor.setAccessible(true);</span>
+<span class="fc" id="L177">        return constructor.newInstance(args);</span>
     }
 
     /**
@@ -205,14 +189,14 @@ public class ReflectionUtils {
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeMethod(final Method method, final Object target, final Object... args) throws InvocationTargetException, IllegalAccessException {
-<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (method == null) {</span>
-<span class="fc" id="L209">            throw new IllegalArgumentException(&quot;Method must not be null.&quot;);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (method == null) {</span>
+<span class="fc" id="L193">            throw new IllegalArgumentException(&quot;Method must not be null.&quot;);</span>
         }
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (target == null) {</span>
-<span class="fc" id="L212">            throw new IllegalArgumentException(&quot;Object must not be null.&quot;);</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (target == null) {</span>
+<span class="fc" id="L196">            throw new IllegalArgumentException(&quot;Object must not be null.&quot;);</span>
         }
-<span class="fc" id="L214">        method.setAccessible(true);</span>
-<span class="fc" id="L215">        return method.invoke(target, args);</span>
+<span class="fc" id="L198">        method.setAccessible(true);</span>
+<span class="fc" id="L199">        return method.invoke(target, args);</span>
     }
 
     /**
@@ -225,14 +209,14 @@ public class ReflectionUtils {
      * @throws java.lang.reflect.InvocationTargetException when a reflection invocation fails
      */
     public static Object invokeStaticMethod(final Method method, final Object... args) throws InvocationTargetException, IllegalAccessException {
-<span class="fc bfc" id="L228" title="All 2 branches covered.">        if (method == null) {</span>
-<span class="fc" id="L229">            throw new IllegalArgumentException(&quot;Method must not be null.&quot;);</span>
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        if (method == null) {</span>
+<span class="fc" id="L213">            throw new IllegalArgumentException(&quot;Method must not be null.&quot;);</span>
         }
-<span class="fc bfc" id="L231" title="All 2 branches covered.">        if (!Modifier.isStatic(method.getModifiers())) {</span>
-<span class="fc" id="L232">            throw new IllegalArgumentException(&quot;Method must be static.&quot;);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (!Modifier.isStatic(method.getModifiers())) {</span>
+<span class="fc" id="L216">            throw new IllegalArgumentException(&quot;Method must be static.&quot;);</span>
         }
-<span class="fc" id="L234">        method.setAccessible(true);</span>
-<span class="fc" id="L235">        return method.invoke(null, args);</span>
+<span class="fc" id="L218">        method.setAccessible(true);</span>
+<span class="fc" id="L219">        return method.invoke(null, args);</span>
     }
 
     /**
@@ -245,35 +229,35 @@ public class ReflectionUtils {
      */
     private static Method[] getDeclaredMethods(Class&lt;?&gt; clazz) {
         Method[] result;
-<span class="fc" id="L248">        Method[] declaredMethods = clazz.getDeclaredMethods();</span>
-<span class="fc" id="L249">        List&lt;Method&gt; defaultMethods = findConcreteMethodsOnInterfaces(clazz);</span>
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        if (defaultMethods != null) {</span>
-<span class="nc" id="L251">            result = new Method[declaredMethods.length + defaultMethods.size()];</span>
-<span class="nc" id="L252">            System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);</span>
-<span class="nc" id="L253">            int index = declaredMethods.length;</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">            for (Method defaultMethod : defaultMethods) {</span>
-<span class="nc" id="L255">                result[index] = defaultMethod;</span>
-<span class="nc" id="L256">                index++;</span>
-<span class="nc" id="L257">            }</span>
-<span class="nc" id="L258">        } else {</span>
-<span class="fc" id="L259">            result = declaredMethods;</span>
+<span class="fc" id="L232">        Method[] declaredMethods = clazz.getDeclaredMethods();</span>
+<span class="fc" id="L233">        List&lt;Method&gt; defaultMethods = findConcreteMethodsOnInterfaces(clazz);</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (defaultMethods != null) {</span>
+<span class="nc" id="L235">            result = new Method[declaredMethods.length + defaultMethods.size()];</span>
+<span class="nc" id="L236">            System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);</span>
+<span class="nc" id="L237">            int index = declaredMethods.length;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            for (Method defaultMethod : defaultMethods) {</span>
+<span class="nc" id="L239">                result[index] = defaultMethod;</span>
+<span class="nc" id="L240">                index++;</span>
+<span class="nc" id="L241">            }</span>
+<span class="nc" id="L242">        } else {</span>
+<span class="fc" id="L243">            result = declaredMethods;</span>
         }
-<span class="fc" id="L261">        return result;</span>
+<span class="fc" id="L245">        return result;</span>
     }
 
     private static List&lt;Method&gt; findConcreteMethodsOnInterfaces(Class&lt;?&gt; clazz) {
-<span class="fc" id="L265">        List&lt;Method&gt; result = null;</span>
-<span class="pc bpc" id="L266" title="1 of 2 branches missed.">        for (Class&lt;?&gt; ifc : clazz.getInterfaces()) {</span>
-<span class="nc bnc" id="L267" title="All 2 branches missed.">            for (Method ifcMethod : ifc.getMethods()) {</span>
-<span class="nc bnc" id="L268" title="All 2 branches missed.">                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {</span>
-<span class="nc bnc" id="L269" title="All 2 branches missed.">                    if (result == null) {</span>
-<span class="nc" id="L270">                        result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L249">        List&lt;Method&gt; result = null;</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        for (Class&lt;?&gt; ifc : clazz.getInterfaces()) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            for (Method ifcMethod : ifc.getMethods()) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                    if (result == null) {</span>
+<span class="nc" id="L254">                        result = new ArrayList&lt;&gt;();</span>
                     }
-<span class="nc" id="L272">                    result.add(ifcMethod);</span>
+<span class="nc" id="L256">                    result.add(ifcMethod);</span>
                 }
             }
         }
-<span class="fc" id="L276">        return result;</span>
+<span class="fc" id="L260">        return result;</span>
     }
 
 }

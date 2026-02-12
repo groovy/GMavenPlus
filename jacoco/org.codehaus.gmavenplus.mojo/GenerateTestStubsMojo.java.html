@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateTestStubsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">GenerateTestStubsMojo.java</span></div><h1>GenerateTestStubsMojo.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.mojo;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateTestStubsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">GenerateTestStubsMojo.java</span></div><h1>GenerateTestStubsMojo.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -37,7 +21,7 @@ import java.net.MalformedURLException;
  * @since 1.0-beta-1
  */
 @Mojo(name = &quot;generateTestStubs&quot;, defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
-<span class="fc" id="L40">public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {</span>
+<span class="fc" id="L24">public class GenerateTestStubsMojo extends AbstractGenerateStubsMojo {</span>
 
     /**
      * The Groovy test source files (relative paths).
@@ -65,39 +49,39 @@ import java.net.MalformedURLException;
      */
     @Override
     public void execute() throws MojoExecutionException {
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (skipTests) {</span>
-<span class="fc" id="L69">            getLog().info(&quot;Generation of test stubs is skipped.&quot;);</span>
-<span class="fc" id="L70">            return;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (skipTests) {</span>
+<span class="fc" id="L53">            getLog().info(&quot;Generation of test stubs is skipped.&quot;);</span>
+<span class="fc" id="L54">            return;</span>
         }
 
-<span class="fc" id="L73">        minGroovyVersion = GROOVY_1_8_2;</span>
+<span class="fc" id="L57">        minGroovyVersion = GROOVY_1_8_2;</span>
         try {
             try {
-<span class="fc" id="L76">                getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
-<span class="fc" id="L77">            } catch (DependencyResolutionRequiredException e) {</span>
-<span class="fc" id="L78">                getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
-<span class="fc" id="L79">            }</span>
+<span class="fc" id="L60">                getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="fc" id="L61">            } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L62">                getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="fc" id="L63">            }</span>
 
-<span class="fc" id="L81">            doStubGeneration(getTestFiles(testSources, false), project.getTestClasspathElements(), testStubsOutputDirectory);</span>
-<span class="fc" id="L82">            logGeneratedStubs(testStubsOutputDirectory);</span>
-<span class="fc" id="L83">            resetStubModifiedDates(getStubs(testStubsOutputDirectory));</span>
+<span class="fc" id="L65">            doStubGeneration(getTestFiles(testSources, false), project.getTestClasspathElements(), testStubsOutputDirectory);</span>
+<span class="fc" id="L66">            logGeneratedStubs(testStubsOutputDirectory);</span>
+<span class="fc" id="L67">            resetStubModifiedDates(getStubs(testStubsOutputDirectory));</span>
 
             // add stubs to project source so the Maven Compiler Plugin can find them
-<span class="fc" id="L86">            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());</span>
-<span class="fc" id="L87">        } catch (ClassNotFoundException e) {</span>
-<span class="fc" id="L88">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
-<span class="fc" id="L89">        } catch (InvocationTargetException e) {</span>
-<span class="fc" id="L90">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L91">        } catch (InstantiationException e) {</span>
-<span class="fc" id="L92">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L93">        } catch (IllegalAccessException e) {</span>
-<span class="fc" id="L94">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="fc" id="L95">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="fc" id="L96">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
-<span class="fc" id="L97">        } catch (MalformedURLException e) {</span>
-<span class="fc" id="L98">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
-<span class="fc" id="L99">        }</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L70">            project.addTestCompileSourceRoot(testStubsOutputDirectory.getAbsolutePath());</span>
+<span class="fc" id="L71">        } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L72">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project?&quot;, e);</span>
+<span class="fc" id="L73">        } catch (InvocationTargetException e) {</span>
+<span class="fc" id="L74">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L75">        } catch (InstantiationException e) {</span>
+<span class="fc" id="L76">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L77">        } catch (IllegalAccessException e) {</span>
+<span class="fc" id="L78">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L79">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="fc" id="L80">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L81">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L82">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="fc" id="L83">        }</span>
+<span class="fc" id="L84">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

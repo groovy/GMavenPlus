@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractGenerateStubsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractGenerateStubsMojo.java</span></div><h1>AbstractGenerateStubsMojo.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.mojo;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractGenerateStubsMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractGenerateStubsMojo.java</span></div><h1>AbstractGenerateStubsMojo.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
@@ -33,12 +17,12 @@ import java.util.Set;
  *
  * @author Keegan Witt
  */
-<span class="fc" id="L36">public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {</span>
+<span class="fc" id="L20">public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSourcesMojo {</span>
 
     /**
      * Groovy 1.8.2 version.
      */
-<span class="fc" id="L41">    protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);</span>
+<span class="fc" id="L25">    protected static final Version GROOVY_1_8_2 = new Version(1, 8, 2);</span>
 
     /**
      * The encoding of source files.
@@ -165,7 +149,7 @@ import java.util.Set;
     protected org.apache.maven.execution.MavenSession session;
 
     /**
-     * Whether to execute in a forked process.
+     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
      *
      * @since 4.3.0
      */
@@ -185,102 +169,103 @@ import java.util.Set;
      * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     protected synchronized void doStubGeneration(final Set&lt;File&gt; stubSources, final List&lt;?&gt; classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-<span class="nc bnc" id="L188" title="All 4 branches missed.">        if (stubSources == null || stubSources.isEmpty()) {</span>
-<span class="nc" id="L189">            getLog().info(&quot;No sources specified for stub generation. Skipping.&quot;);</span>
-<span class="nc" id="L190">            return;</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        if (stubSources == null || stubSources.isEmpty()) {</span>
+<span class="nc" id="L173">            getLog().info(&quot;No sources specified for stub generation. Skipping.&quot;);</span>
+<span class="nc" id="L174">            return;</span>
         }
 
-<span class="nc" id="L193">        org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration = new org.codehaus.gmavenplus.model.GroovyStubConfiguration(stubSources, classpath, outputDirectory);</span>
-<span class="nc" id="L194">        configuration.setIncludeClasspath(includeClasspath);</span>
-<span class="nc" id="L195">        configuration.setSkipBytecodeCheck(skipBytecodeCheck);</span>
-<span class="nc" id="L196">        configuration.setDebug(debug);</span>
-<span class="nc" id="L197">        configuration.setVerbose(verbose);</span>
-<span class="nc" id="L198">        configuration.setWarningLevel(warningLevel);</span>
-<span class="nc" id="L199">        configuration.setTolerance(tolerance);</span>
-<span class="nc" id="L200">        configuration.setSourceEncoding(sourceEncoding);</span>
-<span class="nc" id="L201">        configuration.setTargetBytecode(targetBytecode);</span>
+<span class="nc" id="L177">        org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration = new org.codehaus.gmavenplus.model.GroovyStubConfiguration(stubSources, classpath, outputDirectory);</span>
+<span class="nc" id="L178">        configuration.setIncludeClasspath(includeClasspath);</span>
+<span class="nc" id="L179">        configuration.setSkipBytecodeCheck(skipBytecodeCheck);</span>
+<span class="nc" id="L180">        configuration.setDebug(debug);</span>
+<span class="nc" id="L181">        configuration.setVerbose(verbose);</span>
+<span class="nc" id="L182">        configuration.setWarningLevel(warningLevel);</span>
+<span class="nc" id="L183">        configuration.setTolerance(tolerance);</span>
+<span class="nc" id="L184">        configuration.setSourceEncoding(sourceEncoding);</span>
+<span class="nc" id="L185">        configuration.setTargetBytecode(targetBytecode);</span>
 
-<span class="nc" id="L203">        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext(&quot;jdk&quot;, session);</span>
-<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (toolchain != null) {</span>
-<span class="nc" id="L205">            getLog().info(&quot;Toolchain in gmavenplus-plugin: &quot; + toolchain);</span>
-<span class="nc" id="L206">            performForkedStubGeneration(configuration, toolchain.findTool(&quot;java&quot;));</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">        } else if (fork) {</span>
-<span class="nc" id="L208">            String javaExecutable = getJavaExecutable();</span>
-<span class="nc" id="L209">            getLog().info(&quot;Forking stub generation using &quot; + javaExecutable);</span>
-<span class="nc" id="L210">            performForkedStubGeneration(configuration, javaExecutable);</span>
-<span class="nc" id="L211">        } else {</span>
-<span class="nc" id="L212">            performInProcessStubGeneration(configuration, classpath);</span>
+<span class="nc" id="L187">        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext(&quot;jdk&quot;, session);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (toolchain != null) {</span>
+<span class="nc" id="L189">            getLog().info(&quot;Toolchain in gmavenplus-plugin: &quot; + toolchain);</span>
+<span class="nc" id="L190">            performForkedStubGeneration(configuration, toolchain.findTool(&quot;java&quot;));</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        } else if (fork) {</span>
+<span class="nc" id="L192">            String javaExecutable = getJavaExecutable();</span>
+<span class="nc" id="L193">            getLog().info(&quot;Forking stub generation using &quot; + javaExecutable);</span>
+<span class="nc" id="L194">            performForkedStubGeneration(configuration, javaExecutable);</span>
+<span class="nc" id="L195">        } else {</span>
+<span class="nc" id="L196">            getLog().info(&quot;Performing in-process stub generation&quot;);</span>
+<span class="nc" id="L197">            performInProcessStubGeneration(configuration, classpath);</span>
         }
-<span class="nc" id="L214">    }</span>
+<span class="nc" id="L199">    }</span>
 
     protected void performInProcessStubGeneration(org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration, List&lt;?&gt; classpath) throws MalformedURLException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException {
-<span class="nc" id="L217">        setupClassWrangler(classpath, includeClasspath);</span>
-<span class="nc" id="L218">        logPluginClasspath();</span>
-<span class="nc" id="L219">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+<span class="nc" id="L202">        setupClassWrangler(classpath, includeClasspath);</span>
+<span class="nc" id="L203">        logPluginClasspath();</span>
+<span class="nc" id="L204">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
 
         // Note: GroovyCompiler handles minGroovyVersion check now in generateStubs
 
-<span class="nc" id="L223">        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());</span>
-<span class="nc" id="L224">        compiler.generateStubs(configuration);</span>
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L208">        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());</span>
+<span class="nc" id="L209">        compiler.generateStubs(configuration);</span>
+<span class="nc" id="L210">    }</span>
 
     protected void performForkedStubGeneration(org.codehaus.gmavenplus.model.GroovyStubConfiguration configuration, String javaExecutable) throws InvocationTargetException {
         try {
             // Write configuration to file
-<span class="nc" id="L230">            File configFile = File.createTempFile(&quot;groovy-stub-config&quot;, &quot;.ser&quot;);</span>
-<span class="nc" id="L231">            configFile.deleteOnExit();</span>
-<span class="nc" id="L232">            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {</span>
-<span class="nc" id="L233">                oos.writeObject(configuration);</span>
+<span class="nc" id="L215">            File configFile = File.createTempFile(&quot;groovy-stub-config&quot;, &quot;.ser&quot;);</span>
+<span class="nc" id="L216">            configFile.deleteOnExit();</span>
+<span class="nc" id="L217">            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {</span>
+<span class="nc" id="L218">                oos.writeObject(configuration);</span>
             }
 
             // Build classpath for forked process (plugin + dependencies)
-<span class="nc" id="L237">            String forkClasspath = buildForkClasspath();</span>
+<span class="nc" id="L222">            String forkClasspath = buildForkClasspath();</span>
 
-<span class="nc" id="L239">            List&lt;String&gt; command = new java.util.ArrayList&lt;&gt;();</span>
-<span class="nc" id="L240">            command.add(javaExecutable);</span>
-<span class="nc" id="L241">            command.add(&quot;-cp&quot;);</span>
-<span class="nc" id="L242">            command.add(forkClasspath);</span>
-<span class="nc" id="L243">            command.add(&quot;org.codehaus.gmavenplus.util.ForkedGroovyCompiler&quot;);</span>
-<span class="nc" id="L244">            command.add(configFile.getAbsolutePath());</span>
+<span class="nc" id="L224">            List&lt;String&gt; command = new java.util.ArrayList&lt;&gt;();</span>
+<span class="nc" id="L225">            command.add(javaExecutable);</span>
+<span class="nc" id="L226">            command.add(&quot;-cp&quot;);</span>
+<span class="nc" id="L227">            command.add(forkClasspath);</span>
+<span class="nc" id="L228">            command.add(&quot;org.codehaus.gmavenplus.util.ForkedGroovyCompiler&quot;);</span>
+<span class="nc" id="L229">            command.add(configFile.getAbsolutePath());</span>
 
-<span class="nc" id="L246">            ProcessBuilder pb = new ProcessBuilder(command);</span>
-<span class="nc" id="L247">            pb.inheritIO();</span>
-<span class="nc" id="L248">            Process process = pb.start();</span>
-<span class="nc" id="L249">            int exitCode = process.waitFor();</span>
+<span class="nc" id="L231">            ProcessBuilder pb = new ProcessBuilder(command);</span>
+<span class="nc" id="L232">            pb.inheritIO();</span>
+<span class="nc" id="L233">            Process process = pb.start();</span>
+<span class="nc" id="L234">            int exitCode = process.waitFor();</span>
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (exitCode != 0) {</span>
-<span class="nc" id="L252">                throw new InvocationTargetException(new RuntimeException(&quot;Forked stub generation failed with exit code &quot; + exitCode));</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (exitCode != 0) {</span>
+<span class="nc" id="L237">                throw new InvocationTargetException(new RuntimeException(&quot;Forked stub generation failed with exit code &quot; + exitCode));</span>
             }
 
-<span class="nc" id="L255">        } catch (java.io.IOException | InterruptedException e) {</span>
-<span class="nc" id="L256">            throw new InvocationTargetException(e);</span>
-<span class="nc" id="L257">        }</span>
-<span class="nc" id="L258">    }</span>
+<span class="nc" id="L240">        } catch (java.io.IOException | InterruptedException e) {</span>
+<span class="nc" id="L241">            throw new InvocationTargetException(e);</span>
+<span class="nc" id="L242">        }</span>
+<span class="nc" id="L243">    }</span>
 
     protected String buildForkClasspath() {
-<span class="nc" id="L261">        StringBuilder cp = new StringBuilder();</span>
+<span class="nc" id="L246">        StringBuilder cp = new StringBuilder();</span>
         // Add plugin artifact
-<span class="nc" id="L263">        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());</span>
+<span class="nc" id="L248">        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());</span>
 
         // Add plugin dependencies
-<span class="nc bnc" id="L266" title="All 2 branches missed.">        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {</span>
-<span class="nc" id="L267">            cp.append(File.pathSeparator);</span>
-<span class="nc" id="L268">            cp.append(artifact.getFile().getAbsolutePath());</span>
-<span class="nc" id="L269">        }</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {</span>
+<span class="nc" id="L252">            cp.append(File.pathSeparator);</span>
+<span class="nc" id="L253">            cp.append(artifact.getFile().getAbsolutePath());</span>
+<span class="nc" id="L254">        }</span>
 
         // Add maven-plugin-api jar which is 'provided' so not in getArtifacts()
         try {
-<span class="nc" id="L273">            Class&lt;?&gt; logClass = org.apache.maven.plugin.logging.Log.class;</span>
-<span class="nc" id="L274">            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();</span>
-<span class="nc bnc" id="L275" title="All 2 branches missed.">            if (codeSource != null) {</span>
-<span class="nc" id="L276">                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();</span>
-<span class="nc" id="L277">                cp.append(File.pathSeparator).append(logJar);</span>
+<span class="nc" id="L258">            Class&lt;?&gt; logClass = org.apache.maven.plugin.logging.Log.class;</span>
+<span class="nc" id="L259">            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">            if (codeSource != null) {</span>
+<span class="nc" id="L261">                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();</span>
+<span class="nc" id="L262">                cp.append(File.pathSeparator).append(logJar);</span>
             }
-<span class="nc" id="L279">        } catch (Exception e) {</span>
-<span class="nc" id="L280">            getLog().warn(&quot;Could not find maven-plugin-api jar to add to fork classpath&quot;, e);</span>
-<span class="nc" id="L281">        }</span>
+<span class="nc" id="L264">        } catch (Exception e) {</span>
+<span class="nc" id="L265">            getLog().warn(&quot;Could not find maven-plugin-api jar to add to fork classpath&quot;, e);</span>
+<span class="nc" id="L266">        }</span>
 
-<span class="nc" id="L283">        return cp.toString();</span>
+<span class="nc" id="L268">        return cp.toString();</span>
     }
 
     /**
@@ -289,9 +274,9 @@ import java.util.Set;
      * @param outputDirectory the output directory for the stubs
      */
     protected void logGeneratedStubs(File outputDirectory) {
-<span class="fc" id="L292">        Set&lt;File&gt; stubs = getStubs(outputDirectory);</span>
-<span class="pc bpc" id="L293" title="1 of 2 branches missed.">        getLog().info(&quot;Generated &quot; + stubs.size() + &quot; stub&quot; + (stubs.size() != 1 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
-<span class="fc" id="L294">    }</span>
+<span class="fc" id="L277">        Set&lt;File&gt; stubs = getStubs(outputDirectory);</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">        getLog().info(&quot;Generated &quot; + stubs.size() + &quot; stub&quot; + (stubs.size() != 1 ? &quot;s&quot; : &quot;&quot;) + &quot;.&quot;);</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * This is a fix for &lt;a href=&quot;http://jira.codehaus.org/browse/MGROOVY-187&quot;&gt;...&lt;/a&gt;
@@ -302,13 +287,13 @@ import java.util.Set;
      * @param stubs the files on which to reset the modified date
      */
     protected void resetStubModifiedDates(final Set&lt;File&gt; stubs) {
-<span class="fc bfc" id="L305" title="All 2 branches covered.">        for (File stub : stubs) {</span>
-<span class="fc" id="L306">            boolean success = stub.setLastModified(0L);</span>
-<span class="pc bpc" id="L307" title="1 of 2 branches missed.">            if (!success) {</span>
-<span class="fc" id="L308">                getLog().warn(&quot;Unable to set modified time on stub &quot; + stub.getAbsolutePath() + &quot;.&quot;);</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        for (File stub : stubs) {</span>
+<span class="fc" id="L291">            boolean success = stub.setLastModified(0L);</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">            if (!success) {</span>
+<span class="fc" id="L293">                getLog().warn(&quot;Unable to set modified time on stub &quot; + stub.getAbsolutePath() + &quot;.&quot;);</span>
             }
-<span class="fc" id="L310">        }</span>
-<span class="fc" id="L311">    }</span>
+<span class="fc" id="L295">        }</span>
+<span class="fc" id="L296">    }</span>
 
 
 

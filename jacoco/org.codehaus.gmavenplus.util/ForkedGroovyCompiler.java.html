@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForkedGroovyCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.util</a> &gt; <span class="el_source">ForkedGroovyCompiler.java</span></div><h1>ForkedGroovyCompiler.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2025 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForkedGroovyCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.util</a> &gt; <span class="el_source">ForkedGroovyCompiler.java</span></div><h1>ForkedGroovyCompiler.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.util;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
@@ -34,64 +18,64 @@ import java.util.List;
  *
  * @author Keegan Witt
  */
-<span class="nc" id="L37">public class ForkedGroovyCompiler {</span>
+<span class="nc" id="L21">public class ForkedGroovyCompiler {</span>
 
     public static void main(String[] args) {
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (args.length != 1) {</span>
-<span class="nc" id="L41">            System.err.println(&quot;Usage: java &quot; + ForkedGroovyCompiler.class.getName() + &quot; &lt;configuration-file&gt;&quot;);</span>
-<span class="nc" id="L42">            System.exit(1);</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (args.length != 1) {</span>
+<span class="nc" id="L25">            System.err.println(&quot;Usage: java &quot; + ForkedGroovyCompiler.class.getName() + &quot; &lt;configuration-file&gt;&quot;);</span>
+<span class="nc" id="L26">            System.exit(1);</span>
         }
 
-<span class="nc" id="L45">        String configFilePath = args[0];</span>
-<span class="nc" id="L46">        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(configFilePath)))) {</span>
-<span class="nc" id="L47">            Object configuration = ois.readObject();</span>
-<span class="nc" id="L48">            Log log = new SystemStreamLog();</span>
+<span class="nc" id="L29">        String configFilePath = args[0];</span>
+<span class="nc" id="L30">        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(configFilePath)))) {</span>
+<span class="nc" id="L31">            Object configuration = ois.readObject();</span>
+<span class="nc" id="L32">            Log log = new SystemStreamLog();</span>
 
-<span class="nc" id="L50">            List&lt;?&gt; classpath = Collections.emptyList();</span>
-<span class="nc" id="L51">            org.codehaus.gmavenplus.model.IncludeClasspath includeClasspath = null;</span>
+<span class="nc" id="L34">            List&lt;?&gt; classpath = Collections.emptyList();</span>
+<span class="nc" id="L35">            org.codehaus.gmavenplus.model.IncludeClasspath includeClasspath = null;</span>
 
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (configuration instanceof GroovyCompileConfiguration) {</span>
-<span class="nc" id="L54">                classpath = ((GroovyCompileConfiguration) configuration).getClasspath();</span>
-<span class="nc" id="L55">                includeClasspath = ((GroovyCompileConfiguration) configuration).getIncludeClasspath();</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">            } else if (configuration instanceof GroovyStubConfiguration) {</span>
-<span class="nc" id="L57">                classpath = ((GroovyStubConfiguration) configuration).getClasspath();</span>
-<span class="nc" id="L58">                includeClasspath = ((GroovyStubConfiguration) configuration).getIncludeClasspath();</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">            } else if (configuration instanceof GroovyDocConfiguration) {</span>
-<span class="nc" id="L60">                classpath = ((GroovyDocConfiguration) configuration).getClasspath();</span>
-<span class="nc" id="L61">                includeClasspath = ((GroovyDocConfiguration) configuration).getIncludeClasspath();</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">            if (configuration instanceof GroovyCompileConfiguration) {</span>
+<span class="nc" id="L38">                classpath = ((GroovyCompileConfiguration) configuration).getClasspath();</span>
+<span class="nc" id="L39">                includeClasspath = ((GroovyCompileConfiguration) configuration).getIncludeClasspath();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            } else if (configuration instanceof GroovyStubConfiguration) {</span>
+<span class="nc" id="L41">                classpath = ((GroovyStubConfiguration) configuration).getClasspath();</span>
+<span class="nc" id="L42">                includeClasspath = ((GroovyStubConfiguration) configuration).getIncludeClasspath();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            } else if (configuration instanceof GroovyDocConfiguration) {</span>
+<span class="nc" id="L44">                classpath = ((GroovyDocConfiguration) configuration).getClasspath();</span>
+<span class="nc" id="L45">                includeClasspath = ((GroovyDocConfiguration) configuration).getIncludeClasspath();</span>
             }
 
-<span class="nc" id="L64">            ClassLoader parent = ClassLoader.getSystemClassLoader();</span>
-<span class="nc bnc" id="L65" title="All 4 branches missed.">            if (includeClasspath != null &amp;&amp; includeClasspath.name().equals(&quot;PROJECT_ONLY&quot;)) {</span>
+<span class="nc" id="L48">            ClassLoader parent = ClassLoader.getSystemClassLoader();</span>
+<span class="nc bnc" id="L49" title="All 4 branches missed.">            if (includeClasspath != null &amp;&amp; includeClasspath.name().equals(&quot;PROJECT_ONLY&quot;)) {</span>
                 try {
-<span class="nc" id="L67">                    java.lang.reflect.Method getPlatformClassLoader = ClassLoader.class.getMethod(&quot;getPlatformClassLoader&quot;);</span>
-<span class="nc" id="L68">                    parent = (ClassLoader) getPlatformClassLoader.invoke(null);</span>
-<span class="nc" id="L69">                } catch (Exception e) {</span>
-<span class="nc" id="L70">                    parent = null;</span>
-<span class="nc" id="L71">                }</span>
+<span class="nc" id="L51">                    java.lang.reflect.Method getPlatformClassLoader = ClassLoader.class.getMethod(&quot;getPlatformClassLoader&quot;);</span>
+<span class="nc" id="L52">                    parent = (ClassLoader) getPlatformClassLoader.invoke(null);</span>
+<span class="nc" id="L53">                } catch (Exception e) {</span>
+<span class="nc" id="L54">                    parent = null;</span>
+<span class="nc" id="L55">                }</span>
             }
 
-<span class="nc bnc" id="L74" title="All 2 branches missed.">            List&lt;?&gt; finalClasspath = classpath != null ? classpath : Collections.emptyList();</span>
-<span class="nc bnc" id="L75" title="All 4 branches missed.">            if (includeClasspath != null &amp;&amp; includeClasspath.name().equals(&quot;PLUGIN_ONLY&quot;)) {</span>
-<span class="nc" id="L76">                finalClasspath = Collections.emptyList();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            List&lt;?&gt; finalClasspath = classpath != null ? classpath : Collections.emptyList();</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            if (includeClasspath != null &amp;&amp; includeClasspath.name().equals(&quot;PLUGIN_ONLY&quot;)) {</span>
+<span class="nc" id="L60">                finalClasspath = Collections.emptyList();</span>
             }
 
-<span class="nc" id="L79">            ClassWrangler classWrangler = new ClassWrangler(finalClasspath, parent, log);</span>
-<span class="nc" id="L80">            GroovyCompiler compiler = new GroovyCompiler(classWrangler, log);</span>
+<span class="nc" id="L63">            ClassWrangler classWrangler = new ClassWrangler(finalClasspath, parent, log);</span>
+<span class="nc" id="L64">            GroovyCompiler compiler = new GroovyCompiler(classWrangler, log);</span>
 
-<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (configuration instanceof GroovyCompileConfiguration) {</span>
-<span class="nc" id="L83">                compiler.compile((GroovyCompileConfiguration) configuration);</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            } else if (configuration instanceof GroovyStubConfiguration) {</span>
-<span class="nc" id="L85">                compiler.generateStubs((GroovyStubConfiguration) configuration);</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            } else if (configuration instanceof GroovyDocConfiguration) {</span>
-<span class="nc" id="L87">                compiler.generateGroovyDoc((GroovyDocConfiguration) configuration);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (configuration instanceof GroovyCompileConfiguration) {</span>
+<span class="nc" id="L67">                compiler.compile((GroovyCompileConfiguration) configuration);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            } else if (configuration instanceof GroovyStubConfiguration) {</span>
+<span class="nc" id="L69">                compiler.generateStubs((GroovyStubConfiguration) configuration);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            } else if (configuration instanceof GroovyDocConfiguration) {</span>
+<span class="nc" id="L71">                compiler.generateGroovyDoc((GroovyDocConfiguration) configuration);</span>
             } else {
-<span class="nc" id="L89">                throw new IllegalArgumentException(&quot;Unknown configuration type: &quot; + configuration.getClass().getName());</span>
+<span class="nc" id="L73">                throw new IllegalArgumentException(&quot;Unknown configuration type: &quot; + configuration.getClass().getName());</span>
             }
-<span class="nc" id="L91">        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {</span>
-<span class="nc" id="L92">            e.printStackTrace();</span>
-<span class="nc" id="L93">            System.exit(1);</span>
-<span class="nc" id="L94">        }</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L75">        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {</span>
+<span class="nc" id="L76">            e.printStackTrace();</span>
+<span class="nc" id="L77">            System.exit(1);</span>
+<span class="nc" id="L78">        }</span>
+<span class="nc" id="L79">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

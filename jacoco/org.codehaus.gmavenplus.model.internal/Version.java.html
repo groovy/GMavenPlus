@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Version.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.model.internal</a> &gt; <span class="el_source">Version.java</span></div><h1>Version.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2006-2007 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.model.internal;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Version.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.model.internal</a> &gt; <span class="el_source">Version.java</span></div><h1>Version.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.model.internal;
 
 import java.util.Arrays;
 
@@ -55,21 +39,21 @@ public class Version implements Comparable&lt;Version&gt; {
      * @param newRevision The version revision number
      * @param newTag      The version tag string
      */
-<span class="fc" id="L58">    public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {</span>
-<span class="pc bpc" id="L59" title="2 of 6 branches missed.">        if (newMajor &lt; 0 || newMinor &lt; 0 || newRevision &lt; 0) {</span>
+<span class="fc" id="L42">    public Version(final int newMajor, final int newMinor, final int newRevision, final String newTag) {</span>
+<span class="pc bpc" id="L43" title="2 of 6 branches missed.">        if (newMajor &lt; 0 || newMinor &lt; 0 || newRevision &lt; 0) {</span>
             // note we don't check the tag since it can be null
-<span class="fc" id="L61">            throw new IllegalArgumentException(&quot;Major must be &gt;= 0 and minor &gt;= 0 and revision &gt;= 0.&quot;);</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(&quot;Major must be &gt;= 0 and minor &gt;= 0 and revision &gt;= 0.&quot;);</span>
         }
 
-<span class="fc" id="L64">        major = newMajor;</span>
-<span class="fc" id="L65">        minor = newMinor;</span>
-<span class="fc" id="L66">        revision = newRevision;</span>
-<span class="fc bfc" id="L67" title="All 4 branches covered.">        if (newTag == null || !newTag.isEmpty()) {</span>
-<span class="fc" id="L68">            tag = newTag;</span>
+<span class="fc" id="L48">        major = newMajor;</span>
+<span class="fc" id="L49">        minor = newMinor;</span>
+<span class="fc" id="L50">        revision = newRevision;</span>
+<span class="fc bfc" id="L51" title="All 4 branches covered.">        if (newTag == null || !newTag.isEmpty()) {</span>
+<span class="fc" id="L52">            tag = newTag;</span>
         } else {
-<span class="fc" id="L70">            tag = null;</span>
+<span class="fc" id="L54">            tag = null;</span>
         }
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L56">    }</span>
 
     /**
      * Constructs a new Version object with the specified parameters.
@@ -79,8 +63,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @param newRevision The version revision number
      */
     public Version(final int newMajor, final int newMinor, final int newRevision) {
-<span class="fc" id="L82">        this(newMajor, newMinor, newRevision, null);</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L66">        this(newMajor, newMinor, newRevision, null);</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Constructs a new Version object with the specified parameters.
@@ -89,8 +73,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @param newMinor The version minor number
      */
     public Version(final int newMajor, final int newMinor) {
-<span class="fc" id="L92">        this(newMajor, newMinor, 0);</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L76">        this(newMajor, newMinor, 0);</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Constructs a new Version object with the specified parameters.
@@ -98,8 +82,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @param newMajor The version major number
      */
     public Version(final int newMajor) {
-<span class="fc" id="L101">        this(newMajor, 0);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L85">        this(newMajor, 0);</span>
+<span class="fc" id="L86">    }</span>
 
     /**
      * Parses a new Version object from a string.
@@ -108,47 +92,47 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version parsed from the string
      */
     public static Version parseFromString(final String version) {
-<span class="fc bfc" id="L111" title="All 4 branches covered.">        if (version == null || version.isEmpty()) {</span>
-<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Version must not be null or empty.&quot;);</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">        if (version == null || version.isEmpty()) {</span>
+<span class="fc" id="L96">            throw new IllegalArgumentException(&quot;Version must not be null or empty.&quot;);</span>
         }
-<span class="fc" id="L114">        String[] split = version.split(&quot;[._-]&quot;, 4);</span>
+<span class="fc" id="L98">        String[] split = version.split(&quot;[._-]&quot;, 4);</span>
         try {
-<span class="fc" id="L116">            int tagIdx = 3;</span>
-<span class="fc" id="L117">            int major = Integer.parseInt(split[0]);</span>
-<span class="fc" id="L118">            int minor = 0;</span>
-<span class="fc" id="L119">            int revision = 0;</span>
-<span class="fc" id="L120">            StringBuilder tag = new StringBuilder();</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            if (split.length &gt;= 2) {</span>
+<span class="fc" id="L100">            int tagIdx = 3;</span>
+<span class="fc" id="L101">            int major = Integer.parseInt(split[0]);</span>
+<span class="fc" id="L102">            int minor = 0;</span>
+<span class="fc" id="L103">            int revision = 0;</span>
+<span class="fc" id="L104">            StringBuilder tag = new StringBuilder();</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">            if (split.length &gt;= 2) {</span>
                 try {
-<span class="fc" id="L123">                    minor = Integer.parseInt(split[1]);</span>
-<span class="fc" id="L124">                } catch (NumberFormatException nfe) {</span>
+<span class="fc" id="L107">                    minor = Integer.parseInt(split[1]);</span>
+<span class="fc" id="L108">                } catch (NumberFormatException nfe) {</span>
                     // version string must not have specified a minor version, leave minor as 0 and append to tag instead
-<span class="fc" id="L126">                    tag.append(split[1]);</span>
-<span class="fc" id="L127">                    tagIdx = 1;</span>
-<span class="fc" id="L128">                    tag.append(&quot;-&quot;);</span>
-<span class="fc" id="L129">                }</span>
+<span class="fc" id="L110">                    tag.append(split[1]);</span>
+<span class="fc" id="L111">                    tagIdx = 1;</span>
+<span class="fc" id="L112">                    tag.append(&quot;-&quot;);</span>
+<span class="fc" id="L113">                }</span>
             }
-<span class="fc bfc" id="L131" title="All 2 branches covered.">            if (split.length &gt;= 3) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (split.length &gt;= 3) {</span>
                 try {
-<span class="fc" id="L133">                    revision = Integer.parseInt(split[2]);</span>
-<span class="fc" id="L134">                } catch (NumberFormatException nfe) {</span>
+<span class="fc" id="L117">                    revision = Integer.parseInt(split[2]);</span>
+<span class="fc" id="L118">                } catch (NumberFormatException nfe) {</span>
                     // version string must not have specified a revision version, leave revision as 0 and append to tag instead
-<span class="fc" id="L136">                    tag.append(split[2]);</span>
-<span class="fc" id="L137">                    tagIdx = 2;</span>
-<span class="fc" id="L138">                    tag.append(&quot;-&quot;);</span>
-<span class="fc" id="L139">                }</span>
+<span class="fc" id="L120">                    tag.append(split[2]);</span>
+<span class="fc" id="L121">                    tagIdx = 2;</span>
+<span class="fc" id="L122">                    tag.append(&quot;-&quot;);</span>
+<span class="fc" id="L123">                }</span>
             }
-<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (split.length &gt;= 4) {</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">                for (int i = tagIdx; i &lt; split.length; i++) {</span>
-<span class="fc bfc" id="L143" title="All 2 branches covered.">                    if (i &gt; tagIdx) {</span>
-<span class="fc" id="L144">                        tag.append(&quot;-&quot;);</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            if (split.length &gt;= 4) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                for (int i = tagIdx; i &lt; split.length; i++) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                    if (i &gt; tagIdx) {</span>
+<span class="fc" id="L128">                        tag.append(&quot;-&quot;);</span>
                     }
-<span class="fc" id="L146">                    tag.append(split[i]);</span>
+<span class="fc" id="L130">                    tag.append(split[i]);</span>
                 }
             }
-<span class="fc" id="L149">            return new Version(major, minor, revision, tag.toString());</span>
-<span class="fc" id="L150">        } catch (NumberFormatException e) {</span>
-<span class="fc" id="L151">            throw new IllegalArgumentException(&quot;Major, minor, and revision must be integers.&quot;, e);</span>
+<span class="fc" id="L133">            return new Version(major, minor, revision, tag.toString());</span>
+<span class="fc" id="L134">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L135">            throw new IllegalArgumentException(&quot;Major, minor, and revision must be integers.&quot;, e);</span>
         }
     }
 
@@ -160,7 +144,7 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     @Override
     public final int hashCode() {
-<span class="fc" id="L163">        return Arrays.hashCode(new Object[]{major, minor, revision, tag});</span>
+<span class="fc" id="L147">        return Arrays.hashCode(new Object[]{major, minor, revision, tag});</span>
     }
 
     /**
@@ -172,16 +156,16 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     @Override
     public final boolean equals(final Object obj) {
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (obj == null) {</span>
-<span class="nc" id="L176">            return false;</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L160">            return false;</span>
         }
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (obj == this) {</span>
-<span class="fc" id="L179">            return true;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L163">            return true;</span>
         }
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (obj.getClass() != getClass()) {</span>
-<span class="nc" id="L182">            return false;</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (obj.getClass() != getClass()) {</span>
+<span class="nc" id="L166">            return false;</span>
         }
-<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        return compareTo((Version) obj) == 0;</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        return compareTo((Version) obj) == 0;</span>
     }
 
     /**
@@ -192,16 +176,16 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     @Override
     public final String toString() {
-<span class="fc" id="L195">        StringBuilder buff = new StringBuilder();</span>
+<span class="fc" id="L179">        StringBuilder buff = new StringBuilder();</span>
 
-<span class="fc" id="L197">        buff.append(major)</span>
-<span class="fc" id="L198">                .append(&quot;.&quot;).append(minor)</span>
-<span class="fc" id="L199">                .append(&quot;.&quot;).append(revision);</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">        if (tag != null) {</span>
-<span class="fc" id="L201">            buff.append(&quot;-&quot;).append(tag);</span>
+<span class="fc" id="L181">        buff.append(major)</span>
+<span class="fc" id="L182">                .append(&quot;.&quot;).append(minor)</span>
+<span class="fc" id="L183">                .append(&quot;.&quot;).append(revision);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (tag != null) {</span>
+<span class="fc" id="L185">            buff.append(&quot;-&quot;).append(tag);</span>
         }
 
-<span class="fc" id="L204">        return buff.toString();</span>
+<span class="fc" id="L188">        return buff.toString();</span>
     }
 
     /**
@@ -214,7 +198,7 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     @Override
     public final int compareTo(final Version version) {
-<span class="fc" id="L217">        return compareTo(version, true);</span>
+<span class="fc" id="L201">        return compareTo(version, true);</span>
     }
 
     /**
@@ -228,28 +212,28 @@ public class Version implements Comparable&lt;Version&gt; {
      */
     public final int compareTo(final Version version, final boolean noTagsAreNewer) {
         // &quot;beta&quot; is replaced with &quot; beta&quot; to make sure RCs are considered newer than betas (by moving beta to back of order)
-<span class="fc" id="L231">        int comp = Integer.compare(major, version.major);</span>
-<span class="fc bfc" id="L232" title="All 2 branches covered.">        if (comp == 0) {</span>
-<span class="fc" id="L233">            comp = Integer.compare(minor, version.minor);</span>
+<span class="fc" id="L215">        int comp = Integer.compare(major, version.major);</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (comp == 0) {</span>
+<span class="fc" id="L217">            comp = Integer.compare(minor, version.minor);</span>
         }
-<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (comp == 0) {</span>
-<span class="fc" id="L236">            comp = Integer.compare(revision, version.revision);</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (comp == 0) {</span>
+<span class="fc" id="L220">            comp = Integer.compare(revision, version.revision);</span>
         }
-<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (comp == 0) {</span>
-<span class="fc bfc" id="L239" title="All 4 branches covered.">            if (tag != null &amp;&amp; version.tag != null) {</span>
-<span class="fc" id="L240">                return tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;)</span>
-<span class="fc" id="L241">                        .compareTo(version.tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;));</span>
-<span class="fc bfc" id="L242" title="All 6 branches covered.">            } else if (tag == null ^ version.tag == null) {</span>
-<span class="fc bfc" id="L243" title="All 2 branches covered.">                if (tag == null) {</span>
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">                    return noTagsAreNewer ? 1 : -1;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (comp == 0) {</span>
+<span class="fc bfc" id="L223" title="All 4 branches covered.">            if (tag != null &amp;&amp; version.tag != null) {</span>
+<span class="fc" id="L224">                return tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;)</span>
+<span class="fc" id="L225">                        .compareTo(version.tag.replace(&quot;beta&quot;, &quot; beta&quot;).replace(&quot;alpha&quot;, &quot; alpha&quot;));</span>
+<span class="fc bfc" id="L226" title="All 6 branches covered.">            } else if (tag == null ^ version.tag == null) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">                if (tag == null) {</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">                    return noTagsAreNewer ? 1 : -1;</span>
                 } else {
-<span class="fc bfc" id="L246" title="All 2 branches covered.">                    return noTagsAreNewer ? -1 : 1;</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">                    return noTagsAreNewer ? -1 : 1;</span>
                 }
             } else {
-<span class="fc" id="L249">                return comp;</span>
+<span class="fc" id="L233">                return comp;</span>
             }
         } else {
-<span class="fc" id="L252">            return comp;</span>
+<span class="fc" id="L236">            return comp;</span>
         }
     }
 
@@ -259,7 +243,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The major version number
      */
     public int getMajor() {
-<span class="fc" id="L262">        return major;</span>
+<span class="fc" id="L246">        return major;</span>
     }
 
     /**
@@ -269,8 +253,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setMajor(final int newMajor) {
-<span class="fc" id="L272">        major = newMajor;</span>
-<span class="fc" id="L273">        return this;</span>
+<span class="fc" id="L256">        major = newMajor;</span>
+<span class="fc" id="L257">        return this;</span>
     }
 
     /**
@@ -279,7 +263,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version minor number
      */
     public int getMinor() {
-<span class="fc" id="L282">        return minor;</span>
+<span class="fc" id="L266">        return minor;</span>
     }
 
     /**
@@ -289,8 +273,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setMinor(final int newMinor) {
-<span class="fc" id="L292">        minor = newMinor;</span>
-<span class="fc" id="L293">        return this;</span>
+<span class="fc" id="L276">        minor = newMinor;</span>
+<span class="fc" id="L277">        return this;</span>
     }
 
     /**
@@ -299,7 +283,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version revision number
      */
     public int getRevision() {
-<span class="fc" id="L302">        return revision;</span>
+<span class="fc" id="L286">        return revision;</span>
     }
 
     /**
@@ -309,8 +293,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setRevision(final int newRevision) {
-<span class="fc" id="L312">        revision = newRevision;</span>
-<span class="fc" id="L313">        return this;</span>
+<span class="fc" id="L296">        revision = newRevision;</span>
+<span class="fc" id="L297">        return this;</span>
     }
 
     /**
@@ -319,7 +303,7 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return The version tag string
      */
     public String getTag() {
-<span class="fc" id="L322">        return tag;</span>
+<span class="fc" id="L306">        return tag;</span>
     }
 
     /**
@@ -329,8 +313,8 @@ public class Version implements Comparable&lt;Version&gt; {
      * @return This object (for fluent invocation)
      */
     public Version setTag(final String newTag) {
-<span class="fc" id="L332">        tag = newTag;</span>
-<span class="fc" id="L333">        return this;</span>
+<span class="fc" id="L316">        tag = newTag;</span>
+<span class="fc" id="L317">        return this;</span>
     }
 
 }

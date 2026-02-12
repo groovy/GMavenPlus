@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractGroovyDocMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractGroovyDocMojo.java</span></div><h1>AbstractGroovyDocMojo.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.mojo;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractGroovyDocMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">AbstractGroovyDocMojo.java</span></div><h1>AbstractGroovyDocMojo.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.model.fileset.FileSet;
@@ -48,17 +32,17 @@ import java.util.Properties;
  *
  * @author Keegan Witt
  */
-<span class="fc" id="L51">public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {</span>
+<span class="fc" id="L35">public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {</span>
 
     /**
      * Groovy 1.6.0 RC-1 version.
      */
-<span class="fc" id="L56">    protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, &quot;RC-1&quot;);</span>
+<span class="fc" id="L40">    protected static final Version GROOVY_1_6_0_RC1 = new Version(1, 6, 0, &quot;RC-1&quot;);</span>
 
     /**
      * Groovy 1.5.8 version.
      */
-<span class="fc" id="L61">    protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);</span>
+<span class="fc" id="L45">    protected static final Version GROOVY_1_5_8 = new Version(1, 5, 8);</span>
 
     /**
      * The window title.
@@ -161,7 +145,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L164">    @Parameter</span>
+<span class="fc" id="L148">    @Parameter</span>
     protected String[] defaultDocTemplates = null;
 
     /**
@@ -169,7 +153,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L172">    @Parameter</span>
+<span class="fc" id="L156">    @Parameter</span>
     protected String[] defaultPackageTemplates = null;
 
     /**
@@ -177,7 +161,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L180">    @Parameter</span>
+<span class="fc" id="L164">    @Parameter</span>
     protected String[] defaultClassTemplates = null;
 
     /**
@@ -186,7 +170,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L189">    @Parameter</span>
+<span class="fc" id="L173">    @Parameter</span>
     protected String groovyDocToolClass = null;
 
     /**
@@ -195,7 +179,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L198">    @Parameter</span>
+<span class="fc" id="L182">    @Parameter</span>
     protected String outputToolClass = null;
 
     /**
@@ -204,7 +188,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L207">    @Parameter</span>
+<span class="fc" id="L191">    @Parameter</span>
     protected String fileOutputToolClass = null;
 
     /**
@@ -213,7 +197,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L216">    @Parameter</span>
+<span class="fc" id="L200">    @Parameter</span>
     protected String resourceManagerClass = null;
 
     /**
@@ -222,7 +206,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L225">    @Parameter</span>
+<span class="fc" id="L209">    @Parameter</span>
     protected String classpathResourceManagerClass = null;
 
     /**
@@ -232,7 +216,7 @@ import java.util.Properties;
      *
      * @since 1.10.1
      */
-<span class="fc" id="L235">    @Parameter</span>
+<span class="fc" id="L219">    @Parameter</span>
     protected String linkArgumentClass = null;
 
     /**
@@ -256,7 +240,7 @@ import java.util.Properties;
     protected org.apache.maven.execution.MavenSession session;
 
     /**
-     * Whether to execute in a forked process.
+     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
      *
      * @since 4.3.0
      */
@@ -276,135 +260,136 @@ import java.util.Properties;
      * @throws MalformedURLException     when a classpath element provides a malformed URL
      */
     protected synchronized void doGroovyDocGeneration(final FileSet[] sourceDirectories, final List&lt;?&gt; classpath, final File outputDirectory) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (skipGroovyDoc) {</span>
-<span class="fc" id="L280">            getLog().info(&quot;Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.&quot;);</span>
-<span class="fc" id="L281">            return;</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        if (skipGroovyDoc) {</span>
+<span class="fc" id="L264">            getLog().info(&quot;Skipping generation of GroovyDoc because ${skipGroovydoc} was set to true.&quot;);</span>
+<span class="fc" id="L265">            return;</span>
         }
 
-<span class="pc bpc" id="L284" title="2 of 4 branches missed.">        if (sourceDirectories == null || sourceDirectories.length == 0) {</span>
-<span class="nc" id="L285">            getLog().info(&quot;No source directories specified for GroovyDoc generation. Skipping.&quot;);</span>
-<span class="nc" id="L286">            return;</span>
+<span class="pc bpc" id="L268" title="2 of 4 branches missed.">        if (sourceDirectories == null || sourceDirectories.length == 0) {</span>
+<span class="nc" id="L269">            getLog().info(&quot;No source directories specified for GroovyDoc generation. Skipping.&quot;);</span>
+<span class="nc" id="L270">            return;</span>
         }
 
-<span class="fc" id="L289">        GroovyDocConfiguration configuration = new GroovyDocConfiguration(sourceDirectories, classpath, outputDirectory);</span>
-<span class="fc" id="L290">        configuration.setIncludeClasspath(includeClasspath);</span>
-<span class="fc" id="L291">        configuration.setDocProperties(setupProperties());</span>
-<span class="fc" id="L292">        configuration.setLinks(links);</span>
+<span class="fc" id="L273">        GroovyDocConfiguration configuration = new GroovyDocConfiguration(sourceDirectories, classpath, outputDirectory);</span>
+<span class="fc" id="L274">        configuration.setIncludeClasspath(includeClasspath);</span>
+<span class="fc" id="L275">        configuration.setDocProperties(setupProperties());</span>
+<span class="fc" id="L276">        configuration.setLinks(links);</span>
 
-<span class="fc" id="L294">        configuration.setAttachGroovyDocAnnotation(attachGroovyDocAnnotation);</span>
-<span class="fc" id="L295">        configuration.setDefaultDocTemplates(defaultDocTemplates);</span>
-<span class="fc" id="L296">        configuration.setDefaultPackageTemplates(defaultPackageTemplates);</span>
-<span class="fc" id="L297">        configuration.setDefaultClassTemplates(defaultClassTemplates);</span>
-<span class="fc" id="L298">        configuration.setGroovyDocToolClass(groovyDocToolClass);</span>
-<span class="fc" id="L299">        configuration.setOutputToolClass(outputToolClass);</span>
-<span class="fc" id="L300">        configuration.setFileOutputToolClass(fileOutputToolClass);</span>
-<span class="fc" id="L301">        configuration.setResourceManagerClass(resourceManagerClass);</span>
-<span class="fc" id="L302">        configuration.setClasspathResourceManagerClass(classpathResourceManagerClass);</span>
-<span class="fc" id="L303">        configuration.setLinkArgumentClass(linkArgumentClass);</span>
-<span class="fc" id="L304">        configuration.setWindowTitle(windowTitle);</span>
-<span class="fc" id="L305">        configuration.setDocTitle(docTitle);</span>
-<span class="fc" id="L306">        configuration.setFooter(footer);</span>
-<span class="fc" id="L307">        configuration.setHeader(header);</span>
-<span class="fc" id="L308">        configuration.setDisplayAuthor(displayAuthor);</span>
-<span class="fc" id="L309">        configuration.setDisplayAuthor(displayAuthor);</span>
-<span class="fc" id="L310">        configuration.setOverviewFile(overviewFile);</span>
-<span class="pc bpc" id="L311" title="1 of 2 branches missed.">        configuration.setLanguageLevel(languageLevel != null ? languageLevel.toString() : null);</span>
+<span class="fc" id="L278">        configuration.setAttachGroovyDocAnnotation(attachGroovyDocAnnotation);</span>
+<span class="fc" id="L279">        configuration.setDefaultDocTemplates(defaultDocTemplates);</span>
+<span class="fc" id="L280">        configuration.setDefaultPackageTemplates(defaultPackageTemplates);</span>
+<span class="fc" id="L281">        configuration.setDefaultClassTemplates(defaultClassTemplates);</span>
+<span class="fc" id="L282">        configuration.setGroovyDocToolClass(groovyDocToolClass);</span>
+<span class="fc" id="L283">        configuration.setOutputToolClass(outputToolClass);</span>
+<span class="fc" id="L284">        configuration.setFileOutputToolClass(fileOutputToolClass);</span>
+<span class="fc" id="L285">        configuration.setResourceManagerClass(resourceManagerClass);</span>
+<span class="fc" id="L286">        configuration.setClasspathResourceManagerClass(classpathResourceManagerClass);</span>
+<span class="fc" id="L287">        configuration.setLinkArgumentClass(linkArgumentClass);</span>
+<span class="fc" id="L288">        configuration.setWindowTitle(windowTitle);</span>
+<span class="fc" id="L289">        configuration.setDocTitle(docTitle);</span>
+<span class="fc" id="L290">        configuration.setFooter(footer);</span>
+<span class="fc" id="L291">        configuration.setHeader(header);</span>
+<span class="fc" id="L292">        configuration.setDisplayAuthor(displayAuthor);</span>
+<span class="fc" id="L293">        configuration.setDisplayAuthor(displayAuthor);</span>
+<span class="fc" id="L294">        configuration.setOverviewFile(overviewFile);</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">        configuration.setLanguageLevel(languageLevel != null ? languageLevel.toString() : null);</span>
 
-<span class="fc" id="L313">        configuration.setScope(scope);</span>
+<span class="fc" id="L297">        configuration.setScope(scope);</span>
 
-<span class="fc" id="L315">        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext(&quot;jdk&quot;, session);</span>
-<span class="pc bpc" id="L316" title="1 of 2 branches missed.">        if (toolchain != null) {</span>
-<span class="nc" id="L317">            getLog().info(&quot;Toolchain in gmavenplus-plugin: &quot; + toolchain);</span>
-<span class="nc" id="L318">            performForkedGroovyDocGeneration(configuration, toolchain.findTool(&quot;java&quot;));</span>
-<span class="pc bpc" id="L319" title="1 of 2 branches missed.">        } else if (fork) {</span>
-<span class="nc" id="L320">            String javaExecutable = getJavaExecutable();</span>
-<span class="nc" id="L321">            getLog().info(&quot;Forking GroovyDoc generation using &quot; + javaExecutable);</span>
-<span class="nc" id="L322">            performForkedGroovyDocGeneration(configuration, javaExecutable);</span>
-<span class="nc" id="L323">        } else {</span>
-<span class="fc" id="L324">            performInProcessGroovyDocGeneration(configuration);</span>
+<span class="fc" id="L299">        org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext(&quot;jdk&quot;, session);</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (toolchain != null) {</span>
+<span class="nc" id="L301">            getLog().info(&quot;Toolchain in gmavenplus-plugin: &quot; + toolchain);</span>
+<span class="nc" id="L302">            performForkedGroovyDocGeneration(configuration, toolchain.findTool(&quot;java&quot;));</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">        } else if (fork) {</span>
+<span class="nc" id="L304">            String javaExecutable = getJavaExecutable();</span>
+<span class="nc" id="L305">            getLog().info(&quot;Forking GroovyDoc generation using &quot; + javaExecutable);</span>
+<span class="nc" id="L306">            performForkedGroovyDocGeneration(configuration, javaExecutable);</span>
+<span class="nc" id="L307">        } else {</span>
+<span class="fc" id="L308">            getLog().info(&quot;Performing in-process GroovyDoc generation&quot;);</span>
+<span class="fc" id="L309">            performInProcessGroovyDocGeneration(configuration);</span>
         }
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
-<span class="pc bpc" id="L328" title="1 of 2 branches missed.">        if (stylesheetFile != null) {</span>
-<span class="nc" id="L329">            copyStylesheet(outputDirectory);</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        if (stylesheetFile != null) {</span>
+<span class="nc" id="L314">            copyStylesheet(outputDirectory);</span>
         }
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L316">    }</span>
 
     protected void performInProcessGroovyDocGeneration(GroovyDocConfiguration configuration) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, MalformedURLException {
-<span class="nc" id="L334">        setupClassWrangler(configuration.getClasspath(), includeClasspath);</span>
-<span class="nc" id="L335">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
-<span class="nc" id="L336">        logPluginClasspath();</span>
+<span class="nc" id="L319">        setupClassWrangler(configuration.getClasspath(), includeClasspath);</span>
+<span class="nc" id="L320">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+<span class="nc" id="L321">        logPluginClasspath();</span>
 
-<span class="nc bnc" id="L338" title="All 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
-<span class="nc" id="L339">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping GroovyDoc generation.&quot;);</span>
-<span class="nc" id="L340">            return;</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L324">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support GroovyDoc. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping GroovyDoc generation.&quot;);</span>
+<span class="nc" id="L325">            return;</span>
         }
-<span class="nc bnc" id="L342" title="All 4 branches missed.">        if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {</span>
+<span class="nc bnc" id="L327" title="All 4 branches missed.">        if (groovyIs(GROOVY_1_6_0_RC1) || groovyIs(GROOVY_1_5_8)) {</span>
             // Groovy 1.5.8 and 1.6-RC-1 are blacklisted because of their dependency on org.apache.tools.ant.types.Path in GroovyDocTool constructor
-<span class="nc" id="L344">            getLog().warn(&quot;Groovy &quot; + GROOVY_1_5_8 + &quot; and &quot; + GROOVY_1_6_0_RC1 + &quot; are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.&quot;);</span>
-<span class="nc" id="L345">            return;</span>
+<span class="nc" id="L329">            getLog().warn(&quot;Groovy &quot; + GROOVY_1_5_8 + &quot; and &quot; + GROOVY_1_6_0_RC1 + &quot; are blacklisted from the supported GroovyDoc versions because of their dependency on Ant. Skipping GroovyDoc generation.&quot;);</span>
+<span class="nc" id="L330">            return;</span>
         }
 
-<span class="nc" id="L348">        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());</span>
-<span class="nc" id="L349">        compiler.generateGroovyDoc(configuration);</span>
-<span class="nc" id="L350">    }</span>
+<span class="nc" id="L333">        GroovyCompiler compiler = new GroovyCompiler(classWrangler, getLog());</span>
+<span class="nc" id="L334">        compiler.generateGroovyDoc(configuration);</span>
+<span class="nc" id="L335">    }</span>
 
     protected void performForkedGroovyDocGeneration(GroovyDocConfiguration configuration, String javaExecutable) throws InvocationTargetException {
         try {
              // Write configuration to file
-<span class="nc" id="L355">            File configFile = File.createTempFile(&quot;groovy-doc-config&quot;, &quot;.ser&quot;);</span>
-<span class="nc" id="L356">            configFile.deleteOnExit();</span>
-<span class="nc" id="L357">            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {</span>
-<span class="nc" id="L358">                oos.writeObject(configuration);</span>
+<span class="nc" id="L340">            File configFile = File.createTempFile(&quot;groovy-doc-config&quot;, &quot;.ser&quot;);</span>
+<span class="nc" id="L341">            configFile.deleteOnExit();</span>
+<span class="nc" id="L342">            try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(java.nio.file.Files.newOutputStream(configFile.toPath()))) {</span>
+<span class="nc" id="L343">                oos.writeObject(configuration);</span>
             }
 
             // Build classpath for forked process (plugin + dependencies)
-<span class="nc" id="L362">            String forkClasspath = buildForkClasspath();</span>
+<span class="nc" id="L347">            String forkClasspath = buildForkClasspath();</span>
 
-<span class="nc" id="L364">            List&lt;String&gt; command = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L365">            command.add(javaExecutable);</span>
-<span class="nc" id="L366">            command.add(&quot;-cp&quot;);</span>
-<span class="nc" id="L367">            command.add(forkClasspath);</span>
-<span class="nc" id="L368">            command.add(&quot;org.codehaus.gmavenplus.util.ForkedGroovyCompiler&quot;);</span>
-<span class="nc" id="L369">            command.add(configFile.getAbsolutePath());</span>
+<span class="nc" id="L349">            List&lt;String&gt; command = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L350">            command.add(javaExecutable);</span>
+<span class="nc" id="L351">            command.add(&quot;-cp&quot;);</span>
+<span class="nc" id="L352">            command.add(forkClasspath);</span>
+<span class="nc" id="L353">            command.add(&quot;org.codehaus.gmavenplus.util.ForkedGroovyCompiler&quot;);</span>
+<span class="nc" id="L354">            command.add(configFile.getAbsolutePath());</span>
 
-<span class="nc" id="L371">            ProcessBuilder pb = new ProcessBuilder(command);</span>
-<span class="nc" id="L372">            pb.inheritIO();</span>
-<span class="nc" id="L373">            Process process = pb.start();</span>
-<span class="nc" id="L374">            int exitCode = process.waitFor();</span>
+<span class="nc" id="L356">            ProcessBuilder pb = new ProcessBuilder(command);</span>
+<span class="nc" id="L357">            pb.inheritIO();</span>
+<span class="nc" id="L358">            Process process = pb.start();</span>
+<span class="nc" id="L359">            int exitCode = process.waitFor();</span>
 
-<span class="nc bnc" id="L376" title="All 2 branches missed.">            if (exitCode != 0) {</span>
-<span class="nc" id="L377">                throw new InvocationTargetException(new RuntimeException(&quot;Forked GroovyDoc generation failed with exit code &quot; + exitCode));</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">            if (exitCode != 0) {</span>
+<span class="nc" id="L362">                throw new InvocationTargetException(new RuntimeException(&quot;Forked GroovyDoc generation failed with exit code &quot; + exitCode));</span>
             }
-<span class="nc" id="L379">        } catch (IOException | InterruptedException e) {</span>
-<span class="nc" id="L380">            throw new InvocationTargetException(e);</span>
-<span class="nc" id="L381">        }</span>
-<span class="nc" id="L382">    }</span>
+<span class="nc" id="L364">        } catch (IOException | InterruptedException e) {</span>
+<span class="nc" id="L365">            throw new InvocationTargetException(e);</span>
+<span class="nc" id="L366">        }</span>
+<span class="nc" id="L367">    }</span>
 
     protected String buildForkClasspath() {
-<span class="nc" id="L385">        StringBuilder cp = new StringBuilder();</span>
+<span class="nc" id="L370">        StringBuilder cp = new StringBuilder();</span>
         // Add plugin artifact
-<span class="nc" id="L387">        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());</span>
+<span class="nc" id="L372">        cp.append(pluginDescriptor.getPluginArtifact().getFile().getAbsolutePath());</span>
 
         // Add plugin dependencies
-<span class="nc bnc" id="L390" title="All 2 branches missed.">        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {</span>
-<span class="nc" id="L391">            cp.append(File.pathSeparator);</span>
-<span class="nc" id="L392">            cp.append(artifact.getFile().getAbsolutePath());</span>
-<span class="nc" id="L393">        }</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">        for (org.apache.maven.artifact.Artifact artifact : pluginDescriptor.getArtifacts()) {</span>
+<span class="nc" id="L376">            cp.append(File.pathSeparator);</span>
+<span class="nc" id="L377">            cp.append(artifact.getFile().getAbsolutePath());</span>
+<span class="nc" id="L378">        }</span>
 
         // Add maven-plugin-api jar which is 'provided' so not in getArtifacts()
         try {
-<span class="nc" id="L397">            Class&lt;?&gt; logClass = org.apache.maven.plugin.logging.Log.class;</span>
-<span class="nc" id="L398">            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();</span>
-<span class="nc bnc" id="L399" title="All 2 branches missed.">            if (codeSource != null) {</span>
-<span class="nc" id="L400">                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();</span>
-<span class="nc" id="L401">                cp.append(File.pathSeparator).append(logJar);</span>
+<span class="nc" id="L382">            Class&lt;?&gt; logClass = org.apache.maven.plugin.logging.Log.class;</span>
+<span class="nc" id="L383">            java.security.CodeSource codeSource = logClass.getProtectionDomain().getCodeSource();</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">            if (codeSource != null) {</span>
+<span class="nc" id="L385">                String logJar = new File(codeSource.getLocation().toURI()).getAbsolutePath();</span>
+<span class="nc" id="L386">                cp.append(File.pathSeparator).append(logJar);</span>
             }
-<span class="nc" id="L403">        } catch (Exception e) {</span>
-<span class="nc" id="L404">            getLog().warn(&quot;Could not find maven-plugin-api jar to add to fork classpath&quot;, e);</span>
-<span class="nc" id="L405">        }</span>
+<span class="nc" id="L388">        } catch (Exception e) {</span>
+<span class="nc" id="L389">            getLog().warn(&quot;Could not find maven-plugin-api jar to add to fork classpath&quot;, e);</span>
+<span class="nc" id="L390">        }</span>
 
-<span class="nc" id="L407">        return cp.toString();</span>
+<span class="nc" id="L392">        return cp.toString();</span>
     }
 
     /**
@@ -413,29 +398,29 @@ import java.util.Properties;
      * @return the documentation properties
      */
     protected Properties setupProperties() {
-<span class="nc" id="L416">        Properties properties = new Properties();</span>
-<span class="nc" id="L417">        properties.setProperty(&quot;windowTitle&quot;, windowTitle);</span>
-<span class="nc" id="L418">        properties.setProperty(&quot;docTitle&quot;, docTitle);</span>
-<span class="nc" id="L419">        properties.setProperty(&quot;footer&quot;, footer);</span>
-<span class="nc" id="L420">        properties.setProperty(&quot;header&quot;, header);</span>
-<span class="nc" id="L421">        properties.setProperty(&quot;author&quot;, Boolean.toString(displayAuthor));</span>
-<span class="nc bnc" id="L422" title="All 2 branches missed.">        properties.setProperty(&quot;overviewFile&quot;, overviewFile != null ? overviewFile.getAbsolutePath() : &quot;&quot;);</span>
+<span class="nc" id="L401">        Properties properties = new Properties();</span>
+<span class="nc" id="L402">        properties.setProperty(&quot;windowTitle&quot;, windowTitle);</span>
+<span class="nc" id="L403">        properties.setProperty(&quot;docTitle&quot;, docTitle);</span>
+<span class="nc" id="L404">        properties.setProperty(&quot;footer&quot;, footer);</span>
+<span class="nc" id="L405">        properties.setProperty(&quot;header&quot;, header);</span>
+<span class="nc" id="L406">        properties.setProperty(&quot;author&quot;, Boolean.toString(displayAuthor));</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">        properties.setProperty(&quot;overviewFile&quot;, overviewFile != null ? overviewFile.getAbsolutePath() : &quot;&quot;);</span>
         try {
-<span class="nc" id="L424">            Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());</span>
-<span class="nc bnc" id="L425" title="All 2 branches missed.">            if (scopeVal.equals(Scopes.PUBLIC)) {</span>
-<span class="nc" id="L426">                properties.setProperty(&quot;publicScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L427" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PROTECTED)) {</span>
-<span class="nc" id="L428">                properties.setProperty(&quot;protectedScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L429" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PACKAGE)) {</span>
-<span class="nc" id="L430">                properties.setProperty(&quot;packageScope&quot;, &quot;true&quot;);</span>
-<span class="nc bnc" id="L431" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PRIVATE)) {</span>
-<span class="nc" id="L432">                properties.setProperty(&quot;privateScope&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L409">            Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());</span>
+<span class="nc bnc" id="L410" title="All 2 branches missed.">            if (scopeVal.equals(Scopes.PUBLIC)) {</span>
+<span class="nc" id="L411">                properties.setProperty(&quot;publicScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PROTECTED)) {</span>
+<span class="nc" id="L413">                properties.setProperty(&quot;protectedScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PACKAGE)) {</span>
+<span class="nc" id="L415">                properties.setProperty(&quot;packageScope&quot;, &quot;true&quot;);</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">            } else if (scopeVal.equals(Scopes.PRIVATE)) {</span>
+<span class="nc" id="L417">                properties.setProperty(&quot;privateScope&quot;, &quot;true&quot;);</span>
             }
-<span class="nc" id="L434">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L435">            getLog().warn(&quot;Scope (&quot; + scope + &quot;) was not recognized. Skipping argument.&quot;);</span>
-<span class="nc" id="L436">        }</span>
+<span class="nc" id="L419">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L420">            getLog().warn(&quot;Scope (&quot; + scope + &quot;) was not recognized. Skipping argument.&quot;);</span>
+<span class="nc" id="L421">        }</span>
 
-<span class="nc" id="L438">        return properties;</span>
+<span class="nc" id="L423">        return properties;</span>
     }
 
 
@@ -445,36 +430,36 @@ import java.util.Properties;
      * @param outputDirectory The output directory to copy the stylesheet to
      */
     protected void copyStylesheet(final File outputDirectory) {
-<span class="nc" id="L448">        getLog().info(&quot;Using stylesheet from &quot; + stylesheetFile.getAbsolutePath() + &quot;.&quot;);</span>
+<span class="nc" id="L433">        getLog().info(&quot;Using stylesheet from &quot; + stylesheetFile.getAbsolutePath() + &quot;.&quot;);</span>
         try {
-<span class="nc" id="L450">            BufferedReader bufferedReader = null;</span>
-<span class="nc" id="L451">            BufferedWriter bufferedWriter = null;</span>
+<span class="nc" id="L435">            BufferedReader bufferedReader = null;</span>
+<span class="nc" id="L436">            BufferedWriter bufferedWriter = null;</span>
             try {
-<span class="nc bnc" id="L453" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
-<span class="nc" id="L454">                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath()), stylesheetEncoding));</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
+<span class="nc" id="L439">                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath()), stylesheetEncoding));</span>
                 } else {
-<span class="nc" id="L456">                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath())));</span>
+<span class="nc" id="L441">                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath())));</span>
                 }
-<span class="nc" id="L458">                StringBuilder css = new StringBuilder();</span>
+<span class="nc" id="L443">                StringBuilder css = new StringBuilder();</span>
                 String line;
-<span class="nc bnc" id="L460" title="All 2 branches missed.">                while ((line = bufferedReader.readLine()) != null) {</span>
-<span class="nc" id="L461">                    css.append(line).append(&quot;\n&quot;);</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">                while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc" id="L446">                    css.append(line).append(&quot;\n&quot;);</span>
                 }
-<span class="nc" id="L463">                File outfile = new File(outputDirectory, &quot;stylesheet.css&quot;);</span>
-<span class="nc bnc" id="L464" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
-<span class="nc" id="L465">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath()), stylesheetEncoding));</span>
+<span class="nc" id="L448">                File outfile = new File(outputDirectory, &quot;stylesheet.css&quot;);</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">                if (stylesheetEncoding != null) {</span>
+<span class="nc" id="L450">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath()), stylesheetEncoding));</span>
                 } else {
-<span class="nc" id="L467">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath())));</span>
+<span class="nc" id="L452">                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath())));</span>
                 }
-<span class="nc" id="L469">                bufferedWriter.write(css.toString());</span>
+<span class="nc" id="L454">                bufferedWriter.write(css.toString());</span>
             } finally {
-<span class="nc" id="L471">                FileUtils.closeQuietly(bufferedReader);</span>
-<span class="nc" id="L472">                FileUtils.closeQuietly(bufferedWriter);</span>
+<span class="nc" id="L456">                FileUtils.closeQuietly(bufferedReader);</span>
+<span class="nc" id="L457">                FileUtils.closeQuietly(bufferedWriter);</span>
             }
-<span class="nc" id="L474">        } catch (IOException e) {</span>
-<span class="nc" id="L475">            getLog().warn(&quot;Unable to copy specified stylesheet (&quot; + stylesheetFile.getAbsolutePath() + &quot;).&quot;);</span>
-<span class="nc" id="L476">        }</span>
-<span class="nc" id="L477">    }</span>
+<span class="nc" id="L459">        } catch (IOException e) {</span>
+<span class="nc" id="L460">            getLog().warn(&quot;Unable to copy specified stylesheet (&quot; + stylesheetFile.getAbsolutePath() + &quot;).&quot;);</span>
+<span class="nc" id="L461">        }</span>
+<span class="nc" id="L462">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecuteMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">ExecuteMojo.java</span></div><h1>ExecuteMojo.java</h1><pre class="source lang-java linenums">/*
- * Copyright (C) 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.codehaus.gmavenplus.mojo;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecuteMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">GMavenPlus Plugin</a> &gt; <a href="index.source.html" class="el_package">org.codehaus.gmavenplus.mojo</a> &gt; <span class="el_source">ExecuteMojo.java</span></div><h1>ExecuteMojo.java</h1><pre class="source lang-java linenums">package org.codehaus.gmavenplus.mojo;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -53,17 +37,17 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * @since 1.0-beta-1
  */
 @Mojo(name = &quot;execute&quot;, requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true)
-<span class="fc" id="L56">public class ExecuteMojo extends AbstractToolsMojo {</span>
+<span class="fc" id="L40">public class ExecuteMojo extends AbstractToolsMojo {</span>
 
     /**
      * Groovy 4.0.0-RC-1 version.
      */
-<span class="fc" id="L61">    protected static final Version GROOVY_4_0_0_RC_1 = new Version(4, 0, 0, &quot;RC-1&quot;);</span>
+<span class="fc" id="L45">    protected static final Version GROOVY_4_0_0_RC_1 = new Version(4, 0, 0, &quot;RC-1&quot;);</span>
 
     /**
      * Groovy 1.7.0 version.
      */
-<span class="fc" id="L66">    protected static final Version GROOVY_1_7_0 = new Version(1, 7, 0);</span>
+<span class="fc" id="L50">    protected static final Version GROOVY_1_7_0 = new Version(1, 7, 0);</span>
 
     /**
      * Groovy scripts to run (in order). Can be a script body, a {@link java.net.URL URL} to a script
@@ -117,8 +101,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
      */
     @Override
     public void execute() throws MojoExecutionException {
-<span class="fc" id="L120">        doExecute();</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L104">        doExecute();</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Does the actual execution.
@@ -126,75 +110,75 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
      * @throws MojoExecutionException If an unexpected problem occurs (causes a &quot;BUILD ERROR&quot; message to be displayed)
      */
     protected synchronized void doExecute() throws MojoExecutionException {
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (skipScriptExecution) {</span>
-<span class="nc" id="L130">            getLog().info(&quot;Skipping script execution because ${skipScriptExecution} was set to true.&quot;);</span>
-<span class="nc" id="L131">            return;</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (skipScriptExecution) {</span>
+<span class="nc" id="L114">            getLog().info(&quot;Skipping script execution because ${skipScriptExecution} was set to true.&quot;);</span>
+<span class="nc" id="L115">            return;</span>
         }
 
-<span class="pc bpc" id="L134" title="2 of 4 branches missed.">        if (scripts == null || scripts.length == 0) {</span>
-<span class="nc" id="L135">            getLog().info(&quot;No scripts specified for execution. Skipping.&quot;);</span>
-<span class="nc" id="L136">            return;</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">        if (scripts == null || scripts.length == 0) {</span>
+<span class="nc" id="L119">            getLog().info(&quot;No scripts specified for execution. Skipping.&quot;);</span>
+<span class="nc" id="L120">            return;</span>
         }
 
         try {
-<span class="fc" id="L140">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
-<span class="nc" id="L141">        } catch (MalformedURLException e) {</span>
-<span class="nc" id="L142">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
-<span class="nc" id="L143">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L144">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
-<span class="fc" id="L145">        }</span>
+<span class="fc" id="L124">            setupClassWrangler(project.getTestClasspathElements(), includeClasspath);</span>
+<span class="nc" id="L125">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L126">            throw new MojoExecutionException(&quot;Unable to add project test dependencies to classpath.&quot;, e);</span>
+<span class="nc" id="L127">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L128">            throw new MojoExecutionException(&quot;Test dependencies weren't resolved.&quot;, e);</span>
+<span class="fc" id="L129">        }</span>
 
-<span class="fc" id="L147">        logPluginClasspath();</span>
-<span class="fc" id="L148">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
+<span class="fc" id="L131">        logPluginClasspath();</span>
+<span class="fc" id="L132">        classWrangler.logGroovyVersion(mojoExecution.getMojoDescriptor().getGoal());</span>
 
         try {
-<span class="fc" id="L151">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
-<span class="nc" id="L152">        } catch (DependencyResolutionRequiredException e) {</span>
-<span class="nc" id="L153">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
-<span class="fc" id="L154">        }</span>
+<span class="fc" id="L135">            getLog().debug(&quot;Project test classpath:\n&quot; + project.getTestClasspathElements());</span>
+<span class="nc" id="L136">        } catch (DependencyResolutionRequiredException e) {</span>
+<span class="nc" id="L137">            getLog().debug(&quot;Unable to log project test classpath&quot;);</span>
+<span class="fc" id="L138">        }</span>
 
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
-<span class="nc" id="L157">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support script execution. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping script execution.&quot;);</span>
-<span class="nc" id="L158">            return;</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (!groovyVersionSupportsAction()) {</span>
+<span class="nc" id="L141">            getLog().error(&quot;Your Groovy version (&quot; + classWrangler.getGroovyVersionString() + &quot;) doesn't support script execution. The minimum version of Groovy required is &quot; + minGroovyVersion + &quot;. Skipping script execution.&quot;);</span>
+<span class="nc" id="L142">            return;</span>
         }
 
-<span class="fc" id="L161">        final SecurityManager defaultSecurityManager = System.getSecurityManager();</span>
+<span class="fc" id="L145">        final SecurityManager defaultSecurityManager = System.getSecurityManager();</span>
         try {
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (!allowSystemExits) {</span>
-<span class="fc" id="L164">                getLog().warn(&quot;JEP 411 deprecated Security Manager in Java 17 for removal. Therefore `allowSystemExits` is also deprecated for removal.&quot;);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (!allowSystemExits) {</span>
+<span class="fc" id="L148">                getLog().warn(&quot;JEP 411 deprecated Security Manager in Java 17 for removal. Therefore `allowSystemExits` is also deprecated for removal.&quot;);</span>
                 try {
-<span class="nc" id="L166">                    System.setSecurityManager(new NoExitSecurityManager());</span>
-<span class="fc" id="L167">                } catch (UnsupportedOperationException e) {</span>
-<span class="fc" id="L168">                    getLog().warn(&quot;Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.&quot;);</span>
-<span class="nc" id="L169">                }</span>
+<span class="nc" id="L150">                    System.setSecurityManager(new NoExitSecurityManager());</span>
+<span class="fc" id="L151">                } catch (UnsupportedOperationException e) {</span>
+<span class="fc" id="L152">                    getLog().warn(&quot;Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.&quot;);</span>
+<span class="nc" id="L153">                }</span>
             }
 
             // get classes we need with reflection
-<span class="fc" id="L173">            Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
+<span class="fc" id="L157">            Class&lt;?&gt; groovyShellClass = classWrangler.getClass(&quot;groovy.lang.GroovyShell&quot;);</span>
 
             // create a GroovyShell to run scripts in
-<span class="fc" id="L176">            Object shell = setupShell(groovyShellClass);</span>
+<span class="fc" id="L160">            Object shell = setupShell(groovyShellClass);</span>
 
             // run the scripts
-<span class="fc" id="L179">            executeScripts(groovyShellClass, shell);</span>
-<span class="nc" id="L180">        } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L181">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
-<span class="nc" id="L182">        } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L183">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
-<span class="nc" id="L184">        } catch (InstantiationException e) {</span>
-<span class="nc" id="L185">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
-<span class="nc" id="L186">        } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L187">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="fc" id="L163">            executeScripts(groovyShellClass, shell);</span>
+<span class="nc" id="L164">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L165">            throw new MojoExecutionException(&quot;Unable to get a Groovy class from classpath (&quot; + e.getMessage() + &quot;). Do you have Groovy as a compile dependency in your project or the plugin?&quot;, e);</span>
+<span class="nc" id="L166">        } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L167">            throw new MojoExecutionException(&quot;Error occurred while calling a method on a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L168">        } catch (InstantiationException e) {</span>
+<span class="nc" id="L169">            throw new MojoExecutionException(&quot;Error occurred while instantiating a Groovy class from classpath.&quot;, e);</span>
+<span class="nc" id="L170">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L171">            throw new MojoExecutionException(&quot;Unable to access a method on a Groovy class from classpath.&quot;, e);</span>
         } finally {
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">            if (!allowSystemExits) {</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">            if (!allowSystemExits) {</span>
                 try {
-<span class="fc" id="L191">                    System.setSecurityManager(defaultSecurityManager);</span>
-<span class="nc" id="L192">                } catch (UnsupportedOperationException e) {</span>
-<span class="nc" id="L193">                    getLog().warn(&quot;Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.&quot;);</span>
-<span class="fc" id="L194">                }</span>
+<span class="fc" id="L175">                    System.setSecurityManager(defaultSecurityManager);</span>
+<span class="nc" id="L176">                } catch (UnsupportedOperationException e) {</span>
+<span class="nc" id="L177">                    getLog().warn(&quot;Attempted to use Security Manager in a JVM where it's disabled by default. You might try `-Djava.security.manager=allow` to override this.&quot;);</span>
+<span class="fc" id="L178">                }</span>
             }
         }
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L181">    }</span>
 
     /**
      * Instantiates a new groovy.lang.GroovyShell object.
@@ -208,29 +192,29 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
      */
     protected Object setupShell(final Class&lt;?&gt; groovyShellClass) throws InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Object shell;
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (sourceEncoding != null) {</span>
-<span class="fc" id="L212">            Class&lt;?&gt; compilerConfigurationClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;);</span>
-<span class="fc" id="L213">            Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
-<span class="fc" id="L214">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
-<span class="fc" id="L215">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);</span>
-<span class="fc" id="L216">        } else {</span>
-<span class="fc" id="L217">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class), classWrangler.getClassLoader());</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (sourceEncoding != null) {</span>
+<span class="fc" id="L196">            Class&lt;?&gt; compilerConfigurationClass = classWrangler.getClass(&quot;org.codehaus.groovy.control.CompilerConfiguration&quot;);</span>
+<span class="fc" id="L197">            Object compilerConfiguration = invokeConstructor(findConstructor(compilerConfigurationClass));</span>
+<span class="fc" id="L198">            invokeMethod(findMethod(compilerConfigurationClass, &quot;setSourceEncoding&quot;, String.class), compilerConfiguration, sourceEncoding);</span>
+<span class="fc" id="L199">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class, compilerConfigurationClass), classWrangler.getClassLoader(), compilerConfiguration);</span>
+<span class="fc" id="L200">        } else {</span>
+<span class="fc" id="L201">            shell = invokeConstructor(findConstructor(groovyShellClass, ClassLoader.class), classWrangler.getClassLoader());</span>
         }
-<span class="fc" id="L219">        initializeProperties();</span>
-<span class="fc" id="L220">        Method setProperty = findMethod(groovyShellClass, &quot;setProperty&quot;, String.class, Object.class);</span>
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">            for (Object k : properties.keySet()) {</span>
-<span class="fc" id="L223">                invokeMethod(setProperty, shell, k, properties.get(k));</span>
-<span class="fc" id="L224">            }</span>
+<span class="fc" id="L203">        initializeProperties();</span>
+<span class="fc" id="L204">        Method setProperty = findMethod(groovyShellClass, &quot;setProperty&quot;, String.class, Object.class);</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        if (bindPropertiesToSeparateVariables) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">            for (Object k : properties.keySet()) {</span>
+<span class="fc" id="L207">                invokeMethod(setProperty, shell, k, properties.get(k));</span>
+<span class="fc" id="L208">            }</span>
         } else {
-<span class="nc bnc" id="L226" title="All 2 branches missed.">            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {</span>
-<span class="nc" id="L227">                invokeMethod(setProperty, shell, &quot;properties&quot;, properties);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {</span>
+<span class="nc" id="L211">                invokeMethod(setProperty, shell, &quot;properties&quot;, properties);</span>
             } else {
-<span class="nc" id="L229">                throw new IllegalArgumentException(&quot;properties is a read-only property in Groovy &quot; + GROOVY_4_0_0_RC_1 + &quot; and later.&quot;);</span>
+<span class="nc" id="L213">                throw new IllegalArgumentException(&quot;properties is a read-only property in Groovy &quot; + GROOVY_4_0_0_RC_1 + &quot; and later.&quot;);</span>
             }
         }
 
-<span class="fc" id="L233">        return shell;</span>
+<span class="fc" id="L217">        return shell;</span>
     }
 
     /**
@@ -243,36 +227,36 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
      * @throws MojoExecutionException    when an exception occurred during script execution (causes a &quot;BUILD ERROR&quot; message to be displayed)
      */
     protected void executeScripts(final Class&lt;?&gt; groovyShellClass, final Object shell) throws InvocationTargetException, IllegalAccessException, MojoExecutionException {
-<span class="fc" id="L246">        int scriptNum = 1;</span>
-<span class="fc bfc" id="L247" title="All 2 branches covered.">        for (String script : scripts) {</span>
+<span class="fc" id="L230">        int scriptNum = 1;</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        for (String script : scripts) {</span>
             try {
                 // TODO: try as file first, then as URL?
                 try {
                     // it's a URL to a script
-<span class="fc" id="L252">                    executeScriptFromUrl(groovyShellClass, shell, script);</span>
-<span class="fc" id="L253">                } catch (MalformedURLException e) {</span>
+<span class="fc" id="L236">                    executeScriptFromUrl(groovyShellClass, shell, script);</span>
+<span class="fc" id="L237">                } catch (MalformedURLException e) {</span>
                     // it's not a URL to a script, try as a filename
-<span class="fc" id="L255">                    File scriptFile = new File(script);</span>
-<span class="fc bfc" id="L256" title="All 2 branches covered.">                    if (scriptFile.isFile()) {</span>
-<span class="fc" id="L257">                        getLog().info(&quot;Running Groovy script from &quot; + scriptFile.getCanonicalPath() + &quot;.&quot;);</span>
-<span class="fc" id="L258">                        Method evaluateFile = findMethod(groovyShellClass, &quot;evaluate&quot;, File.class);</span>
-<span class="fc" id="L259">                        invokeMethod(evaluateFile, shell, scriptFile);</span>
-<span class="fc" id="L260">                    } else {</span>
+<span class="fc" id="L239">                    File scriptFile = new File(script);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">                    if (scriptFile.isFile()) {</span>
+<span class="fc" id="L241">                        getLog().info(&quot;Running Groovy script from &quot; + scriptFile.getCanonicalPath() + &quot;.&quot;);</span>
+<span class="fc" id="L242">                        Method evaluateFile = findMethod(groovyShellClass, &quot;evaluate&quot;, File.class);</span>
+<span class="fc" id="L243">                        invokeMethod(evaluateFile, shell, scriptFile);</span>
+<span class="fc" id="L244">                    } else {</span>
                         // it's neither a filename or URL, treat as a script body
-<span class="fc" id="L262">                        Method evaluateString = findMethod(groovyShellClass, &quot;evaluate&quot;, String.class);</span>
-<span class="fc" id="L263">                        invokeMethod(evaluateString, shell, script);</span>
+<span class="fc" id="L246">                        Method evaluateString = findMethod(groovyShellClass, &quot;evaluate&quot;, String.class);</span>
+<span class="fc" id="L247">                        invokeMethod(evaluateString, shell, script);</span>
                     }
-<span class="fc" id="L265">                }</span>
-<span class="nc" id="L266">            } catch (IOException ioe) {</span>
-<span class="nc bnc" id="L267" title="All 2 branches missed.">                if (continueExecuting) {</span>
-<span class="nc" id="L268">                    getLog().error(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;. Continuing to execute remaining scripts.&quot;, ioe);</span>
+<span class="fc" id="L249">                }</span>
+<span class="nc" id="L250">            } catch (IOException ioe) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">                if (continueExecuting) {</span>
+<span class="nc" id="L252">                    getLog().error(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;. Continuing to execute remaining scripts.&quot;, ioe);</span>
                 } else {
-<span class="nc" id="L270">                    throw new MojoExecutionException(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;.&quot;, ioe);</span>
+<span class="nc" id="L254">                    throw new MojoExecutionException(&quot;An Exception occurred while executing script &quot; + scriptNum + &quot;.&quot;, ioe);</span>
                 }
-<span class="fc" id="L272">            }</span>
-<span class="fc" id="L273">            scriptNum++;</span>
+<span class="fc" id="L256">            }</span>
+<span class="fc" id="L257">            scriptNum++;</span>
         }
-<span class="fc" id="L275">    }</span>
+<span class="fc" id="L259">    }</span>
 
     /**
      * Executes a script at a URL location.
@@ -285,41 +269,41 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
      * @throws IllegalAccessException    when a method needed for script execution cannot be accessed
      */
     protected void executeScriptFromUrl(Class&lt;?&gt; groovyShellClass, Object shell, String script) throws IOException, InvocationTargetException, IllegalAccessException {
-<span class="fc" id="L288">        URLConnection urlConnection = new URL(script).openConnection();</span>
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">        if (urlConnectionTimeout &gt; 0) {</span>
-<span class="nc" id="L290">            urlConnection.setConnectTimeout(urlConnectionTimeout);</span>
+<span class="fc" id="L272">        URLConnection urlConnection = new URL(script).openConnection();</span>
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">        if (urlConnectionTimeout &gt; 0) {</span>
+<span class="nc" id="L274">            urlConnection.setConnectTimeout(urlConnectionTimeout);</span>
         }
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">        if (urlReadTimeout &gt; 0) {</span>
-<span class="nc" id="L293">            urlConnection.setReadTimeout(urlReadTimeout);</span>
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">        if (urlReadTimeout &gt; 0) {</span>
+<span class="nc" id="L277">            urlConnection.setReadTimeout(urlReadTimeout);</span>
         }
-<span class="fc" id="L295">        getLog().info(&quot;Running Groovy script from &quot; + urlConnection.getURL() + &quot;.&quot;);</span>
-<span class="pc bpc" id="L296" title="1 of 2 branches missed.">        if (groovyAtLeast(GROOVY_1_7_0)) {</span>
-<span class="fc" id="L297">            Method evaluateUrlWithReader = findMethod(groovyShellClass, &quot;evaluate&quot;, Reader.class);</span>
-<span class="fc" id="L298">            BufferedReader reader = null;</span>
+<span class="fc" id="L279">        getLog().info(&quot;Running Groovy script from &quot; + urlConnection.getURL() + &quot;.&quot;);</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">        if (groovyAtLeast(GROOVY_1_7_0)) {</span>
+<span class="fc" id="L281">            Method evaluateUrlWithReader = findMethod(groovyShellClass, &quot;evaluate&quot;, Reader.class);</span>
+<span class="fc" id="L282">            BufferedReader reader = null;</span>
             try {
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">                if (sourceEncoding != null) {</span>
-<span class="fc" id="L301">                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), sourceEncoding));</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">                if (sourceEncoding != null) {</span>
+<span class="fc" id="L285">                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), sourceEncoding));</span>
                 } else {
-<span class="nc" id="L303">                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));</span>
+<span class="nc" id="L287">                    reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));</span>
                 }
-<span class="fc" id="L305">                invokeMethod(evaluateUrlWithReader, shell, reader);</span>
+<span class="fc" id="L289">                invokeMethod(evaluateUrlWithReader, shell, reader);</span>
             } finally {
-<span class="fc" id="L307">                FileUtils.closeQuietly(reader);</span>
+<span class="fc" id="L291">                FileUtils.closeQuietly(reader);</span>
             }
-<span class="fc" id="L309">        } else {</span>
-<span class="nc" id="L310">            Method evaluateUrlWithStream = findMethod(groovyShellClass, &quot;evaluate&quot;, InputStream.class);</span>
-<span class="nc" id="L311">            InputStream inputStream = null;</span>
+<span class="fc" id="L293">        } else {</span>
+<span class="nc" id="L294">            Method evaluateUrlWithStream = findMethod(groovyShellClass, &quot;evaluate&quot;, InputStream.class);</span>
+<span class="nc" id="L295">            InputStream inputStream = null;</span>
             try {
-<span class="nc bnc" id="L313" title="All 2 branches missed.">                if (sourceEncoding != null) {</span>
-<span class="nc" id="L314">                    getLog().warn(&quot;Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.&quot;);</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                if (sourceEncoding != null) {</span>
+<span class="nc" id="L298">                    getLog().warn(&quot;Source encoding does not apply to Groovy versions previous to 1.7.0, ignoring.&quot;);</span>
                 }
-<span class="nc" id="L316">                inputStream = urlConnection.getInputStream();</span>
-<span class="nc" id="L317">                invokeMethod(evaluateUrlWithStream, shell, urlConnection.getInputStream());</span>
+<span class="nc" id="L300">                inputStream = urlConnection.getInputStream();</span>
+<span class="nc" id="L301">                invokeMethod(evaluateUrlWithStream, shell, urlConnection.getInputStream());</span>
             } finally {
-<span class="nc" id="L319">                FileUtils.closeQuietly(inputStream);</span>
+<span class="nc" id="L303">                FileUtils.closeQuietly(inputStream);</span>
             }
         }
-<span class="fc" id="L322">    }</span>
+<span class="fc" id="L306">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
