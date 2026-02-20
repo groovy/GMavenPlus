@@ -64,9 +64,6 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <configuration>
-          <fork>true</fork>
-        </configuration>
         <executions>
           <execution>
               <phase>generate-sources</phase>

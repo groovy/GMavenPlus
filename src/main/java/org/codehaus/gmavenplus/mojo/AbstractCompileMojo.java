@@ -184,12 +184,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
     protected ToolchainManager toolchainManager;
 
     /**
-     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
-     */
-    @Parameter(defaultValue = "false")
-    protected boolean fork;
-
-    /**
      * Performs compilation of compile mojos.
      *
      * @param sources                the sources to compile
@@ -228,10 +222,6 @@ public abstract class AbstractCompileMojo extends AbstractGroovySourcesMojo {
         if (toolchain != null) {
             getLog().info("Toolchain in gmavenplus-plugin: " + toolchain);
             performForkedCompilation(configuration, toolchain.findTool("java"));
-        } else if (fork) {
-            String javaExecutable = getJavaExecutable();
-            getLog().info("Forking compilation using " + javaExecutable);
-            performForkedCompilation(configuration, javaExecutable);
         } else {
             getLog().info("Performing in-process compilation");
             performInProcessCompilation(configuration, classpath);
