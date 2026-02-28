@@ -149,14 +149,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected org.apache.maven.execution.MavenSession session;
 
     /**
-     * Whether to fork the compilation when not using a toolchain (toolchains automatically use a forked process).
-     *
-     * @since 4.3.0
-     */
-    @Parameter(property = "fork", defaultValue = "false")
-    protected boolean fork;
-
-    /**
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources     the sources to perform stub generation on
@@ -188,10 +180,6 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         if (toolchain != null) {
             getLog().info("Toolchain in gmavenplus-plugin: " + toolchain);
             performForkedStubGeneration(configuration, toolchain.findTool("java"));
-        } else if (fork) {
-            String javaExecutable = getJavaExecutable();
-            getLog().info("Forking stub generation using " + javaExecutable);
-            performForkedStubGeneration(configuration, javaExecutable);
         } else {
             getLog().info("Performing in-process stub generation");
             performInProcessStubGeneration(configuration, classpath);
