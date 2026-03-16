@@ -1,0 +1,30 @@
+name: PR Coverage Report
+
+on:
+  workflow_run:
+    workflows: ["GitHub CI"]
+    types:
+      - completed
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-report
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+      - name: PR Coverage Comment
+        uses: madrapps/jacoco-report@v1.7.1
+        with:
+          paths: jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
+          update-comment: true
+          title: Code Coverage
