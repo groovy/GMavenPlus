@@ -220,11 +220,10 @@ public class ReflectionUtils {
     }
 
     /**
-     * This variant retrieves {@link Class#getDeclaredMethods()} from a local cache in order to avoid the JVM's SecurityManager check and defensive array copying.
-     * In addition, it also includes Java 8 default methods from locally implemented interfaces, since those are effectively to be treated just like declared methods.
+     * This variant retrieves {@link Class#getDeclaredMethods()} and also includes Java 8 default methods from locally implemented interfaces, since those are effectively to be treated just like declared methods.
      *
      * @param clazz the class to introspect
-     * @return the cached array of methods
+     * @return the array of methods
      * @see Class#getDeclaredMethods()
      */
     private static Method[] getDeclaredMethods(Class<?> clazz) {

@@ -51,7 +51,6 @@
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <configuration>
-          <fork>true</fork>
           <includeClasspath>PROJECT_ONLY</includeClasspath>
         </configuration>
         <executions>
