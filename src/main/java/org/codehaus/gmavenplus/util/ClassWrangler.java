@@ -253,7 +253,8 @@ public class ClassWrangler {
             String groovyObjectClassPath = getJarPath();
             String groovyJar = null;
             if (groovyObjectClassPath != null) {
-                groovyJar = groovyObjectClassPath.replaceAll("!.+", "");
+                int bangIdx = groovyObjectClassPath.indexOf('!');
+                groovyJar = bangIdx != -1 ? groovyObjectClassPath.substring(0, bangIdx) : groovyObjectClassPath;
                 groovyJar = groovyJar.substring(groovyJar.lastIndexOf("/") + 1);
             }
 
