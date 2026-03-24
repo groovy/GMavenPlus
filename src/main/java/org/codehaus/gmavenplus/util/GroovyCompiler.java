@@ -341,9 +341,8 @@ public class GroovyCompiler {
         performGroovyDocGeneration(configuration.getOutputDirectory(), groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     protected List<?> setupLinks(GroovyDocConfiguration configuration) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
-        List linksList = new ArrayList();
+        List<Object> linksList = new ArrayList<>();
         if (configuration.getLinks() != null && !configuration.getLinks().isEmpty()) {
             Class<?> linkArgumentClass = null;
             if (configuration.getLinkArgumentClass() == null) {
