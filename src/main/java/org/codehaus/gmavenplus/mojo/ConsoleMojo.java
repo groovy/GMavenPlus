@@ -100,7 +100,6 @@ public class ConsoleMojo extends AbstractToolsMojo {
             // run the console
             invokeMethod(findMethod(consoleClass, "run"), console);
 
-            // TODO: for some reason instantiating AntBuilder before calling run() causes its stdout and stderr streams to not be captured by the Console
             bindAntBuilder(consoleClass, bindingClass, console);
 
             // open script file
@@ -194,19 +193,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
-            Object antBuilder = null;
-            try {
-                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
-            } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                try {
-                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {
-                    logUnableToInitializeAntBuilder(e2);
-                }
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            }
+            Object antBuilder = createAntBuilder();
             if (antBuilder != null) {
                 if (bindPropertiesToSeparateVariables) {
                     invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
@@ -214,6 +201,16 @@ public class ConsoleMojo extends AbstractToolsMojo {
                     properties.put("ant", antBuilder);
                 }
             }
+        }
+    }
+
+    /**
+     * Initializes the 'ant' property with a placeholder.
+     */
+    @Override
+    protected void initializeAnt() {
+        if (!properties.containsKey("ant")) {
+            properties.put("ant", Boolean.TRUE);
         }
     }
 
