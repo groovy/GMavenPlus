@@ -380,7 +380,7 @@ public class GroovyCompiler {
         if ((ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), GROOVY_4_0_27) && ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), GROOVY_5_0_0_ALPHA1)) || ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), GROOVY_5_0_0_BETA_1)) {
              groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, String.class, Properties.class),
                     classpathResourceManager,
-                    sourceDirectories.toArray(new String[0]),
+                    sourceDirectories.toArray(new String[sourceDirectories.size()]),
                     defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
                     defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
                     defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,
@@ -391,7 +391,7 @@ public class GroovyCompiler {
         } else if (ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), GROOVY_1_6_0_RC2)) {
             groovyDocTool = invokeConstructor(findConstructor(groovyDocToolClass, resourceManagerClass, String[].class, String[].class, String[].class, String[].class, List.class, Properties.class),
                     classpathResourceManager,
-                    sourceDirectories.toArray(new String[0]),
+                    sourceDirectories.toArray(new String[sourceDirectories.size()]),
                     defaultDocTemplates == null ? groovyDocTemplateInfo.defaultDocTemplates() : defaultDocTemplates,
                     defaultPackageTemplates == null ? groovyDocTemplateInfo.defaultPackageTemplates() : defaultPackageTemplates,
                     defaultClassTemplates == null ? groovyDocTemplateInfo.defaultClassTemplates() : defaultClassTemplates,

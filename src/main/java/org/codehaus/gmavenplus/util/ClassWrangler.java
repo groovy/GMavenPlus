@@ -234,12 +234,12 @@ public class ClassWrangler {
      * @throws MalformedURLException when a classpath element provides a malformed URL
      */
     protected ClassLoader createNewClassLoader(final List<?> classpath, final ClassLoader classLoader) throws MalformedURLException {
-        List<URL> urlsList = new ArrayList<>();
+        List<URL> urlsList = new ArrayList<>(classpath.size());
         for (Object classPathObject : classpath) {
             String path = (String) classPathObject;
             urlsList.add(new File(path).toURI().toURL());
         }
-        URL[] urlsArray = urlsList.toArray(new URL[0]);
+        URL[] urlsArray = urlsList.toArray(new URL[urlsList.size()]);
         return new URLClassLoader(urlsArray, classLoader);
     }
 
