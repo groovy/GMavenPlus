@@ -95,7 +95,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
                 javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                 javaFileSets.add(javaFileSet);
             }
-            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);
+            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[javaFileSets.size()]);
             result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
             System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
         } else {
@@ -134,7 +134,7 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
                 javaFileSet.setIncludes(singletonList(JAVA_SOURCES_PATTERN));
                 javaFileSets.add(javaFileSet);
             }
-            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[0]);
+            FileSet[] javaFileSetsArr = javaFileSets.toArray(new FileSet[javaFileSets.size()]);
             result = Arrays.copyOf(groovyFileSets, groovyFileSets.length + javaFileSetsArr.length);
             System.arraycopy(javaFileSetsArr, 0, result, groovyFileSets.length, javaFileSetsArr.length);
         } else {

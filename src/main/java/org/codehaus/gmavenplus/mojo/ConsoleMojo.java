@@ -224,7 +224,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
      */
     protected void waitForConsoleClose() throws MojoFailureException {
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[0]);
+        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
         Thread consoleThread = null;
         for (Thread thread : threadArray) {
             if ("AWT-Shutdown".equals(thread.getName())) {
