@@ -17,6 +17,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.CodeSource;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -427,9 +429,9 @@ public class GroovyCompiler {
     }
 
     protected List<String> setupGroovyDocSources(final FileSet[] sourceDirectories, final FileSetManager fileSetManager) {
-        List<String> javaSources = new ArrayList<>();
-        List<String> groovySources = new ArrayList<>();
-        List<String> possibleGroovyStubs = new ArrayList<>();
+        Set<String> javaSources = new LinkedHashSet<>();
+        Set<String> groovySources = new LinkedHashSet<>();
+        Set<String> possibleGroovyStubs = new HashSet<>();
         for (FileSet sourceDirectory : sourceDirectories) {
             String[] sources = fileSetManager.getIncludedFiles(sourceDirectory);
             for (String source : sources) {
