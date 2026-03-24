@@ -265,7 +265,7 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
                 return commandConfig.get();
             }
         } catch (Exception e) {
-            // ignore, we are probably on Java 8 or the OS doesn't support this
+            getLog().debug("Failed to get Java executable via ProcessHandle, falling back to java.home.", e);
         }
 
         String javaHome = System.getProperty("java.home");
