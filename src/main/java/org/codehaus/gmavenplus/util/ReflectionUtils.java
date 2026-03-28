@@ -48,7 +48,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("]$", "").replaceAll("class ", "") + ").");
+        throw new IllegalArgumentException("Unable to find constructor " + clazz.getName() + "(" + formatParameterTypes(paramTypes) + ").");
     }
 
     /**
@@ -107,7 +107,7 @@ public class ReflectionUtils {
             }
             searchType = searchType.getSuperclass();
         }
-        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + Arrays.toString(paramTypes).replaceAll("^\\[", "").replaceAll("]$", "").replaceAll("class ", "") + ").");
+        throw new IllegalArgumentException("Unable to find method " + clazz.getName() + "." + name + "(" + formatParameterTypes(paramTypes) + ").");
     }
 
     /**
@@ -242,6 +242,30 @@ public class ReflectionUtils {
             result = declaredMethods;
         }
         return result;
+    }
+
+    private static String formatParameterTypes(final Class<?>[] paramTypes) {
+        if (paramTypes == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < paramTypes.length; i++) {
+            if (paramTypes[i] == null) {
+                sb.append("null");
+            } else {
+                String s = paramTypes[i].toString();
+                final String classPrefix = "class ";
+                if (s.startsWith(classPrefix)) {
+                    sb.append(s.substring(classPrefix.length()));
+                } else {
+                    sb.append(s);
+                }
+            }
+            if (i < paramTypes.length - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
     }
 
     private static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
