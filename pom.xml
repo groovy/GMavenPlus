@@ -104,19 +104,62 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <!-- this is to support use of Groovysh (Groovy jars don't include) -->
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
-      <version>2.4.2</version>
+      <version>1.14</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <!-- this is to support use of Groovysh (Groovy jars don't include) -->
-      <!-- this will work for all Groovy >= 2.2.0-beta-1 -->
+      <!-- this will work for all Groovy >= 2.2.0-beta-1 and < 5.0.0-rc-1 -->
       <!-- users of older versions will need to pull in 1.0 as a runtime dependency -->
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
       <version>2.14.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline-terminal</artifactId>
+      <version>3.30.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline-builtins</artifactId>
+      <version>3.30.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline-console</artifactId>
+      <version>3.30.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline-terminal-jna</artifactId>
+      <version>3.30.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.16.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline-reader</artifactId>
+      <version>3.30.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <!-- this is to support use of Groovysh (Groovy jars don't include) -->
+      <!-- this will work for all Groovy >= 5.0.0-rc-1 -->
+      <groupId>org.jline</groupId>
+      <artifactId>jline-terminal-jni</artifactId>
+      <version>3.30.6</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

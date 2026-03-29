@@ -6,6 +6,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.io.File;
@@ -14,7 +15,6 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.Set;
 
-import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
@@ -35,6 +35,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  */
 @Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST)
 public class ConsoleMojo extends AbstractToolsMojo {
+
+    /**
+     * Groovy 4.0.0-RC-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_RC1 = new Version(4, 0, 0, "RC-1");
 
     /**
      * Script file to load into console. Can also be a project property referring to a file.
@@ -169,10 +174,10 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 invokeMethod(setVariable, binding, k, properties.get(k));
             }
         } else {
-            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {
+            if (groovyOlderThan(GROOVY_4_0_0_RC1)) {
                 invokeMethod(setVariable, binding, "properties", properties);
             } else {
-                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC_1 + " and later.");
+                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later.");
             }
         }
 
