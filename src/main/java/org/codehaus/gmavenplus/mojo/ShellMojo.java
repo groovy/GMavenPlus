@@ -27,6 +27,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin ClassLoader to pull in dependencies
  * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * These dependencies are now optional and must be provided by the user if needed.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -63,6 +64,11 @@ public class ShellMojo extends AbstractToolsMojo {
       * Groovy 5.0.4 version.
       */
      protected static final Version GROOVY_5_0_4 = new Version(5, 0, 4);
+ 
+     /**
+      * Groovy 6.0.0-alpha-1 version.
+      */
+     protected static final Version GROOVY_6_0_0_ALPHA1 = new Version(6, 0, 0, "alpha-1");
 
     /**
      * Groovy shell verbosity level. Should be one of:
@@ -116,22 +122,16 @@ public class ShellMojo extends AbstractToolsMojo {
                 }
             }
 
-            if (groovyAtLeast(GROOVY_5_0_4)) {
-                executeGroovy5Shell();
+            if (groovyAtLeast(GROOVY_5_0_0_BETA2)) {
+                executeModernShell();
             } else {
-                if (groovyAtLeast(GROOVY_5_0_0_ALPHA1)) {
-                    try {
-                        classWrangler.getClass("org.jline.reader.LineReader");
-                    } catch (ClassNotFoundException e) {
-                        throw new MojoExecutionException("Unable to get a JLine 3 class from classpath. This might be because of a JLine version mismatch. Make sure you include JLine 3.x as a runtime dependency in your project or the plugin.", e);
-                    }
-                }
                 // get classes we need with reflection
-                Class<?> shellClass = classWrangler.getClass(groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh.Groovysh" : "org.codehaus.groovy.tools.shell.Groovysh");
+                String shellPackage = groovyAtLeast(GROOVY_4_0_0_ALPHA1) ? "org.apache.groovy.groovysh" : "org.codehaus.groovy.tools.shell";
+                Class<?> shellClass = classWrangler.getClass(shellPackage + ".Groovysh");
                 Class<?> bindingClass = classWrangler.getClass("groovy.lang.Binding");
-                Class<?> ioClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO");
-                Class<?> verbosityClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.IO$Verbosity");
-                Class<?> loggerClass = classWrangler.getClass("org.codehaus.groovy.tools.shell.util.Logger");
+                Class<?> ioClass = classWrangler.getClass(shellPackage + ".IO");
+                Class<?> verbosityClass = classWrangler.getClass(shellPackage + ".util.Verbosity");
+                Class<?> loggerClass = classWrangler.getClass(shellPackage + ".util.Logger");
 
                 // create shell to run
                 Object shell = setupShell(shellClass, bindingClass, ioClass, verbosityClass, loggerClass);
@@ -144,7 +144,13 @@ public class ShellMojo extends AbstractToolsMojo {
                     } catch (Exception e) {
                         String message = "Jansi 2.x detected, which is incompatible with JLine 2. Falling back to dumb terminal. Colors will be disabled.";
                         if (groovyAtLeast(GROOVY_5_0_0_ALPHA1)) {
-                            message += " We recommend upgrading to Groovy 5.0.4 or newer for full JLine 3 support.";
+                            message += " To enable colors, use Groovy 5.0.4 or later.";
+                        } else if (groovyOlderThan(GROOVY_5_0_0_ALPHA1)) {
+                            try {
+                                classWrangler.getClass("org.fusesource.jansi.AnsiConsole");
+                            } catch (ClassNotFoundException cnfe) {
+                                message = "Jansi 1.x not found on classpath. Terminal colors will be disabled. To enable them, add org.fusesource.jansi:jansi:1.18 to the plugin's dependencies.";
+                            }
                         }
                         getLog().warn(message);
                         System.setProperty("jline.terminal", "jline.UnsupportedTerminal");
@@ -156,7 +162,7 @@ public class ShellMojo extends AbstractToolsMojo {
             if (groovyAtLeast(GROOVY_5_0_0_ALPHA1)) {
                 throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). This Groovy version (" + classWrangler.getGroovyVersionString() + ") revamped the shell to use JLine 3 and removed some older classes. You might need to use Groovy 5.0.4 or later for full support.", e);
             }
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Ensure groovy-groovysh is on your plugin classpath.", e);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NoClassDefFoundError && e.getCause().getMessage() != null && e.getCause().getMessage().contains("jline")) {
                 if (groovyAtLeast(GROOVY_5_0_0_ALPHA1)) {
@@ -219,21 +225,22 @@ public class ShellMojo extends AbstractToolsMojo {
         return invokeConstructor(findConstructor(shellClass, ClassLoader.class, bindingClass, ioClass), classWrangler.getClassLoader(), binding, io);
     }
     /**
-     * Executes the Groovy 5 shell.
+     * Executes the modern (Groovy 4+) shell.
      *
      * @throws MojoExecutionException when a problem occurs during shell execution
      * @throws ClassNotFoundException when a class needed for shell configuration cannot be found
      * @throws InvocationTargetException when a reflection invocation needed for shell configuration cannot be completed
      * @throws IllegalAccessException    when a method needed for shell configuration cannot be accessed
      */
-    protected void executeGroovy5Shell() throws MojoExecutionException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
+    protected void executeModernShell() throws MojoExecutionException, ClassNotFoundException, InvocationTargetException, IllegalAccessException {
         try {
             classWrangler.getClass("org.jline.reader.LineReader");
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a JLine 3 class from classpath. This might be because of a JLine version mismatch. Make sure you include JLine 3.x as a runtime dependency in your project or the plugin.", e);
+            String jlineVersion = groovyAtLeast(GROOVY_6_0_0_ALPHA1) ? "4" : "3";
+            getLog().warn("JLine " + jlineVersion + " not found on classpath. Terminal colors and advanced features will be disabled. Ensure groovy-groovysh is on your plugin classpath.");
         }
-        if (!bindPropertiesToSeparateVariables) {
-            throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later.");
+        if (!bindPropertiesToSeparateVariables && groovyAtLeast(GROOVY_4_0_0_RC1)) {
+            throw new MojoExecutionException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later. You must set `bindPropertiesToSeparateVariables` to true.");
         }
         Class<?> mainClass = classWrangler.getClass("org.apache.groovy.groovysh.Main");
         Method startMethod = null;
@@ -244,21 +251,11 @@ public class ShellMojo extends AbstractToolsMojo {
         }
 
         if (startMethod != null) {
-            Map<String, Object> initialBindings = new HashMap<>();
             initializeProperties();
-            for (Object k : properties.keySet()) {
-                initialBindings.put((String) k, properties.get(k));
-            }
-
-            ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-            try {
-                Thread.currentThread().setContextClassLoader(classWrangler.getClassLoader());
-                invokeStaticMethod(startMethod, initialBindings, new String[0]);
-            } finally {
-                Thread.currentThread().setContextClassLoader(oldClassLoader);
-            }
+            invokeStaticMethod(startMethod, properties, new String[0]);
         } else {
-            throw new MojoExecutionException("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support running a shell. The minimum version of Groovy required is " + GROOVY_5_0_4 + ". Skipping shell startup.");
+            getLog().warn("Groovy " + classWrangler.getGroovyVersionString() + " does not support variable bindings in the modern shell path. Starting shell without project context.");
+            invokeStaticMethod(findMethod(mainClass, "main", String[].class), (Object) new String[0]);
         }
     }
 

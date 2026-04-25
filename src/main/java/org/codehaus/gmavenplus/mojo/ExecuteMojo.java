@@ -31,7 +31,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * Executes Groovy scripts (in the pom or external), bound to the current project.
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
- * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * (for things like Ant for AntBuilder and Ivy for @grab).
+ * These dependencies are now optional and must be provided by the user if needed.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
