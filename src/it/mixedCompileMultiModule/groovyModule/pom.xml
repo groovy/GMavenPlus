@@ -24,10 +24,6 @@
       <groupId>@groovyGroupId@</groupId>
       <artifactId>groovy</artifactId>
     </dependency>
-    <dependency>
-      <groupId>@groovyGroupId@</groupId>
-      <artifactId>groovy-ant</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

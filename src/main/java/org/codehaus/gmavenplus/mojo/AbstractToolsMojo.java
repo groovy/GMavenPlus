@@ -16,6 +16,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeConstructor;
  * The base tools mojo, which all tool mojos extend.
  * Note that it references the plugin classloader to pull in dependencies
  * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * These dependencies are now optional and must be provided by the user if needed.
  * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
@@ -137,22 +138,15 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
             properties.put("projectHelper", projectHelper);
         }
         if (!properties.containsKey("ant")) {
-            Object antBuilder = null;
-            try {
-                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
-            } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                try {
-                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {
-                    logUnableToInitializeAntBuilder(e2);
-                }
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            }
+            Object antBuilder = createAntBuilder();
             if (antBuilder != null) {
                 properties.put("ant", antBuilder);
             }
+        }
+        try {
+            classWrangler.getClass("org.apache.ivy.Ivy");
+        } catch (ClassNotFoundException e) {
+            logMissingIvyDependency();
         }
         if (bindSessionUserOverrideProperties && !bindAllProjectProperties) {
             getLog().warn("bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.");
@@ -177,12 +171,55 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
     }
 
     /**
+     * Attempts to create a new AntBuilder object.
+     *
+     * @return a new AntBuilder object, or <code>null</code> if it couldn't be created
+     */
+    protected Object createAntBuilder() {
+        Object antBuilder = null;
+        try {
+            antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
+        } catch (ClassNotFoundException e1) {
+            getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+            try {
+                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+            } catch (ClassNotFoundException e2) {
+                logUnableToInitializeAntBuilder(e2);
+            } catch (NoClassDefFoundError e2) {
+                logMissingAntDependency();
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e2) {
+                logUnableToInitializeAntBuilder(e2);
+            }
+        } catch (NoClassDefFoundError e) {
+            logMissingAntDependency();
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            logUnableToInitializeAntBuilder(e);
+        }
+
+        return antBuilder;
+    }
+
+    /**
      * Logs errors that caused the 'ant' object to not be populated.
      *
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-        getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency?  If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
+        getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency? If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
+    }
+
+    /**
+     * Logs a warning that the Ant dependency is missing.
+     */
+    protected void logMissingAntDependency() {
+        getLog().warn("Ant dependency was not found on the project or plugin classpath. If you use AntBuilder, you should add it as a runtime dependency.");
+    }
+
+    /**
+     * Logs a warning that the Ivy dependency is missing.
+     */
+    protected void logMissingIvyDependency() {
+        getLog().warn("Ivy dependency was not found on the project or plugin classpath. If you use @Grab, you should add it as a runtime dependency.");
     }
 
 }

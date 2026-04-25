@@ -27,6 +27,7 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeStaticMethod;
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin ClassLoader to pull in dependencies
  * Groovy didn't include (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * These dependencies are now optional and must be provided by the user if needed.
  *
  * @author Keegan Witt
  * @since 1.1
@@ -123,7 +124,17 @@ public class ShellMojo extends AbstractToolsMojo {
                     try {
                         classWrangler.getClass("org.jline.reader.LineReader");
                     } catch (ClassNotFoundException e) {
-                        throw new MojoExecutionException("Unable to get a JLine 3 class from classpath. This might be because of a JLine version mismatch. Make sure you include JLine 3.x as a runtime dependency in your project or the plugin.", e);
+                        getLog().warn("JLine 3 not found on classpath. Terminal colors and advanced features will be disabled. To enable them, add org.jline:jline-terminal-jna:3 and net.java.dev.jna:jna:5 to the plugin's dependencies.");
+                    }
+                } else {
+                    try {
+                        if (groovyAtLeast(GROOVY_2_2_0_BETA1)) {
+                            classWrangler.getClass("jline.Terminal");
+                        } else {
+                            classWrangler.getClass("jline.Terminal");
+                        }
+                    } catch (ClassNotFoundException e) {
+                        getLog().warn("JLine 2 not found on classpath. Terminal colors and advanced features will be disabled. To enable them, add jline:jline:2 to the plugin's dependencies.");
                     }
                 }
                 // get classes we need with reflection
@@ -145,6 +156,12 @@ public class ShellMojo extends AbstractToolsMojo {
                         String message = "Jansi 2.x detected, which is incompatible with JLine 2. Falling back to dumb terminal. Colors will be disabled.";
                         if (groovyAtLeast(GROOVY_5_0_0_ALPHA1)) {
                             message += " We recommend upgrading to Groovy 5.0.4 or newer for full JLine 3 support.";
+                        } else if (groovyOlderThan(GROOVY_5_0_0_ALPHA1)) {
+                            try {
+                                classWrangler.getClass("org.fusesource.jansi.AnsiConsole");
+                            } catch (ClassNotFoundException cnfe) {
+                                message = "Jansi 1 not found on classpath. Terminal colors will be disabled. To enable them, add org.fusesource.jansi:jansi:1 to the plugin's dependencies.";
+                            }
                         }
                         getLog().warn(message);
                         System.setProperty("jline.terminal", "jline.UnsupportedTerminal");
@@ -230,7 +247,7 @@ public class ShellMojo extends AbstractToolsMojo {
         try {
             classWrangler.getClass("org.jline.reader.LineReader");
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a JLine 3 class from classpath. This might be because of a JLine version mismatch. Make sure you include JLine 3.x as a runtime dependency in your project or the plugin.", e);
+            getLog().warn("JLine 3 not found on classpath. Terminal colors and advanced features will be disabled. To enable them, add org.jline:jline-terminal-jna:3 and net.java.dev.jna:jna:5 to the plugin's dependencies.");
         }
         if (!bindPropertiesToSeparateVariables) {
             throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later.");

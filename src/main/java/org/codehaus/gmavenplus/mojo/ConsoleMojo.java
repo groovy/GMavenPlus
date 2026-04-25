@@ -27,7 +27,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * Launches a Groovy console window bound to the current project.
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
- * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * (for things like Ant for AntBuilder and Ivy for @grab).
+ * These dependencies are now optional and must be provided by the user if needed.
  * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
@@ -199,19 +200,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
-            Object antBuilder = null;
-            try {
-                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
-            } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                try {
-                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {
-                    logUnableToInitializeAntBuilder(e2);
-                }
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            }
+            Object antBuilder = createAntBuilder();
             if (antBuilder != null) {
                 if (bindPropertiesToSeparateVariables) {
                     invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
