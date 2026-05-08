@@ -136,24 +136,7 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
         if (projectHelper != null && !properties.containsKey("projectHelper")) {
             properties.put("projectHelper", projectHelper);
         }
-        if (!properties.containsKey("ant")) {
-            Object antBuilder = null;
-            try {
-                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
-            } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                try {
-                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {
-                    logUnableToInitializeAntBuilder(e2);
-                }
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            }
-            if (antBuilder != null) {
-                properties.put("ant", antBuilder);
-            }
-        }
+        initializeAnt();
         if (bindSessionUserOverrideProperties && !bindAllProjectProperties) {
             getLog().warn("bindSessionUserOverrideProperties set without bindAllProjectProperties, ignoring.");
         }
@@ -174,6 +157,40 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
                 }
             }
         }
+    }
+
+    /**
+     * Initializes the 'ant' property.
+     */
+    protected void initializeAnt() {
+        if (!properties.containsKey("ant")) {
+            Object antBuilder = createAntBuilder();
+            if (antBuilder != null) {
+                properties.put("ant", antBuilder);
+            }
+        }
+    }
+
+    /**
+     * Creates a new AntBuilder object.
+     *
+     * @return a new AntBuilder object, or null if it couldn't be created
+     */
+    protected Object createAntBuilder() {
+        Object antBuilder = null;
+        try {
+            antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
+        } catch (ClassNotFoundException e1) {
+            getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
+            try {
+                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException e2) {
+                logUnableToInitializeAntBuilder(e2);
+            }
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            logUnableToInitializeAntBuilder(e);
+        }
+        return antBuilder;
     }
 
     /**
