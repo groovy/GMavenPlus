@@ -39,6 +39,7 @@ public class GroovyDocConfiguration implements Serializable {
     private String header;
     private boolean displayAuthor;
     private String languageLevel;
+    private String preLanguage;
 
     public GroovyDocConfiguration(FileSet[] sourceDirectories, List<?> classpath, File outputDirectory) {
         this.sourceDirectories = sourceDirectories;
@@ -224,5 +225,13 @@ public class GroovyDocConfiguration implements Serializable {
 
     public void setLanguageLevel(String languageLevel) {
         this.languageLevel = languageLevel;
+    }
+
+    public String getPreLanguage() {
+        return preLanguage;
+    }
+
+    public void setPreLanguage(String preLanguage) {
+        this.preLanguage = preLanguage;
     }
 }

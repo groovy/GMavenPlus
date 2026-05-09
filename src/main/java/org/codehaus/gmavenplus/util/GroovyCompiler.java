@@ -357,6 +357,22 @@ public class GroovyCompiler {
 
         // generate GroovyDoc
         performGroovyDocGeneration(configuration.getOutputDirectory(), groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);
+
+        // Invoke PreLanguageRewriter if preLanguage is configured (Groovy 6+ only)
+        if (configuration.getPreLanguage() != null && !configuration.getPreLanguage().isEmpty()) {
+            try {
+                Class<?> preLanguageRewriterClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.PreLanguageRewriter");
+                if (preLanguageRewriterClass != null) {
+                    Method rewriteDirectoryMethod = findMethod(preLanguageRewriterClass, "rewriteDirectory", String.class, String.class);
+                    invokeStaticMethod(rewriteDirectoryMethod, configuration.getOutputDirectory().getAbsolutePath(), configuration.getPreLanguage());
+                }
+            } catch (ClassNotFoundException e) {
+                // Silently skip on older Groovy versions where this class doesn't exist.
+                log.debug("PreLanguageRewriter not found, skipping preLanguage processing.");
+            } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+                log.warn("Unable to invoke PreLanguageRewriter.rewriteDirectory().", e);
+            }
+        }
     }
 
     protected List<?> setupLinks(GroovyDocConfiguration configuration) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
