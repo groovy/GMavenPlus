@@ -20,11 +20,29 @@ public class FileUtilsTest {
     @Test
     public void testGetFileExtension() {
         assertEquals("gz", FileUtils.getFileExtension("foo.tar.gz"));
+        assertEquals("bar", FileUtils.getFileExtension("foo.bar"));
+        assertEquals("", FileUtils.getFileExtension("foo"));
+        assertEquals("gitignore", FileUtils.getFileExtension(".gitignore"));
+        assertEquals("", FileUtils.getFileExtension("."));
+        assertEquals("", FileUtils.getFileExtension(".."));
+        assertEquals("", FileUtils.getFileExtension("foo."));
+        assertEquals("", FileUtils.getFileExtension(""));
+        assertEquals("bar", FileUtils.getFileExtension("path.to/foo.bar"));
+        assertEquals("", FileUtils.getFileExtension("path.to/foo"));
     }
 
     @Test
     public void testGetNameWithoutExtension() {
         assertEquals("foo.tar", FileUtils.getNameWithoutExtension("foo.tar.gz"));
+        assertEquals("foo", FileUtils.getNameWithoutExtension("foo.bar"));
+        assertEquals("foo", FileUtils.getNameWithoutExtension("foo"));
+        assertEquals("", FileUtils.getNameWithoutExtension(".gitignore"));
+        assertEquals("", FileUtils.getNameWithoutExtension("."));
+        assertEquals(".", FileUtils.getNameWithoutExtension(".."));
+        assertEquals("foo", FileUtils.getNameWithoutExtension("foo."));
+        assertEquals("", FileUtils.getNameWithoutExtension(""));
+        assertEquals("foo", FileUtils.getNameWithoutExtension("path.to/foo.bar"));
+        assertEquals("foo", FileUtils.getNameWithoutExtension("path.to/foo"));
     }
 
     @Test
