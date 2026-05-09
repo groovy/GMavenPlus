@@ -27,11 +27,6 @@
             <artifactId>groovy</artifactId>
             <version>@groovyVersion@</version>
           </dependency>
-          <dependency>
-            <groupId>@groovyGroupId@</groupId>
-            <artifactId>groovy-ant</artifactId>
-            <version>@groovyVersion@</version>
-          </dependency>
         </dependencies>
       </plugin>
       <plugin>

@@ -31,7 +31,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * Executes Groovy scripts (in the pom or external), bound to the current project.
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
- * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * (for things like Ant for AntBuilder and Ivy for @grab).
+ * These dependencies are now optional and must be provided by the user if needed.
  *
  * @author Keegan Witt
  * @since 1.0-beta-1
@@ -42,7 +43,7 @@ public class ExecuteMojo extends AbstractToolsMojo {
     /**
      * Groovy 4.0.0-RC-1 version.
      */
-    protected static final Version GROOVY_4_0_0_RC_1 = new Version(4, 0, 0, "RC-1");
+    protected static final Version GROOVY_4_0_0_RC1 = new Version(4, 0, 0, "RC-1");
 
     /**
      * Groovy 1.7.0 version.
@@ -207,10 +208,10 @@ public class ExecuteMojo extends AbstractToolsMojo {
                 invokeMethod(setProperty, shell, k, properties.get(k));
             }
         } else {
-            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {
+            if (groovyOlderThan(GROOVY_4_0_0_RC1)) {
                 invokeMethod(setProperty, shell, "properties", properties);
             } else {
-                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC_1 + " and later.");
+                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later.");
             }
         }
 

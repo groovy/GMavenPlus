@@ -13,6 +13,8 @@
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
     <commonsLang3Version>3.20.0</commonsLang3Version>
     <junit6Version>6.0.2</junit6Version>
+    <antVersion>1.10.15</antVersion>
+    <ivyVersion>2.5.3</ivyVersion>
   </properties>
 
   <dependencyManagement>
@@ -61,6 +63,16 @@
         <groupId>@groovyGroupId@</groupId>
         <artifactId>groovy-templates</artifactId>
         <version>@groovyVersion@</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>${antVersion}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ivy</groupId>
+        <artifactId>ivy</artifactId>
+        <version>${ivyVersion}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

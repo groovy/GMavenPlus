@@ -6,6 +6,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.NoExitSecurityManager;
 
 import java.io.File;
@@ -14,7 +15,6 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.Set;
 
-import static org.codehaus.gmavenplus.mojo.ExecuteMojo.GROOVY_4_0_0_RC_1;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findConstructor;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findField;
 import static org.codehaus.gmavenplus.util.ReflectionUtils.findMethod;
@@ -27,7 +27,8 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  * Launches a Groovy console window bound to the current project.
  * Note that this mojo requires Groovy &gt;= 1.5.0.
  * Note that it references the plugin classloader to pull in dependencies Groovy didn't include
- * (for things like Ant for AntBuilder, Ivy for @grab, and Jansi for Groovysh).
+ * (for things like Ant for AntBuilder and Ivy for @grab).
+ * These dependencies are now optional and must be provided by the user if needed.
  * Note that using the <code>ant</code> property requires Java 8, as the included Ant version was compiled for Java 8.
  *
  * @author Keegan Witt
@@ -35,6 +36,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.invokeMethod;
  */
 @Mojo(name = "console", requiresDependencyResolution = ResolutionScope.TEST)
 public class ConsoleMojo extends AbstractToolsMojo {
+
+    /**
+     * Groovy 4.0.0-RC-1 version.
+     */
+    protected static final Version GROOVY_4_0_0_RC1 = new Version(4, 0, 0, "RC-1");
 
     /**
      * Script file to load into console. Can also be a project property referring to a file.
@@ -109,7 +115,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             // wait for console to be closed
             waitForConsoleClose();
         } catch (ClassNotFoundException e) {
-            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Do you have Groovy as a compile dependency in your project or the plugin?", e);
+            throw new MojoExecutionException("Unable to get a Groovy class from classpath (" + e.getMessage() + "). Ensure groovy-console is on your project or plugin classpath.", e);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NoClassDefFoundError && "org/apache/ivy/core/report/ResolveReport".equals(e.getCause().getMessage())) {
                 throw new MojoExecutionException("Groovy 1.7.6 and 1.7.7 have a dependency on Ivy to run the console. Either change your Groovy version or add Ivy as a project or plugin dependency.", e);
@@ -169,10 +175,10 @@ public class ConsoleMojo extends AbstractToolsMojo {
                 invokeMethod(setVariable, binding, k, properties.get(k));
             }
         } else {
-            if (groovyOlderThan(GROOVY_4_0_0_RC_1)) {
+            if (groovyOlderThan(GROOVY_4_0_0_RC1)) {
                 invokeMethod(setVariable, binding, "properties", properties);
             } else {
-                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC_1 + " and later.");
+                throw new IllegalArgumentException("properties is a read-only property in Groovy " + GROOVY_4_0_0_RC1 + " and later.");
             }
         }
 
@@ -194,19 +200,7 @@ public class ConsoleMojo extends AbstractToolsMojo {
             Class<?> groovyShellClass = classWrangler.getClass("groovy.lang.GroovyShell");
             Object shell = getField(findField(consoleClass, "shell", groovyShellClass), console);
             Object binding = invokeMethod(findMethod(groovyShellClass, "getContext"), shell);
-            Object antBuilder = null;
-            try {
-                antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.ant.AntBuilder")));
-            } catch (ClassNotFoundException e1) {
-                getLog().debug("groovy.ant.AntBuilder not available, trying groovy.util.AntBuilder.");
-                try {
-                    antBuilder = invokeConstructor(findConstructor(classWrangler.getClass("groovy.util.AntBuilder")));
-                } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e2) {
-                    logUnableToInitializeAntBuilder(e2);
-                }
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                logUnableToInitializeAntBuilder(e);
-            }
+            Object antBuilder = createAntBuilder();
             if (antBuilder != null) {
                 if (bindPropertiesToSeparateVariables) {
                     invokeMethod(findMethod(bindingClass, "setVariable", String.class, Object.class), binding, "ant", antBuilder);
