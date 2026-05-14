@@ -34,6 +34,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public class GroovyCompiler {
 
     /**
+     * Groovy 6.0.0-alpha-1 version.
+     */
+    protected static final Version GROOVY_6_0_0_ALPHA1 = new Version(6, 0, 0, "alpha-1");
+
+    /**
      * Groovy 5.0.0-beta-1 version.
      */
     protected static final Version GROOVY_5_0_0_BETA_1 = new Version(5, 0, 0, "beta-1");
@@ -349,6 +354,26 @@ public class GroovyCompiler {
             log.warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
         }
 
+        if (ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), GROOVY_6_0_0_ALPHA1) && configuration.getDocProperties() != null) {
+            Properties props = configuration.getDocProperties();
+            boolean usesGroovy6Props = props.getProperty("syntaxHighlighter") != null ||
+                    props.getProperty("theme") != null ||
+                    "true".equals(props.getProperty("showInternal")) ||
+                    "true".equals(props.getProperty("noIndex")) ||
+                    "true".equals(props.getProperty("noDeprecatedList")) ||
+                    "true".equals(props.getProperty("noHelp")) ||
+                    "false".equals(props.getProperty("timestamp")) ||
+                    "false".equals(props.getProperty("versionStamp")) ||
+                    "false".equals(props.getProperty("processScripts")) ||
+                    "false".equals(props.getProperty("includeMainForScripts")) ||
+                    props.getProperty("charset") != null ||
+                    props.getProperty("fileEncoding") != null ||
+                    props.getProperty("additionalStylesheets") != null;
+            if (usesGroovy6Props) {
+                log.warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support Groovy 6 GroovyDoc properties (syntaxHighlighter, theme, showInternal, noIndex, noDeprecatedList, noHelp, noTimestamp, noVersionStamp, processScripts, includeMainForScripts, charset, fileEncoding, and addStylesheet). You need Groovy 6.0.0-alpha-1 or newer to support this. Ignoring properties.");
+            }
+        }
+
         // prevent Java stubs from overwriting GroovyDoc
         List<String> groovyDocSources = setupGroovyDocSources(configuration.getSourceDirectories(), fileSetManager);
 
@@ -357,6 +382,25 @@ public class GroovyCompiler {
 
         // generate GroovyDoc
         performGroovyDocGeneration(configuration.getOutputDirectory(), groovyDocToolClass, outputToolClass, fileOutputTool, groovyDocSources, groovyDocTool);
+
+        // Invoke PreLanguageRewriter if preLanguage is configured (Groovy 6+ only)
+        if (configuration.getPreLanguage() != null && !configuration.getPreLanguage().isEmpty()) {
+            if (ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), GROOVY_6_0_0_ALPHA1)) {
+                try {
+                    Class<?> preLanguageRewriterClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.PreLanguageRewriter");
+                    if (preLanguageRewriterClass != null) {
+                        Method rewriteDirectoryMethod = findMethod(preLanguageRewriterClass, "rewriteDirectory", String.class, String.class);
+                        invokeStaticMethod(rewriteDirectoryMethod, configuration.getOutputDirectory().getAbsolutePath(), configuration.getPreLanguage());
+                    }
+                } catch (ClassNotFoundException e) {
+                    log.warn("Unable to load PreLanguageRewriter class.", e);
+                } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+                    log.warn("Unable to invoke PreLanguageRewriter.rewriteDirectory().", e);
+                }
+            } else {
+                log.warn("Requested to use preLanguage, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_6_0_0_ALPHA1 + " or newer). Ignoring preLanguage parameter.");
+            }
+        }
     }
 
     protected List<?> setupLinks(GroovyDocConfiguration configuration) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException {
