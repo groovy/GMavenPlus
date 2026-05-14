@@ -354,6 +354,26 @@ public class GroovyCompiler {
             log.warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support GroovyDoc documentation properties (docTitle, footer, header, displayAuthor, overviewFile, and scope). You need Groovy 1.6-RC-2 or newer to support this. Ignoring properties.");
         }
 
+        if (ClassWrangler.groovyOlderThan(classWrangler.getGroovyVersion(), GROOVY_6_0_0_ALPHA1) && configuration.getDocProperties() != null) {
+            Properties props = configuration.getDocProperties();
+            boolean usesGroovy6Props = props.getProperty("syntaxHighlighter") != null ||
+                    props.getProperty("theme") != null ||
+                    "true".equals(props.getProperty("showInternal")) ||
+                    "true".equals(props.getProperty("noIndex")) ||
+                    "true".equals(props.getProperty("noDeprecatedList")) ||
+                    "true".equals(props.getProperty("noHelp")) ||
+                    "false".equals(props.getProperty("timestamp")) ||
+                    "false".equals(props.getProperty("versionStamp")) ||
+                    "false".equals(props.getProperty("processScripts")) ||
+                    "false".equals(props.getProperty("includeMainForScripts")) ||
+                    props.getProperty("charset") != null ||
+                    props.getProperty("fileEncoding") != null ||
+                    props.getProperty("additionalStylesheets") != null;
+            if (usesGroovy6Props) {
+                log.warn("Your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support Groovy 6 GroovyDoc properties (syntaxHighlighter, theme, showInternal, noIndex, noDeprecatedList, noHelp, noTimestamp, noVersionStamp, processScripts, includeMainForScripts, charset, fileEncoding, and addStylesheet). You need Groovy 6.0.0-alpha-1 or newer to support this. Ignoring properties.");
+            }
+        }
+
         // prevent Java stubs from overwriting GroovyDoc
         List<String> groovyDocSources = setupGroovyDocSources(configuration.getSourceDirectories(), fileSetManager);
 
