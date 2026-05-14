@@ -34,6 +34,11 @@ import static org.codehaus.gmavenplus.util.ReflectionUtils.*;
 public class GroovyCompiler {
 
     /**
+     * Groovy 6.0.0-alpha-1 version.
+     */
+    protected static final Version GROOVY_6_0_0_ALPHA1 = new Version(6, 0, 0, "alpha-1");
+
+    /**
      * Groovy 5.0.0-beta-1 version.
      */
     protected static final Version GROOVY_5_0_0_BETA_1 = new Version(5, 0, 0, "beta-1");
@@ -360,17 +365,20 @@ public class GroovyCompiler {
 
         // Invoke PreLanguageRewriter if preLanguage is configured (Groovy 6+ only)
         if (configuration.getPreLanguage() != null && !configuration.getPreLanguage().isEmpty()) {
-            try {
-                Class<?> preLanguageRewriterClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.PreLanguageRewriter");
-                if (preLanguageRewriterClass != null) {
-                    Method rewriteDirectoryMethod = findMethod(preLanguageRewriterClass, "rewriteDirectory", String.class, String.class);
-                    invokeStaticMethod(rewriteDirectoryMethod, configuration.getOutputDirectory().getAbsolutePath(), configuration.getPreLanguage());
+            if (ClassWrangler.groovyAtLeast(classWrangler.getGroovyVersion(), GROOVY_6_0_0_ALPHA1)) {
+                try {
+                    Class<?> preLanguageRewriterClass = classWrangler.getClass("org.codehaus.groovy.tools.groovydoc.PreLanguageRewriter");
+                    if (preLanguageRewriterClass != null) {
+                        Method rewriteDirectoryMethod = findMethod(preLanguageRewriterClass, "rewriteDirectory", String.class, String.class);
+                        invokeStaticMethod(rewriteDirectoryMethod, configuration.getOutputDirectory().getAbsolutePath(), configuration.getPreLanguage());
+                    }
+                } catch (ClassNotFoundException e) {
+                    log.warn("Unable to load PreLanguageRewriter class.", e);
+                } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
+                    log.warn("Unable to invoke PreLanguageRewriter.rewriteDirectory().", e);
                 }
-            } catch (ClassNotFoundException e) {
-                // Silently skip on older Groovy versions where this class doesn't exist.
-                log.debug("PreLanguageRewriter not found, skipping preLanguage processing.");
-            } catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e) {
-                log.warn("Unable to invoke PreLanguageRewriter.rewriteDirectory().", e);
+            } else {
+                log.warn("Requested to use preLanguage, but your Groovy version (" + classWrangler.getGroovyVersionString() + ") doesn't support it (must be " + GROOVY_6_0_0_ALPHA1 + " or newer). Ignoring preLanguage parameter.");
             }
         }
     }
