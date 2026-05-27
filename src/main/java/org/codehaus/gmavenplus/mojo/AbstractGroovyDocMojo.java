@@ -227,6 +227,118 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     protected boolean attachGroovyDocAnnotation;
 
     /**
+     * The syntax highlighter to use.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected String syntaxHighlighter;
+
+    /**
+     * The theme to use.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected String theme;
+
+    /**
+     * Whether to show internal classes.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean showInternal;
+
+    /**
+     * Whether to generate an index.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean noIndex;
+
+    /**
+     * Whether to generate a deprecated list.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean noDeprecatedList;
+
+    /**
+     * Whether to generate a help page.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean noHelp;
+
+    /**
+     * Whether to include a timestamp.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean noTimestamp;
+
+    /**
+     * Whether to include a version stamp.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "false")
+    protected boolean noVersionStamp;
+
+    /**
+     * Whether to process scripts.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean processScripts = true;
+
+    /**
+     * Whether to include main for scripts.
+     *
+     * @since 1.11.0
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean includeMainForScripts = true;
+
+    /**
+     * The charset to use.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected String charset;
+
+    /**
+     * The file encoding to use.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected String fileEncoding;
+
+    /**
+     * Additional stylesheets to include.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected List<File> addStylesheet;
+
+    /**
+     * The pre-language to use.
+     *
+     * @since 1.11.0
+     */
+    @Parameter
+    protected String preLanguage;
+
+    /**
      * The Maven ToolchainManager.
      */
     @javax.inject.Inject
@@ -286,6 +398,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         configuration.setLanguageLevel(languageLevel != null ? languageLevel.toString() : null);
 
         configuration.setScope(scope);
+        configuration.setPreLanguage(preLanguage);
 
         org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext("jdk", session);
         if (toolchain != null) {
@@ -298,7 +411,13 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
 
         // overwrite stylesheet.css with provided stylesheet (if configured)
         if (stylesheetFile != null) {
-            copyStylesheet(outputDirectory);
+            copyStylesheet(stylesheetFile, outputDirectory, "stylesheet.css");
+        }
+        // copy additional stylesheets
+        if (addStylesheet != null && !addStylesheet.isEmpty()) {
+            for (File file : addStylesheet) {
+                copyStylesheet(file, outputDirectory, file.getName());
+            }
         }
     }
 
@@ -392,6 +511,36 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
         properties.setProperty("header", header);
         properties.setProperty("author", Boolean.toString(displayAuthor));
         properties.setProperty("overviewFile", overviewFile != null ? overviewFile.getAbsolutePath() : "");
+        if (syntaxHighlighter != null) {
+            properties.setProperty("syntaxHighlighter", syntaxHighlighter);
+        }
+        if (theme != null) {
+            properties.setProperty("theme", theme);
+        }
+        properties.setProperty("showInternal", Boolean.toString(showInternal));
+        properties.setProperty("noIndex", Boolean.toString(noIndex));
+        properties.setProperty("noDeprecatedList", Boolean.toString(noDeprecatedList));
+        properties.setProperty("noHelp", Boolean.toString(noHelp));
+        properties.setProperty("timestamp", Boolean.toString(!noTimestamp));
+        properties.setProperty("versionStamp", Boolean.toString(!noVersionStamp));
+        properties.setProperty("processScripts", Boolean.toString(processScripts));
+        properties.setProperty("includeMainForScripts", Boolean.toString(includeMainForScripts));
+        if (charset != null) {
+            properties.setProperty("charset", charset);
+        }
+        if (fileEncoding != null) {
+            properties.setProperty("fileEncoding", fileEncoding);
+        }
+        if (addStylesheet != null && !addStylesheet.isEmpty()) {
+            StringBuilder basenames = new StringBuilder();
+            for (int i = 0; i < addStylesheet.size(); i++) {
+                basenames.append(addStylesheet.get(i).getName());
+                if (i < addStylesheet.size() - 1) {
+                    basenames.append(",");
+                }
+            }
+            properties.setProperty("additionalStylesheets", basenames.toString());
+        }
         try {
             Scopes scopeVal = Scopes.valueOf(scope.toUpperCase());
             if (scopeVal.equals(Scopes.PUBLIC)) {
@@ -414,25 +563,27 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
     /**
      * Copies the stylesheet to the specified output directory.
      *
+     * @param file            The stylesheet file to copy
      * @param outputDirectory The output directory to copy the stylesheet to
+     * @param outputName      The name of the output file
      */
-    protected void copyStylesheet(final File outputDirectory) {
-        getLog().info("Using stylesheet from " + stylesheetFile.getAbsolutePath() + ".");
+    protected void copyStylesheet(final File file, final File outputDirectory, final String outputName) {
+        getLog().info("Using stylesheet from " + file.getAbsolutePath() + ".");
         try {
             BufferedReader bufferedReader = null;
             BufferedWriter bufferedWriter = null;
             try {
                 if (stylesheetEncoding != null) {
-                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath()), stylesheetEncoding));
+                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath()), stylesheetEncoding));
                 } else {
-                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(stylesheetFile.toPath())));
+                    bufferedReader = new BufferedReader(new InputStreamReader(Files.newInputStream(file.toPath())));
                 }
                 StringBuilder css = new StringBuilder();
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     css.append(line).append("\n");
                 }
-                File outfile = new File(outputDirectory, "stylesheet.css");
+                File outfile = new File(outputDirectory, outputName);
                 if (stylesheetEncoding != null) {
                     bufferedWriter = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(outfile.toPath()), stylesheetEncoding));
                 } else {
@@ -444,7 +595,7 @@ public abstract class AbstractGroovyDocMojo extends AbstractGroovySourcesMojo {
                 FileUtils.closeQuietly(bufferedWriter);
             }
         } catch (IOException e) {
-            getLog().warn("Unable to copy specified stylesheet (" + stylesheetFile.getAbsolutePath() + ").");
+            getLog().warn("Unable to copy specified stylesheet (" + file.getAbsolutePath() + ").");
         }
     }
 
