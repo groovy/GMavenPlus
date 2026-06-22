@@ -16,15 +16,24 @@ import static java.util.Collections.singletonList;
  */
 public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
 
-    /**
-     * Main source directory name.
-     */
-    protected static final String MAIN = "main";
+    protected enum SourceRootScope {
+        MAIN("removeCompileSourceRoot"),
+        TEST("removeTestCompileSourceRoot");
 
-    /**
-     * Test source directory name.
-     */
-    protected static final String TEST = "test";
+        private final String removalMethod;
+
+        SourceRootScope(String removalMethod) {
+            this.removalMethod = removalMethod;
+        }
+
+        String getDirectoryName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        String getRemovalMethod() {
+            return removalMethod;
+        }
+    }
 
     /**
      * Gets the set of included files from the specified source files or source directory (if sources are null).
@@ -81,7 +90,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
             groovyFileSets = fromSources;
         } else {
             FileSet groovyFileSet = new FileSet();
-            String groovyDirectory = "src" + File.separator + MAIN + File.separator + "groovy";
+            String groovyDirectory = "src" + File.separator + SourceRootScope.MAIN.getDirectoryName()
+                    + File.separator + "groovy";
             groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);
             groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));
             groovyFileSets = new FileSet[]{groovyFileSet};
@@ -120,7 +130,8 @@ public abstract class AbstractGroovySourcesMojo extends AbstractGroovyMojo {
             groovyFileSets = fromSources;
         } else {
             FileSet groovyFileSet = new FileSet();
-            String groovyDirectory = "src" + File.separator + TEST + File.separator + "groovy";
+            String groovyDirectory = "src" + File.separator + SourceRootScope.TEST.getDirectoryName()
+                    + File.separator + "groovy";
             groovyFileSet.setDirectory(project.getBasedir() + File.separator + groovyDirectory);
             groovyFileSet.setIncludes(singletonList(GROOVY_SOURCES_PATTERN));
             groovyFileSets = new FileSet[]{groovyFileSet};
