@@ -34,15 +34,20 @@ public enum LanguageLevel {
     JAVA_18,
     JAVA_19,
     JAVA_20,
-    JAVA_21;
+    JAVA_21,
+    JAVA_22,
+    JAVA_23,
+    JAVA_24,
+    JAVA_25;
 
     public static final LanguageLevel RAW = null;
     public static final LanguageLevel POPULAR = JAVA_11;
     public static final LanguageLevel CURRENT = JAVA_18;
-    public static final LanguageLevel BLEEDING_EDGE = JAVA_21;
+    public static final LanguageLevel BLEEDING_EDGE = JAVA_25;
     private static final LanguageLevel[] yieldSupport = new LanguageLevel[]{
             JAVA_1_0, JAVA_13, JAVA_13_PREVIEW, JAVA_14, JAVA_14_PREVIEW, JAVA_15, JAVA_15_PREVIEW, JAVA_16,
-            JAVA_16_PREVIEW, JAVA_17, JAVA_17_PREVIEW, JAVA_18, JAVA_19, JAVA_20, JAVA_21};
+            JAVA_16_PREVIEW, JAVA_17, JAVA_17_PREVIEW, JAVA_18, JAVA_19, JAVA_20, JAVA_21, JAVA_22, JAVA_23,
+            JAVA_24, JAVA_25};
 
     public boolean isYieldSupported() {
         return Arrays.stream(yieldSupport).anyMatch((level) -> level == this);
