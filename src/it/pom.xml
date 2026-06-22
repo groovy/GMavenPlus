@@ -12,7 +12,7 @@
   <properties>
     <project.build.sourceEncoding>@project.build.sourceEncoding@</project.build.sourceEncoding>
     <commonsLang3Version>3.20.0</commonsLang3Version>
-    <junit6Version>6.0.2</junit6Version>
+    <junit6Version>6.1.0</junit6Version>
     <antVersion>1.10.15</antVersion>
     <ivyVersion>2.5.3</ivyVersion>
   </properties>
