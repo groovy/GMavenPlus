@@ -1,6 +1,7 @@
 package org.codehaus.gmavenplus.util;
 
 import org.apache.maven.plugin.logging.Log;
+import org.codehaus.gmavenplus.model.internal.Version;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -73,6 +74,50 @@ public class ClassWranglerTest {
         ClassWrangler classWrangler = spy(new ClassWrangler(emptyList(), null, mock(Log.class)));
         doThrow(new ClassNotFoundException("Throwing exception to make it appear Groovy is not indy.")).when(classWrangler).getClass(anyString());
         assertFalse(classWrangler.isGroovyIndy());
+    }
+
+    @Test
+    public void testGroovyAtLeast() {
+        Version v1 = new Version(1, 5, 0);
+        Version v2 = new Version(1, 5, 0);
+        Version v3 = new Version(1, 6, 0);
+        Version v0 = new Version(1, 4, 0);
+
+        assertTrue(ClassWrangler.groovyAtLeast(v1, v2));
+        assertTrue(ClassWrangler.groovyAtLeast(v3, v1));
+        assertFalse(ClassWrangler.groovyAtLeast(v0, v1));
+    }
+
+    @Test
+    public void testGroovyIs() {
+        Version v1 = new Version(1, 5, 0);
+        Version v2 = new Version(1, 5, 0);
+        Version v3 = new Version(1, 6, 0);
+
+        assertTrue(ClassWrangler.groovyIs(v1, v2));
+        assertFalse(ClassWrangler.groovyIs(v1, v3));
+    }
+
+    @Test
+    public void testGroovyNewerThan() {
+        Version v1 = new Version(1, 5, 0);
+        Version v2 = new Version(1, 5, 0);
+        Version v3 = new Version(1, 6, 0);
+
+        assertTrue(ClassWrangler.groovyNewerThan(v3, v1));
+        assertFalse(ClassWrangler.groovyNewerThan(v1, v2));
+        assertFalse(ClassWrangler.groovyNewerThan(v1, v3));
+    }
+
+    @Test
+    public void testGroovyOlderThan() {
+        Version v1 = new Version(1, 5, 0);
+        Version v2 = new Version(1, 5, 0);
+        Version v0 = new Version(1, 4, 0);
+
+        assertTrue(ClassWrangler.groovyOlderThan(v0, v1));
+        assertFalse(ClassWrangler.groovyOlderThan(v1, v2));
+        assertFalse(ClassWrangler.groovyOlderThan(v1, v0));
     }
 
 }
