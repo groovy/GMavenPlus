@@ -72,7 +72,7 @@ public class ForkedGroovyCompiler {
             } else {
                 throw new IllegalArgumentException("Unknown configuration type: " + configuration.getClass().getName());
             }
-        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
