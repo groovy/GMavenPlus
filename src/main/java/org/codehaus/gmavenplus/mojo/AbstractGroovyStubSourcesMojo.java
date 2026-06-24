@@ -28,14 +28,30 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
      * Removes the source roots from the project, using reflection to avoid breaking changes in Maven 4.
      *
      * @param project the Maven project
-     * @param scopeToRemove the scope to remove (main or test)
+     * @param sourceRootScope the source root scope to remove
      * @param sourceDirectory the source directory to remove
      * @throws ClassNotFoundException when a class needed cannot be found
      * @throws NoSuchFieldException when a field needed cannot be found
      * @throws NoSuchMethodException when a method needed cannot be found
      * @throws IllegalAccessException when a method needed cannot be accessed
      */
-    protected static void removeSourceRoot(MavenProject project, String scopeToRemove, File sourceDirectory)
+    protected static void removeSourceRoot(MavenProject project, SourceRootScope sourceRootScope, File sourceDirectory)
+            throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
+        try {
+            project.getClass().getMethod(sourceRootScope.getRemovalMethod(), String.class)
+                    .invoke(project, sourceDirectory.getAbsolutePath());
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e.getCause());
+        } catch (NoSuchMethodException e) {
+            try {
+                removeMaven4SourceRoot(project, sourceRootScope, sourceDirectory);
+            } catch (ClassNotFoundException e2) {
+                removeMaven3SourceRoot(project, sourceRootScope, sourceDirectory);
+            }
+        }
+    }
+
+    protected static void removeMaven4SourceRoot(MavenProject project, SourceRootScope sourceRootScope, File sourceDirectory)
             throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException, IllegalAccessException {
         Class<?> sourceRoot = project.getClass().getClassLoader().loadClass("org.apache.maven.api.SourceRoot");
         Path path = project.getBasedir().toPath().resolve(sourceDirectory.getAbsolutePath()).normalize();
@@ -48,13 +64,21 @@ public abstract class AbstractGroovyStubSourcesMojo extends AbstractGroovySource
         Collection<?> sources = (Collection<?>) field.get(project);
         sources.removeIf(source -> {
             try {
-                return Objects.equals(id.invoke(scope.invoke(source)), scopeToRemove)
+                return Objects.equals(id.invoke(scope.invoke(source)), sourceRootScope.getDirectoryName())
                         && Objects.equals(id.invoke(language.invoke(source)), "java")
                         && Objects.equals(directory.invoke(source), path);
             } catch (IllegalAccessException | InvocationTargetException ex) {
                 throw new RuntimeException(ex);
             }
         });
+    }
+
+    protected static void removeMaven3SourceRoot(MavenProject project, SourceRootScope sourceRootScope, File sourceDirectory) {
+        if (sourceRootScope == SourceRootScope.MAIN) {
+            project.getCompileSourceRoots().remove(sourceDirectory.getAbsolutePath());
+        } else {
+            project.getTestCompileSourceRoots().remove(sourceDirectory.getAbsolutePath());
+        }
     }
 
     /**

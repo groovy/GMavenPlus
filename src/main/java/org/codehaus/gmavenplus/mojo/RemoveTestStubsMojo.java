@@ -35,14 +35,9 @@ public class RemoveTestStubsMojo extends AbstractGroovyStubSourcesMojo {
     public void execute() {
         if (!skipTests) {
             try {
-                project.getTestCompileSourceRoots().remove(testStubsOutputDirectory.getAbsolutePath());
-            } catch (UnsupportedOperationException e) {
-                try {
-                    removeSourceRoot(project, "test", testStubsOutputDirectory);
-                } catch (Throwable e2) {
-                    e.addSuppressed(e2);
-                    throw e;
-                }
+                removeSourceRoot(project, SourceRootScope.TEST, testStubsOutputDirectory);
+            } catch (ReflectiveOperationException e) {
+                throw new IllegalStateException("Unable to remove Groovy test stub source root", e);
             }
         }
     }
