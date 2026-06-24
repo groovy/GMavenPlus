@@ -58,10 +58,10 @@ The update goals modify `pom.xml` in place. Run both update commands, review the
 3. Deploy each artifact with the copied POM and `https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2`:
 
 ```text
-<mvnw> gpg:sign-and-deploy-file -DpomFile=target/gmavenplus-plugin-<version>.pom -Dfile=target/gmavenplus-plugin-<version>.pom -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2 -DrepositoryId=ossrh
-<mvnw> gpg:sign-and-deploy-file -DpomFile=target/gmavenplus-plugin-<version>.pom -Dfile=target/gmavenplus-plugin-<version>.jar -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2 -DrepositoryId=ossrh
-<mvnw> gpg:sign-and-deploy-file -DpomFile=target/gmavenplus-plugin-<version>.pom -Dfile=target/gmavenplus-plugin-<version>-sources.jar -Dclassifier=sources -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2 -DrepositoryId=ossrh
-<mvnw> gpg:sign-and-deploy-file -DpomFile=target/gmavenplus-plugin-<version>.pom -Dfile=target/gmavenplus-plugin-<version>-javadoc.jar -Dclassifier=javadoc -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2 -DrepositoryId=ossrh
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.pom' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.jar' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-sources.jar' '-Dclassifier=sources' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-javadoc.jar' '-Dclassifier=javadoc' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
 ```
 
 ## Publishing
