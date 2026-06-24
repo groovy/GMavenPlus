@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -35,6 +37,37 @@ public class AbstractCompileMojoTest {
     public void testGroovyVersionSupportsActionFalse() {
         testMojo = new TestMojo("1.1-rc-3");
         assertFalse(testMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testResolveTargetBytecodeReturnsNullWhenBothUnset() {
+        assertNull(testMojo.resolveTargetBytecode());
+    }
+
+    @Test
+    public void testResolveTargetBytecodeReturnsTargetBytecodeWhenNoRelease() {
+        testMojo.targetBytecode = "11";
+        assertEquals("11", testMojo.resolveTargetBytecode());
+    }
+
+    @Test
+    public void testResolveTargetBytecodeReturnsTargetBytecodeWhenReleaseIsBlank() {
+        testMojo.targetBytecode = "11";
+        testMojo.release = "   ";
+        assertEquals("11", testMojo.resolveTargetBytecode());
+    }
+
+    @Test
+    public void testResolveTargetBytecodeReturnsReleaseWhenSet() {
+        testMojo.release = "17";
+        assertEquals("17", testMojo.resolveTargetBytecode());
+    }
+
+    @Test
+    public void testResolveTargetBytecodeReleaseTakesPrecedence() {
+        testMojo.release = "21";
+        testMojo.targetBytecode = "1.8";
+        assertEquals("21", testMojo.resolveTargetBytecode());
     }
 
     protected static class TestMojo extends AbstractCompileMojo {

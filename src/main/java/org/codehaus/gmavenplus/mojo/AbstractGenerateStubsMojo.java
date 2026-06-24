@@ -81,6 +81,17 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected String targetBytecode;
 
     /**
+     * The -release version for the Groovy compiler (equivalent to javac's --release).
+     * When set, this takes precedence over targetBytecode.
+     * This allows users to use the modern <code>maven.compiler.release</code> property
+     * instead of <code>maven.compiler.target</code>.
+     *
+     * @since 5.0.1
+     */
+    @Parameter(property = "maven.compiler.release")
+    protected String release;
+
+    /**
      * Whether to check that the version of Groovy used is able to use the requested <code>targetBytecode</code>.
      *
      * @since 1.9.0
@@ -149,6 +160,21 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
     protected org.apache.maven.execution.MavenSession session;
 
     /**
+     * Resolves the target bytecode considering the release property and explicit configuration.
+     * Priority: release (from maven.compiler.release) > targetBytecode (from maven.compiler.target,
+     * explicit config, or default).
+     *
+     * @return the resolved target bytecode value
+     */
+    protected String resolveTargetBytecode() {
+        if (release != null && !release.trim().isEmpty()) {
+            getLog().debug("Using release version " + release + " as target bytecode (from maven.compiler.release).");
+            return release;
+        }
+        return targetBytecode;
+    }
+
+    /**
      * Performs the stub generation on the specified source files.
      *
      * @param stubSources     the sources to perform stub generation on
@@ -174,7 +200,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         configuration.setWarningLevel(warningLevel);
         configuration.setTolerance(tolerance);
         configuration.setSourceEncoding(sourceEncoding);
-        configuration.setTargetBytecode(targetBytecode);
+        configuration.setTargetBytecode(resolveTargetBytecode());
 
         org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext("jdk", session);
         if (toolchain != null) {
