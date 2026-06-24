@@ -54,15 +54,24 @@ The update goals modify `pom.xml` in place. Run both update commands, review the
 ### Redeploy After a Signing Failure
 
 1. Start `gpg-agent` and verify signing as above.
-2. Check out the `prepare release` commit and copy `pom.xml` to `target/gmavenplus-plugin-<version>.pom`.
-3. Deploy each artifact with the copied POM and `https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2`:
+2. Ensure the Maven `central` server entry contains a Central Portal user token; OSSRH tokens no longer work.
+3. Check out the `prepare release` commit and copy `pom.xml` to `target/gmavenplus-plugin-<version>.pom`.
+4. Deploy each artifact with the copied POM and `https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2`:
 
 ```text
-<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.pom' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
-<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.jar' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
-<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-sources.jar' '-Dclassifier=sources' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
-<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-javadoc.jar' '-Dclassifier=javadoc' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=ossrh'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.pom' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=central'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>.jar' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=central'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-sources.jar' '-Dclassifier=sources' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=central'
+<mvnw> gpg:sign-and-deploy-file '-DpomFile=target/gmavenplus-plugin-<version>.pom' '-Dfile=target/gmavenplus-plugin-<version>-javadoc.jar' '-Dclassifier=javadoc' '-Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2' '-DrepositoryId=central'
 ```
+
+5. These direct `gpg:sign-and-deploy-file` invocations do not run Maven's `deploy` lifecycle phase, so the Central Publishing Maven Plugin does not create or upload a Portal bundle. From the same IP address, upload the completed deployment to the Central Publisher Portal for automatic publication:
+
+```text
+curl --request POST --header "Authorization: Bearer <base64(token-username:token-password)>" "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/<namespace>?publishing_type=automatic"
+```
+
+Replace `<namespace>` with the namespace shown at `https://central.sonatype.com/publishing/namespaces`. The bearer token is the Base64-encoded Central Portal token username and password, separated by `:`.
 
 ## Publishing
 | Task | Command |
