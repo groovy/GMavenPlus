@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update All Versions"
+  short_description: "Update GMavenPlus dependency versions"
+  default_prompt: "Use $update-all-versions to refresh GMavenPlus Groovy, Maven, and integration-test versions."
