@@ -5,16 +5,23 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.toolchain.ToolchainManager;
+import org.codehaus.gmavenplus.model.GroovyStubConfiguration;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.Properties;
+import java.util.Set;
 import java.util.TreeSet;
 
 import static org.junit.Assert.assertFalse;
@@ -41,6 +48,7 @@ public class GenerateStubsMojoTest {
         doReturn(mock(Build.class)).when(generateStubsMojo.project).getBuild();
         generateStubsMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 8, 2)).when(generateStubsMojo.classWrangler).getGroovyVersion();
+        generateStubsMojo.toolchainManager = mock(ToolchainManager.class);
     }
 
     @Test
@@ -102,6 +110,23 @@ public class GenerateStubsMojoTest {
     public void testGroovyVersionSupportsActionFalse() {
         doReturn(Version.parseFromString("1.0")).when(generateStubsMojo.classWrangler).getGroovyVersion();
         assertFalse(generateStubsMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testReleaseWinsOverCompilerTargetWhenSettingStubTargetBytecode() throws Exception {
+        Set<File> sources = new TreeSet<>();
+        sources.add(mock(File.class));
+        Properties properties = new Properties();
+        properties.setProperty("maven.compiler.release", "17");
+        properties.setProperty("maven.compiler.target", "11");
+        doReturn(properties).when(generateStubsMojo.project).getProperties();
+        doNothing().when(generateStubsMojo).performInProcessStubGeneration(any(GroovyStubConfiguration.class), anyList());
+
+        generateStubsMojo.doStubGeneration(sources, Collections.emptyList(), mock(File.class));
+
+        ArgumentCaptor<GroovyStubConfiguration> configurationCaptor = ArgumentCaptor.forClass(GroovyStubConfiguration.class);
+        verify(generateStubsMojo).performInProcessStubGeneration(configurationCaptor.capture(), anyList());
+        Assert.assertEquals("17", configurationCaptor.getValue().getTargetBytecode());
     }
 
 }

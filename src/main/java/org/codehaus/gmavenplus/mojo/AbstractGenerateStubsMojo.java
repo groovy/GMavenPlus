@@ -74,10 +74,12 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
      * Using 23 requires Groovy &gt; 4.0.21 or Groovy &gt; 5.0.0-alpha-8.
      * Using 24 requires Groovy &gt; 4.0.24 or Groovy &gt; 5.0.0-alpha-11.
      * Using 25 requires Groovy &gt; 4.0.27 or Groovy &gt; 5.0.0-alpha-13.
+     * If unset, this uses <code>maven.compiler.release</code>, then <code>maven.compiler.target</code>,
+     * then <code>1.8</code>.
      *
      * @since 1.0-beta-3
      */
-    @Parameter(property = "maven.compiler.target", defaultValue = "1.8")
+    @Parameter
     protected String targetBytecode;
 
     /**
@@ -174,7 +176,7 @@ public abstract class AbstractGenerateStubsMojo extends AbstractGroovyStubSource
         configuration.setWarningLevel(warningLevel);
         configuration.setTolerance(tolerance);
         configuration.setSourceEncoding(sourceEncoding);
-        configuration.setTargetBytecode(targetBytecode);
+        configuration.setTargetBytecode(resolveTargetBytecode(targetBytecode));
 
         org.apache.maven.toolchain.Toolchain toolchain = toolchainManager.getToolchainFromBuildContext("jdk", session);
         if (toolchain != null) {

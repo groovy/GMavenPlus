@@ -10,10 +10,12 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.codehaus.gmavenplus.model.IncludeClasspath;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.codehaus.gmavenplus.util.GroovyCompiler;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Properties;
 
 import static java.util.Collections.emptyList;
 
@@ -34,6 +36,12 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      * The pattern defining Java stub files.
      */
     protected static final String JAVA_SOURCES_PATTERN = "**" + File.separator + "*.java";
+
+    protected static final String DEFAULT_TARGET_BYTECODE = "1.8";
+
+    private static final String MAVEN_COMPILER_RELEASE = "maven.compiler.release";
+
+    private static final String MAVEN_COMPILER_TARGET = "maven.compiler.target";
 
     /**
      * Java 1.7 version.
@@ -216,6 +224,41 @@ public abstract class AbstractGroovyMojo extends AbstractMojo {
      */
     protected boolean isGroovyIndy() {
         return classWrangler.isGroovyIndy();
+    }
+
+    protected static String resolveTargetBytecode(String targetBytecode, String release, String compilerTarget) {
+        if (!isBlank(targetBytecode)) {
+            return targetBytecode;
+        } else if (!isBlank(release)) {
+            return GroovyCompiler.translateJavacTargetToTargetBytecode(release);
+        } else if (!isBlank(compilerTarget)) {
+            return GroovyCompiler.translateJavacTargetToTargetBytecode(compilerTarget);
+        }
+        return DEFAULT_TARGET_BYTECODE;
+    }
+
+    protected String resolveTargetBytecode(String targetBytecode) {
+        return resolveTargetBytecode(targetBytecode, getMavenProperty(MAVEN_COMPILER_RELEASE), getMavenProperty(MAVEN_COMPILER_TARGET));
+    }
+
+    private String getMavenProperty(String propertyName) {
+        String propertyValue = getProperty(session != null ? session.getUserProperties() : null, propertyName);
+        if (!isBlank(propertyValue)) {
+            return propertyValue;
+        }
+        propertyValue = getProperty(session != null ? session.getSystemProperties() : null, propertyName);
+        if (!isBlank(propertyValue)) {
+            return propertyValue;
+        }
+        return getProperty(project != null ? project.getProperties() : null, propertyName);
+    }
+
+    private static String getProperty(Properties properties, String propertyName) {
+        return properties != null ? properties.getProperty(propertyName) : null;
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
     /**

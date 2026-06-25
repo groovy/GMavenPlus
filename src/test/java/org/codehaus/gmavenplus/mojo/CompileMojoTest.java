@@ -5,16 +5,22 @@ import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
+import org.apache.maven.toolchain.ToolchainManager;
+import org.codehaus.gmavenplus.model.GroovyCompileConfiguration;
 import org.codehaus.gmavenplus.model.internal.Version;
 import org.codehaus.gmavenplus.util.ClassWrangler;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -44,6 +50,7 @@ public class CompileMojoTest {
         doReturn(true).when(compileMojo).groovyVersionSupportsAction();
         compileMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 5, 0)).when(compileMojo.classWrangler).getGroovyVersion();
+        compileMojo.toolchainManager = mock(ToolchainManager.class);
     }
 
     @Test
@@ -103,6 +110,23 @@ public class CompileMojoTest {
         compileMojo.classWrangler = mock(ClassWrangler.class);
         doReturn(new Version(1, 0)).when(compileMojo.classWrangler).getGroovyVersion();
         assertFalse(compileMojo.groovyVersionSupportsAction());
+    }
+
+    @Test
+    public void testReleaseWinsOverCompilerTargetWhenSettingCompileTargetBytecode() throws Exception {
+        Set<File> sources = new TreeSet<>();
+        sources.add(mock(File.class));
+        Properties properties = new Properties();
+        properties.setProperty("maven.compiler.release", "17");
+        properties.setProperty("maven.compiler.target", "11");
+        doReturn(properties).when(compileMojo.project).getProperties();
+        doNothing().when(compileMojo).performInProcessCompilation(any(GroovyCompileConfiguration.class), anyList());
+
+        compileMojo.doCompile(sources, Collections.emptyList(), mock(File.class));
+
+        ArgumentCaptor<GroovyCompileConfiguration> configurationCaptor = ArgumentCaptor.forClass(GroovyCompileConfiguration.class);
+        verify(compileMojo).performInProcessCompilation(configurationCaptor.capture(), anyList());
+        Assert.assertEquals("17", configurationCaptor.getValue().getTargetBytecode());
     }
 
 }
