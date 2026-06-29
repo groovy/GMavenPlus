@@ -12,7 +12,7 @@ import org.apache.maven.shared.model.fileset.FileSet;
  * @author Keegan Witt
  * @since 1.0-beta-1
  */
-@Mojo(name = "addSources", defaultPhase = LifecyclePhase.INITIALIZE, threadSafe = true)
+@Mojo(name = "addSources", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class AddSourcesMojo extends AbstractGroovySourcesMojo {
 
     /**
