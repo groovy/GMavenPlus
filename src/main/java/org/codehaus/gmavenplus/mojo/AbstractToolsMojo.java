@@ -210,21 +210,21 @@ public abstract class AbstractToolsMojo extends AbstractGroovyMojo {
      * @param e the exception causing the failure
      */
     protected void logUnableToInitializeAntBuilder(final Throwable e) {
-        getLog().warn("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency? If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
+        getLog().debug("Unable to initialize 'ant' with a new AntBuilder object. Is Groovy a dependency? If you are using Groovy >= 2.3.0-rc-1, remember to include groovy-ant as a dependency.");
     }
 
     /**
-     * Logs a warning that the Ant dependency is missing.
+     * Logs that the Ant dependency is missing.
      */
     protected void logMissingAntDependency() {
-        getLog().warn("Ant dependency was not found on the project or plugin classpath. If you use AntBuilder, you should add it as a runtime dependency.");
+        getLog().debug("Ant dependency was not found on the project or plugin classpath. If you use AntBuilder, you should add it as a runtime dependency.");
     }
 
     /**
-     * Logs a warning that the Ivy dependency is missing.
+     * Logs that the Ivy dependency is missing.
      */
     protected void logMissingIvyDependency() {
-        getLog().warn("Ivy dependency was not found on the project or plugin classpath. If you use @Grab, you should add it as a runtime dependency.");
+        getLog().debug("Ivy dependency was not found on the project or plugin classpath. If you use @Grab, you should add it as a runtime dependency.");
     }
 
 }
