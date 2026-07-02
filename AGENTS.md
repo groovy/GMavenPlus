@@ -20,8 +20,8 @@
 ## Tests
 - Put isolated Mojo behavior, parameters, version gates, reflection failures, and utility behavior in `src/test/java` unit tests.
 - `src/it` intentionally contains one flat Maven Invoker project per distinct consuming-build workflow; it covers lifecycle wiring, classpaths, Groovy compilation, generated stubs, reactor builds, and packaging boundaries that unit tests cannot establish.
-- Add an Invoker project only for a new user-visible workflow or a regression whose boundary is absent from `src/it/README.md`; otherwise extend the existing fixture that owns that boundary.
-- Keep parameter-only changes, version gates, reflection failures, and interactive `console`/`shell` behavior in focused unit tests; do not add configuration cross-products mechanically.
+- Add an Invoker project only for a new user-visible workflow or a regression whose consuming-build boundary is absent from `src/it/README.md`; otherwise extend the existing fixture that owns that boundary.
+- Keep parameter-only changes without consuming-build output, version gates, reflection failures, and interactive `console`/`shell` behavior in focused unit tests; do not add configuration cross-products mechanically.
 
 ## References
 | Need | File |
