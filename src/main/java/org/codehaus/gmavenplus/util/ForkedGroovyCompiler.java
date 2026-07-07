@@ -27,9 +27,9 @@ public class ForkedGroovyCompiler {
         }
 
         String configFilePath = args[0];
+        Log log = new SystemStreamLog();
         try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(Paths.get(configFilePath)))) {
             Object configuration = ois.readObject();
-            Log log = new SystemStreamLog();
 
             List<?> classpath = Collections.emptyList();
             org.codehaus.gmavenplus.model.IncludeClasspath includeClasspath = null;
@@ -73,7 +73,7 @@ public class ForkedGroovyCompiler {
                 throw new IllegalArgumentException("Unknown configuration type: " + configuration.getClass().getName());
             }
         } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | java.lang.reflect.InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(e);
             System.exit(1);
         }
     }
