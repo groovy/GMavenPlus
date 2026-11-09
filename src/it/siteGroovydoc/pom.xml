@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.gmavenplus</groupId>
+    <artifactId>gmavenplus-plugin-it-root</artifactId>
+    <version>testing</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>gmavenplus-plugin-it-siteGroovydoc</artifactId>
+  <name>Groovydoc Site Test</name>
+  <description>Groovydoc integration through Maven reporting.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>@groovyGroupId@</groupId>
+      <artifactId>groovy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>@groovyGroupId@</groupId>
+      <artifactId>groovy-groovydoc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.21.0</version>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+
+    <excludeDefaults>true</excludeDefaults>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <docTitle>Site API documentation</docTitle>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>groovydoc-report</report>
+              <report>groovydocTests-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
